@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="External Modules">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Source\Launcher">
+      <UniqueIdentifier>{0a2b000e-3b4e-4c8e-a3ef-b013124e776c}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\Source\Launcher\Launcher.cpp">
+      <Filter>Source\Launcher</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\Source\Launcher\Arch-x86.h">
+      <Filter>Source\Launcher</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Launcher\Launch.h">
+      <Filter>Source\Launcher</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Launcher\Launch_Linux.ipp">
+      <Filter>Source\Launcher</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Launcher\Launch_Windows.ipp">
+      <Filter>Source\Launcher</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Launcher\TryDispatch.h">
+      <Filter>Source\Launcher</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Launcher\Vendor-AMD.h">
+      <Filter>Source\Launcher</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Launcher\Vendor-Intel.h">
+      <Filter>Source\Launcher</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Launcher\Warnings.h">
+      <Filter>Source\Launcher</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Launcher\Dispatcher.h">
+      <Filter>Source\Launcher</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

@@ -31,7 +31,7 @@
 
 #include "Environment/Environment.cpp"
 #include "ProcessorCapability/cpu_x86.cpp"
-#include "Concurrency/Parallelizers.cpp"
+//#include "Concurrency/Parallelizers.cpp"
 
 #include "CompileOptions_PublicLibs.cpp"
 
