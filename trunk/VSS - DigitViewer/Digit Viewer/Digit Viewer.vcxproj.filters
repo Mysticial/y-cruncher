@@ -1,0 +1,493 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Source\DigitConverter">
+      <UniqueIdentifier>{40a20c54-b772-4e37-a07a-7060dc68e125}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\DigitReaders">
+      <UniqueIdentifier>{5c57dc46-7ee1-4065-857f-64f812038e2c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\DigitWriters">
+      <UniqueIdentifier>{8579ac4c-91fe-433d-9cd4-9e76e3ff61d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\DigitConverter\u64d19">
+      <UniqueIdentifier>{37410d8c-b48f-4f24-889b-9b701c6346da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\DigitConverter\u32d9">
+      <UniqueIdentifier>{b6c70925-2106-4d7e-8828-ddb287e462aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\DigitConverter\u64h16">
+      <UniqueIdentifier>{dcf94a20-cb80-4236-8ace-d80f52249a94}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\DigitConverter\u32h8">
+      <UniqueIdentifier>{fb6c7ad5-7208-45e8-b9f2-a37a3297d1cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\DigitConverter\rawdec">
+      <UniqueIdentifier>{b4d82b24-4dac-4952-bbef-76b7ff61e6cb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\DigitConverter\rawhex">
+      <UniqueIdentifier>{15c36d69-a8d0-488d-b57b-b1e2febd6f92}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PublicLibs">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="PublicLibs\CompilerSettings">
+      <UniqueIdentifier>{3f3fa30c-a4fb-4270-b85d-177e182aaa96}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PublicLibs\ConsoleIO">
+      <UniqueIdentifier>{7489bb9e-cfd0-4c2b-9e06-7e4a79d518ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PublicLibs\Exceptions">
+      <UniqueIdentifier>{74200959-da1c-4532-a774-d6c1f2f9a667}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PublicLibs\ExportSafeLibs">
+      <UniqueIdentifier>{149e2b5a-920d-4b06-bbfc-bc9a5de7b266}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PublicLibs\FileIO">
+      <UniqueIdentifier>{8b991ccc-fcdb-4894-ba6e-d2058f6d4f7d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PublicLibs\Memory">
+      <UniqueIdentifier>{1c61b0b8-b6e4-4462-99f6-6ca3a6f15440}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PublicLibs\StringTools">
+      <UniqueIdentifier>{8bf58b5f-eb7d-4254-bf25-9dc5184f8d52}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\Source\DigitViewer\DigitReaders\DigitReader.cpp">
+      <Filter>Source\DigitReaders</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\DigitViewer\DigitReaders\TextReader.cpp">
+      <Filter>Source\DigitReaders</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\DigitViewer\DigitReaders\YCDFileReader.cpp">
+      <Filter>Source\DigitReaders</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\DigitViewer\DigitReaders\YCDReader.cpp">
+      <Filter>Source\DigitReaders</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\DigitViewer\DigitWriters\DigitWriter.cpp">
+      <Filter>Source\DigitWriters</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\DigitViewer\DigitWriters\TextWriter.cpp">
+      <Filter>Source\DigitWriters</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\DigitViewer\DigitWriters\YCDFileWriter.cpp">
+      <Filter>Source\DigitWriters</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\DigitViewer\DigitWriters\YCDWriter.cpp">
+      <Filter>Source\DigitWriters</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\DigitViewer\Main.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\DigitViewer\SMC_DigitViewer.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\DigitViewer\EndPointTasks.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\DigitViewer\Menu_DigitViewer.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\DigitViewer\PrintHelpers.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\DigitViewer\DigitConverter\DigitConverter.cpp">
+      <Filter>Source\DigitConverter</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\PublicLibs\CompileOptions_PublicLibs.cpp">
+      <Filter>PublicLibs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\PublicLibs\ConsoleIO\BasicIO.cpp">
+      <Filter>PublicLibs\ConsoleIO</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\PublicLibs\ConsoleIO\Label.cpp">
+      <Filter>PublicLibs\ConsoleIO</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\PublicLibs\ConsoleIO\Margin.cpp">
+      <Filter>PublicLibs\ConsoleIO</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\PublicLibs\ConsoleIO\Array.cpp">
+      <Filter>PublicLibs\ConsoleIO</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\PublicLibs\Exceptions\BufferTooSmallException.cpp">
+      <Filter>PublicLibs\Exceptions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\PublicLibs\Exceptions\Exception.cpp">
+      <Filter>PublicLibs\Exceptions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\PublicLibs\Exceptions\InvalidParametersException.cpp">
+      <Filter>PublicLibs\Exceptions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\PublicLibs\Exceptions\LimitExceededException.cpp">
+      <Filter>PublicLibs\Exceptions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\PublicLibs\Exceptions\ParseException.cpp">
+      <Filter>PublicLibs\Exceptions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\PublicLibs\Exceptions\StdException.cpp">
+      <Filter>PublicLibs\Exceptions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\PublicLibs\Exceptions\StringException.cpp">
+      <Filter>PublicLibs\Exceptions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\PublicLibs\Exceptions\SystemException.cpp">
+      <Filter>PublicLibs\Exceptions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\PublicLibs\FileIO\BasicFile.cpp">
+      <Filter>PublicLibs\FileIO</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\PublicLibs\FileIO\FileException.cpp">
+      <Filter>PublicLibs\FileIO</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\PublicLibs\FileIO\FileIO.cpp">
+      <Filter>PublicLibs\FileIO</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\PublicLibs\Memory\AlignedMalloc.cpp">
+      <Filter>PublicLibs\Memory</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\PublicLibs\StringTools\Unicode.cpp">
+      <Filter>PublicLibs\StringTools</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\PublicLibs\StringTools\ToString.cpp">
+      <Filter>PublicLibs\StringTools</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\PublicLibs\Exceptions\ArithmeticException.cpp">
+      <Filter>PublicLibs\Exceptions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\PublicLibs\Exceptions\AlgorithmFailedException.cpp">
+      <Filter>PublicLibs\Exceptions</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\Source\DigitViewer\DigitReaders\DigitReader.h">
+      <Filter>Source\DigitReaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\DigitViewer\DigitReaders\TextReader.h">
+      <Filter>Source\DigitReaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\DigitViewer\DigitReaders\YCDFileReader.h">
+      <Filter>Source\DigitReaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\DigitViewer\DigitReaders\YCDReader.h">
+      <Filter>Source\DigitReaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\DigitViewer\DigitWriters\DigitWriter.h">
+      <Filter>Source\DigitWriters</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\DigitViewer\DigitWriters\TextWriter.h">
+      <Filter>Source\DigitWriters</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\DigitViewer\DigitWriters\YCDFileWriter.h">
+      <Filter>Source\DigitWriters</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\DigitViewer\DigitWriters\YCDWriter.h">
+      <Filter>Source\DigitWriters</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\DigitViewer\x86_SSE2.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\DigitViewer\DigitViewerUI.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\DigitViewer\EndPointTasks.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\DigitViewer\Globals.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\DigitViewer\Menu_DigitViewer.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\DigitViewer\PrintHelpers.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\DigitViewer\DigitConverter\u64d19\u64d19_forward_intrinsics_AVX2.h">
+      <Filter>Source\DigitConverter\u64d19</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\DigitViewer\DigitConverter\u64d19\u64d19_forward_intrinsics_SSE41.h">
+      <Filter>Source\DigitConverter\u64d19</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\DigitViewer\DigitConverter\u64d19\u64d19_forward_intrinsics_Default.h">
+      <Filter>Source\DigitConverter\u64d19</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\DigitViewer\DigitConverter\u32d9\u32d9_forward_intrinsics_SSE41.h">
+      <Filter>Source\DigitConverter\u32d9</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\DigitViewer\DigitConverter\u64d19\u64d19.h">
+      <Filter>Source\DigitConverter\u64d19</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\DigitViewer\DigitConverter\u32d9\u32d9_forward_intrinsics_Default.h">
+      <Filter>Source\DigitConverter\u32d9</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\DigitViewer\DigitConverter\u32d9\u32d9.h">
+      <Filter>Source\DigitConverter\u32d9</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\DigitViewer\DigitConverter\u64h16\u64h16_forward_intrinsics_Default.h">
+      <Filter>Source\DigitConverter\u64h16</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\DigitViewer\DigitConverter\u64h16\u64h16_forward_intrinsics_SSE41.h">
+      <Filter>Source\DigitConverter\u64h16</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\DigitViewer\DigitConverter\u64h16\u64h16.h">
+      <Filter>Source\DigitConverter\u64h16</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\DigitViewer\DigitConverter\u32h8\u32h8_forward_intrinsics_Default.h">
+      <Filter>Source\DigitConverter\u32h8</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\DigitViewer\DigitConverter\u32h8\u32h8.h">
+      <Filter>Source\DigitConverter\u32h8</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\DigitViewer\DigitConverter\u32h8\u32h8_forward_intrinsics_SSE41.h">
+      <Filter>Source\DigitConverter\u32h8</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\DigitViewer\DigitConverter\u64h16\u64h16_inverse_intrinsics_Default.h">
+      <Filter>Source\DigitConverter\u64h16</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\DigitViewer\DigitConverter\u64h16\u64h16_inverse_intrinsics_SSE2.h">
+      <Filter>Source\DigitConverter\u64h16</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\DigitViewer\DigitConverter\u64d19\u64d19_inverse_intrinsics_Default.h">
+      <Filter>Source\DigitConverter\u64d19</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\DigitViewer\DigitConverter\u64d19\u64d19_inverse_intrinsics_SSE41.h">
+      <Filter>Source\DigitConverter\u64d19</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\DigitViewer\DigitConverter\DigitConverter.h">
+      <Filter>Source\DigitConverter</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\DigitViewer\DigitConverter\rawdec\rawdec_forward_intrinsics_Default.h">
+      <Filter>Source\DigitConverter\rawdec</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\DigitViewer\DigitConverter\rawdec\rawdec.h">
+      <Filter>Source\DigitConverter\rawdec</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\DigitViewer\DigitConverter\rawdec\rawdec_forward_intrinsics_SSE2.h">
+      <Filter>Source\DigitConverter\rawdec</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\DigitViewer\DigitConverter\rawdec\rawdec_forward_intrinsics_AVX2.h">
+      <Filter>Source\DigitConverter\rawdec</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\DigitViewer\DigitConverter\rawhex\rawhex_forward_intrinsics_Default.h">
+      <Filter>Source\DigitConverter\rawhex</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\DigitViewer\DigitConverter\rawhex\rawhex_forward_intrinsics_SSE2.h">
+      <Filter>Source\DigitConverter\rawhex</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\DigitViewer\DigitConverter\rawhex\rawhex.h">
+      <Filter>Source\DigitConverter\rawhex</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\DigitViewer\DigitConverter\rawhex\rawhex_forward_intrinsics_AVX2.h">
+      <Filter>Source\DigitConverter\rawhex</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\DigitViewer\DigitConverter\rawdec\rawdec_inverse_intrinsics_Default.h">
+      <Filter>Source\DigitConverter\rawdec</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\DigitViewer\DigitConverter\rawdec\rawdec_inverse_intrinsics_SSE2.h">
+      <Filter>Source\DigitConverter\rawdec</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\DigitViewer\DigitConverter\rawdec\rawdec_inverse_intrinsics_AVX2.h">
+      <Filter>Source\DigitConverter\rawdec</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\DigitViewer\DigitConverter\rawhex\rawhex_inverse_intrinsics_Default.h">
+      <Filter>Source\DigitConverter\rawhex</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\DigitViewer\DigitConverter\rawhex\rawhex_inverse_intrinsics_SSE2.h">
+      <Filter>Source\DigitConverter\rawhex</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\DigitViewer\DigitConverter\rawhex\rawhex_inverse_intrinsics_AVX2.h">
+      <Filter>Source\DigitConverter\rawhex</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\DigitViewer\DigitConverter\u64d19\u64d19_forward_intrinsics_AVX512.h">
+      <Filter>Source\DigitConverter\u64d19</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\CompilerSettings\Compiler_GCC.h">
+      <Filter>PublicLibs\CompilerSettings</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\CompilerSettings\Compiler_VSC.h">
+      <Filter>PublicLibs\CompilerSettings</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\ConsoleIO\BasicIO.h">
+      <Filter>PublicLibs\ConsoleIO</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\ConsoleIO\Label.h">
+      <Filter>PublicLibs\ConsoleIO</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\ConsoleIO\Margin.h">
+      <Filter>PublicLibs\ConsoleIO</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\ConsoleIO\Array.h">
+      <Filter>PublicLibs\ConsoleIO</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\Exceptions\BufferTooSmallException.h">
+      <Filter>PublicLibs\Exceptions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\Exceptions\BufferTooSmallThrower.h">
+      <Filter>PublicLibs\Exceptions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\Exceptions\Exception.h">
+      <Filter>PublicLibs\Exceptions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\Exceptions\InvalidParametersException.h">
+      <Filter>PublicLibs\Exceptions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\Exceptions\LimitExceededException.h">
+      <Filter>PublicLibs\Exceptions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\Exceptions\ParseException.h">
+      <Filter>PublicLibs\Exceptions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\Exceptions\StdException.h">
+      <Filter>PublicLibs\Exceptions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\Exceptions\StringException.h">
+      <Filter>PublicLibs\Exceptions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\Exceptions\SystemException.h">
+      <Filter>PublicLibs\Exceptions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\ExportSafeLibs\Stream.h">
+      <Filter>PublicLibs\ExportSafeLibs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\FileIO\BasicFile.h">
+      <Filter>PublicLibs\FileIO</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\FileIO\FileException.h">
+      <Filter>PublicLibs\FileIO</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\FileIO\FileIO.h">
+      <Filter>PublicLibs\FileIO</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\FileIO\BaseFile_Default.h">
+      <Filter>PublicLibs\FileIO</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\FileIO\BaseFile_Windows.h">
+      <Filter>PublicLibs\FileIO</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\Memory\AlignedMalloc.h">
+      <Filter>PublicLibs\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\StringTools\ToString.h">
+      <Filter>PublicLibs\StringTools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\StringTools\Unicode.h">
+      <Filter>PublicLibs\StringTools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\Exceptions\ArithmeticException.h">
+      <Filter>PublicLibs\Exceptions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\Exceptions\AlgorithmFailedException.h">
+      <Filter>PublicLibs\Exceptions</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\Source\DigitViewer\DigitConverter\u64d19\u64d19_forward_convert_Default.ipp">
+      <Filter>Source\DigitConverter\u64d19</Filter>
+    </None>
+    <None Include="..\..\Source\DigitViewer\DigitConverter\u64d19\u64d19_forward_convert_SSE41.ipp">
+      <Filter>Source\DigitConverter\u64d19</Filter>
+    </None>
+    <None Include="..\..\Source\DigitViewer\DigitConverter\u64d19\u64d19_forward_convert_AVX2.ipp">
+      <Filter>Source\DigitConverter\u64d19</Filter>
+    </None>
+    <None Include="..\..\Source\DigitViewer\DigitConverter\u64h16\u64h16_forward_convert_Default.ipp">
+      <Filter>Source\DigitConverter\u64h16</Filter>
+    </None>
+    <None Include="..\..\Source\DigitViewer\DigitConverter\u64h16\u64h16_forward_convert_SSE41.ipp">
+      <Filter>Source\DigitConverter\u64h16</Filter>
+    </None>
+    <None Include="..\..\Source\DigitViewer\DigitConverter\u32d9\u32d9_forward_convert_SSE41.ipp">
+      <Filter>Source\DigitConverter\u32d9</Filter>
+    </None>
+    <None Include="..\..\Source\DigitViewer\DigitConverter\u32d9\u32d9_forward_convert_Default.ipp">
+      <Filter>Source\DigitConverter\u32d9</Filter>
+    </None>
+    <None Include="..\..\Source\DigitViewer\DigitConverter\u32h8\u32h8_forward_convert_Default.ipp">
+      <Filter>Source\DigitConverter\u32h8</Filter>
+    </None>
+    <None Include="..\..\Source\DigitViewer\DigitConverter\u32h8\u32h8_forward_convert_SSE41.ipp">
+      <Filter>Source\DigitConverter\u32h8</Filter>
+    </None>
+    <None Include="..\..\Source\DigitViewer\DigitConverter\u64h16\u64h16_inverse_convert_Default.ipp">
+      <Filter>Source\DigitConverter\u64h16</Filter>
+    </None>
+    <None Include="..\..\Source\DigitViewer\DigitConverter\u64h16\u64h16_inverse_convert_SSE2.ipp">
+      <Filter>Source\DigitConverter\u64h16</Filter>
+    </None>
+    <None Include="..\..\Source\DigitViewer\DigitConverter\u64d19\u64d19_inverse_convert_Default.ipp">
+      <Filter>Source\DigitConverter\u64d19</Filter>
+    </None>
+    <None Include="..\..\Source\DigitViewer\DigitConverter\u64d19\u64d19_inverse_convert_SSE41.ipp">
+      <Filter>Source\DigitConverter\u64d19</Filter>
+    </None>
+    <None Include="..\..\Source\DigitViewer\DigitConverter\rawdec\rawdec_forward_convert_Default.ipp">
+      <Filter>Source\DigitConverter\rawdec</Filter>
+    </None>
+    <None Include="..\..\Source\DigitViewer\DigitConverter\rawdec\rawdec_forward_convert_SSE2.ipp">
+      <Filter>Source\DigitConverter\rawdec</Filter>
+    </None>
+    <None Include="..\..\Source\DigitViewer\DigitConverter\rawdec\rawdec_forward_convert_AVX2.ipp">
+      <Filter>Source\DigitConverter\rawdec</Filter>
+    </None>
+    <None Include="..\..\Source\DigitViewer\DigitConverter\rawhex\rawhex_forward_convert_Default.ipp">
+      <Filter>Source\DigitConverter\rawhex</Filter>
+    </None>
+    <None Include="..\..\Source\DigitViewer\DigitConverter\rawhex\rawhex_forward_convert_SSE2.ipp">
+      <Filter>Source\DigitConverter\rawhex</Filter>
+    </None>
+    <None Include="..\..\Source\DigitViewer\DigitConverter\rawhex\rawhex_forward_convert_AVX2.ipp">
+      <Filter>Source\DigitConverter\rawhex</Filter>
+    </None>
+    <None Include="..\..\Source\DigitViewer\DigitConverter\rawdec\rawdec_inverse_convert_Default.ipp">
+      <Filter>Source\DigitConverter\rawdec</Filter>
+    </None>
+    <None Include="..\..\Source\DigitViewer\DigitConverter\rawdec\rawdec_inverse_convert_SSE2.ipp">
+      <Filter>Source\DigitConverter\rawdec</Filter>
+    </None>
+    <None Include="..\..\Source\DigitViewer\DigitConverter\rawdec\rawdec_inverse_convert_AVX2.ipp">
+      <Filter>Source\DigitConverter\rawdec</Filter>
+    </None>
+    <None Include="..\..\Source\DigitViewer\DigitConverter\rawhex\rawhex_inverse_convert_Default.ipp">
+      <Filter>Source\DigitConverter\rawhex</Filter>
+    </None>
+    <None Include="..\..\Source\DigitViewer\DigitConverter\rawhex\rawhex_inverse_convert_SSE2.ipp">
+      <Filter>Source\DigitConverter\rawhex</Filter>
+    </None>
+    <None Include="..\..\Source\DigitViewer\DigitConverter\rawhex\rawhex_inverse_convert_AVX2.ipp">
+      <Filter>Source\DigitConverter\rawhex</Filter>
+    </None>
+    <None Include="..\..\Source\DigitViewer\DigitConverter\u64d19\u64d19_forward_convert_AVX512.ipp">
+      <Filter>Source\DigitConverter\u64d19</Filter>
+    </None>
+    <None Include="..\..\Source\PublicLibs\ConsoleIO\ConsoleIO_Posix.ipp">
+      <Filter>PublicLibs\ConsoleIO</Filter>
+    </None>
+    <None Include="..\..\Source\PublicLibs\ConsoleIO\ConsoleIO_Windows.ipp">
+      <Filter>PublicLibs\ConsoleIO</Filter>
+    </None>
+    <None Include="..\..\Source\PublicLibs\FileIO\BaseFile_Windows.ipp">
+      <Filter>PublicLibs\FileIO</Filter>
+    </None>
+    <None Include="..\..\Source\PublicLibs\FileIO\FileIO_Default.ipp">
+      <Filter>PublicLibs\FileIO</Filter>
+    </None>
+    <None Include="..\..\Source\PublicLibs\FileIO\FileIO_WinAPI.ipp">
+      <Filter>PublicLibs\FileIO</Filter>
+    </None>
+    <None Include="..\..\Source\PublicLibs\FileIO\BaseFile_Default.ipp">
+      <Filter>PublicLibs\FileIO</Filter>
+    </None>
+    <None Include="..\..\Source\DigitViewer\makefile">
+      <Filter>Source</Filter>
+    </None>
+    <None Include="..\..\Source\DigitViewer\Objects.mk">
+      <Filter>Source</Filter>
+    </None>
+  </ItemGroup>
+</Project>
