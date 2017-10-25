@@ -6,3 +6,4 @@ This repo holds the open sourced portions of y-cruncher. It also serves as a pub
 
 **Sub-Projects:**
  -  Digit Viewer: https://github.com/Mysticial/y-cruncher/tree/master/trunk/VSS%20-%20DigitViewer
+ -  Launcher: https://github.com/Mysticial/y-cruncher/tree/master/trunk/VSS%20-%20Launcher
