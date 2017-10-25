@@ -44,7 +44,7 @@ In both cases, each 8-byte word is little-endian.
 
 **Directories:**
 
- - `Source/DigitViewer/` - Digit Viewer root directory.
+ - [`Source/DigitViewer/`](https://github.com/Mysticial/y-cruncher/tree/master/trunk/Source/DigitViewer) - Digit Viewer root directory.
  - `Source/DigitViewer/DigitReaders/` - The Digit Reader classes.
  - `Source/DigitViewer/DigitWriter/` - The Digit Writer classes.
  - `Source/DigitViewer/DigitConverter/` - The highly optimized (and unreadable) digit conversion primitives.
