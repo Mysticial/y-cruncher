@@ -10,8 +10,8 @@ This repo holds the open sourced portions of y-cruncher. It also serves as a pub
  
  -----
  
- **Licensing:**
- -  The licenses vary depending on the sub-project.
+ **Licensing:** The licenses vary depending on the sub-project.
+
  -  `trunk/Source/PublicLibs/` - BSD3
  -  `trunk/Source/DigitViewer/` - BSD3
  -  `trunk/VSS - DigitViewer/` - BSD3
