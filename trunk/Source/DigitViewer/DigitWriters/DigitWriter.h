@@ -34,8 +34,8 @@
  */
 
 #pragma once
-#ifndef ycr_DigitWriter_H
-#define ycr_DigitWriter_H
+#ifndef ydv_DigitViewer_DigitWriter_H
+#define ydv_DigitViewer_DigitWriter_H
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -44,7 +44,7 @@
 #include <string>
 #include <memory>
 #include "PublicLibs/Types.h"
-#include "PublicLibs/FileIO/FileIO.h"
+#include "PublicLibs/SystemLibs/FileIO/FileIO.h"
 namespace DigitViewer{
     using namespace ymp;
     class DigitReader;
@@ -60,7 +60,7 @@ class DigitWriter{
 public:
     DigitWriter();
     virtual ~DigitWriter();
-    virtual std::unique_ptr<DigitReader> close_and_get_reader(upL_t buffer_size = YC_DIGITWRITER_DEFAULT_BUFFER) = 0;
+    virtual std::unique_ptr<DigitReader> close_and_get_reader() = 0;
 
     /*  Buffered Stream Methods
      * 

@@ -12,13 +12,14 @@
 ////////////////////////////////////////////////////////////////////////////////
 //  Dependencies
 #include <string.h>
+#include <algorithm>
 #include "PublicLibs/CompilerSettings.h"
 #include "PublicLibs/Exceptions/StringException.h"
-#include "PublicLibs/FileIO/FileException.h"
+#include "PublicLibs/SystemLibs/FileIO/FileException.h"
 #include "DigitViewer/Globals.h"
 #include "DigitReader.h"
-#include "TextReader.h"
-#include "YCDReader.h"
+#include "TextDigitReader.h"
+#include "YCDDigitReader.h"
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -32,8 +33,7 @@ DigitReader::DigitReader()
     : buffer_L(0)
     , iter_f_offset(0)
     , iter_b_offset(0)
-{
-}
+{}
 void DigitReader::clear_buffer(){
     //  To clear the buffer, set the offset to the size of the buffer.
     //  This will trick the next digit load into thinking that all the digits
@@ -61,11 +61,10 @@ void DigitReader::read(char* str, upL_t digits){
         }
 
         upL_t block = buffer_L - iter_b_offset;
-        if (block > digits)
-            block = digits;
+        block = std::min(block, digits);
 
-        memcpy(str, &buffer[0] + iter_b_offset, block);
-        
+        memcpy(str, &m_digit_buffer[0] + iter_b_offset, block);
+
         iter_f_offset += block;
         iter_b_offset += block;
         str += block;
@@ -81,7 +80,7 @@ YM_NO_INLINE void DigitReader::reload(){
     //  Buffer isn't initialized yet.
     if (buffer_L == 0){
         upL_t buffer_size = YC_DIGITREADER_DEFAULT_BUFFER;
-        buffer = std::unique_ptr<char[]>(new char[buffer_size]);
+        m_digit_buffer = std::unique_ptr<char[]>(new char[buffer_size]);
 
         //  Do this assignment last - just in case the above throws.
         buffer_L = buffer_size;
@@ -117,7 +116,7 @@ YM_NO_INLINE void DigitReader::reload(){
     }
 
     //  Read into buffer
-    this->read(start, &buffer[current_b_offset], read);
+    this->read(start, &m_digit_buffer[current_b_offset], read);
 
     //  Do this assignment last to protect against an exception.
     iter_b_offset = current_b_offset;

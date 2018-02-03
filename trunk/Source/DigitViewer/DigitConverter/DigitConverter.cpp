@@ -13,7 +13,7 @@
 //  Dependencies
 #include "PublicLibs/ConsoleIO/Label.h"
 #include "PublicLibs/ConsoleIO/Margin.h"
-#include "PublicLibs/ProcessorCapability/ProcessorCapability.h"
+#include "PublicLibs/SystemLibs/ProcessorCapability/ProcessorCapability.h"
 #include "DigitConverter.h"
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////

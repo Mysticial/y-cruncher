@@ -16,8 +16,8 @@
 #include "PublicLibs/ConsoleIO/Label.h"
 #include "Globals.h"
 #include "DigitReaders/DigitReader.h"
-#include "DigitReaders/TextReader.h"
-#include "DigitReaders/YCDReader.h"
+#include "DigitReaders/TextDigitReader.h"
+#include "DigitReaders/YCDDigitReader.h"
 #include "EndPointTasks.h"
 #include "Menu_DigitViewer.h"
 namespace DigitViewer{

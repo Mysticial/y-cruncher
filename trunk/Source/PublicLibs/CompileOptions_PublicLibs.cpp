@@ -1,4 +1,4 @@
-/* Compile_PublicLibs.cpp
+/* CompileOptions_PublicLibs.cpp
  * 
  * Author           : Alexander J. Yee
  * Date Created     : 07/19/2015
@@ -10,11 +10,9 @@
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-#include "ConsoleIO/Label.h"
-#ifndef YMP_DIGITVIEWER_STANDALONE
-#include "Time/Time.h"
-#endif
-#include "FileIO/FileIO.h"
+#include "PublicLibs/ConsoleIO/BasicIO.h"
+#include "SystemLibs/Time/Time.h"
+#include "SystemLibs/FileIO/FileIO.h"
 namespace ymp{
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -24,13 +22,11 @@ void CompileOptions_PublicLibs(){
     Console::SetColor('T');
     Console::println("================================================================");
     Console::SetColor('Y');
-    Console::println("Public Library\n");
+    Console::println("External Library\n");
     Console::SetColor('w');
 
     Console::CompileOptions();
-#ifndef YMP_DIGITVIEWER_STANDALONE
     Time::CompileOptions();
-#endif
     FileIO::CompileOptions();
     Console::println();
 }

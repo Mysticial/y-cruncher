@@ -12,6 +12,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 //  Dependencies
 #include <string.h>
+#include <algorithm>
 
 #include "PublicLibs/CompilerSettings.h"
 #include "PublicLibs/ConsoleIO/BasicIO.h"
@@ -23,11 +24,11 @@
 #include "PrintHelpers.h"
 
 #include "DigitReaders/DigitReader.h"
-#include "DigitReaders/TextReader.h"
-#include "DigitReaders/YCDReader.h"
+#include "DigitReaders/TextDigitReader.h"
+#include "DigitReaders/YCDDigitReader.h"
 
-#include "DigitWriters/TextWriter.h"
-#include "DigitWriters/YCDWriter.h"
+#include "DigitWriters/TextDigitWriter.h"
+#include "DigitWriters/YCDDigitWriter.h"
 
 namespace DigitViewer{
 ////////////////////////////////////////////////////////////////////////////////
@@ -200,10 +201,7 @@ void ComputeHash(DigitReader* file){
 
     uiL_t pos = 0;
     while (pos < end){
-        upL_t block = 1000000000;
-        uiL_t left = end - pos;
-        if (block > left)
-            block = (upL_t)left;
+        upL_t block = (upL_t)std::min((uiL_t)1000000000, end - pos);
 
         //  Accumulate the hash 1 digit at a time.
         //  y-cruncher can do this much more efficiently by directly

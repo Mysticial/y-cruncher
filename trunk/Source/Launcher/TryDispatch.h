@@ -14,7 +14,18 @@
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 //  Dependencies
+#ifdef YMC_FULL_COMPILE
 #include "Settings.h"
+#else
+#define     YCR_ENABLE_2000_x86
+//#define     YCR_ENABLE_2007_x64_Penryn
+#define     YCR_ENABLE_2008_x64_Nehalem
+#define     YCR_ENABLE_2014_x64_Broadwell
+#define     YCR_ENABLE_2016_x64_KnightsLanding
+#define     YCR_ENABLE_2017_x64_Zen
+#define     YCR_ENABLE_2017_x64_Skylake
+//#define     YCR_ENABLE_2018_x64_Cannonlake
+#endif
 #include "BinaryNames.h"
 #include "Dispatcher.h"
 #include "Launch.h"

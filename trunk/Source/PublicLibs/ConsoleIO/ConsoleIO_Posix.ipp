@@ -22,8 +22,8 @@
 #include <string.h>
 #include <atomic>
 #include <iostream>
-#include "PublicLibs/StringTools/ToString.h"
-#include "PublicLibs/StringTools/Unicode.h"
+#include "PublicLibs/BasicLibs/StringTools/ToString.h"
+#include "PublicLibs/BasicLibs/StringTools/Unicode.h"
 #include "Label.h"
 namespace ymp{
 namespace Console{

@@ -7,8 +7,8 @@
 #include "Launch.h"
 
 #include "VersionNumber.h"
-#include "PublicLibs/CommandLine.h"
-#include "PublicLibs/Environment/Environment.h"
+#include "PublicLibs/BasicLibs/CommandLine.h"
+#include "PublicLibs/SystemLibs/Environment/Environment.h"
 #include "PublicLibs/SMC_PublicLibs.cpp"
 
 

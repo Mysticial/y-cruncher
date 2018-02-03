@@ -7,29 +7,29 @@
  */
 
 #ifdef YMP_DIGITVIEWER_STANDALONE
-#include "PublicLibs/StringTools/ToString.cpp"
-#include "PublicLibs/StringTools/Unicode.cpp"
 #include "PublicLibs/ConsoleIO/BasicIO.cpp"
 #include "PublicLibs/ConsoleIO/Margin.h"
 #include "PublicLibs/ConsoleIO/Label.h"
 #include "PublicLibs/ConsoleIO/Array.h"
 #include "PublicLibs/Exceptions/SMC_Exceptions.cpp"
-#include "PublicLibs/Memory/AlignedMalloc.cpp"
-#include "PublicLibs/FileIO/FileException.cpp"
-#include "PublicLibs/FileIO/BasicFile.cpp"
-#include "PublicLibs/FileIO/FileIO.cpp"
+#include "PublicLibs/BasicLibs/StringTools/ToString.cpp"
+#include "PublicLibs/BasicLibs/StringTools/Unicode.cpp"
+#include "PublicLibs/BasicLibs/Memory/AlignedMalloc.cpp"
+#include "PublicLibs/SystemLibs/FileIO/FileException.cpp"
+#include "PublicLibs/SystemLibs/FileIO/BasicFile.cpp"
+#include "PublicLibs/SystemLibs/FileIO/FileIO.cpp"
 #endif
 
 #include "DigitConverter/DigitConverter.cpp"
 
 #include "DigitReaders/DigitReader.cpp"
-#include "DigitReaders/TextReader.cpp"
-#include "DigitReaders/YCDReader.cpp"
+#include "DigitReaders/TextDigitReader.cpp"
+#include "DigitReaders/YCDDigitReader.cpp"
 #include "DigitReaders/YCDFileReader.cpp"
 
 #include "DigitWriters/DigitWriter.cpp"
-#include "DigitWriters/TextWriter.cpp"
-#include "DigitWriters/YCDWriter.cpp"
+#include "DigitWriters/TextDigitWriter.cpp"
+#include "DigitWriters/YCDDigitWriter.cpp"
 #include "DigitWriters/YCDFileWriter.cpp"
 
 #include "PrintHelpers.cpp"

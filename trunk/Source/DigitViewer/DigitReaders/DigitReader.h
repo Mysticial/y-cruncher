@@ -2,7 +2,7 @@
  * 
  * Author           : Alexander J. Yee
  * Date Created     : 04/06/2012
- * Last Modified    : 07/28/2013
+ * Last Modified    : 01/09/2018
  * 
  * 
  *  This is an abstract class that represents a digit reader that streams digits
@@ -17,8 +17,8 @@
  */
 
 #pragma once
-#ifndef ycr_DigitReader_H
-#define ycr_DigitReader_H
+#ifndef ydv_DigitViewer_DigitReader_H
+#define ydv_DigitViewer_DigitReader_H
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -28,6 +28,7 @@
 #include <memory>
 #include "PublicLibs/CompilerSettings.h"
 #include "PublicLibs/Types.h"
+#include "DigitViewer/InjectableBuffer.h"
 namespace DigitViewer{
     using namespace ymp;
 ////////////////////////////////////////////////////////////////////////////////
@@ -42,6 +43,10 @@ class DigitReader{
 public:
     DigitReader();
     virtual ~DigitReader(){}
+
+    //  Terrible design. Blame it on y-cruncher's messed up memory micromanagement.
+    virtual void set_native_buffer(InjectableBuffer<u64_t> buffer){}
+    virtual void clear_native_buffer(){}
 
     virtual const char* get_extension() const = 0;
 
@@ -120,7 +125,7 @@ public:
 protected:
 
     //  Digit Buffer
-    std::unique_ptr<char[]> buffer;
+    std::unique_ptr<char[]> m_digit_buffer;
     upL_t buffer_L;
 
     //  Iterator
@@ -149,7 +154,7 @@ YM_FORCE_INLINE char DigitReader::next(){
     }
     
     iter_f_offset++;
-    return buffer[iter_b_offset++];
+    return m_digit_buffer[iter_b_offset++];
 }
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////

@@ -9,13 +9,13 @@ CURRENT :=
 CURRENT += DigitConverter/DigitConverter.cpp
 
 CURRENT += DigitReaders/DigitReader.cpp
-CURRENT += DigitReaders/TextReader.cpp
-CURRENT += DigitReaders/YCDReader.cpp
+CURRENT += DigitReaders/TextDigitReader.cpp
+CURRENT += DigitReaders/YCDDigitReader.cpp
 CURRENT += DigitReaders/YCDFileReader.cpp
 
 CURRENT += DigitWriters/DigitWriter.cpp
-CURRENT += DigitWriters/TextWriter.cpp
-CURRENT += DigitWriters/YCDWriter.cpp
+CURRENT += DigitWriters/TextDigitWriter.cpp
+CURRENT += DigitWriters/YCDDigitWriter.cpp
 CURRENT += DigitWriters/YCDFileWriter.cpp
 
 CURRENT += PrintHelpers.cpp

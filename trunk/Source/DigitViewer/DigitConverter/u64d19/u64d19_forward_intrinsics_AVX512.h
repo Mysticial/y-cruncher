@@ -21,7 +21,7 @@
 #include <immintrin.h>
 #include "PublicLibs/CompilerSettings.h"
 #include "PublicLibs/Types.h"
-#include "PublicLibs/ProcessorCapability/ProcessorCapability.h"
+#include "PublicLibs/SystemLibs/ProcessorCapability/ProcessorCapability.h"
 namespace DigitViewer{
 namespace u64d19{
     using namespace ymp;
