@@ -83,6 +83,13 @@ public:
         return m_ptr;
     }
 
+    const Type& operator[](upL_t index) const{
+        return m_ptr[index];
+    }
+    Type& operator[](upL_t index){
+        return m_ptr[index];
+    }
+
 
 private:
     Type* m_ptr;

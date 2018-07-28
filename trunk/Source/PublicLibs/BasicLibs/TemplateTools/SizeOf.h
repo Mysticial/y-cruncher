@@ -26,6 +26,10 @@ struct SizeOf{
     static const upL_t value = sizeof(T);
 };
 template <>
+struct SizeOf<const void>{
+    static const upL_t value = 1;
+};
+template <>
 struct SizeOf<void>{
     static const upL_t value = 1;
 };

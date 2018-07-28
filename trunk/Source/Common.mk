@@ -42,7 +42,7 @@ CFLAGS += -D X64_13_Haswell        -march=haswell -mtune=haswell
 #CFLAGS += -D X64_17_Skylake        -march=skylake-avx512 -mtune=skylake-avx512
 
 #BINARY := 17-CNL
-#CFLAGS += -D X64_18_Cannonlake     -march=skylake-avx512 -mavx512ifma -mavx512vbmi -mtune=skylake-avx512
+#CFLAGS += -D X64_18_CannonLake     -march=skylake-avx512 -mavx512ifma -mavx512vbmi -mtune=skylake-avx512
 
 
 

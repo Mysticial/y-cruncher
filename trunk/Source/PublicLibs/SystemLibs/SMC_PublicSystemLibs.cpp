@@ -12,8 +12,9 @@
 #include "FileIO/FileException.cpp"
 #include "FileIO/FileIO.cpp"
 #include "FileIO/BasicFile.cpp"
+#include "FileIO/RawFile.cpp"
 
-//#include "Concurrency/Parallelizers.cpp"
+#include "Concurrency/Parallelizers.cpp"
 #include "ManagedMemory/CppAllocator.cpp"
 
 #include "Environment/Environment.cpp"

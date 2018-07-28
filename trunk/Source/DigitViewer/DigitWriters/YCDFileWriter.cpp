@@ -162,7 +162,7 @@ void YCDFileWriter::close(){
 
     //  Flush buffer
     flush();
-    
+
     //  If the file isn't full, then it is the end-file.
     if (pos_char != digits_per_file){
         //  Set the total_digits field.
@@ -221,12 +221,13 @@ upL_t YCDFileWriter::write_chars(
 
     //  If the end of the file is reached, the file is closed.
 
-    if (!file.is_open())
+    if (!file.is_open()){
         throw FileIO::FileException(
             "YCDFileWriter::write_chars()",
             path,
             "This file is already closed."
         );
+    }
 
     upL_t start_digits = digits;
 

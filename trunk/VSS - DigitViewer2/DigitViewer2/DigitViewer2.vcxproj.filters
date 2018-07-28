@@ -1,0 +1,764 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Source Files\DigitViewer2">
+      <UniqueIdentifier>{d851b106-5774-4ad3-8007-076ebbc5fc1e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\DigitViewer2\DigitCount">
+      <UniqueIdentifier>{3bf490ee-4b54-49f4-86e1-9a5d9e25db67}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\DigitViewer2\DigitCount\Kernels">
+      <UniqueIdentifier>{9b15a320-d04c-4067-b301-bb8704bbbe00}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\DigitViewer2\DigitHash">
+      <UniqueIdentifier>{1410dfca-65e7-4f0f-baca-11c2905f9095}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\DigitViewer2\DigitHash\Kernels">
+      <UniqueIdentifier>{08d25f2a-7d08-4494-9033-72dffdcb7ad8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\DigitViewer2\DigitReaders">
+      <UniqueIdentifier>{47c0c587-7cdb-4fa4-8337-2817f557069f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\DigitViewer2\DigitViewer">
+      <UniqueIdentifier>{d742075a-f1ad-4e5c-a7ec-e5aaf8510f1b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\DigitViewer2\DigitWriters">
+      <UniqueIdentifier>{5599907d-73c4-4797-b9bc-ee023ea732a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\DigitViewer2\RawToAscii">
+      <UniqueIdentifier>{c41ba6dc-2685-40d4-aebd-829104dc05d1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\DigitViewer2\RawToAscii\Kernels">
+      <UniqueIdentifier>{a3117e2b-1b09-4481-990c-3b14ee5d3619}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\DigitViewer2\RawToCompressed">
+      <UniqueIdentifier>{9da1a18e-4a76-4ffe-b51a-bbc7c26cad1a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\DigitViewer2\RawToCompressed\Kernels">
+      <UniqueIdentifier>{768fccf6-e44f-4021-8873-6e15f373795e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\DigitViewer2\RawToDecKernels">
+      <UniqueIdentifier>{58e36f40-793f-4281-af98-723fa4a57f5e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\DigitViewer2\WordToRaw">
+      <UniqueIdentifier>{c1aa8d5e-5fb7-4dcf-8381-710fd93db484}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\DigitViewer2\WordToRaw\Kernels">
+      <UniqueIdentifier>{cb39955d-bd87-4fbf-ac84-64256022e8c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\PublicLibs">
+      <UniqueIdentifier>{f489f9c4-d250-4ef5-be98-c8428940df90}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\PublicLibs\Exceptions">
+      <UniqueIdentifier>{f321efad-913f-4d79-b6e7-63cab423a646}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\PublicLibs\SystemLibs">
+      <UniqueIdentifier>{f21f70cf-cb8d-4d28-966f-b770dea3d849}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\PublicLibs\SystemLibs\FileIO">
+      <UniqueIdentifier>{d89f923c-8e97-4404-aaaf-213575e7e9db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\PublicLibs\MathIntrinsics">
+      <UniqueIdentifier>{2c9da957-d8bd-4f9e-b9fa-60c46e74a46f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\PublicLibs\ConsoleIO">
+      <UniqueIdentifier>{e994b49e-4e41-4732-b666-8333fccb3747}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\PublicLibs\ArchSpecificLibs">
+      <UniqueIdentifier>{66f230c3-df15-4c92-a415-04a62a89f177}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\PublicLibs\ArchSpecificLibs\Shuffle">
+      <UniqueIdentifier>{46995487-6922-48ca-a2f1-abf3cc1d52a9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\PublicLibs\ArchSpecificLibs\Shuffle\x86_128">
+      <UniqueIdentifier>{75e7f9f9-273a-4230-9b3b-b16d4afab907}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\PublicLibs\ArchSpecificLibs\Shuffle\x86_256">
+      <UniqueIdentifier>{74aa3ce3-3ba6-46f1-9f9e-c8c2d0448a80}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\PublicLibs\ArchSpecificLibs\Shuffle\x86_512">
+      <UniqueIdentifier>{18e5e197-92a6-44c5-9e7c-ad49d768500b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\PublicLibs\CompilerSettings">
+      <UniqueIdentifier>{90b47c4e-042a-4434-a183-f1d98897cf91}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\PublicLibs\BasicLibs">
+      <UniqueIdentifier>{72f5d9b8-1731-4c54-aedd-d72fbc9053cd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\PublicLibs\BasicLibs\Alignment">
+      <UniqueIdentifier>{481bc534-9b2d-46e8-8b8a-284ff84e6c49}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\PublicLibs\BasicLibs\Concurrency">
+      <UniqueIdentifier>{485445e2-c6ce-477d-a1f0-7be44f735b47}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\PublicLibs\BasicLibs\Memory">
+      <UniqueIdentifier>{a89e9eba-8df3-427f-b751-f6deab11f99a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\PublicLibs\BasicLibs\StringTools">
+      <UniqueIdentifier>{8f7b0b86-5c42-48d1-937c-6e19910b2b73}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\PublicLibs\BasicLibs\TemplateTools">
+      <UniqueIdentifier>{44e372aa-6119-4ea4-b801-52f55ee8aee5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\PublicLibs\SystemLibs\Concurrency">
+      <UniqueIdentifier>{aa2bc627-845f-4299-ac89-63dae6d5eea4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\PublicLibs\SystemLibs\Environment">
+      <UniqueIdentifier>{92ed1c29-78b4-4b08-9df5-2ed94da62b8c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\PublicLibs\SystemLibs\ProcessorCapability">
+      <UniqueIdentifier>{2f30c1ff-729b-4896-a50f-17d7f766bca4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\DigitViewer">
+      <UniqueIdentifier>{2d97c305-2ddc-48e1-a838-6cc1c131f153}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\DigitViewer\DigitReaders">
+      <UniqueIdentifier>{a24fd50f-884b-49a7-9ab2-f5eb68755e46}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\Source\DigitViewer2\makefile">
+      <Filter>Source Files\DigitViewer2</Filter>
+    </None>
+    <None Include="..\..\Source\DigitViewer2\Objects.mk">
+      <Filter>Source Files\DigitViewer2</Filter>
+    </None>
+    <None Include="..\..\Source\DigitViewer2\DigitCount\Kernels\DigitCount_x64_AVX512BW.ipp">
+      <Filter>Source Files\DigitViewer2\DigitCount\Kernels</Filter>
+    </None>
+    <None Include="..\..\Source\DigitViewer2\DigitCount\Kernels\DigitCount_x86_SSE2.ipp">
+      <Filter>Source Files\DigitViewer2\DigitCount\Kernels</Filter>
+    </None>
+    <None Include="..\..\Source\DigitViewer2\DigitCount\Kernels\DigitCount_Default.ipp">
+      <Filter>Source Files\DigitViewer2\DigitCount\Kernels</Filter>
+    </None>
+    <None Include="..\..\Source\DigitViewer2\DigitCount\Kernels\DigitCount_x64_AVX2.ipp">
+      <Filter>Source Files\DigitViewer2\DigitCount\Kernels</Filter>
+    </None>
+    <None Include="..\..\Source\DigitViewer2\DigitHash\Kernels\DigitHash_x64_AVX512BW.ipp">
+      <Filter>Source Files\DigitViewer2\DigitHash\Kernels</Filter>
+    </None>
+    <None Include="..\..\Source\DigitViewer2\DigitHash\Kernels\DigitHash_LittleEndian32.ipp">
+      <Filter>Source Files\DigitViewer2\DigitHash\Kernels</Filter>
+    </None>
+    <None Include="..\..\Source\DigitViewer2\DigitHash\Kernels\DigitHash_LittleEndian64.ipp">
+      <Filter>Source Files\DigitViewer2\DigitHash\Kernels</Filter>
+    </None>
+    <None Include="..\..\Source\DigitViewer2\DigitHash\Kernels\DigitHash_x64_AVX2.ipp">
+      <Filter>Source Files\DigitViewer2\DigitHash\Kernels</Filter>
+    </None>
+    <None Include="..\..\Source\DigitViewer2\RawToAscii\Kernels\RawToAscii_Default.ipp">
+      <Filter>Source Files\DigitViewer2\RawToAscii\Kernels</Filter>
+    </None>
+    <None Include="..\..\Source\DigitViewer2\RawToAscii\Kernels\RawToAscii_Default32.ipp">
+      <Filter>Source Files\DigitViewer2\RawToAscii\Kernels</Filter>
+    </None>
+    <None Include="..\..\Source\DigitViewer2\RawToAscii\Kernels\RawToAscii_x64_AVX2.ipp">
+      <Filter>Source Files\DigitViewer2\RawToAscii\Kernels</Filter>
+    </None>
+    <None Include="..\..\Source\DigitViewer2\RawToAscii\Kernels\RawToAscii_x64_AVX512BW.ipp">
+      <Filter>Source Files\DigitViewer2\RawToAscii\Kernels</Filter>
+    </None>
+    <None Include="..\..\Source\DigitViewer2\RawToAscii\Kernels\RawToAscii_x86_SSE2.ipp">
+      <Filter>Source Files\DigitViewer2\RawToAscii\Kernels</Filter>
+    </None>
+    <None Include="..\..\Source\DigitViewer2\RawToCompressed\Kernels\i64ToRaw_LittleEndian.ipp">
+      <Filter>Source Files\DigitViewer2\RawToCompressed\Kernels</Filter>
+    </None>
+    <None Include="..\..\Source\DigitViewer2\RawToCompressed\Kernels\i64ToRaw_x64_AVX2.ipp">
+      <Filter>Source Files\DigitViewer2\RawToCompressed\Kernels</Filter>
+    </None>
+    <None Include="..\..\Source\DigitViewer2\RawToCompressed\Kernels\i64ToRaw_x64_AVX512BW.ipp">
+      <Filter>Source Files\DigitViewer2\RawToCompressed\Kernels</Filter>
+    </None>
+    <None Include="..\..\Source\DigitViewer2\RawToCompressed\Kernels\i64ToRaw_x64_SSE41.ipp">
+      <Filter>Source Files\DigitViewer2\RawToCompressed\Kernels</Filter>
+    </None>
+    <None Include="..\..\Source\DigitViewer2\RawToCompressed\Kernels\i64ToRaw_x86_SSE2.ipp">
+      <Filter>Source Files\DigitViewer2\RawToCompressed\Kernels</Filter>
+    </None>
+    <None Include="..\..\Source\DigitViewer2\WordToRaw\Kernels\WordToRaw_LittleEndian.ipp">
+      <Filter>Source Files\DigitViewer2\WordToRaw\Kernels</Filter>
+    </None>
+    <None Include="..\..\Source\DigitViewer2\WordToRaw\Kernels\WordToRaw_x64_AVX2.ipp">
+      <Filter>Source Files\DigitViewer2\WordToRaw\Kernels</Filter>
+    </None>
+    <None Include="..\..\Source\DigitViewer2\WordToRaw\Kernels\WordToRaw_x64_AVX512BW.ipp">
+      <Filter>Source Files\DigitViewer2\WordToRaw\Kernels</Filter>
+    </None>
+    <None Include="..\..\Source\DigitViewer2\WordToRaw\Kernels\WordToRaw_x64_SSE41.ipp">
+      <Filter>Source Files\DigitViewer2\WordToRaw\Kernels</Filter>
+    </None>
+    <None Include="..\..\Source\PublicLibs\makefile">
+      <Filter>Source Files\PublicLibs</Filter>
+    </None>
+    <None Include="..\..\Source\PublicLibs\Objects.mk">
+      <Filter>Source Files\PublicLibs</Filter>
+    </None>
+    <None Include="..\..\Source\PublicLibs\SystemLibs\FileIO\BaseFile_Windows.ipp">
+      <Filter>Source Files\PublicLibs\SystemLibs\FileIO</Filter>
+    </None>
+    <None Include="..\..\Source\PublicLibs\SystemLibs\FileIO\FileIO_Default.ipp">
+      <Filter>Source Files\PublicLibs\SystemLibs\FileIO</Filter>
+    </None>
+    <None Include="..\..\Source\PublicLibs\SystemLibs\FileIO\FileIO_WinAPI.ipp">
+      <Filter>Source Files\PublicLibs\SystemLibs\FileIO</Filter>
+    </None>
+    <None Include="..\..\Source\PublicLibs\SystemLibs\FileIO\BaseFile_Default.ipp">
+      <Filter>Source Files\PublicLibs\SystemLibs\FileIO</Filter>
+    </None>
+    <None Include="..\..\Source\PublicLibs\ConsoleIO\ConsoleIO_Posix.ipp">
+      <Filter>Source Files\PublicLibs\ConsoleIO</Filter>
+    </None>
+    <None Include="..\..\Source\PublicLibs\ConsoleIO\ConsoleIO_Windows.ipp">
+      <Filter>Source Files\PublicLibs\ConsoleIO</Filter>
+    </None>
+    <None Include="..\..\Source\PublicLibs\BasicLibs\Memory\SmartPointerA.ipp">
+      <Filter>Source Files\PublicLibs\BasicLibs\Memory</Filter>
+    </None>
+    <None Include="..\..\Source\PublicLibs\BasicLibs\Memory\SmartPointerI.ipp">
+      <Filter>Source Files\PublicLibs\BasicLibs\Memory</Filter>
+    </None>
+    <None Include="..\..\Source\PublicLibs\BasicLibs\Objects.mk">
+      <Filter>Source Files\PublicLibs\BasicLibs</Filter>
+    </None>
+    <None Include="..\..\Source\PublicLibs\BasicLibs\makefile">
+      <Filter>Source Files\PublicLibs\BasicLibs</Filter>
+    </None>
+    <None Include="..\..\Source\PublicLibs\SystemLibs\Environment\Environment_Linux.ipp">
+      <Filter>Source Files\PublicLibs\SystemLibs\Environment</Filter>
+    </None>
+    <None Include="..\..\Source\PublicLibs\SystemLibs\Environment\Environment_Windows7.ipp">
+      <Filter>Source Files\PublicLibs\SystemLibs\Environment</Filter>
+    </None>
+    <None Include="..\..\Source\PublicLibs\SystemLibs\Environment\Environment_WindowsCommon.ipp">
+      <Filter>Source Files\PublicLibs\SystemLibs\Environment</Filter>
+    </None>
+    <None Include="..\..\Source\PublicLibs\SystemLibs\Environment\Environment_WindowsVista.ipp">
+      <Filter>Source Files\PublicLibs\SystemLibs\Environment</Filter>
+    </None>
+    <None Include="..\..\Source\PublicLibs\SystemLibs\Objects.mk">
+      <Filter>Source Files\PublicLibs\SystemLibs</Filter>
+    </None>
+    <None Include="..\..\Source\PublicLibs\SystemLibs\makefile">
+      <Filter>Source Files\PublicLibs\SystemLibs</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\Source\DigitViewer2\SMC_DigitViewer2.cpp">
+      <Filter>Source Files\DigitViewer2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\DigitViewer2\DigitCount\DigitCount.cpp">
+      <Filter>Source Files\DigitViewer2\DigitCount</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\DigitViewer2\DigitHash\DigitHash.cpp">
+      <Filter>Source Files\DigitViewer2\DigitHash</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\DigitViewer2\DigitReaders\BasicTextReader.cpp">
+      <Filter>Source Files\DigitViewer2\DigitReaders</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\DigitViewer2\DigitReaders\BasicYcdFileReader.cpp">
+      <Filter>Source Files\DigitViewer2\DigitReaders</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\DigitViewer2\DigitReaders\BasicYcdSetReader.cpp">
+      <Filter>Source Files\DigitViewer2\DigitReaders</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\DigitViewer2\DigitViewer\DigitViewerUI2.cpp">
+      <Filter>Source Files\DigitViewer2\DigitViewer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\DigitViewer2\DigitViewer\DigitViewerTasks.cpp">
+      <Filter>Source Files\DigitViewer2\DigitViewer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\DigitViewer2\DigitWriters\BasicYcdFileWriter.cpp">
+      <Filter>Source Files\DigitViewer2\DigitWriters</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\DigitViewer2\DigitWriters\BasicYcdSetWriter.cpp">
+      <Filter>Source Files\DigitViewer2\DigitWriters</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\DigitViewer2\DigitWriters\BasicTextWriter.cpp">
+      <Filter>Source Files\DigitViewer2\DigitWriters</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\DigitViewer2\RawToAscii\RawToAscii.cpp">
+      <Filter>Source Files\DigitViewer2\RawToAscii</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\DigitViewer2\RawToCompressed\RawToCompressed.cpp">
+      <Filter>Source Files\DigitViewer2\RawToCompressed</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\DigitViewer2\WordToRaw\WordToRaw.cpp">
+      <Filter>Source Files\DigitViewer2\WordToRaw</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\DigitViewer2\Main.cpp">
+      <Filter>Source Files\DigitViewer2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\PublicLibs\SMC_PublicLibs.cpp">
+      <Filter>Source Files\PublicLibs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\PublicLibs\Exceptions\BufferTooSmallException.cpp">
+      <Filter>Source Files\PublicLibs\Exceptions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\PublicLibs\Exceptions\Exception.cpp">
+      <Filter>Source Files\PublicLibs\Exceptions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\PublicLibs\Exceptions\InvalidParametersException.cpp">
+      <Filter>Source Files\PublicLibs\Exceptions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\PublicLibs\Exceptions\LimitExceededException.cpp">
+      <Filter>Source Files\PublicLibs\Exceptions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\PublicLibs\Exceptions\ParseException.cpp">
+      <Filter>Source Files\PublicLibs\Exceptions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\PublicLibs\Exceptions\SMC_Exceptions.cpp">
+      <Filter>Source Files\PublicLibs\Exceptions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\PublicLibs\Exceptions\StdException.cpp">
+      <Filter>Source Files\PublicLibs\Exceptions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\PublicLibs\Exceptions\StringException.cpp">
+      <Filter>Source Files\PublicLibs\Exceptions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\PublicLibs\Exceptions\SystemException.cpp">
+      <Filter>Source Files\PublicLibs\Exceptions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\PublicLibs\Exceptions\AlgorithmFailedException.cpp">
+      <Filter>Source Files\PublicLibs\Exceptions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\PublicLibs\Exceptions\ArithmeticException.cpp">
+      <Filter>Source Files\PublicLibs\Exceptions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\PublicLibs\SystemLibs\FileIO\BasicFile.cpp">
+      <Filter>Source Files\PublicLibs\SystemLibs\FileIO</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\PublicLibs\SystemLibs\FileIO\FileException.cpp">
+      <Filter>Source Files\PublicLibs\SystemLibs\FileIO</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\PublicLibs\SystemLibs\FileIO\FileIO.cpp">
+      <Filter>Source Files\PublicLibs\SystemLibs\FileIO</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\PublicLibs\MathIntrinsics\ChecksumHash.cpp">
+      <Filter>Source Files\PublicLibs\MathIntrinsics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\PublicLibs\ConsoleIO\BasicIO.cpp">
+      <Filter>Source Files\PublicLibs\ConsoleIO</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\PublicLibs\ConsoleIO\Label.cpp">
+      <Filter>Source Files\PublicLibs\ConsoleIO</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\PublicLibs\ConsoleIO\Margin.cpp">
+      <Filter>Source Files\PublicLibs\ConsoleIO</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\PublicLibs\ConsoleIO\Array.cpp">
+      <Filter>Source Files\PublicLibs\ConsoleIO</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\PublicLibs\BasicLibs\Memory\AlignedMalloc.cpp">
+      <Filter>Source Files\PublicLibs\BasicLibs\Memory</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\PublicLibs\BasicLibs\StringTools\Unicode.cpp">
+      <Filter>Source Files\PublicLibs\BasicLibs\StringTools</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\PublicLibs\BasicLibs\StringTools\ymb_STR.cpp">
+      <Filter>Source Files\PublicLibs\BasicLibs\StringTools</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\PublicLibs\BasicLibs\StringTools\ToString.cpp">
+      <Filter>Source Files\PublicLibs\BasicLibs\StringTools</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\PublicLibs\BasicLibs\SMC_PublicBasicLibs.cpp">
+      <Filter>Source Files\PublicLibs\BasicLibs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\PublicLibs\SystemLibs\Concurrency\Parallelizers.cpp">
+      <Filter>Source Files\PublicLibs\SystemLibs\Concurrency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\PublicLibs\SystemLibs\Environment\Environment.cpp">
+      <Filter>Source Files\PublicLibs\SystemLibs\Environment</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\PublicLibs\SystemLibs\SMC_PublicSystemLibs.cpp">
+      <Filter>Source Files\PublicLibs\SystemLibs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\DigitViewer\DigitReaders\ParsingTools.cpp">
+      <Filter>Source Files\DigitViewer\DigitReaders</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\DigitViewer\DigitReaders\InconsistentMetadataException.cpp">
+      <Filter>Source Files\DigitViewer\DigitReaders</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\DigitViewer\PrintHelpers.cpp">
+      <Filter>Source Files\DigitViewer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\PublicLibs\SystemLibs\FileIO\RawFile.cpp">
+      <Filter>Source Files\PublicLibs\SystemLibs\FileIO</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\PublicLibs\CompileOptions_PublicLibs.cpp">
+      <Filter>Source Files\PublicLibs</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\Source\DigitViewer2\DigitCount\DigitCount.h">
+      <Filter>Source Files\DigitViewer2\DigitCount</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\DigitViewer2\DigitCount\Kernels\DigitCount_x64_AVX512BW.h">
+      <Filter>Source Files\DigitViewer2\DigitCount\Kernels</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\DigitViewer2\DigitCount\Kernels\DigitCount_x86_SSE2.h">
+      <Filter>Source Files\DigitViewer2\DigitCount\Kernels</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\DigitViewer2\DigitCount\Kernels\DigitCount_Default.h">
+      <Filter>Source Files\DigitViewer2\DigitCount\Kernels</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\DigitViewer2\DigitCount\Kernels\DigitCount_x64_AVX2.h">
+      <Filter>Source Files\DigitViewer2\DigitCount\Kernels</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\DigitViewer2\DigitHash\DigitHash.h">
+      <Filter>Source Files\DigitViewer2\DigitHash</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\DigitViewer2\DigitHash\Kernels\DigitHash_Default.h">
+      <Filter>Source Files\DigitViewer2\DigitHash\Kernels</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\DigitViewer2\DigitHash\Kernels\DigitHash_x64_AVX2.h">
+      <Filter>Source Files\DigitViewer2\DigitHash\Kernels</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\DigitViewer2\DigitHash\Kernels\DigitHash_x64_AVX512BW.h">
+      <Filter>Source Files\DigitViewer2\DigitHash\Kernels</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\DigitViewer2\DigitReaders\BasicTextReader.h">
+      <Filter>Source Files\DigitViewer2\DigitReaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\DigitViewer2\DigitReaders\BasicYcdFileReader.h">
+      <Filter>Source Files\DigitViewer2\DigitReaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\DigitViewer2\DigitReaders\BasicYcdSetReader.h">
+      <Filter>Source Files\DigitViewer2\DigitReaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\DigitViewer2\DigitReaders\BasicDigitReader.h">
+      <Filter>Source Files\DigitViewer2\DigitReaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\DigitViewer2\DigitViewer\DigitViewerUI2.h">
+      <Filter>Source Files\DigitViewer2\DigitViewer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\DigitViewer2\DigitViewer\DigitViewerTasks.h">
+      <Filter>Source Files\DigitViewer2\DigitViewer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\DigitViewer2\DigitWriters\BasicTextWriter.h">
+      <Filter>Source Files\DigitViewer2\DigitWriters</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\DigitViewer2\DigitWriters\BasicYcdFileWriter.h">
+      <Filter>Source Files\DigitViewer2\DigitWriters</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\DigitViewer2\DigitWriters\BasicYcdSetWriter.h">
+      <Filter>Source Files\DigitViewer2\DigitWriters</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\DigitViewer2\DigitWriters\BasicDigitWriter.h">
+      <Filter>Source Files\DigitViewer2\DigitWriters</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\DigitViewer2\RawToAscii\RawToAscii.h">
+      <Filter>Source Files\DigitViewer2\RawToAscii</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\DigitViewer2\RawToAscii\Kernels\RawToAscii_Default32.h">
+      <Filter>Source Files\DigitViewer2\RawToAscii\Kernels</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\DigitViewer2\RawToAscii\Kernels\RawToAscii_x64_AVX2.h">
+      <Filter>Source Files\DigitViewer2\RawToAscii\Kernels</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\DigitViewer2\RawToAscii\Kernels\RawToAscii_x64_AVX512BW.h">
+      <Filter>Source Files\DigitViewer2\RawToAscii\Kernels</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\DigitViewer2\RawToAscii\Kernels\RawToAscii_x86_SSE2.h">
+      <Filter>Source Files\DigitViewer2\RawToAscii\Kernels</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\DigitViewer2\RawToAscii\Kernels\RawToAscii_Default.h">
+      <Filter>Source Files\DigitViewer2\RawToAscii\Kernels</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\DigitViewer2\RawToCompressed\RawToCompressed.h">
+      <Filter>Source Files\DigitViewer2\RawToCompressed</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\DigitViewer2\RawToCompressed\Kernels\i64ToDec_x64_SSE41.h">
+      <Filter>Source Files\DigitViewer2\RawToCompressed\Kernels</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\DigitViewer2\RawToCompressed\Kernels\i64ToHex_LittleEndian.h">
+      <Filter>Source Files\DigitViewer2\RawToCompressed\Kernels</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\DigitViewer2\RawToCompressed\Kernels\i64ToHex_x64_AVX2.h">
+      <Filter>Source Files\DigitViewer2\RawToCompressed\Kernels</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\DigitViewer2\RawToCompressed\Kernels\i64ToHex_x64_AVX512BW.h">
+      <Filter>Source Files\DigitViewer2\RawToCompressed\Kernels</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\DigitViewer2\RawToCompressed\Kernels\i64ToHex_x64_SSE41.h">
+      <Filter>Source Files\DigitViewer2\RawToCompressed\Kernels</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\DigitViewer2\RawToCompressed\Kernels\i64ToHex_x86_SSE2.h">
+      <Filter>Source Files\DigitViewer2\RawToCompressed\Kernels</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\DigitViewer2\RawToCompressed\Kernels\i64ToDec_Default.h">
+      <Filter>Source Files\DigitViewer2\RawToCompressed\Kernels</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\DigitViewer2\RawToCompressed\Kernels\i64ToDec_LittleEndian.h">
+      <Filter>Source Files\DigitViewer2\RawToCompressed\Kernels</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\DigitViewer2\RawToCompressed\Kernels\i64ToDec_x64_AVX2.h">
+      <Filter>Source Files\DigitViewer2\RawToCompressed\Kernels</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\DigitViewer2\RawToCompressed\Kernels\i64ToDec_x64_AVX512BW.h">
+      <Filter>Source Files\DigitViewer2\RawToCompressed\Kernels</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\DigitViewer2\RawToDecKernels\Kernels_dec_to_i64_x64_SSE41.h">
+      <Filter>Source Files\DigitViewer2\RawToDecKernels</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\DigitViewer2\RawToDecKernels\Kernels_i64_to_dec_x64_AVX2.h">
+      <Filter>Source Files\DigitViewer2\RawToDecKernels</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\DigitViewer2\RawToDecKernels\Kernels_i64_to_dec_x64_AVX512BW.h">
+      <Filter>Source Files\DigitViewer2\RawToDecKernels</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\DigitViewer2\RawToDecKernels\Kernels_i64_to_dec_x64_SSE41.h">
+      <Filter>Source Files\DigitViewer2\RawToDecKernels</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\DigitViewer2\RawToDecKernels\Kernels_dec_to_i64_x64_AVX2.h">
+      <Filter>Source Files\DigitViewer2\RawToDecKernels</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\DigitViewer2\RawToDecKernels\Kernels_dec_to_i64_x64_AVX512BW.h">
+      <Filter>Source Files\DigitViewer2\RawToDecKernels</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\DigitViewer2\WordToRaw\WordToRaw.h">
+      <Filter>Source Files\DigitViewer2\WordToRaw</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\DigitViewer2\WordToRaw\Kernels\WordToRaw_x64_AVX2.h">
+      <Filter>Source Files\DigitViewer2\WordToRaw\Kernels</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\DigitViewer2\WordToRaw\Kernels\WordToRaw_x64_AVX512BW.h">
+      <Filter>Source Files\DigitViewer2\WordToRaw\Kernels</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\DigitViewer2\WordToRaw\Kernels\WordToRaw_x64_SSE41.h">
+      <Filter>Source Files\DigitViewer2\WordToRaw\Kernels</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\DigitViewer2\WordToRaw\Kernels\WordToRaw_LittleEndian.h">
+      <Filter>Source Files\DigitViewer2\WordToRaw\Kernels</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\Types.h">
+      <Filter>Source Files\PublicLibs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\CompilerSettings.h">
+      <Filter>Source Files\PublicLibs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\Exceptions\ArithmeticException.h">
+      <Filter>Source Files\PublicLibs\Exceptions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\Exceptions\BufferTooSmallException.h">
+      <Filter>Source Files\PublicLibs\Exceptions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\Exceptions\BufferTooSmallThrower.h">
+      <Filter>Source Files\PublicLibs\Exceptions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\Exceptions\Exception.h">
+      <Filter>Source Files\PublicLibs\Exceptions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\Exceptions\InvalidParametersException.h">
+      <Filter>Source Files\PublicLibs\Exceptions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\Exceptions\LimitExceededException.h">
+      <Filter>Source Files\PublicLibs\Exceptions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\Exceptions\ParseException.h">
+      <Filter>Source Files\PublicLibs\Exceptions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\Exceptions\StdException.h">
+      <Filter>Source Files\PublicLibs\Exceptions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\Exceptions\StringException.h">
+      <Filter>Source Files\PublicLibs\Exceptions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\Exceptions\SystemException.h">
+      <Filter>Source Files\PublicLibs\Exceptions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\Exceptions\AlgorithmFailedException.h">
+      <Filter>Source Files\PublicLibs\Exceptions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\SystemLibs\FileIO\BasicFile.h">
+      <Filter>Source Files\PublicLibs\SystemLibs\FileIO</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\SystemLibs\FileIO\FileException.h">
+      <Filter>Source Files\PublicLibs\SystemLibs\FileIO</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\SystemLibs\FileIO\FileIO.h">
+      <Filter>Source Files\PublicLibs\SystemLibs\FileIO</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\SystemLibs\FileIO\BaseFile_Default.h">
+      <Filter>Source Files\PublicLibs\SystemLibs\FileIO</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\SystemLibs\FileIO\BaseFile_Windows.h">
+      <Filter>Source Files\PublicLibs\SystemLibs\FileIO</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\MathIntrinsics\ChecksumHash.h">
+      <Filter>Source Files\PublicLibs\MathIntrinsics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\MathIntrinsics\LeadingZeros.h">
+      <Filter>Source Files\PublicLibs\MathIntrinsics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\ConsoleIO\BasicIO.h">
+      <Filter>Source Files\PublicLibs\ConsoleIO</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\ConsoleIO\Label.h">
+      <Filter>Source Files\PublicLibs\ConsoleIO</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\ConsoleIO\Margin.h">
+      <Filter>Source Files\PublicLibs\ConsoleIO</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\ConsoleIO\Array.h">
+      <Filter>Source Files\PublicLibs\ConsoleIO</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\ArchSpecificLibs\x86_AVX512.h">
+      <Filter>Source Files\PublicLibs\ArchSpecificLibs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\ArchSpecificLibs\x86_SSE2.h">
+      <Filter>Source Files\PublicLibs\ArchSpecificLibs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\ArchSpecificLibs\x86_XOP.h">
+      <Filter>Source Files\PublicLibs\ArchSpecificLibs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\ArchSpecificLibs\x86_AVX.h">
+      <Filter>Source Files\PublicLibs\ArchSpecificLibs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\ArchSpecificLibs\x86_AVX2.h">
+      <Filter>Source Files\PublicLibs\ArchSpecificLibs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\ArchSpecificLibs\Shuffle\x86_512\Transpose_64x8x8_x86_AVX512.h">
+      <Filter>Source Files\PublicLibs\ArchSpecificLibs\Shuffle\x86_512</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\ArchSpecificLibs\Shuffle\x86_512\Unpack_x86_AVX512.h">
+      <Filter>Source Files\PublicLibs\ArchSpecificLibs\Shuffle\x86_512</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\ArchSpecificLibs\Shuffle\x86_256\Unpack_x86_AVX2.h">
+      <Filter>Source Files\PublicLibs\ArchSpecificLibs\Shuffle\x86_256</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\ArchSpecificLibs\Shuffle\x86_256\Transpose_64x4x4_x86_AVX2.h">
+      <Filter>Source Files\PublicLibs\ArchSpecificLibs\Shuffle\x86_256</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\ArchSpecificLibs\Shuffle\x86_128\Unpack_x86_SSE2.h">
+      <Filter>Source Files\PublicLibs\ArchSpecificLibs\Shuffle\x86_128</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\ArchSpecificLibs\Shuffle\x86_128\Unpack_x86_SSE.h">
+      <Filter>Source Files\PublicLibs\ArchSpecificLibs\Shuffle\x86_128</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\CompilerSettings\Compiler_VSC.h">
+      <Filter>Source Files\PublicLibs\CompilerSettings</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\CompilerSettings\Compiler_GCC.h">
+      <Filter>Source Files\PublicLibs\CompilerSettings</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\BasicLibs\Alignment\AlignmentTools.h">
+      <Filter>Source Files\PublicLibs\BasicLibs\Alignment</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\BasicLibs\Alignment\DefaultAlignment.h">
+      <Filter>Source Files\PublicLibs\BasicLibs\Alignment</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\BasicLibs\Concurrency\BlockSplitting.h">
+      <Filter>Source Files\PublicLibs\BasicLibs\Concurrency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\BasicLibs\Concurrency\BasicParallelizer.h">
+      <Filter>Source Files\PublicLibs\BasicLibs\Concurrency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\BasicLibs\Memory\SmartBuffer.h">
+      <Filter>Source Files\PublicLibs\BasicLibs\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\BasicLibs\Memory\SmartPointerA.h">
+      <Filter>Source Files\PublicLibs\BasicLibs\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\BasicLibs\Memory\SmartPointerI.h">
+      <Filter>Source Files\PublicLibs\BasicLibs\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\BasicLibs\Memory\TrivialArray.h">
+      <Filter>Source Files\PublicLibs\BasicLibs\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\BasicLibs\Memory\AlignedMalloc.h">
+      <Filter>Source Files\PublicLibs\BasicLibs\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\BasicLibs\StringTools\Unicode.h">
+      <Filter>Source Files\PublicLibs\BasicLibs\StringTools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\BasicLibs\StringTools\ymb_STR.h">
+      <Filter>Source Files\PublicLibs\BasicLibs\StringTools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\BasicLibs\StringTools\ToString.h">
+      <Filter>Source Files\PublicLibs\BasicLibs\StringTools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\BasicLibs\TemplateTools\SizeOf.h">
+      <Filter>Source Files\PublicLibs\BasicLibs\TemplateTools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\BasicLibs\TemplateTools\TypeCompare.h">
+      <Filter>Source Files\PublicLibs\BasicLibs\TemplateTools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\BasicLibs\TemplateTools\WordTraits.h">
+      <Filter>Source Files\PublicLibs\BasicLibs\TemplateTools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\BasicLibs\TemplateTools\PlaceObject.h">
+      <Filter>Source Files\PublicLibs\BasicLibs\TemplateTools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\BasicLibs\SparseRegion.h">
+      <Filter>Source Files\PublicLibs\BasicLibs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\BasicLibs\CommandLine.h">
+      <Filter>Source Files\PublicLibs\BasicLibs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\SystemLibs\Concurrency\Parallelizer_CppAsync.h">
+      <Filter>Source Files\PublicLibs\SystemLibs\Concurrency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\SystemLibs\Concurrency\Parallelizer_NoParallelism.h">
+      <Filter>Source Files\PublicLibs\SystemLibs\Concurrency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\SystemLibs\Concurrency\Parallelizer_WindowsThreadPool.h">
+      <Filter>Source Files\PublicLibs\SystemLibs\Concurrency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\SystemLibs\Concurrency\Parallelizers.h">
+      <Filter>Source Files\PublicLibs\SystemLibs\Concurrency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\SystemLibs\Concurrency\Parallelizer_CilkPlus.h">
+      <Filter>Source Files\PublicLibs\SystemLibs\Concurrency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\SystemLibs\Environment\Environment.h">
+      <Filter>Source Files\PublicLibs\SystemLibs\Environment</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\SystemLibs\ProcessorCapability\ProcessorCapability.h">
+      <Filter>Source Files\PublicLibs\SystemLibs\ProcessorCapability</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\SystemLibs\ProcessorCapability\ProcessorCapability_x86.h">
+      <Filter>Source Files\PublicLibs\SystemLibs\ProcessorCapability</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\DigitViewer\DigitReaders\ParsingTools.h">
+      <Filter>Source Files\DigitViewer\DigitReaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\DigitViewer\Globals.h">
+      <Filter>Source Files\DigitViewer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\DigitViewer\DigitReaders\InconsistentMetadataException.h">
+      <Filter>Source Files\DigitViewer\DigitReaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\DigitViewer\PrintHelpers.h">
+      <Filter>Source Files\DigitViewer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\SystemLibs\FileIO\RawFile_Linux.h">
+      <Filter>Source Files\PublicLibs\SystemLibs\FileIO</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\SystemLibs\FileIO\RawFile_Linux.ipp">
+      <Filter>Source Files\PublicLibs\SystemLibs\FileIO</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\SystemLibs\FileIO\RawFile_Windows.h">
+      <Filter>Source Files\PublicLibs\SystemLibs\FileIO</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\SystemLibs\FileIO\RawFile_Windows.ipp">
+      <Filter>Source Files\PublicLibs\SystemLibs\FileIO</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\SystemLibs\FileIO\RawFile.h">
+      <Filter>Source Files\PublicLibs\SystemLibs\FileIO</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

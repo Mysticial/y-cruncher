@@ -17,39 +17,11 @@
 #include "PublicLibs/ConsoleIO/Label.h"
 #include "PublicLibs/BasicLibs/Memory/AlignedMalloc.h"
 #include "PublicLibs/SystemLibs/FileIO/FileIO.h"
-#include "PublicLibs/SystemLibs/FileIO/FileException.h"
 #include "DigitViewer/DigitConverter/DigitConverter.h"
 #include "DigitViewer/Globals.h"
+#include "InconsistentMetadataException.h"
 #include "YCDDigitReader.h"
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
 namespace DigitViewer{
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
-//  Exception
-class InconsistentMetaData : public FileIO::FileException{
-public:
-    static const char TYPENAME[];
-
-    using FileException::FileException;
-
-public:
-    virtual void fire() const override{
-        throw *this;
-    }
-    virtual const char* get_typename() const override{
-        return TYPENAME;
-    }
-    virtual Exception* clone() const override{
-        return new InconsistentMetaData(*this);
-    }
-};
-const char InconsistentMetaData::TYPENAME[] = "InconsistentMetaData";
-ExceptionFactoryT<InconsistentMetaData> InconsistentMetaData_Instance;
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -112,7 +84,7 @@ YCDReader::YCDReader(
     m_first_digits    = current_file.first_digits;
     m_total_digits    = current_file.total_digits;
     m_digits_per_file = current_file.digits_per_file;
-    blocks_per_file = (m_digits_per_file + m_digits_per_word - 1) / m_digits_per_word;
+    m_blocks_per_file = (m_digits_per_file + m_digits_per_word - 1) / m_digits_per_word;
 
     //  Set the conversion function pointers.
     set_raw(raw);
@@ -150,7 +122,7 @@ void YCDReader::print() const{
     Console::println_labelm         (MARGIN, "first_digits:", m_first_digits);
     Console::println_labelm_commas  (MARGIN, "total_digits:", m_total_digits);
     Console::println_labelm_commas  (MARGIN, "digits_per_file:", m_digits_per_file);
-    Console::println_labelm_commas  (MARGIN, "blocks_per_file:", blocks_per_file);
+    Console::println_labelm_commas  (MARGIN, "blocks_per_file:", m_blocks_per_file);
     Console::println_labelm_commas  (MARGIN, "bin_buffer_L:", m_buffer.size());
     Console::println_labelm_commas  (MARGIN, "buffer_L:", buffer_L);
     Console::println_labelm         (24, "Iterator File Offset:", iter_f_offset);

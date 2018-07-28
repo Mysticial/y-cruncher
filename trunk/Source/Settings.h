@@ -61,7 +61,7 @@
 #define     YCR_ENABLE_2016_x64_KnightsLanding
 #define     YCR_ENABLE_2017_x64_Zen
 #define     YCR_ENABLE_2017_x64_Skylake
-//#define     YCR_ENABLE_2018_x64_Cannonlake
+//#define     YCR_ENABLE_2018_x64_CannonLake
 
 #endif
 ////////////////////////////////////////////////////////////////////////////////
@@ -82,7 +82,7 @@
 #define     YCR_ENABLE_2016_x64_KnightsLanding
 #define     YCR_ENABLE_2017_x64_Zen
 #define     YCR_ENABLE_2017_x64_Skylake
-//#define     YCR_ENABLE_2018_x64_Cannonlake
+//#define     YCR_ENABLE_2018_x64_CannonLake
 
 #endif
 ////////////////////////////////////////////////////////////////////////////////
@@ -103,7 +103,7 @@
 #define     YCR_ENABLE_2016_x64_KnightsLanding
 #define     YCR_ENABLE_2017_x64_Zen
 #define     YCR_ENABLE_2017_x64_Skylake
-#define     YCR_ENABLE_2018_x64_Cannonlake
+#define     YCR_ENABLE_2018_x64_CannonLake
 
 #endif
 ////////////////////////////////////////////////////////////////////////////////

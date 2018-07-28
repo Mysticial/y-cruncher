@@ -17,6 +17,7 @@
 #include <string>
 #include "PublicLibs/CompilerSettings.h"
 #include "PublicLibs/Types.h"
+#include "ColorStrings.h"
 namespace ymp{
 namespace Console{
 ////////////////////////////////////////////////////////////////////////////////
@@ -63,6 +64,9 @@ public:
     ConsoleLock(const ConsoleLock&) = delete;
     void operator=(const ConsoleLock&) = delete;
 };
+////////////////////////////////////////////////////////////////////////////////
+//  Chains
+YM_NO_INLINE    upL_t   println         (const ColoredLine& str);
 ////////////////////////////////////////////////////////////////////////////////
 //  Integer
 YM_NO_INLINE    upL_t   print           (uiL_t x, char color = ' ');

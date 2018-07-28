@@ -8,6 +8,8 @@ CURRENT :=
 
 CURRENT += DigitConverter/DigitConverter.cpp
 
+CURRENT += DigitReaders/InconsistentMetadataException.cpp
+CURRENT += DigitReaders/ParsingTools.cpp
 CURRENT += DigitReaders/DigitReader.cpp
 CURRENT += DigitReaders/TextDigitReader.cpp
 CURRENT += DigitReaders/YCDDigitReader.cpp

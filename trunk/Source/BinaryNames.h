@@ -31,9 +31,9 @@ const char BINARY_NAME_2011_x64_Bulldozer[]         = "11-BD1 ~ Miyu";
 const char BINARY_NAME_2013_x64_Haswell[]           = "13-HSW ~ Airi";
 const char BINARY_NAME_2014_x64_Broadwell[]         = "14-BDW ~ Kurumi";
 const char BINARY_NAME_2016_x64_KnightsLanding[]    = "16-KNL";
-const char BINARY_NAME_2017_x64_Zen[]               = "17-ZD1 ~ Yukina";
+const char BINARY_NAME_2017_x64_Zen[]               = "17-ZN1 ~ Yukina";
 const char BINARY_NAME_2017_x64_Skylake[]           = "17-SKX ~ Kotori";
-const char BINARY_NAME_2018_x64_Cannonlake[]        = "18-CNL";
+const char BINARY_NAME_2018_x64_CannonLake[]        = "18-CNL";
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////

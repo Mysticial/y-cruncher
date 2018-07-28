@@ -83,7 +83,13 @@ DllSafeStream BufferTooSmallException::serialize() const{
 ////////////////////////////////////////////////////////////////////////////////
 [[noreturn]] YM_NO_INLINE
 void throw_BufferTooSmallException(const char* function, uiL_t buffer_size, uiL_t required_size){
+#if 1
+    BufferTooSmallException e(function, buffer_size, required_size);
+    e.print();
+    throw e;
+#else
     throw BufferTooSmallException(function, buffer_size, required_size);
+#endif
 }
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////

@@ -60,11 +60,23 @@ YM_NO_INLINE    upL_t println_marginr(upL_t margin, const std::string& x, char c
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 //  Integer Margins
+YM_NO_INLINE    upL_t print_marginl(upL_t margin, siL_t x, char color){
+    return print_marginl(margin, StringTools::tostr(x, StringTools::NORMAL), color);
+}
+YM_NO_INLINE    upL_t println_marginl(upL_t margin, siL_t x, char color){
+    return println_marginl(margin, StringTools::tostr(x, StringTools::NORMAL), color);
+}
 YM_NO_INLINE    upL_t print_marginr(upL_t margin, siL_t x, char color){
     return print_marginr(margin, StringTools::tostr(x, StringTools::NORMAL), color);
 }
 YM_NO_INLINE    upL_t println_marginr(upL_t margin, siL_t x, char color){
     return println_marginr(margin, StringTools::tostr(x, StringTools::NORMAL), color);
+}
+YM_NO_INLINE    upL_t print_marginl_commas(upL_t margin, siL_t x, char color){
+    return print_marginl(margin, StringTools::tostr(x, StringTools::COMMAS), color);
+}
+YM_NO_INLINE    upL_t println_marginl_commas(upL_t margin, siL_t x, char color){
+    return println_marginl(margin, StringTools::tostr(x, StringTools::COMMAS), color);
 }
 YM_NO_INLINE    upL_t print_marginr_commas(upL_t margin, siL_t x, char color){
     return print_marginr(margin, StringTools::tostr(x, StringTools::COMMAS), color);

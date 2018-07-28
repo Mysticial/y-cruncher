@@ -7,9 +7,19 @@
 #include "Launch.h"
 
 #include "VersionNumber.h"
+#include "PublicLibs/BasicLibs/StringTools/ymb_STR.h"
 #include "PublicLibs/BasicLibs/CommandLine.h"
 #include "PublicLibs/SystemLibs/Environment/Environment.h"
-#include "PublicLibs/SMC_PublicLibs.cpp"
+
+//  Pull in just the necessary stuff from PublicLibs.
+#include "PublicLibs/ConsoleIO/BasicIO.cpp"
+#include "PublicLibs/ConsoleIO/Margin.cpp"
+#include "PublicLibs/ConsoleIO/Label.cpp"
+#include "PublicLibs/BasicLibs/StringTools/ToString.cpp"
+#include "PublicLibs/BasicLibs/StringTools/Unicode.cpp"
+#include "PublicLibs/BasicLibs/StringTools/ymb_STR.cpp"
+#include "PublicLibs/SystemLibs/Environment/Environment.cpp"
+#include "PublicLibs/SystemLibs/ProcessorCapability/cpu_x86.cpp"
 
 
 #include "Vendor-AMD.h"

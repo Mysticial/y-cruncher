@@ -134,7 +134,6 @@ std::unique_ptr<DigitReader> OpenDigitFile(std::string path, bool raw, upL_t buf
     }
     std::string extension = path.substr(extension_offset);
 
-    //  Use RTTI.
     if (extension == ".txt"){
         return std::unique_ptr<DigitReader>(new TextReader(path, raw, 0));
     }else if (extension == ".ycd"){

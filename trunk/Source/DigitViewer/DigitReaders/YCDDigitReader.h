@@ -235,7 +235,7 @@ public:
 private:
     std::string m_name;                 //  File name
     upL_t m_max_id_length;              //  Max length of id
-    std::vector<std::string> m_paths;   //  Full path (including the id #)
+    std::vector<std::string> m_paths;   //  Search Paths
 
     int m_radix;                        //  Radix of the digits. (10 or 16)
     void (*fp_convert)(char*, const u64_t*, upL_t); //  Function pointer for digit conversion.
@@ -248,7 +248,7 @@ private:
     uiL_t m_total_digits;
 
     ufL_t m_digits_per_file;            //  # of digits per compressed file
-    ufL_t blocks_per_file;              //  # of 64-bit blocks per file
+    ufL_t m_blocks_per_file;            //  # of 64-bit blocks per file
 
     YCDFileReader current_file;
 

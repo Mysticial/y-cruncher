@@ -58,7 +58,6 @@ template <typename type> using r_rref = type &&__restrict;
 //  Warnings
 #pragma warning(disable:4100)   //  Unreferenced Formal Parameter
 #pragma warning(disable:4127)   //  Constant Expression
-#pragma warning(disable:4310)   //  Constant Truncation     COMPILER-BUG: VS2017 AVX512 warnings
 #pragma warning(disable:4324)   //  Structure Padding
 #pragma warning(disable:4373)   //  Restrict ptr/ref difference in override
 #pragma warning(disable:4456)   //  Variable Shadowing
@@ -84,7 +83,17 @@ template <typename type> using r_rref = type &&__restrict;
 //#pragma warning disable 3280    //  Member hiding
 #pragma warning disable 2553    //  wmain()
 #endif
-
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+//  Compiler Bugs
+#pragma warning(disable:4310)   //  Constant Truncation     COMPILER-BUG: VS2017 AVX512 warnings
+#if (defined _MSC_VER) && (_MSC_VER < 1910)
+#pragma warning(disable:4189)   //  Unused Local Variable (in static polymorphism)
+#endif
+#if defined __INTEL_COMPILER
+#pragma warning disable 1879    //  unimplemented pragma ignored (in TBB header)
+#pragma warning disable 3346    //  dynamic exception specifications are deprecated (in TBB header)
+#endif
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////

@@ -20,7 +20,7 @@ namespace FileIO{
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-const upL_t BLOCK_SIZE = (upL_t)1 << 30;
+const upL_t BLOCK_SIZE = (upL_t)64 << 20;
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -70,8 +70,9 @@ bool BaseFile::create(std::string path, ufL_t bytes){
     return true;
 }
 void BaseFile::close(bool delete_file){
-    if (m_path.empty())
+    if (m_path.empty()){
         return;
+    }
 
     CloseHandle(m_filehandle);
     m_filehandle = nullptr;
@@ -85,7 +86,7 @@ void BaseFile::close(bool delete_file){
 bool BaseFile::set_ptr(ufL_t offset){
     LARGE_INTEGER t;
     t.QuadPart = (LONGLONG)offset;
-    return SetFilePointerEx(m_filehandle, t, NULL, FILE_BEGIN) != 0;
+    return SetFilePointerEx(m_filehandle, t, nullptr, FILE_BEGIN) != 0;
 }
 void BaseFile::flush(){
     FlushFileBuffers(m_filehandle);
@@ -95,7 +96,7 @@ upL_t BaseFile::read(void* T, upL_t bytes){
 
     DWORD bytes_read;
     while (bytes > BLOCK_SIZE){
-        int ret = !ReadFile(m_filehandle, T, (DWORD)BLOCK_SIZE, &bytes_read, NULL);
+        int ret = !ReadFile(m_filehandle, T, (DWORD)BLOCK_SIZE, &bytes_read, nullptr);
         if (ret || bytes_read != BLOCK_SIZE){
             total_read += bytes_read;
             return total_read;
@@ -105,7 +106,7 @@ upL_t BaseFile::read(void* T, upL_t bytes){
         T = (void*)((upL_t)T + BLOCK_SIZE);
     }
 
-    ReadFile(m_filehandle, T, (DWORD)bytes, &bytes_read, NULL);
+    ReadFile(m_filehandle, T, (DWORD)bytes, &bytes_read, nullptr);
     total_read += bytes_read;
     return total_read;
 }
@@ -114,7 +115,7 @@ upL_t BaseFile::write(const void* T, upL_t bytes){
 
     DWORD bytes_written;
     while (bytes > BLOCK_SIZE){
-        int ret = !WriteFile(m_filehandle, T, (DWORD)BLOCK_SIZE, &bytes_written, NULL);
+        int ret = !WriteFile(m_filehandle, T, (DWORD)BLOCK_SIZE, &bytes_written, nullptr);
         if (ret || bytes_written != BLOCK_SIZE){
             total_written += bytes_written;
             return total_written;
@@ -124,7 +125,7 @@ upL_t BaseFile::write(const void* T, upL_t bytes){
         T = (void*)((upL_t)T + BLOCK_SIZE);
     }
 
-    WriteFile(m_filehandle, T, (DWORD)bytes, &bytes_written, NULL);
+    WriteFile(m_filehandle, T, (DWORD)bytes, &bytes_written, nullptr);
     total_written += bytes_written;
     return total_written;
 }

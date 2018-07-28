@@ -5,7 +5,7 @@
  * Last Modified    : 05/05/2017
  * 
  *      Lightweight header. Use this if you only need to throw and you don't
- *  to pull in <string>.
+ *  want to pull in <string>.
  * 
  */
 

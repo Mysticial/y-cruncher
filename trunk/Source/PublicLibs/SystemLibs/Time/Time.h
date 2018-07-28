@@ -40,6 +40,7 @@ std::string now_to_filestring();
 ////////////////////////////////////////////////////////////////////////////////
 //YM_NO_INLINE void print_secs_hrs(double seconds, char color = ' ');
 //YM_NO_INLINE void println_secs_hrs(double seconds, char color = ' ');
+YM_NO_INLINE std::string string_time_smart(double seconds);
 YM_NO_INLINE void print_time_smart(double seconds, char color = ' ');
 YM_NO_INLINE void println_time_smart(double seconds, char color = ' ');
 ////////////////////////////////////////////////////////////////////////////////

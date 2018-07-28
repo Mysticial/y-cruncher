@@ -34,8 +34,31 @@ public:
         return TYPENAME;
     }
     virtual Exception* clone() const override{
-        return new StringException(*this);
+        return new ParseException(*this);
     }
+};
+////////////////////////////////////////////////////////////////////////////////
+class EndOfStreamException : public ParseException{
+public:
+    static const char TYPENAME[];
+
+    EndOfStreamException();
+
+public:
+    [[noreturn]] virtual void fire() const override{
+        throw *this;
+    }
+    virtual const char* get_typename() const override{
+        return TYPENAME;
+    }
+    virtual Exception* clone() const override{
+        return new EndOfStreamException(*this);
+    }
+
+public:
+    EndOfStreamException(const DllSafeStream& data)
+        : ParseException(data)
+    {}
 };
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////

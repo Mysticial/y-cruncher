@@ -55,7 +55,17 @@ void MakeDirectory(const std::string& path){
 #endif
 }
 void RenameFile(const std::string& oldname, const std::string& newname){
-    while (rename(oldname.c_str(), newname.c_str())){
+    while (true){
+        if (!rename(oldname.c_str(), newname.c_str())){
+            return;
+        }
+
+        remove(newname.c_str());
+
+        if (!rename(oldname.c_str(), newname.c_str())){
+            return;
+        }
+
         Console::Warning("Unable to rename file.", true);
         Console::println(newname);
         Console::println();
@@ -100,8 +110,9 @@ ufL_t GetFileSize(const std::string& path){
 }
 bool FileExists(const std::string& path){
     FILE *file = fopen(path.c_str(), "rb");
-    if (file == NULL)
+    if (file == nullptr){
         return false;
+    }
 
     fclose(file);
     return true;
@@ -119,8 +130,9 @@ bool DirectoryIsWritable(const std::string& directory){
 
         //  Ensure the path ends with a slash.
         char last = path.back();
-        if (last != '/' && last != '\\')
+        if (last != '/' && last != '\\'){
             path += '/';
+        }
     }
 
     //  Push the name

@@ -42,8 +42,7 @@ SmartPointerI<Type>::SmartPointerI(SmartPointerToken, Args&&... args)
 template <typename Type>
 template <class... Args>
 void SmartPointerI<Type>::reset(Args&&... args){
-    clear();
-    m_ptr = new Type(std::forward<Args>(args)...);
+    *this = SmartPointerI<Type>(MAKE, std::forward<Args>(args)...);
 }
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////

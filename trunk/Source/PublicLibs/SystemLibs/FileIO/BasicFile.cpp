@@ -29,8 +29,9 @@ namespace FileIO{
 //  Constructors
 BasicFile::BasicFile(const std::string& path, bool retry){
     do{
-        if (open(path))
+        if (open(path)){
             return;
+        }
 
         if (!retry){
             FileException(GetLastErrorCode(), nullptr, path, "Unable to open file.").fire();
@@ -46,8 +47,9 @@ BasicFile::BasicFile(const std::string& path, bool retry){
 }
 BasicFile::BasicFile(ufL_t bytes, const std::string& path, bool retry){
     do{
-        if (create(path, bytes))
+        if (create(path, bytes)){
             return;
+        }
 
         if (!retry){
             FileException(GetLastErrorCode(), nullptr, path, "Unable to create file.").fire();

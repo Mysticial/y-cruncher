@@ -11,6 +11,7 @@ CURRENT += Time/StopWatch.cpp
 CURRENT += FileIO/FileException.cpp
 CURRENT += FileIO/FileIO.cpp
 CURRENT += FileIO/BasicFile.cpp
+CURRENT += FileIO/RawFile.cpp
 
 CURRENT += Concurrency/Parallelizers.cpp
 CURRENT += ManagedMemory/CppAllocator.cpp

@@ -75,7 +75,7 @@ struct cpu_x86{
     bool HW_AVX512_BW;
     bool HW_AVX512_DQ;
 
-    //  Cannonlake
+    //  Cannon Lake
     bool HW_AVX512_IFMA;
     bool HW_AVX512_VBMI;
 

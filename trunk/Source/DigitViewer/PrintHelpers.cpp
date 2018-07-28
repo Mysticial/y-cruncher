@@ -24,8 +24,9 @@ void ClearLine(){
     Console::print("\r");
 
     int c = 0;
-    while (c++ < ROW_WIDTH)
+    while (c++ < ROW_WIDTH){
         Console::print(" ");
+    }
 
     Console::print("\r");
 }
@@ -66,21 +67,24 @@ void DisplayFancy(uiL_t pos, const char *str, upL_t digits){
     upL_t r = 0;
 
     //  Leading spaces
-    while (c < pos)
+    while (c < pos){
         DisplayChar(' ', &b, &r, &c);
+    }
 
     //  Print digits
     while (c < end){
         char ch = *str++;
-        if (ch == '\0')
+        if (ch == '\0'){
             break;
+        }
         DisplayChar(ch, &b, &r, &c);
     }
 
-    if (c < 50)
+    if (c < 50){
         Console::println("\n");
-    else
+    }else{
         Console::println();
+    }
 }
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////

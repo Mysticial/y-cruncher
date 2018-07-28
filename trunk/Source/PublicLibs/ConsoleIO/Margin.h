@@ -31,8 +31,12 @@ YM_NO_INLINE    upL_t println_marginr       (upL_t margin, const std::string& x,
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 //  Integer Margins
+YM_NO_INLINE    upL_t print_marginl         (upL_t margin, siL_t x, char color = ' ');
+YM_NO_INLINE    upL_t println_marginl       (upL_t margin, siL_t x, char color = ' ');
 YM_NO_INLINE    upL_t print_marginr         (upL_t margin, siL_t x, char color = ' ');
 YM_NO_INLINE    upL_t println_marginr       (upL_t margin, siL_t x, char color = ' ');
+YM_NO_INLINE    upL_t print_marginl_commas  (upL_t margin, siL_t x, char color = ' ');
+YM_NO_INLINE    upL_t println_marginl_commas(upL_t margin, siL_t x, char color = ' ');
 YM_NO_INLINE    upL_t print_marginr_commas  (upL_t margin, siL_t x, char color = ' ');
 YM_NO_INLINE    upL_t println_marginr_commas(upL_t margin, siL_t x, char color = ' ');
 ////////////////////////////////////////////////////////////////////////////////

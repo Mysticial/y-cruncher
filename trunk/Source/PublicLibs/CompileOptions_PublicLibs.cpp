@@ -11,7 +11,9 @@
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 #include "PublicLibs/ConsoleIO/BasicIO.h"
+#ifdef YMP_STANDALONE
 #include "SystemLibs/Time/Time.h"
+#endif
 #include "SystemLibs/FileIO/FileIO.h"
 namespace ymp{
 ////////////////////////////////////////////////////////////////////////////////
@@ -26,7 +28,9 @@ void CompileOptions_PublicLibs(){
     Console::SetColor('w');
 
     Console::CompileOptions();
+#ifdef YMP_STANDALONE
     Time::CompileOptions();
+#endif
     FileIO::CompileOptions();
     Console::println();
 }

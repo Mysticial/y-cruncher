@@ -1,0 +1,61 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26730.12
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DigitViewer2", "DigitViewer2\DigitViewer2.vcxproj", "{78460907-F11F-45DF-A8B3-BCF1D8E54EC5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		00-x86|x64 = 00-x86|x64
+		00-x86|x86 = 00-x86|x86
+		04-SSE3|x64 = 04-SSE3|x64
+		04-SSE3|x86 = 04-SSE3|x86
+		07-Penryn|x64 = 07-Penryn|x64
+		07-Penryn|x86 = 07-Penryn|x86
+		13-Haswell|x64 = 13-Haswell|x64
+		13-Haswell|x86 = 13-Haswell|x86
+		17-Skylake|x64 = 17-Skylake|x64
+		17-Skylake|x86 = 17-Skylake|x86
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{78460907-F11F-45DF-A8B3-BCF1D8E54EC5}.00-x86|x64.ActiveCfg = 00-x86|x64
+		{78460907-F11F-45DF-A8B3-BCF1D8E54EC5}.00-x86|x64.Build.0 = 00-x86|x64
+		{78460907-F11F-45DF-A8B3-BCF1D8E54EC5}.00-x86|x86.ActiveCfg = 00-x86|Win32
+		{78460907-F11F-45DF-A8B3-BCF1D8E54EC5}.00-x86|x86.Build.0 = 00-x86|Win32
+		{78460907-F11F-45DF-A8B3-BCF1D8E54EC5}.04-SSE3|x64.ActiveCfg = 04-SSE3|x64
+		{78460907-F11F-45DF-A8B3-BCF1D8E54EC5}.04-SSE3|x64.Build.0 = 04-SSE3|x64
+		{78460907-F11F-45DF-A8B3-BCF1D8E54EC5}.04-SSE3|x86.ActiveCfg = 04-SSE3|Win32
+		{78460907-F11F-45DF-A8B3-BCF1D8E54EC5}.04-SSE3|x86.Build.0 = 04-SSE3|Win32
+		{78460907-F11F-45DF-A8B3-BCF1D8E54EC5}.07-Penryn|x64.ActiveCfg = 07-Penryn|x64
+		{78460907-F11F-45DF-A8B3-BCF1D8E54EC5}.07-Penryn|x64.Build.0 = 07-Penryn|x64
+		{78460907-F11F-45DF-A8B3-BCF1D8E54EC5}.07-Penryn|x86.ActiveCfg = 07-Penryn|Win32
+		{78460907-F11F-45DF-A8B3-BCF1D8E54EC5}.07-Penryn|x86.Build.0 = 07-Penryn|Win32
+		{78460907-F11F-45DF-A8B3-BCF1D8E54EC5}.13-Haswell|x64.ActiveCfg = 13-Haswell|x64
+		{78460907-F11F-45DF-A8B3-BCF1D8E54EC5}.13-Haswell|x64.Build.0 = 13-Haswell|x64
+		{78460907-F11F-45DF-A8B3-BCF1D8E54EC5}.13-Haswell|x86.ActiveCfg = 13-Haswell|Win32
+		{78460907-F11F-45DF-A8B3-BCF1D8E54EC5}.13-Haswell|x86.Build.0 = 13-Haswell|Win32
+		{78460907-F11F-45DF-A8B3-BCF1D8E54EC5}.17-Skylake|x64.ActiveCfg = 17-Skylake|x64
+		{78460907-F11F-45DF-A8B3-BCF1D8E54EC5}.17-Skylake|x64.Build.0 = 17-Skylake|x64
+		{78460907-F11F-45DF-A8B3-BCF1D8E54EC5}.17-Skylake|x86.ActiveCfg = 17-Skylake|Win32
+		{78460907-F11F-45DF-A8B3-BCF1D8E54EC5}.17-Skylake|x86.Build.0 = 17-Skylake|Win32
+		{78460907-F11F-45DF-A8B3-BCF1D8E54EC5}.Debug|x64.ActiveCfg = Debug|x64
+		{78460907-F11F-45DF-A8B3-BCF1D8E54EC5}.Debug|x64.Build.0 = Debug|x64
+		{78460907-F11F-45DF-A8B3-BCF1D8E54EC5}.Debug|x86.ActiveCfg = Debug|Win32
+		{78460907-F11F-45DF-A8B3-BCF1D8E54EC5}.Debug|x86.Build.0 = Debug|Win32
+		{78460907-F11F-45DF-A8B3-BCF1D8E54EC5}.Release|x64.ActiveCfg = Release|x64
+		{78460907-F11F-45DF-A8B3-BCF1D8E54EC5}.Release|x64.Build.0 = Release|x64
+		{78460907-F11F-45DF-A8B3-BCF1D8E54EC5}.Release|x86.ActiveCfg = Release|Win32
+		{78460907-F11F-45DF-A8B3-BCF1D8E54EC5}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C39F92C5-9670-43D5-81E8-D26DFBEDAC0D}
+	EndGlobalSection
+EndGlobal

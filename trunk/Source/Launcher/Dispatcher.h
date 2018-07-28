@@ -86,7 +86,7 @@ bool hardware_2017_x64_Skylake(const cpu_x86& features){
         && features.HW_AVX512_BW
         && features.HW_AVX512_DQ;
 }
-bool hardware_2018_x64_Cannonlake(const cpu_x86& features){
+bool hardware_2018_x64_CannonLake(const cpu_x86& features){
     return hardware_2017_x64_Skylake(features)
         && features.HW_AVX512_IFMA
         && features.HW_AVX512_VBMI;
@@ -150,8 +150,8 @@ bool can_run_2017_x64_Skylake(const cpu_x86& features){
         && features.OS_AVX
         && features.OS_AVX512;
 }
-bool can_run_2018_x64_Cannonlake(const cpu_x86& features){
-    return hardware_2018_x64_Cannonlake(features)
+bool can_run_2018_x64_CannonLake(const cpu_x86& features){
+    return hardware_2018_x64_CannonLake(features)
         && features.OS_x64
         && features.OS_AVX
         && features.OS_AVX512;

@@ -22,6 +22,8 @@
 
 #include "DigitConverter/DigitConverter.cpp"
 
+#include "DigitReaders/InconsistentMetadataException.cpp"
+#include "DigitReaders/ParsingTools.cpp"
 #include "DigitReaders/DigitReader.cpp"
 #include "DigitReaders/TextDigitReader.cpp"
 #include "DigitReaders/YCDDigitReader.cpp"

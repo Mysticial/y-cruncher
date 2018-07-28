@@ -23,24 +23,17 @@
 ////////////////////////////////////////////////////////////////////////////////
 void dispatch_Intel(const cpu_x86& features){
     //  AVX512
-#ifdef YCR_ENABLE_2018_x64_Cannonlake
-#define YCR_ENABLE_AVX512
-    dispatch_2018_x64_Cannonlake(features);
+#ifdef YCR_ENABLE_2018_x64_CannonLake
+    dispatch_2018_x64_CannonLake(features);
 #endif
 #ifdef YCR_ENABLE_2017_x64_Skylake
-#define YCR_ENABLE_AVX512
     dispatch_2017_x64_Skylake(features);
 #endif
 #ifdef YCR_ENABLE_2016_x64_KnightsLanding
-#define YCR_ENABLE_AVX512
     dispatch_2016_x64_KnightsLanding(features);
 #endif
-#ifdef YCR_ENABLE_AVX512
     warn_noAVX512(features);
     warn_AVX512_OS(features);
-#else
-    warn_AVX512_not_ready(features);
-#endif
 
     //  AVX
 #ifdef YCR_ENABLE_2014_x64_Broadwell

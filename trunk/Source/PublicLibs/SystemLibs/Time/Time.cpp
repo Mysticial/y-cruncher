@@ -12,6 +12,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 //  Dependencies
 #include <cmath>
+#include "PublicLibs/BasicLibs/StringTools/ToString.h"
 #ifdef _WIN32
 #include "Time_Windows.ipp"
 #else
@@ -42,18 +43,22 @@ YM_NO_INLINE std::string now_to_filestring(){
     str += std::string(now->tm_sec     < 10 ? "0" : "") + std::to_string(now->tm_sec);
     return str;
 }
-YM_NO_INLINE void print_secs_hrs(double seconds, char color){
-    Console::SetColor(color);
-    Console::print_fixed(seconds);
-    Console::print(" seconds  ( ");
-    Console::print_fixed(seconds / 3600);
-    Console::print(" hours )");
-    if (color != ' ')
-        Console::SetColor('w');
-}
-YM_NO_INLINE void println_secs_hrs(double seconds, char color){
-    print_secs_hrs(seconds, color);
-    Console::println();
+YM_NO_INLINE std::string string_time_smart(double seconds){
+    std::string str = StringTools::tostr_fixed(seconds, 3);
+    str += " seconds  ( ";
+
+    if (std::fabs(seconds) < 7200){
+        str += StringTools::tostr_fixed(seconds / 60, 3);
+        str += " minutes )";
+    }else if (std::fabs(seconds) < 172800){
+        str += StringTools::tostr_fixed(seconds / 3600, 3);
+        str += " hours )";
+    }else{
+        str += StringTools::tostr_fixed(seconds / 86400, 3);
+        str += " days )";
+    }
+
+    return str;
 }
 YM_NO_INLINE void print_time_smart(double seconds, char color){
     Console::SetColor(color);

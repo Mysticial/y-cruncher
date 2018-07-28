@@ -92,30 +92,6 @@ void warn_noAVX512(const cpu_x86& features){
     }
 #endif
 }
-void warn_AVX512_not_ready(const cpu_x86& features){
-    if (can_run_2016_x64_KnightsLanding(features) || can_run_2017_x64_Skylake(features)){
-        Console::println("", 'Y');
-        Console::println("Woah there... you seem to be a bit ahead of the game.");
-        Console::println("This machine is ready to run AVX512, but y-cruncher doesn't support it yet.");
-        Console::println("Please stay tuned for a later version.");
-        Console::println();
-        Console::println("Falling back to best non-AVX512 binary...");
-        Console::println();
-        Console::SetColor('w');
-        Console::Pause();
-        Console::println("\n");
-    }else if (hardware_2016_x64_KnightsLanding(features) || hardware_2017_x64_Skylake(features)){
-        Console::println("", 'Y');
-        Console::println("This processor supports AVX512. But neither y-cruncher nor the operating");
-        Console::println("system supports it yet. Please stay tuned for a later version.");
-        Console::println();
-        Console::println("Falling back to best non-AVX512 binary...");
-        Console::println();
-        Console::SetColor('w');
-        Console::Pause();
-        Console::println("\n");
-    }
-}
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////

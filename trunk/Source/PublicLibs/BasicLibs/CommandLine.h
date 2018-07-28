@@ -18,7 +18,6 @@
 #include <map>
 #include <exception>
 #include "PublicLibs/ConsoleIO/Label.h"
-#include "PublicLibs/ErrorHandling.h"
 #include "PublicLibs/Exceptions/InvalidParametersException.h"
 #include "PublicLibs/BasicLibs/StringTools/Unicode.h"
 namespace ymp{
@@ -128,7 +127,8 @@ public:
             return true;
         }
         if (fatal_on_fail){
-            ymo_error(("Invalid Parameter: " + CurrentKey()).c_str());
+            Console::Warning("Invalid Parameter: " + CurrentKey());
+            Console::Quit(1);
         }
         return false;
     }
@@ -140,9 +140,16 @@ public:
             return true;
         }
         if (fatal_on_fail){
-            ymo_error(("Invalid Parameter: " + CurrentKey()).c_str());
+            Console::Warning("Invalid Parameter: " + CurrentKey());
+            Console::Quit(1);
         }
         return false;
+    }
+
+    void execute_all(const ActionMap& map){
+        while (has_more()){
+            match_execute(map);
+        }
     }
 
     template <typename T>

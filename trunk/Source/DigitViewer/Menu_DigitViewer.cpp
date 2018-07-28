@@ -50,7 +50,7 @@ void Menu_TextFile(TextReader* reader){
     }
 
     Console::print("  3     ", 'w');
-    Console::println("Compress the digits into one or more .ycd file.", 'G');
+    Console::println("Compress the digits into one or more .ycd files.", 'G');
 
     Console::println("\nEnter your choice:", 'w');
     upL_t c = Console::scan_label_upL_range("option: ", 0, 3);

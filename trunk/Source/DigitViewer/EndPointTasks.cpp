@@ -339,7 +339,7 @@ void ToYCDFileAll(DigitReader* file){
 
     //  Use plain-text output. This is faster for the text writer.
     file->set_raw(true);
-    
+
     ufL_t digits_per_file;
     do{
         digits_per_file = static_cast<ufL_t>(Console::scan_label_uiL_suffix_range("Digits per file (0 for single file): ", 0, digits));
