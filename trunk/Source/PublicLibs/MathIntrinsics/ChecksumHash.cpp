@@ -84,7 +84,7 @@ void hash_t::operator^=(uiL_t pow){
         if ((pow & MASK) != 0){
             x *= b;
         }
-        
+
         pow <<= 1;
     }
     *this = x;

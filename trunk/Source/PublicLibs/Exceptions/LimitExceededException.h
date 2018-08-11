@@ -27,8 +27,13 @@ class LimitExceededException : public Exception{
 public:
     static const char TYPENAME[];
 
-    YM_NO_INLINE LimitExceededException(uiL_t attempted);
-    YM_NO_INLINE LimitExceededException(const char* function, uiL_t limit, uiL_t attempted);
+    LimitExceededException(uiL_t attempted);
+    LimitExceededException(const char* function, uiL_t limit, uiL_t attempted);
+    LimitExceededException(
+        const char* function,
+        std::string message,
+        uiL_t limit, uiL_t attempted
+    );
 
 public:
     [[noreturn]] virtual void fire() const override{
@@ -48,6 +53,7 @@ public:
 
 private:
     std::string m_function;
+    std::string m_message;
     uiL_t m_limit;
     uiL_t m_attempted;
 };
