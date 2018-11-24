@@ -1,55 +1,44 @@
-/* BufferTooSmallException.h
+/* ArithmeticExceptionThrower.h
  * 
  * Author           : Alexander J. Yee
- * Date Created     : 04/09/2017
- * Last Modified    : 04/09/2017
+ * Date Created     : 05/05/2017
+ * Last Modified    : 05/05/2017
+ * 
+ *      Lightweight header. Use this if you only need to throw and you don't
+ *  want to pull in <string>.
  * 
  */
 
 #pragma once
-#ifndef ymp_Exceptions_BufferTooSmallException_H
-#define ymp_Exceptions_BufferTooSmallException_H
+#ifndef ymp_Exceptions_ArithmeticExceptionThrower_H
+#define ymp_Exceptions_ArithmeticExceptionThrower_H
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 //  Dependencies
-#include <string>
 #include "PublicLibs/CompilerSettings.h"
 #include "PublicLibs/Types.h"
-#include "Exception.h"
 namespace ymp{
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-class BufferTooSmallException : public Exception{
-public:
-    static const char TYPENAME[];
-
-    YM_NO_INLINE BufferTooSmallException(const char* function, siL_t buffer_size, uiL_t required_size);
-
-public:
-    [[noreturn]] virtual void fire() const override{
-        throw *this;
+[[noreturn]] YM_NO_INLINE void throw_ExponentOverflowException(const char* function, siL_t value, siL_t limit);
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+YM_FORCE_INLINE void check_FloatExponentOverflow(const char* function, siL_t exp){
+    const siL_t MAX = ((siL_t)1 << (INDEX_BITS - 3)) - 1;
+    const siL_t MIN = 1 - ((siL_t)1 << (INDEX_BITS - 3));
+    if (exp < MIN){
+        throw_ExponentOverflowException(function, exp, MIN);
     }
-    virtual const char* get_typename() const override{
-        return TYPENAME;
+    if (exp > MAX){
+        throw_ExponentOverflowException(function, exp, MAX);
     }
-    virtual Exception* clone() const override{
-        return new BufferTooSmallException(*this);
-    }
-    virtual void print() const override;
-
-public:
-    BufferTooSmallException(const DllSafeStream& data);
-    virtual DllSafeStream serialize() const override;
-
-private:
-    std::string m_function;
-    siL_t m_buffer_size;
-    uiL_t m_required_size;
-};
+}
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////

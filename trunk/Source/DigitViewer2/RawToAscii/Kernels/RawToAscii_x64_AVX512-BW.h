@@ -29,8 +29,6 @@ YM_FORCE_INLINE bool dec_to_raw_x64_AVX512BW(__m512i* raw, const __m512i* dec, u
         return false;
     }
 
-    const __m512i LIMIT0 = _mm512_set1_epi8('0');
-    const __m512i LIMIT1 = _mm512_set1_epi8('9');
     __mmask64 bad = 0;
 
     do{
@@ -38,10 +36,8 @@ YM_FORCE_INLINE bool dec_to_raw_x64_AVX512BW(__m512i* raw, const __m512i* dec, u
 
         a0 = _mm512_loadu_si512(dec);
 
-        bad |= _mm512_cmplt_epi8_mask(a0, LIMIT0);
-        bad |= _mm512_cmpgt_epi8_mask(a0, LIMIT1);
-
-        a0 = _mm512_sub_epi8(a0, LIMIT0);
+        a0 = _mm512_sub_epi8(a0, _mm512_set1_epi8('0'));
+        bad |= _mm512_cmpgt_epu8_mask(a0, _mm512_set1_epi8(9));
 
         _mm512_store_si512(raw, a0);
 
@@ -96,9 +92,7 @@ YM_FORCE_INLINE bool raw_to_dec_x64_AVX512BW(__m512i* dec, const __m512i* raw, u
 
         a0 = _mm512_loadu_si512(raw);
 
-        bad |= _mm512_cmplt_epi8_mask(a0, _mm512_set1_epi8(0));
-        bad |= _mm512_cmpgt_epi8_mask(a0, _mm512_set1_epi8(9));
-
+        bad |= _mm512_cmpgt_epu8_mask(a0, _mm512_set1_epi8(9));
         a0 = _mm512_add_epi8(a0, _mm512_set1_epi8('0'));
 
         _mm512_store_si512(dec, a0);

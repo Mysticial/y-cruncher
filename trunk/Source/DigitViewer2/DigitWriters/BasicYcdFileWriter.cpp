@@ -210,21 +210,26 @@ u64_t* BasicYcdFileWriter::get_range(
     write_offset = file_aligned_offset_s;
     write_bytes = file_bytes;
 
+    //  Don't skip the edge blocks even if it aligns properly.
+    //  The edge blocks are still needed if part of it is needed due to
+    //  misalignment of the digit offset within the block.
+
     //  Read start block.
-    if (shift != 0){
+//    if (shift != 0){
         m_file.load(
             P,
             file_aligned_offset_s,
-            //  Need to read two sectors if the word crosses a sectors boundary.
+            //  Need to read two sectors if the word crosses a sector boundary.
             shift + sizeof(u64_t) <= FILE_ALIGNMENT
                 ? FILE_ALIGNMENT
                 : FILE_ALIGNMENT * 2,
             false
         );
-    }
+//    }
 
     //  Read end block.
-    if (file_access_offset_e < file_aligned_offset_e && file_bytes > FILE_ALIGNMENT){
+    if (file_bytes > FILE_ALIGNMENT){
+//    if (file_access_offset_e < file_aligned_offset_e && file_bytes > FILE_ALIGNMENT){
         m_file.load(
             (char*)P + file_bytes - FILE_ALIGNMENT * 2, //  TODO: Don't always need to read 2 sectors.
             file_aligned_offset_e - FILE_ALIGNMENT * 2,
@@ -241,8 +246,8 @@ void BasicYcdFileWriter::store_digits_B(
     void* P, upL_t Pbytes,
     BasicParallelizer& parallelizer, upL_t tds
 ){
-    ufL_t end = (ufL_t)offset + digits;
-    ufL_t word_s = (ufL_t)offset / m_digits_per_word;
+    ufL_t end = offset + digits;
+    ufL_t word_s = offset / m_digits_per_word;
     ufL_t word_e = end / m_digits_per_word;
 
     upL_t digits_left = digits;
@@ -405,10 +410,12 @@ void BasicYcdFileWriter::store_digits(
     uiL_t e = offset + digits;
 
     upL_t max_digits = start_access(offset, digits, P, Pbytes);
+//    cout << "max_digits = " << max_digits << endl;
     while (digits > 0){
         upL_t current_digits = std::min(digits, max_digits);
 
-        store_digits_B(input, offset, current_digits, P, Pbytes, parallelizer, tds);
+//        cout << "offset = " << offset << ", current_digits = " << current_digits << endl;
+        store_digits_B(input, (ufL_t)offset, current_digits, P, Pbytes, parallelizer, tds);
 
         input += current_digits;
         offset += current_digits;
@@ -417,7 +424,7 @@ void BasicYcdFileWriter::store_digits(
 
     //  Update the written-to tracker.
     std::lock_guard<std::mutex> lg(m_lock);
-    m_written |= Region<ufL_t>(s, e);
+    m_written |= Region<uiL_t>(s, e);
 }
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////

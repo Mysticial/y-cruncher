@@ -148,7 +148,7 @@ bool DirectoryIsWritable(const std::string& directory){
     }
 
     //  Push the name
-    path += L"pathcheck.ysf";
+    path += L"pathcheck.sf";
 
     HANDLE file = CreateFileW(
         path.c_str(),

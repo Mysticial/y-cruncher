@@ -62,9 +62,12 @@ YM_NO_INLINE void Warning(std::string str, bool sticky){
         SetColor('w');
     }
 }
+bool pause_on_error = true;
 [[noreturn]] YM_NO_INLINE void Quit(int code){
     SetColorDefault();
-    Pause();
+    if (pause_on_error){
+        Pause();
+    }
     exit(code);
 }
 ////////////////////////////////////////////////////////////////////////////////

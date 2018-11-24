@@ -56,7 +56,7 @@ public:
 
     class Command;
 
-    std::vector<Command> make_commands(const char* input, uiL_t offset, uiL_t digits);
+    std::vector<Command> make_commands(const char* input, uiL_t offset, upL_t digits);
 
 
 private:

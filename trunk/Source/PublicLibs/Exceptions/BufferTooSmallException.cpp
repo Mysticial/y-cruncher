@@ -27,7 +27,7 @@ ExceptionFactoryT<BufferTooSmallException> BufferTooSmallException_Instance;
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-YM_NO_INLINE BufferTooSmallException::BufferTooSmallException(const char* function, uiL_t buffer_size, uiL_t required_size)
+YM_NO_INLINE BufferTooSmallException::BufferTooSmallException(const char* function, siL_t buffer_size, uiL_t required_size)
     : m_function(function)
     , m_buffer_size(buffer_size)
     , m_required_size(required_size)
@@ -82,8 +82,8 @@ DllSafeStream BufferTooSmallException::serialize() const{
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 [[noreturn]] YM_NO_INLINE
-void throw_BufferTooSmallException(const char* function, uiL_t buffer_size, uiL_t required_size){
-#if 1
+void throw_BufferTooSmallException(const char* function, siL_t buffer_size, uiL_t required_size){
+#ifdef YMP_BUILD_DEVELOPER
     BufferTooSmallException e(function, buffer_size, required_size);
     e.print();
     throw e;

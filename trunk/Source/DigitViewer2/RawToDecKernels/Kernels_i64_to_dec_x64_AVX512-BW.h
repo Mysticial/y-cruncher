@@ -129,11 +129,31 @@ YM_FORCE_INLINE void i64_to_dec_x64_AVX512BW(
         x0 = _mm512_slli_epi16(x0, 8);
         x0 = _mm512_or_si512(x0, hi);
     }
+
     {
-        __m512i lo, hi;
+        __m512i hi;
 
         //  Divide
         hi = _mm512_mullo_epi16(c0, _mm512_set1_epi16(205));
+
+#if 1
+        hi = _mm512_srli_epi16(hi, 3);
+
+        //  Multiply + subtract
+        c0 = _mm512_mask_mov_epi8(c0, 0xaaaaaaaaaaaaaaaa, hi);
+        c0 = _mm512_maddubs_epi16(_mm512_set1_epi16((u16_t)0xf601), c0);
+
+        //  Fix ordering
+        c0 = _mm512_shuffle_epi8(
+            c0,
+            _mm512_setr_epi64(
+                0xffffffffff020300, 0xffffffffff0a0b08,
+                0xffffffffff020300, 0xffffffffff0a0b08,
+                0xffffffffff020300, 0xffffffffff0a0b08,
+                0xffffffffff020300, 0xffffffffff0a0b08
+            )
+        );
+#else
         hi = _mm512_srli_epi16(hi, 11);
 
         //  Multiply + subtract
@@ -143,6 +163,7 @@ YM_FORCE_INLINE void i64_to_dec_x64_AVX512BW(
         //  Combine
         hi = _mm512_srli_epi32(hi, 8);
         c0 = _mm512_or_si512(c0, hi);
+#endif
     }
     {
         //  Split
@@ -165,35 +186,40 @@ YM_FORCE_INLINE void i64_to_dec_x64_AVX512BW(
             )
         );
     }
+
+    const __m512i PERMUTE_MULTIPLY = _mm512_setr_epi64(
+        0x0607040502030001, 0x0e0f0c0d0a0b0809,
+        0x0607040502030001, 0x0e0f0c0d0a0b0809,
+        0x0607040502030001, 0x0e0f0c0d0a0b0809,
+        0x0607040502030001, 0x0e0f0c0d0a0b0809
+    );
     {
-        __m512i lo, hi;
+        __m512i hi;
 
         //  Divide
         hi = _mm512_mullo_epi16(a0, _mm512_set1_epi16(205));
-        hi = _mm512_srli_epi16(hi, 11);
+        hi = _mm512_srli_epi16(hi, 3);
 
         //  Multiply + subtract
-        lo = _mm512_mullo_epi16(hi, _mm512_set1_epi16(10));
-        a0 = _mm512_sub_epi16(a0, lo);
+        a0 = _mm512_mask_mov_epi8(a0, 0xaaaaaaaaaaaaaaaa, hi);
+        a0 = _mm512_maddubs_epi16(_mm512_set1_epi16((u16_t)0xf601), a0);
 
-        //  Combine
-        a0 = _mm512_slli_epi16(a0, 8);
-        a0 = _mm512_or_si512(a0, hi);
+        //  Fix ordering
+        a0 = _mm512_shuffle_epi8(a0, PERMUTE_MULTIPLY);
     }
     {
-        __m512i lo, hi;
+        __m512i hi;
 
         //  Divide
         hi = _mm512_mullo_epi16(b0, _mm512_set1_epi16(205));
-        hi = _mm512_srli_epi16(hi, 11);
+        hi = _mm512_srli_epi16(hi, 3);
 
         //  Multiply + subtract
-        lo = _mm512_mullo_epi16(hi, _mm512_set1_epi16(10));
-        b0 = _mm512_sub_epi16(b0, lo);
+        b0 = _mm512_mask_mov_epi8(b0, 0xaaaaaaaaaaaaaaaa, hi);
+        b0 = _mm512_maddubs_epi16(_mm512_set1_epi16((u16_t)0xf601), b0);
 
-        //  Combine
-        b0 = _mm512_slli_epi16(b0, 8);
-        b0 = _mm512_or_si512(b0, hi);
+        //  Fix ordering
+        b0 = _mm512_shuffle_epi8(b0, PERMUTE_MULTIPLY);
     }
 }
 ////////////////////////////////////////////////////////////////////////////////

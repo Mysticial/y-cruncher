@@ -46,17 +46,8 @@ YM_FORCE_INLINE bool hex_to_i64_u4_x64_AVX2(__m256i* T, const __m256i* raw, upL_
 
         {
             //  1st Merge
-            __m256i lo, hi;
-
-            lo = _mm256_and_si256(x0, _mm256_set1_epi16(0x00ff));
-            hi = _mm256_srli_epi16(x0, 8);
-            lo = _mm256_slli_epi16(lo, 4);
-            x0 = _mm256_add_epi16(lo, hi);
-
-            lo = _mm256_and_si256(x1, _mm256_set1_epi16(0x00ff));
-            hi = _mm256_srli_epi16(x1, 8);
-            lo = _mm256_slli_epi16(lo, 4);
-            x1 = _mm256_add_epi16(lo, hi);
+            x0 = _mm256_maddubs_epi16(x0, _mm256_set1_epi16(0x0110));
+            x1 = _mm256_maddubs_epi16(x1, _mm256_set1_epi16(0x0110));
         }
         {
             //  Compress and Reverse

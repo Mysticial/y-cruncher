@@ -18,6 +18,7 @@
 //  Dependencies
 #include "PublicLibs/CompilerSettings.h"
 #include "PublicLibs/ConsoleIO/Label.h"
+#include "PublicLibs/SystemLibs/Time/FastWallClock.h"
 #include "Time.h"
 namespace ymp{
 namespace Time{
@@ -28,21 +29,24 @@ namespace Time{
 class IterationBenchmark{
     const char* m_units;
     uiL_t m_iterations;
-    double m_seconds;
+    FastDuration m_duration;
     WallClock m_start;
+    FastWallClock m_timer;
 
 public:
     IterationBenchmark(const char* units, double seconds = 4.0)
         : m_units(units)
         , m_iterations(0)
-        , m_seconds(seconds)
+        , m_duration(seconds)
         , m_start(WallClock::Now())
+        , m_timer(FastWallClock::now())
     {}
     IterationBenchmark(double seconds = 4.0)
         : m_units(nullptr)
         , m_iterations(0)
-        , m_seconds(seconds)
+        , m_duration(seconds)
         , m_start(WallClock::Now())
+        , m_timer(FastWallClock::now())
     {}
     ~IterationBenchmark(){
         if (m_units != nullptr){
@@ -58,8 +62,7 @@ public:
         m_iterations += new_iterations;
     }
     bool keep_going() const{
-        auto elapsed = m_start.SecondsElapsed();
-        return elapsed < m_seconds;
+        return m_timer.elapsed_time() < m_duration;
     }
 
 public:

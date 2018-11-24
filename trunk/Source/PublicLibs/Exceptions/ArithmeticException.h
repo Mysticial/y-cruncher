@@ -14,6 +14,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 //  Dependencies
+#include "PublicLibs/Types.h"
 #include "StringException.h"
 namespace ymp{
 ////////////////////////////////////////////////////////////////////////////////
@@ -36,6 +37,34 @@ public:
     virtual Exception* clone() const override{
         return new ArithmeticException(*this);
     }
+};
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+class ExponentOverflowException : public ArithmeticException{
+public:
+    static const char TYPENAME[];
+
+    ExponentOverflowException(const char* function, siL_t value, siL_t limit);
+
+public:
+    [[noreturn]] virtual void fire() const override{
+        throw *this;
+    }
+    virtual const char* get_typename() const override{
+        return TYPENAME;
+    }
+    virtual Exception* clone() const override{
+        return new ExponentOverflowException(*this);
+    }
+    virtual void print() const override;
+
+public:
+    ExponentOverflowException(const DllSafeStream& data);
+    virtual DllSafeStream serialize() const override;
+
+private:
+    siL_t m_value;
+    siL_t m_limit;
 };
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////

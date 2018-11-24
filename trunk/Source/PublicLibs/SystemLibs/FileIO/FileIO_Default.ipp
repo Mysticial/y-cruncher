@@ -136,7 +136,7 @@ bool DirectoryIsWritable(const std::string& directory){
     }
 
     //  Push the name
-    path += "pathcheck.ysf";
+    path += "pathcheck.sf";
 
     try{
         BasicFile file(0, path, false);

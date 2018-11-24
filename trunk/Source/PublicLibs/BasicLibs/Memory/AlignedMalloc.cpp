@@ -100,6 +100,24 @@ void aligned_free(void *ptr){
     ptr = (void*)free_int;
     free(ptr);
 }
+void check_aligned_ptr(const void *ptr){
+    if (ptr == nullptr){
+        return;
+    }
+
+    const upL_t* ret = (const upL_t*)ptr;
+//    upL_t free_int = ret[-3];
+
+    upL_t bytes = ret[-2];
+    upL_t check = ret[-1];
+    if (check != BUFFER_CHECK_BOT){
+        throw AlgorithmFailedException("aligned_free()", "Memory buffer has been underrun.");
+    }
+    memcpy(&check, (const char*)ptr + bytes, sizeof(upL_t));
+    if (check != BUFFER_CHECK_TOP){
+        throw AlgorithmFailedException("aligned_free()", "Memory buffer has been overrun.");
+    }
+}
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////

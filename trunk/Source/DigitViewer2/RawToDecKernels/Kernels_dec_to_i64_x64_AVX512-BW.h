@@ -34,24 +34,10 @@ YM_FORCE_INLINE __mmask64 dec_to_i64_x64_AVX512BW(
     bad |= _mm512_cmpgt_epu8_mask(b0, MAX);
     bad |= _mm512_cmpgt_epu8_mask(c0, MAX);
 
-    const __mmask64 MASK = 0x5555555555555555;
     {
-        __m512i hi;
-
-        hi = _mm512_srli_epi16(a0, 8);
-        a0 = _mm512_maskz_mov_epi8(MASK, a0);
-        a0 = _mm512_mullo_epi16(a0, _mm512_set1_epi16(10));
-        a0 = _mm512_add_epi16(a0, hi);
-
-        hi = _mm512_srli_epi16(b0, 8);
-        b0 = _mm512_maskz_mov_epi8(MASK, b0);
-        b0 = _mm512_mullo_epi16(b0, _mm512_set1_epi16(10));
-        b0 = _mm512_add_epi16(b0, hi);
-
-        hi = _mm512_srli_epi16(c0, 8);
-        c0 = _mm512_maskz_mov_epi8(MASK, c0);
-        c0 = _mm512_mullo_epi16(c0, _mm512_set1_epi16(10));
-        c0 = _mm512_add_epi16(c0, hi);
+        a0 = _mm512_maddubs_epi16(a0, _mm512_set1_epi16(0x010a));
+        b0 = _mm512_maddubs_epi16(b0, _mm512_set1_epi16(0x010a));
+        c0 = _mm512_maddubs_epi16(c0, _mm512_set1_epi16(0x010a));
     }
      {
         const __m512i COMPRESS0 = _mm512_setr_epi64(
@@ -71,33 +57,18 @@ YM_FORCE_INLINE __mmask64 dec_to_i64_x64_AVX512BW(
         a0 = _mm512_or_si512(a0, b0);
     }
     {
-        __m512i hi;
-
-        hi = _mm512_srli_epi16(a0, 8);
-        a0 = _mm512_maskz_mov_epi8(MASK, a0);
-        a0 = _mm512_mullo_epi16(a0, _mm512_set1_epi16(100));
-        a0 = _mm512_add_epi16(a0, hi);
-
-        hi = _mm512_srli_epi32(c0, 16);
-        c0 = _mm512_maskz_mov_epi16((__mmask32)MASK, c0);
-        c0 = _mm512_mullo_epi16(c0, _mm512_set1_epi16(100));
-        c0 = _mm512_add_epi16(c0, hi);
+        a0 = _mm512_maddubs_epi16(a0, _mm512_set1_epi16(0x0164));
+        c0 = _mm512_madd_epi16(c0, _mm512_set1_epi32(0x00010064));
     }
     {
-        __m512i hi;
-
-        hi = _mm512_srli_epi32(a0, 16);
-        a0 = _mm512_maskz_mov_epi16((__mmask32)MASK, a0);
-        a0 = _mm512_mullo_epi32(a0, _mm512_set1_epi32(10000));
-        a0 = _mm512_add_epi32(a0, hi);
-
+        a0 = _mm512_madd_epi16(a0, _mm512_set1_epi32(0x00012710));
         c0 = _mm512_mul_epu32(c0, _mm512_set1_epi32(400000));
     }
     {
         __m512i hi;
 
         hi = _mm512_srli_epi64(a0, 32);
-        a0 = _mm512_maskz_mov_epi32((__mmask16)MASK, a0);
+        a0 = _mm512_maskz_mov_epi32(0x5555, a0);
         a0 = _mm512_mul_epu32(a0, _mm512_set1_epi64(100000000));
         a0 = _mm512_add_epi64(a0, hi);
 

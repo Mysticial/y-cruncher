@@ -1,55 +1,31 @@
-/* BufferTooSmallException.h
+/* InvalidParametersThrower.h
  * 
  * Author           : Alexander J. Yee
- * Date Created     : 04/09/2017
- * Last Modified    : 04/09/2017
+ * Date Created     : 10/23/2018
+ * Last Modified    : 10/23/2018
+ * 
+ *      Lightweight header. Use this if you only need to throw and you don't
+ *  want to pull in <string>.
  * 
  */
 
 #pragma once
-#ifndef ymp_Exceptions_BufferTooSmallException_H
-#define ymp_Exceptions_BufferTooSmallException_H
+#ifndef ymp_Exceptions_InvalidParametersThrower_H
+#define ymp_Exceptions_InvalidParametersThrower_H
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 //  Dependencies
-#include <string>
 #include "PublicLibs/CompilerSettings.h"
 #include "PublicLibs/Types.h"
-#include "Exception.h"
 namespace ymp{
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-class BufferTooSmallException : public Exception{
-public:
-    static const char TYPENAME[];
-
-    YM_NO_INLINE BufferTooSmallException(const char* function, siL_t buffer_size, uiL_t required_size);
-
-public:
-    [[noreturn]] virtual void fire() const override{
-        throw *this;
-    }
-    virtual const char* get_typename() const override{
-        return TYPENAME;
-    }
-    virtual Exception* clone() const override{
-        return new BufferTooSmallException(*this);
-    }
-    virtual void print() const override;
-
-public:
-    BufferTooSmallException(const DllSafeStream& data);
-    virtual DllSafeStream serialize() const override;
-
-private:
-    std::string m_function;
-    siL_t m_buffer_size;
-    uiL_t m_required_size;
-};
+[[noreturn]] YM_NO_INLINE void throw_InvalidParametersException(const char* function);
+[[noreturn]] YM_NO_INLINE void throw_InvalidParametersException(const char* function, const char* message);
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////

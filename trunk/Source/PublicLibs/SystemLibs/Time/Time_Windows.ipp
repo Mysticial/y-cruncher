@@ -101,8 +101,9 @@ YM_NO_INLINE std::string tostr_now(){
 
     //  Stop at the first control character.
     upL_t c = 0;
-    while (buffer[c] >= 32)
+    while (buffer[c] >= 32){
         c++;
+    }
     buffer[c] = '\0';
 
     return buffer;

@@ -31,12 +31,17 @@ LengthType parallel_split(LengthType total, upL_t& tds, ThresholdType threshold)
     static_assert(std::is_unsigned<LengthType>::value, "Length must be an unsigned integer.");
     static_assert(std::is_unsigned<ThresholdType>::value, "Threshold must be an unsigned integer.");
 
-    LengthType block_size = (total - 1) / tds + 1;
-    if (block_size < threshold){
-        block_size = threshold;
-        tds = (upL_t)((total - 1) / block_size + 1);
-    }
-    return block_size;
+    LengthType desired_block_size = (total - 1) / tds + 1;
+    LengthType corrected_block_size = desired_block_size;
+
+    //  Make sure the block size is no smaller than the threshold.
+    corrected_block_size = corrected_block_size < threshold
+        ? threshold
+        : corrected_block_size;
+
+    tds = (upL_t)((total - 1) / corrected_block_size + 1);
+
+    return corrected_block_size;
 }
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -63,10 +68,11 @@ LengthType parallel_split_words_aligned(LengthType total, upL_t& tds, ThresholdT
     //  Align the block size.
     corrected_block_size = Alignment::align_length_up<WordType, byte_alignment>(corrected_block_size);
 
-    //  If anything has changed, recalculate the task decomposition.
-    if (corrected_block_size != desired_block_size){
-        tds = (upL_t)((total - 1) / corrected_block_size + 1);
-    }
+//    //  If anything has changed, recalculate the task decomposition.
+//    if (corrected_block_size != desired_block_size){
+//        tds = (upL_t)((total - 1) / corrected_block_size + 1);
+//    }
+    tds = (upL_t)((total - 1) / corrected_block_size + 1);
 
     return corrected_block_size;
 }
@@ -93,10 +99,11 @@ LengthType parallel_split_aligned(LengthType total, upL_t& tds, LengthType align
         corrected_block_size *= alignment;
     }
 
-    //  If anything has changed, recalculate the task decomposition.
-    if (corrected_block_size != desired_block_size){
-        tds = (upL_t)((total - 1) / corrected_block_size + 1);
-    }
+//    //  If anything has changed, recalculate the task decomposition.
+//    if (corrected_block_size != desired_block_size){
+//        tds = (upL_t)((total - 1) / corrected_block_size + 1);
+//    }
+    tds = (upL_t)((total - 1) / corrected_block_size + 1);
 
     return corrected_block_size;
 }

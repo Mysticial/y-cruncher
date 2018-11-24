@@ -1,14 +1,14 @@
-/* BufferTooSmallException.h
+/* TimeTools.h
  * 
  * Author           : Alexander J. Yee
- * Date Created     : 04/09/2017
- * Last Modified    : 04/09/2017
+ * Date Created     : 09/16/2014
+ * Last Modified    : 08/24/2018
  * 
  */
 
 #pragma once
-#ifndef ymp_Exceptions_BufferTooSmallException_H
-#define ymp_Exceptions_BufferTooSmallException_H
+#ifndef ymp_Time_TimeTools_H
+#define ymp_Time_TimeTools_H
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -16,43 +16,19 @@
 //  Dependencies
 #include <string>
 #include "PublicLibs/CompilerSettings.h"
-#include "PublicLibs/Types.h"
-#include "Exception.h"
 namespace ymp{
+namespace Time{
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-class BufferTooSmallException : public Exception{
-public:
-    static const char TYPENAME[];
-
-    YM_NO_INLINE BufferTooSmallException(const char* function, siL_t buffer_size, uiL_t required_size);
-
-public:
-    [[noreturn]] virtual void fire() const override{
-        throw *this;
-    }
-    virtual const char* get_typename() const override{
-        return TYPENAME;
-    }
-    virtual Exception* clone() const override{
-        return new BufferTooSmallException(*this);
-    }
-    virtual void print() const override;
-
-public:
-    BufferTooSmallException(const DllSafeStream& data);
-    virtual DllSafeStream serialize() const override;
-
-private:
-    std::string m_function;
-    siL_t m_buffer_size;
-    uiL_t m_required_size;
-};
+YM_NO_INLINE std::string string_time_smart(double seconds);
+YM_NO_INLINE void print_time_smart(double seconds, char color = ' ');
+YM_NO_INLINE void println_time_smart(double seconds, char color = ' ');
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
+}
 }
 #endif

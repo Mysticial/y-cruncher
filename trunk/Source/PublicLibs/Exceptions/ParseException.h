@@ -61,6 +61,31 @@ public:
     {}
 };
 ////////////////////////////////////////////////////////////////////////////////
+class KeyNotFoundException : public ParseException{
+public:
+    static const char TYPENAME[];
+
+    KeyNotFoundException(std::string key)
+        : ParseException(std::move(key))
+    {}
+
+public:
+    [[noreturn]] virtual void fire() const override{
+        throw *this;
+    }
+    virtual const char* get_typename() const override{
+        return TYPENAME;
+    }
+    virtual Exception* clone() const override{
+        return new KeyNotFoundException(*this);
+    }
+
+public:
+    KeyNotFoundException(const DllSafeStream& data)
+        : ParseException(data)
+    {}
+};
+////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////

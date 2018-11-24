@@ -40,22 +40,9 @@ YM_FORCE_INLINE __m128i dec_to_i64_x64_SSE41(
     bad = _mm_or_si128(bad, _mm_cmpgt_epi8(_mm_xor_si128(c0, MIN), MAX));
 
     {
-        __m128i hi;
-
-        hi = _mm_srli_epi16(a0, 8);
-        a0 = _mm_and_si128(a0, _mm_set1_epi16(0x00ff));
-        a0 = _mm_mullo_epi16(a0, _mm_set1_epi16(10));
-        a0 = _mm_add_epi16(a0, hi);
-
-        hi = _mm_srli_epi16(b0, 8);
-        b0 = _mm_and_si128(b0, _mm_set1_epi16(0x00ff));
-        b0 = _mm_mullo_epi16(b0, _mm_set1_epi16(10));
-        b0 = _mm_add_epi16(b0, hi);
-
-        hi = _mm_srli_epi16(c0, 8);
-        c0 = _mm_and_si128(c0, _mm_set1_epi16(0x00ff));
-        c0 = _mm_mullo_epi16(c0, _mm_set1_epi16(10));
-        c0 = _mm_add_epi16(c0, hi);
+        a0 = _mm_maddubs_epi16(a0, _mm_set1_epi16(0x010a));
+        b0 = _mm_maddubs_epi16(b0, _mm_set1_epi16(0x010a));
+        c0 = _mm_maddubs_epi16(c0, _mm_set1_epi16(0x010a));
     }
     {
         const __m128i COMPRESS0 = _mm_setr_epi32(
@@ -69,26 +56,11 @@ YM_FORCE_INLINE __m128i dec_to_i64_x64_SSE41(
         a0 = _mm_or_si128(a0, b0);
     }
     {
-        __m128i hi;
-
-        hi = _mm_srli_epi16(a0, 8);
-        a0 = _mm_and_si128(a0, _mm_set1_epi16(0x00ff));
-        a0 = _mm_mullo_epi16(a0, _mm_set1_epi16(100));
-        a0 = _mm_add_epi16(a0, hi);
-
-        hi = _mm_srli_epi32(c0, 16);
-        c0 = _mm_and_si128(c0, _mm_set1_epi32(0x0000ffff));
-        c0 = _mm_mullo_epi16(c0, _mm_set1_epi16(100));
-        c0 = _mm_add_epi16(c0, hi);
+        a0 = _mm_maddubs_epi16(a0, _mm_set1_epi16(0x0164));
+        c0 = _mm_madd_epi16(c0, _mm_set1_epi32(0x00010064));
     }
     {
-        __m128i hi;
-
-        hi = _mm_srli_epi32(a0, 16);
-        a0 = _mm_and_si128(a0, _mm_set1_epi32(0x0000ffff));
-        a0 = _mm_mullo_epi32(a0, _mm_set1_epi32(10000));
-        a0 = _mm_add_epi32(a0, hi);
-
+        a0 = _mm_madd_epi16(a0, _mm_set1_epi32(0x00012710));
         c0 = _mm_mul_epu32(c0, _mm_set1_epi32(400000));
     }
     {
@@ -122,37 +94,12 @@ YM_FORCE_INLINE __m128i dec_to_i64_x64_SSE41(
     bad = _mm_or_si128(bad, _mm_cmpgt_epi8(_mm_xor_si128(c1, MIN), MAX));
 
     {
-        __m128i hi;
-
-        hi = _mm_srli_epi16(a0, 8);
-        a0 = _mm_and_si128(a0, _mm_set1_epi16(0x00ff));
-        a0 = _mm_mullo_epi16(a0, _mm_set1_epi16(10));
-        a0 = _mm_add_epi16(a0, hi);
-
-        hi = _mm_srli_epi16(b0, 8);
-        b0 = _mm_and_si128(b0, _mm_set1_epi16(0x00ff));
-        b0 = _mm_mullo_epi16(b0, _mm_set1_epi16(10));
-        b0 = _mm_add_epi16(b0, hi);
-
-        hi = _mm_srli_epi16(c0, 8);
-        c0 = _mm_and_si128(c0, _mm_set1_epi16(0x00ff));
-        c0 = _mm_mullo_epi16(c0, _mm_set1_epi16(10));
-        c0 = _mm_add_epi16(c0, hi);
-
-        hi = _mm_srli_epi16(a1, 8);
-        a1 = _mm_and_si128(a1, _mm_set1_epi16(0x00ff));
-        a1 = _mm_mullo_epi16(a1, _mm_set1_epi16(10));
-        a1 = _mm_add_epi16(a1, hi);
-
-        hi = _mm_srli_epi16(b1, 8);
-        b1 = _mm_and_si128(b1, _mm_set1_epi16(0x00ff));
-        b1 = _mm_mullo_epi16(b1, _mm_set1_epi16(10));
-        b1 = _mm_add_epi16(b1, hi);
-
-        hi = _mm_srli_epi16(c1, 8);
-        c1 = _mm_and_si128(c1, _mm_set1_epi16(0x00ff));
-        c1 = _mm_mullo_epi16(c1, _mm_set1_epi16(10));
-        c1 = _mm_add_epi16(c1, hi);
+        a0 = _mm_maddubs_epi16(a0, _mm_set1_epi16(0x010a));
+        b0 = _mm_maddubs_epi16(b0, _mm_set1_epi16(0x010a));
+        c0 = _mm_maddubs_epi16(c0, _mm_set1_epi16(0x010a));
+        a1 = _mm_maddubs_epi16(a1, _mm_set1_epi16(0x010a));
+        b1 = _mm_maddubs_epi16(b1, _mm_set1_epi16(0x010a));
+        c1 = _mm_maddubs_epi16(c1, _mm_set1_epi16(0x010a));
     }
     {
         const __m128i COMPRESS0 = _mm_setr_epi32(
@@ -170,43 +117,15 @@ YM_FORCE_INLINE __m128i dec_to_i64_x64_SSE41(
         a1 = _mm_or_si128(a1, b1);
     }
     {
-        __m128i hi;
-
-        hi = _mm_srli_epi16(a0, 8);
-        a0 = _mm_and_si128(a0, _mm_set1_epi16(0x00ff));
-        a0 = _mm_mullo_epi16(a0, _mm_set1_epi16(100));
-        a0 = _mm_add_epi16(a0, hi);
-
-        hi = _mm_srli_epi32(c0, 16);
-        c0 = _mm_and_si128(c0, _mm_set1_epi32(0x0000ffff));
-        c0 = _mm_mullo_epi16(c0, _mm_set1_epi16(100));
-        c0 = _mm_add_epi16(c0, hi);
-
-        hi = _mm_srli_epi16(a1, 8);
-        a1 = _mm_and_si128(a1, _mm_set1_epi16(0x00ff));
-        a1 = _mm_mullo_epi16(a1, _mm_set1_epi16(100));
-        a1 = _mm_add_epi16(a1, hi);
-
-        hi = _mm_srli_epi32(c1, 16);
-        c1 = _mm_and_si128(c1, _mm_set1_epi32(0x0000ffff));
-        c1 = _mm_mullo_epi16(c1, _mm_set1_epi16(100));
-        c1 = _mm_add_epi16(c1, hi);
+        a0 = _mm_maddubs_epi16(a0, _mm_set1_epi16(0x0164));
+        a1 = _mm_maddubs_epi16(a1, _mm_set1_epi16(0x0164));
+        c0 = _mm_madd_epi16(c0, _mm_set1_epi32(0x00010064));
+        c1 = _mm_madd_epi16(c1, _mm_set1_epi32(0x00010064));
     }
     {
-        __m128i hi;
-
-        hi = _mm_srli_epi32(a0, 16);
-        a0 = _mm_and_si128(a0, _mm_set1_epi32(0x0000ffff));
-        a0 = _mm_mullo_epi32(a0, _mm_set1_epi32(10000));
-        a0 = _mm_add_epi32(a0, hi);
-
+        a0 = _mm_madd_epi16(a0, _mm_set1_epi32(0x00012710));
+        a1 = _mm_madd_epi16(a1, _mm_set1_epi32(0x00012710));
         c0 = _mm_mul_epu32(c0, _mm_set1_epi32(400000));
-
-        hi = _mm_srli_epi32(a1, 16);
-        a1 = _mm_and_si128(a1, _mm_set1_epi32(0x0000ffff));
-        a1 = _mm_mullo_epi32(a1, _mm_set1_epi32(10000));
-        a1 = _mm_add_epi32(a1, hi);
-
         c1 = _mm_mul_epu32(c1, _mm_set1_epi32(400000));
     }
     {

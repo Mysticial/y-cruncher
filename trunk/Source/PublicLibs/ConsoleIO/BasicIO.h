@@ -54,6 +54,8 @@ YM_NO_INLINE    upL_t   println     (std::string str, char color = ' ');
 YM_NO_INLINE    upL_t   println     (std::wstring str, char color = ' ');
 YM_NO_INLINE    void    ClearLine   (int characters = 79);
 YM_NO_INLINE    void    Warning     (std::string str, bool sticky = false);
+////////////////////////////////////////////////////////////////////////////////
+extern bool pause_on_error; //  Temporary hack. TODO: Get rid of this entirely.
 [[noreturn]] YM_NO_INLINE void Quit (int code);
 ////////////////////////////////////////////////////////////////////////////////
 class ConsoleLock{

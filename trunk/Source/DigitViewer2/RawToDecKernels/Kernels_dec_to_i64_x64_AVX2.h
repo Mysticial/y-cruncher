@@ -36,22 +36,9 @@ YM_FORCE_INLINE __m256i dec_to_i64_x64_AVX2(
     bad = _mm256_or_si256(bad, _mm256_cmpgt_epi8(_mm256_xor_si256(c0, MIN), MAX));
 
     {
-        __m256i hi;
-
-        hi = _mm256_srli_epi16(a0, 8);
-        a0 = _mm256_and_si256(a0, _mm256_set1_epi16(0x00ff));
-        a0 = _mm256_mullo_epi16(a0, _mm256_set1_epi16(10));
-        a0 = _mm256_add_epi16(a0, hi);
-
-        hi = _mm256_srli_epi16(b0, 8);
-        b0 = _mm256_and_si256(b0, _mm256_set1_epi16(0x00ff));
-        b0 = _mm256_mullo_epi16(b0, _mm256_set1_epi16(10));
-        b0 = _mm256_add_epi16(b0, hi);
-
-        hi = _mm256_srli_epi16(c0, 8);
-        c0 = _mm256_and_si256(c0, _mm256_set1_epi16(0x00ff));
-        c0 = _mm256_mullo_epi16(c0, _mm256_set1_epi16(10));
-        c0 = _mm256_add_epi16(c0, hi);
+        a0 = _mm256_maddubs_epi16(a0, _mm256_set1_epi16(0x010a));
+        b0 = _mm256_maddubs_epi16(b0, _mm256_set1_epi16(0x010a));
+        c0 = _mm256_maddubs_epi16(c0, _mm256_set1_epi16(0x010a));
     }
     {
         const __m256i COMPRESS0 = _mm256_setr_epi64x(
@@ -67,26 +54,11 @@ YM_FORCE_INLINE __m256i dec_to_i64_x64_AVX2(
         a0 = _mm256_or_si256(a0, b0);
     }
     {
-        __m256i hi;
-
-        hi = _mm256_srli_epi16(a0, 8);
-        a0 = _mm256_and_si256(a0, _mm256_set1_epi16(0x00ff));
-        a0 = _mm256_mullo_epi16(a0, _mm256_set1_epi16(100));
-        a0 = _mm256_add_epi16(a0, hi);
-
-        hi = _mm256_srli_epi32(c0, 16);
-        c0 = _mm256_and_si256(c0, _mm256_set1_epi32(0x0000ffff));
-        c0 = _mm256_mullo_epi16(c0, _mm256_set1_epi16(100));
-        c0 = _mm256_add_epi16(c0, hi);
+        a0 = _mm256_maddubs_epi16(a0, _mm256_set1_epi16(0x0164));
+        c0 = _mm256_madd_epi16(c0, _mm256_set1_epi32(0x00010064));
     }
     {
-        __m256i hi;
-
-        hi = _mm256_srli_epi32(a0, 16);
-        a0 = _mm256_and_si256(a0, _mm256_set1_epi32(0x0000ffff));
-        a0 = _mm256_mullo_epi32(a0, _mm256_set1_epi32(10000));
-        a0 = _mm256_add_epi32(a0, hi);
-
+        a0 = _mm256_madd_epi16(a0, _mm256_set1_epi32(0x00012710));
         c0 = _mm256_mul_epu32(c0, _mm256_set1_epi32(400000));
     }
     {

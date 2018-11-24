@@ -29,7 +29,7 @@ YM_NO_INLINE bool hex_to_i64(u64_t* T, const char* raw, upL_t words){
     bool bad = false;
     {
         upL_t blocks = words / 4;
-        bad |= hex_to_i64_u4_x86_SSE2((__m128i*)T, (const __m128i*)raw, blocks);
+        bad |= hex_to_i64_u4_x86_SSSE3((__m128i*)T, (const __m128i*)raw, blocks);
         T     += blocks * 4;
         raw   += blocks * 4 * 16;
         words -= blocks * 4;

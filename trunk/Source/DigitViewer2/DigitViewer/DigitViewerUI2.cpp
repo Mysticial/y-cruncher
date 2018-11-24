@@ -30,13 +30,13 @@ void Menu_TextFile(BasicTextReader& reader){
     Console::println("\n\nText File");
     Console::println();
 
+    Console::println("First Digits:", 'w');
+    Console::println(reader.first_digits(), 'Y');
+    Console::println("", 'w');
+
     Console::print("Digits after Decimal Place: ");
     uiL_t digits = reader.stream_end();
     Console::println_commas(digits, 'G');
-    Console::println();
-
-    Console::println("First Digits:", 'w');
-    Console::println(reader.first_digits(), 'Y');
     Console::println();
 
 
@@ -79,6 +79,10 @@ void Menu_YcdFile(BasicYcdSetReader& reader){
     while (true){
         Console::println("\n\nCompressed Digit File");
         Console::println();
+
+        Console::println("First Digits:", 'w');
+        Console::println(reader.first_digits(), 'Y');
+        Console::println("", 'w');
 
         Console::print("Digits after Decimal Place: ");
         uiL_t digits = reader.stream_end();

@@ -41,7 +41,7 @@ public:
     BasicYcdFileReader(std::string path);
 
     virtual std::string first_digits            () override{ return m_first_digits; }
-    virtual ufL_t       stream_end              () const override{ return m_stream_end; }
+    virtual uiL_t       stream_end              () const override{ return m_stream_end; }
     virtual bool        range_is_available      (uiL_t offset, uiL_t digits) override;
     virtual upL_t       recommend_buffer_size   (uiL_t digits, upL_t limit) const override;
 

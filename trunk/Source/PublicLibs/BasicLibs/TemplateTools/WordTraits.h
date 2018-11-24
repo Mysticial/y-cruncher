@@ -27,6 +27,7 @@ template <typename wtype>
 struct WordTraits{
     static const size_t BITS = CHAR_BIT * sizeof(wtype);
     static const size_t MAG  = BITS == 32 ? 5 : 6;
+    static const wtype TOP_BIT = (wtype)1 << (BITS - 1);
     static const bool is_valid =
         std::is_integral<wtype>::value &&
         std::is_unsigned<wtype>::value &&

@@ -138,6 +138,7 @@ void cpu_x86::detect_host(){
         HW_SHA          = (info[1] & ((int)1 << 29)) != 0;
         HW_RDSEED       = (info[1] & ((int)1 << 18)) != 0;
         HW_PREFETCHWT1  = (info[2] & ((int)1 <<  0)) != 0;
+        HW_RDPID        = (info[2] & ((int)1 << 22)) != 0;
 
         HW_AVX512_F     = (info[1] & ((int)1 << 16)) != 0;
         HW_AVX512_CD    = (info[1] & ((int)1 << 28)) != 0;
@@ -155,11 +156,12 @@ void cpu_x86::detect_host(){
         HW_AVX512_4FMAPS    = (info[3] & ((int)1 <<  2)) != 0;
         HW_AVX512_4VNNIW    = (info[3] & ((int)1 <<  3)) != 0;
 
-        HW_AVX512_VBMI2     = (info[2] & ((int)1 <<  6)) != 0;
-        HW_AVX512_GFNI      = (info[2] & ((int)1 <<  8)) != 0;
-        HW_AVX512_VAES      = (info[2] & ((int)1 <<  9)) != 0;
-        HW_AVX512_VPCLMUL   = (info[2] & ((int)1 << 10)) != 0;
         HW_AVX512_VNNI      = (info[2] & ((int)1 << 11)) != 0;
+
+        HW_AVX512_VBMI2     = (info[2] & ((int)1 <<  6)) != 0;
+        HW_GFNI             = (info[2] & ((int)1 <<  8)) != 0;
+        HW_VAES             = (info[2] & ((int)1 <<  9)) != 0;
+        HW_AVX512_VPCLMUL   = (info[2] & ((int)1 << 10)) != 0;
         HW_AVX512_BITALG    = (info[2] & ((int)1 << 12)) != 0;
 
     }
@@ -197,6 +199,9 @@ void cpu_x86::print() const{
     Console::print("    MPX         = "); print_bool(HW_MPX);
     Console::print("    PREFETCHW   = "); print_bool(HW_PREFETCHW);
     Console::print("    PREFETCHWT1 = "); print_bool(HW_PREFETCHWT1);
+    Console::print("    RDPID       = "); print_bool(HW_RDPID);
+    Console::print("    GFNI        = "); print_bool(HW_GFNI);
+    Console::print("    VAES        = "); print_bool(HW_VAES);
     Console::println();
 
     Console::println("SIMD: 128-bit");
@@ -236,8 +241,6 @@ void cpu_x86::print() const{
     Console::print("    AVX512-4FMAPS    = "); print_bool(HW_AVX512_4FMAPS);
     Console::print("    AVX512-4VNNIW    = "); print_bool(HW_AVX512_4VNNIW);
     Console::print("    AVX512-VBMI2     = "); print_bool(HW_AVX512_VBMI2);
-    Console::print("    AVX512-GFNI      = "); print_bool(HW_AVX512_GFNI);
-    Console::print("    AVX512-VAES      = "); print_bool(HW_AVX512_VAES);
     Console::print("    AVX512-VPCLMUL   = "); print_bool(HW_AVX512_VPCLMUL);
     Console::print("    AVX512-VNNI      = "); print_bool(HW_AVX512_VNNI);
     Console::print("    AVX512-BITALG    = "); print_bool(HW_AVX512_BITALG);

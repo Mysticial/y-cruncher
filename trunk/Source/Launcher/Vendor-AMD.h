@@ -23,19 +23,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 void dispatch_AMD(const cpu_x86& features){
     //  AVX512
-//#if _WIN32
-//    if (can_run_2016_x64_KnightsLanding(features) || can_run_2017_x64_Skylake(features)){
-//        Console::SetColor('R');
-//        Console::println("Due to inadequate compiler support, AVX512 is currently only available for");
-//        Console::println("Intel processors on Windows.");
-//        Console::println();
-//        Console::println("Please stay tuned for a future version of y-cruncher.");
-//        Console::println();
-//        Console::SetColor('w');
-//        Console::Pause();
-//        Console::println("\n");
-//    }
-//#else
 #ifdef YCR_ENABLE_2018_x64_CannonLake
     dispatch_2018_x64_CannonLake(features);
 #endif
@@ -47,15 +34,20 @@ void dispatch_AMD(const cpu_x86& features){
 #endif
     warn_noAVX512(features);
     warn_AVX512_OS(features);
-//#endif
 
     //  AVX
+//#ifdef YCR_ENABLE_2014_x64_Broadwell
+//    if (features.HW_RDPID){
+//        dispatch_2014_x64_Broadwell(features);
+//    }
+//#endif
 #ifdef YCR_ENABLE_2017_x64_Zen
     if (features.HW_ADX){
         dispatch_2017_x64_Zen(features);
     }
 #endif
     dispatch_2011_x64_Bulldozer(features);
+    dispatch_2011_x64_SandyBridge(features);
     warn_AVX_OS(features);
 
     //  x64

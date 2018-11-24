@@ -43,6 +43,7 @@ struct cpu_x86{
     bool HW_MPX;
     bool HW_PREFETCHW;
     bool HW_PREFETCHWT1;
+    bool HW_RDPID;
 
     //  SIMD: 128-bit
     bool HW_SSE;
@@ -84,12 +85,14 @@ struct cpu_x86{
     bool HW_AVX512_4FMAPS;
     bool HW_AVX512_4VNNIW;
 
+    //  Cascade Lake
+    bool HW_AVX512_VNNI;
+
     //  Ice Lake
     bool HW_AVX512_VBMI2;
-    bool HW_AVX512_GFNI;
-    bool HW_AVX512_VAES;
+    bool HW_GFNI;
+    bool HW_VAES;
     bool HW_AVX512_VPCLMUL;
-    bool HW_AVX512_VNNI;
     bool HW_AVX512_BITALG;
 
 public:

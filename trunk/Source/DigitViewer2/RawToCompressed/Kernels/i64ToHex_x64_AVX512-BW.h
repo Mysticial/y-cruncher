@@ -44,17 +44,8 @@ YM_FORCE_INLINE bool hex_to_i64_u8_x64_AVX512BW(__m512i* T, const __m512i* raw, 
 
         {
             //  1st Merge
-            __m512i lo, hi;
-
-            lo = _mm512_and_si512(x0, _mm512_set1_epi16(0x00ff));
-            hi = _mm512_srli_epi16(x0, 8);
-            lo = _mm512_slli_epi16(lo, 4);
-            x0 = _mm512_or_si512(lo, hi);
-
-            lo = _mm512_and_si512(x1, _mm512_set1_epi16(0x00ff));
-            hi = _mm512_srli_epi16(x1, 8);
-            lo = _mm512_slli_epi16(lo, 4);
-            x1 = _mm512_or_si512(lo, hi);
+            x0 = _mm512_maddubs_epi16(x0, _mm512_set1_epi16(0x0110));
+            x1 = _mm512_maddubs_epi16(x1, _mm512_set1_epi16(0x0110));
         }
         {
             //  Compress and Reverse

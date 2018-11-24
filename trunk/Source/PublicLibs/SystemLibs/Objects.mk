@@ -5,6 +5,7 @@ CURRENT_DIR := PublicLibs/SystemLibs
 CURRENT :=
 
 
+CURRENT += Time/TimeTools.cpp
 CURRENT += Time/Time.cpp
 CURRENT += Time/StopWatch.cpp
 

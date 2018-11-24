@@ -71,7 +71,13 @@ BasicYcdSetWriter::BasicYcdSetWriter(
                 "Single-file is incompatible with unbounded output."
             );
         }
-        m_digits_per_file = stream_end;
+        if ((ufL_t)stream_end != stream_end){
+            throw InvalidParametersException(
+                "BasicYcdSetWriter::BasicYcdSetWriter()",
+                "Too many digits for single-file compress."
+            );
+        }
+        m_digits_per_file = (ufL_t)stream_end;
     }
 
 }
@@ -165,7 +171,7 @@ private:
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 std::vector<BasicYcdSetWriter::Command> BasicYcdSetWriter::make_commands(
-    const char* input, uiL_t offset, uiL_t digits
+    const char* input, uiL_t offset, upL_t digits
 ){
     //  Find file boundaries
     uiL_t start = offset;

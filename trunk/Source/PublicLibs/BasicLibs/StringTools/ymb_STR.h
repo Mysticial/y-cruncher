@@ -27,6 +27,7 @@ namespace StringTools{
 //  String -> Integer
 uiL_t           parse_uL        (const char* str);
 uiL_t           parse_uL        (const std::string& str);
+uiL_t           parse_sL        (const std::string& str);
 uiL_t           parse_uL_text   (const char* str);
 uiL_t           parse_uL_text   (const std::string& str);
 siL_t           parse_sL_text   (const std::string& str);

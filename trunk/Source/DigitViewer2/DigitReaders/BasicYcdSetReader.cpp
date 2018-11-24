@@ -372,7 +372,7 @@ void BasicYcdSetReader::load_stats(
     }
 
     if (Alignment::int_past_aligned<DEFAULT_ALIGNMENT>((upL_t)P) != 0){
-        throw InvalidParametersException("BasicTextReader::load_digits()", "Buffer is misaligned.");
+        throw InvalidParametersException("BasicYcdSetReader::load_digits()", "Buffer is misaligned.");
     }
 
     std::vector<Command> commands = make_commands(nullptr, true, offset, digits);
@@ -406,7 +406,7 @@ void BasicYcdSetReader::load_digits(
     }
 
     if (Alignment::int_past_aligned<DEFAULT_ALIGNMENT>((upL_t)P) != 0){
-        throw InvalidParametersException("BasicTextReader::load_digits()", "Buffer is misaligned.");
+        throw InvalidParametersException("BasicYcdSetReader::load_digits()", "Buffer is misaligned.");
     }
 
     std::vector<Command> commands = make_commands(output, stats != nullptr, offset, digits);

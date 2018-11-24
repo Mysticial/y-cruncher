@@ -38,6 +38,15 @@ uiL_t parse_uL(const char* str){
 uiL_t parse_uL(const std::string& str){
     return parse_uL(str.c_str());
 }
+uiL_t parse_sL(const std::string& str){
+    if (str.empty()){
+        return 0;
+    }
+    if (str[0] == '-'){
+        return -(siL_t)parse_uL(str.c_str() + 1);
+    }
+    return parse_uL(str);
+}
 uiL_t parse_uL_text(const char* str){
     uiL_t x = 0;
     char ch = *str++;

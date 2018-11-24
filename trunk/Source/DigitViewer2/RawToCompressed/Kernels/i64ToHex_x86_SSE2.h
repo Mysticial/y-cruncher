@@ -29,8 +29,8 @@ YM_FORCE_INLINE bool hex_to_i64_u4_x86_SSE2(__m128i* T, const __m128i* raw, upL_
         return false;
     }
 
+    const __m128i MULTIPLY = _mm_set1_epi32(0x00010100);
     const __m128i MASK0 = _mm_set1_epi16(0xf);
-    const __m128i MASK1 = _mm_set1_epi32(0xff);
 
     __m128i bad = _mm_setzero_si128();
     do{
@@ -66,24 +66,10 @@ YM_FORCE_INLINE bool hex_to_i64_u4_x86_SSE2(__m128i* T, const __m128i* raw, upL_
         a2 = _mm_or_si128(a2, b2);
         a3 = _mm_or_si128(a3, b3);
 
-        b0 = _mm_and_si128(a0, MASK1);
-        b1 = _mm_and_si128(a1, MASK1);
-        b2 = _mm_and_si128(a2, MASK1);
-        b3 = _mm_and_si128(a3, MASK1);
-        a0 = _mm_srli_epi32(a0, 16);
-        a1 = _mm_srli_epi32(a1, 16);
-        a2 = _mm_srli_epi32(a2, 16);
-        a3 = _mm_srli_epi32(a3, 16);
-
-        b0 = _mm_slli_epi16(b0, 8);
-        b1 = _mm_slli_epi16(b1, 8);
-        b2 = _mm_slli_epi16(b2, 8);
-        b3 = _mm_slli_epi16(b3, 8);
-
-        a0 = _mm_or_si128(a0, b0);
-        a1 = _mm_or_si128(a1, b1);
-        a2 = _mm_or_si128(a2, b2);
-        a3 = _mm_or_si128(a3, b3);
+        a0 = _mm_madd_epi16(a0, MULTIPLY);
+        a1 = _mm_madd_epi16(a1, MULTIPLY);
+        a2 = _mm_madd_epi16(a2, MULTIPLY);
+        a3 = _mm_madd_epi16(a3, MULTIPLY);
 
         a0 = _mm_shufflelo_epi16(a0, 114);
         a1 = _mm_shufflelo_epi16(a1, 114);
