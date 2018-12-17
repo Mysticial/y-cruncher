@@ -248,6 +248,7 @@ RawFile::operator bool() const{
     return m_filehandle != INVALID_HANDLE_VALUE;
 }
 void RawFile::close(bool keep_file){
+    Console::println(m_path + " : " + std::to_string(keep_file));
     if (m_filehandle == INVALID_HANDLE_VALUE){
         return;
     }

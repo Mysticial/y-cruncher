@@ -121,12 +121,6 @@
     <Filter Include="Source Files\PublicLibs\SystemLibs\ProcessorCapability">
       <UniqueIdentifier>{2f30c1ff-729b-4896-a50f-17d7f766bca4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\DigitViewer">
-      <UniqueIdentifier>{2d97c305-2ddc-48e1-a838-6cc1c131f153}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\DigitViewer\DigitReaders">
-      <UniqueIdentifier>{a24fd50f-884b-49a7-9ab2-f5eb68755e46}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Source\DigitViewer2\makefile">
@@ -266,15 +260,6 @@
     <ClCompile Include="..\..\Source\DigitViewer2\DigitHash\DigitHash.cpp">
       <Filter>Source Files\DigitViewer2\DigitHash</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Source\DigitViewer2\DigitReaders\BasicTextReader.cpp">
-      <Filter>Source Files\DigitViewer2\DigitReaders</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\DigitViewer2\DigitReaders\BasicYcdFileReader.cpp">
-      <Filter>Source Files\DigitViewer2\DigitReaders</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\DigitViewer2\DigitReaders\BasicYcdSetReader.cpp">
-      <Filter>Source Files\DigitViewer2\DigitReaders</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Source\DigitViewer2\DigitViewer\DigitViewerUI2.cpp">
       <Filter>Source Files\DigitViewer2\DigitViewer</Filter>
     </ClCompile>
@@ -386,20 +371,29 @@
     <ClCompile Include="..\..\Source\PublicLibs\SystemLibs\SMC_PublicSystemLibs.cpp">
       <Filter>Source Files\PublicLibs\SystemLibs</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Source\DigitViewer\DigitReaders\ParsingTools.cpp">
-      <Filter>Source Files\DigitViewer\DigitReaders</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\DigitViewer\DigitReaders\InconsistentMetadataException.cpp">
-      <Filter>Source Files\DigitViewer\DigitReaders</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\DigitViewer\PrintHelpers.cpp">
-      <Filter>Source Files\DigitViewer</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Source\PublicLibs\SystemLibs\FileIO\RawFile.cpp">
       <Filter>Source Files\PublicLibs\SystemLibs\FileIO</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\PublicLibs\CompileOptions_PublicLibs.cpp">
       <Filter>Source Files\PublicLibs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\DigitViewer2\DigitReaders\BasicYcdFileReader.cpp">
+      <Filter>Source Files\DigitViewer2\DigitReaders</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\DigitViewer2\DigitReaders\BasicYcdSetReader.cpp">
+      <Filter>Source Files\DigitViewer2\DigitReaders</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\DigitViewer2\DigitReaders\InconsistentMetadataException.cpp">
+      <Filter>Source Files\DigitViewer2\DigitReaders</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\DigitViewer2\DigitReaders\ParsingTools.cpp">
+      <Filter>Source Files\DigitViewer2\DigitReaders</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\DigitViewer2\DigitReaders\BasicTextReader.cpp">
+      <Filter>Source Files\DigitViewer2\DigitReaders</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\DigitViewer2\PrintHelpers.cpp">
+      <Filter>Source Files\DigitViewer2</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -429,18 +423,6 @@
     </ClInclude>
     <ClInclude Include="..\..\Source\DigitViewer2\DigitHash\Kernels\DigitHash_x64_AVX512BW.h">
       <Filter>Source Files\DigitViewer2\DigitHash\Kernels</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\DigitViewer2\DigitReaders\BasicTextReader.h">
-      <Filter>Source Files\DigitViewer2\DigitReaders</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\DigitViewer2\DigitReaders\BasicYcdFileReader.h">
-      <Filter>Source Files\DigitViewer2\DigitReaders</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\DigitViewer2\DigitReaders\BasicYcdSetReader.h">
-      <Filter>Source Files\DigitViewer2\DigitReaders</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\DigitViewer2\DigitReaders\BasicDigitReader.h">
-      <Filter>Source Files\DigitViewer2\DigitReaders</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\DigitViewer2\DigitViewer\DigitViewerUI2.h">
       <Filter>Source Files\DigitViewer2\DigitViewer</Filter>
@@ -733,18 +715,6 @@
     <ClInclude Include="..\..\Source\PublicLibs\SystemLibs\ProcessorCapability\ProcessorCapability_x86.h">
       <Filter>Source Files\PublicLibs\SystemLibs\ProcessorCapability</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\DigitViewer\DigitReaders\ParsingTools.h">
-      <Filter>Source Files\DigitViewer\DigitReaders</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\DigitViewer\Globals.h">
-      <Filter>Source Files\DigitViewer</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\DigitViewer\DigitReaders\InconsistentMetadataException.h">
-      <Filter>Source Files\DigitViewer\DigitReaders</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\DigitViewer\PrintHelpers.h">
-      <Filter>Source Files\DigitViewer</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Source\PublicLibs\SystemLibs\FileIO\RawFile_Linux.h">
       <Filter>Source Files\PublicLibs\SystemLibs\FileIO</Filter>
     </ClInclude>
@@ -759,6 +729,27 @@
     </ClInclude>
     <ClInclude Include="..\..\Source\PublicLibs\SystemLibs\FileIO\RawFile.h">
       <Filter>Source Files\PublicLibs\SystemLibs\FileIO</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\DigitViewer2\DigitReaders\BasicYcdFileReader.h">
+      <Filter>Source Files\DigitViewer2\DigitReaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\DigitViewer2\DigitReaders\BasicYcdSetReader.h">
+      <Filter>Source Files\DigitViewer2\DigitReaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\DigitViewer2\DigitReaders\InconsistentMetadataException.h">
+      <Filter>Source Files\DigitViewer2\DigitReaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\DigitViewer2\DigitReaders\ParsingTools.h">
+      <Filter>Source Files\DigitViewer2\DigitReaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\DigitViewer2\DigitReaders\BasicDigitReader.h">
+      <Filter>Source Files\DigitViewer2\DigitReaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\DigitViewer2\DigitReaders\BasicTextReader.h">
+      <Filter>Source Files\DigitViewer2\DigitReaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\DigitViewer2\PrintHelpers.h">
+      <Filter>Source Files\DigitViewer2</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

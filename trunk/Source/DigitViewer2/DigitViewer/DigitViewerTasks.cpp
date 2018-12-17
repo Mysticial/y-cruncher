@@ -24,7 +24,7 @@
 #ifdef YMP_STANDALONE
 #include "PrivateLibs/SystemLibs/ParallelFrameworks/ParallelFrameworks.h"
 #endif
-#include "DigitViewer/PrintHelpers.h"
+#include "DigitViewer2/PrintHelpers.h"
 #include "DigitViewer2/RawToAscii/RawToAscii.h"
 #include "DigitViewer2/DigitWriters/BasicDigitWriter.h"
 #include "DigitViewer2/DigitWriters/BasicTextWriter.h"
@@ -88,7 +88,7 @@ void view_range(BasicDigitReader& reader){
     }
 
     //  Display
-    DigitViewer::DisplayFancy(start, &str[0], digits);
+    DisplayFancy(start, &str[0], digits);
 }
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////

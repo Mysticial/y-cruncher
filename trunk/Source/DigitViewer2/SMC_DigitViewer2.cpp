@@ -6,6 +6,7 @@
  * 
  */
 
+#include "PrintHelpers.cpp"
 #include "DigitCount/DigitCount.cpp"
 #include "DigitHash/DigitHash.cpp"
 
@@ -13,6 +14,8 @@
 #include "RawToCompressed/RawToCompressed.cpp"
 #include "WordToRaw/WordToRaw.cpp"
 
+#include "DigitReaders/InconsistentMetadataException.cpp"
+#include "DigitReaders/ParsingTools.cpp"
 #include "DigitReaders/BasicTextReader.cpp"
 #include "DigitReaders/BasicYcdFileReader.cpp"
 #include "DigitReaders/BasicYcdSetReader.cpp"

@@ -19,7 +19,7 @@
 #include "PublicLibs/BasicLibs/StringTools/ymb_STR.h"
 #include "PublicLibs/BasicLibs/Alignment/AlignmentTools.h"
 #include "PublicLibs/SystemLibs/FileIO/FileIO.h"
-#include "DigitViewer/DigitReaders/InconsistentMetadataException.h"
+#include "InconsistentMetadataException.h"
 #include "BasicYcdSetReader.h"
 namespace DigitViewer2{
 ////////////////////////////////////////////////////////////////////////////////
@@ -103,11 +103,12 @@ void BasicYcdSetReader::add_search_path(std::string path){
     }
     m_paths.emplace_back(std::move(path));
 }
+void BasicYcdSetReader::flush_cache(){
+    m_files.erase(++m_files.begin(), m_files.end());
+}
 BasicYcdFileReader& BasicYcdSetReader::load_file(const std::string& path, uiL_t id){
     //  Loads a new file, checks all the metadata and updates "stream_end" and
     //  "max_id_length" if possible.
-
-    using namespace DigitViewer;
 
     //  Get id length.
     std::string id_string = std::to_string(id);
@@ -214,8 +215,6 @@ BasicYcdFileReader& BasicYcdSetReader::get_file(uiL_t id){
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 bool BasicYcdSetReader::range_is_available(uiL_t offset, uiL_t digits){
-    using namespace DigitViewer;
-
     //  Find file boundaries
     uiL_t start = offset;
     uiL_t end = offset + digits;
@@ -235,12 +234,13 @@ bool BasicYcdSetReader::range_is_available(uiL_t offset, uiL_t digits){
             std::string path = m_name + std::to_string(file) + ".ycd";
             Console::Warning("Inconsistent Metadata: \"" + path + "\"");
             bad = true;
-        }catch (FileIO::FileException&){
+        }catch (FileIO::FileException& e){
             if (!bad){
                 Console::Warning("The following needed files are missing or inaccessible:");
             }
             std::string path = m_name + std::to_string(file) + ".ycd";
             Console::println(path);
+            e.print();
             bad = true;
         }
     }
@@ -309,8 +309,6 @@ std::vector<BasicYcdSetReader::Command> BasicYcdSetReader::make_commands(
     char* output, bool stats,
     uiL_t offset, uiL_t digits
 ){
-    using namespace DigitViewer;
-
     //  Find file boundaries
     uiL_t start = offset;
     uiL_t end = offset + digits;
@@ -337,7 +335,7 @@ std::vector<BasicYcdSetReader::Command> BasicYcdSetReader::make_commands(
             );
         }catch (InconsistentMetaData&){
             throw;
-        }catch (FileIO::FileException&){
+        }catch (FileIO::FileException& e){
             if (m_stream_end != 0 && m_stream_end < end){
                 throw InvalidParametersException("This digit stream does not have enough digits.");
             }
@@ -346,6 +344,7 @@ std::vector<BasicYcdSetReader::Command> BasicYcdSetReader::make_commands(
             }
             std::string path = m_name + std::to_string(file) + ".ycd";
             Console::println(path);
+            e.print();
             bad = true;
         }
     }

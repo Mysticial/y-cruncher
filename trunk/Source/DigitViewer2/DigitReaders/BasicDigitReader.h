@@ -103,6 +103,8 @@ public:
     //  that will maximize performance.
     virtual upL_t recommend_buffer_size(uiL_t digits, upL_t limit = MAX_RECOMMENDED_BUFFER_SIZE) const = 0;
 
+    //  Flush local cache and close an excess handles associated with this reader.
+    virtual void flush_cache(){};
 
     //  Implementations are required to make both of these load functions
     //  thread-safe even if there is no benefit to concurrent calls.

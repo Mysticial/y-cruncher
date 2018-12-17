@@ -207,6 +207,8 @@ public:
     //  to find .ycd files associated with this digit stream.
     void add_search_path(std::string path);
 
+    virtual void flush_cache() override;
+
 public:
     virtual std::string first_digits            () override{ return m_first_digits; }
     virtual uiL_t       stream_end              () const override{ return m_stream_end; }

@@ -21,9 +21,9 @@
 #include "PublicLibs/BasicLibs/Alignment/AlignmentTools.h"
 #include "PublicLibs/BasicLibs/Concurrency/BlockSplitting.h"
 #include "PublicLibs/SystemLibs/FileIO/FileException.h"
+#include "DigitViewer2/Globals.h"
 #include "DigitViewer2/RawToCompressed/RawToCompressed.h"
-#include "DigitViewer/Globals.h"
-#include "DigitViewer/DigitReaders/ParsingTools.h"
+#include "ParsingTools.h"
 #include "BasicYcdFileReader.h"
 namespace DigitViewer2{
 ////////////////////////////////////////////////////////////////////////////////
@@ -34,8 +34,6 @@ BasicYcdFileReader::BasicYcdFileReader(std::string path)
     : m_file(std::move(path), FileIO::OPEN_READONLY)
 {
     //  Parse the file
-    using namespace DigitViewer;
-
     FileIO::BufferedReader reader(m_file);
 
     //  Start after the next newline.

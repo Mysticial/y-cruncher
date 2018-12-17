@@ -110,12 +110,15 @@ ufL_t GetFileSize(const std::string& path){
 }
 bool FileExists(const std::string& path){
     FILE *file = fopen(path.c_str(), "rb");
-    if (file == nullptr){
+    if (file != nullptr){
+        fclose(file);
+        return true;
+    }
+    int err = errno;
+    if (err == ENOENT){
         return false;
     }
-
-    fclose(file);
-    return true;
+    throw FileException("FileExists()", path, "Unable to open file. errno = " + std::to_string(err));
 }
 void RemoveFile(const std::string& path){
     remove(path.c_str());

@@ -180,7 +180,7 @@ RawFile::RawFile()
 {}
 RawFile::RawFile(std::string path, Mode mode, bool persistent)
     : m_path(std::move(path))
-    , m_persistent(true)
+    , m_persistent(persistent)
 {
     switch (mode){
     case CREATE:
@@ -386,7 +386,11 @@ void RawFile::close_and_set_size(ufL_t bytes){
 
     try{
         if (ftruncate(handle, bytes) != 0){
-            throw SystemException("RawFile::close_and_set_size()", "ftruncate() failed.", errno);
+            int err = errno;
+            if (::close(handle) == -1){
+                Console::Warning("RawFile::close_and_set_size(): Unable to close file.");
+            }
+            throw SystemException("RawFile::close_and_set_size()", "ftruncate() failed.", err);
         }
 
         if (::close(handle) == -1){

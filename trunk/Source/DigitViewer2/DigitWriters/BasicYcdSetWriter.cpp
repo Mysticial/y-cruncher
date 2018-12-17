@@ -17,7 +17,7 @@
 #include "PublicLibs/Exceptions/InvalidParametersException.h"
 #include "PublicLibs/BasicLibs/Alignment/DefaultAlignment.h"
 #include "PublicLibs/SystemLibs/FileIO/FileIO.h"
-#include "DigitViewer/DigitReaders/InconsistentMetadataException.h"
+#include "DigitViewer2/DigitReaders/InconsistentMetadataException.h"
 #include "DigitViewer2/DigitReaders/BasicYcdSetReader.h"
 #include "BasicYcdFileWriter.h"
 #include "BasicYcdSetWriter.h"

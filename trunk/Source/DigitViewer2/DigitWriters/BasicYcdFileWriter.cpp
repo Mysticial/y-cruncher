@@ -30,7 +30,7 @@
 #include "PublicLibs/BasicLibs/Alignment/AlignmentTools.h"
 #include "PublicLibs/SystemLibs/FileIO/FileException.h"
 #include "PublicLibs/SystemLibs/FileIO/FileIO.h"
-#include "DigitViewer/Globals.h"
+#include "DigitViewer2/Globals.h"
 #include "DigitViewer2/RawToCompressed/RawToCompressed.h"
 #include "BasicYcdFileWriter.h"
 namespace DigitViewer2{
@@ -58,8 +58,6 @@ BasicYcdFileWriter::BasicYcdFileWriter(
             : std::min((fileid + 1) * digits_per_file, stream_end)
     )
 {
-    using namespace DigitViewer;
-
     m_radix = radix;
 
     uiL_t s = m_digits_per_file * m_file_id;
@@ -211,8 +209,8 @@ u64_t* BasicYcdFileWriter::get_range(
     write_bytes = file_bytes;
 
     //  Don't skip the edge blocks even if it aligns properly.
-    //  The edge blocks are still needed if part of it is needed due to
-    //  misalignment of the digit offset within the block.
+    //  The edge blocks are still needed if the digit offset is mialigned
+    //  with respect to the word.
 
     //  Read start block.
 //    if (shift != 0){

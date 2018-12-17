@@ -15,6 +15,7 @@
 #include "PublicLibs/ConsoleIO/BasicIO.h"
 #include "PublicLibs/ConsoleIO/Label.h"
 #include "PublicLibs/SystemLibs/FileIO/FileException.h"
+#include "DigitViewer2/Globals.h"
 #include "DigitViewer2/DigitReaders/BasicDigitReader.h"
 #include "DigitViewer2/DigitReaders/BasicTextReader.h"
 #include "DigitViewer2/DigitReaders/BasicYcdSetReader.h"

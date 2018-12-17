@@ -5,6 +5,7 @@ CURRENT_DIR := DigitViewer2
 CURRENT :=
 
 
+CURRENT += PrintHelpers.cpp
 CURRENT += DigitCount/DigitCount.cpp
 CURRENT += DigitHash/DigitHash.cpp
 
@@ -12,6 +13,8 @@ CURRENT += RawToAscii/RawToAscii.cpp
 CURRENT += RawToCompressed/RawToCompressed.cpp
 CURRENT += WordToRaw/WordToRaw.cpp
 
+CURRENT += DigitReaders/InconsistentMetadataException.cpp
+CURRENT += DigitReaders/ParsingTools.cpp
 CURRENT += DigitReaders/BasicTextReader.cpp
 CURRENT += DigitReaders/BasicYcdFileReader.cpp
 CURRENT += DigitReaders/BasicYcdSetReader.cpp
