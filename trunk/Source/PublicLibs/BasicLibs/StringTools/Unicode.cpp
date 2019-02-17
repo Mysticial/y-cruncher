@@ -30,8 +30,15 @@ const char REPLACEMENT_UTF8[] = "\xef\xbf\xbd";
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 void utf8_skip_to_next_codepoint(const char*& str){
-    while ((str[0] & 0xc0) == 0x80){
+    while (true){
         str++;
+        unsigned ch = str[0];
+        if ((ch & 0x80u) == 0){
+            return;
+        }
+        if ((ch & 0xc0u) == 0xc0u){
+            return;
+        }
     }
 }
 u32_t utf8_to_unicode(const char*& str){

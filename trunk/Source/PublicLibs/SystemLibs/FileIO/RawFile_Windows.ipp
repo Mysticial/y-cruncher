@@ -45,6 +45,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 //  Dependencies
+#include "Settings.h"
 #include <algorithm>
 #include <Windows.h>
 #include "PublicLibs/ConsoleIO/BasicIO.h"
@@ -52,6 +53,7 @@
 #include "PublicLibs/Exceptions/InvalidParametersException.h"
 #include "PublicLibs/BasicLibs/StringTools/Unicode.h"
 #include "PublicLibs/BasicLibs/Alignment/AlignmentTools.h"
+#include "PublicLibs/SystemLibs/Environment/Environment.h"
 #include "FileException.h"
 #include "RawFile.h"
 namespace ymp{
@@ -102,6 +104,9 @@ void handle_error(DWORD errorcode, std::string path, std::string msg){
             break;
         case ERROR_DEVICE_NOT_CONNECTED:
             msg += "The device has been disconnected - Is the connection stable?";
+            break;
+        case ERROR_WORKING_SET_QUOTA:
+            msg += "Insufficient quota. System may be low on memory.";
             break;
         default:
             msg += "Unknown Error, See:\nhttp://msdn.microsoft.com/en-us/library/ms681381(VS.85).aspx";
@@ -248,7 +253,6 @@ RawFile::operator bool() const{
     return m_filehandle != INVALID_HANDLE_VALUE;
 }
 void RawFile::close(bool keep_file){
-    Console::println(m_path + " : " + std::to_string(keep_file));
     if (m_filehandle == INVALID_HANDLE_VALUE){
         return;
     }
@@ -411,6 +415,19 @@ void RawFile::check_alignment(const void* data, ufL_t offset, upL_t bytes){
         throw InvalidParametersException("RawFile::check_alignment()", "Length is misaligned.");
     }
 }
+upL_t RawFile::pick_buffer_size(upL_t bytes){
+    //  Speculative work-around for quota errors (1453) that may occur for large
+    //  accesses when the system is low on memory.
+    if (bytes <= CHECK_MEM_THRESHOLD){
+        return bytes;
+    }
+    upL_t buffer = Environment::GetFreePhysicalMemory();
+    buffer = Alignment::align_int_down<ALIGNMENT>(buffer / 2);
+    buffer = std::max(buffer, CHECK_MEM_THRESHOLD);
+    buffer = std::min(buffer, bytes);
+    buffer = std::min(buffer, MAX_IO_BYTES);
+    return buffer;
+}
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -433,10 +450,12 @@ upL_t RawFile::load(void* data, ufL_t offset, upL_t bytes, bool throw_on_partial
         handle_error(errorcode, m_path, "SetFilePointerEx() failed.");
     }
 
+    upL_t block_size = pick_buffer_size(bytes);
+
     //  Read
     upL_t processed = 0;
     while (bytes > 0){
-        upL_t current = std::min(bytes, MAX_IO_BYTES);
+        upL_t current = std::min(bytes, block_size);
 
         DWORD IO_bytes;
         bool ret = !ReadFile(m_filehandle, data, (DWORD)current, &IO_bytes, nullptr);
@@ -480,10 +499,12 @@ upL_t RawFile::store(const void* data, ufL_t offset, upL_t bytes, bool throw_on_
         handle_error(errorcode, m_path, "SetFilePointerEx() failed.");
     }
 
+    upL_t block_size = pick_buffer_size(bytes);
+
     //  Write
     upL_t processed = 0;
     while (bytes > 0){
-        upL_t current = std::min(bytes, MAX_IO_BYTES);
+        upL_t current = std::min(bytes, block_size);
 
         DWORD IO_bytes;
         bool ret = !WriteFile(m_filehandle, data, (DWORD)current, &IO_bytes, nullptr);

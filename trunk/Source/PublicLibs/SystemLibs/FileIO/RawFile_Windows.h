@@ -33,6 +33,8 @@ enum Mode{
 ////////////////////////////////////////////////////////////////////////////////
 class RawFile{
     static const upL_t MAX_IO_BYTES = (upL_t)1 << 30;
+    static const upL_t CHECK_MEM_THRESHOLD = (upL_t)64 << 20;
+    static const upL_t ALIGNMENT = 4096;
     static const bool RAW_IO = true;
 
 public:
@@ -68,6 +70,7 @@ public:
 private:
     void set_size(ufL_t bytes);
     void check_alignment(const void* data, ufL_t offset, upL_t bytes);
+    static upL_t pick_buffer_size(upL_t bytes);
 
 private:
     void* m_filehandle;
