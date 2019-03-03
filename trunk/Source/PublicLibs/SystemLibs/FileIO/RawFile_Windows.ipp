@@ -45,7 +45,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 //  Dependencies
-#include "Settings.h"
 #include <algorithm>
 #include <Windows.h>
 #include "PublicLibs/ConsoleIO/BasicIO.h"
@@ -337,7 +336,7 @@ void RawFile::close_and_set_size(ufL_t bytes){
 }
 void RawFile::rename(std::string path, bool readonly){
     if (m_filehandle == INVALID_HANDLE_VALUE){
-        throw InvalidParametersException("RawFile::read()", "File isn't open.");
+        throw FileException("RawFile::rename()", path, "File isn't open.");
     }
 
     bool persistent = m_persistent;
@@ -357,8 +356,8 @@ void RawFile::rename(std::string path, bool readonly){
         if (err != EEXIST){
             throw FileException(
                 err, "RawFile::rename()",
-                "Unable to rename file.",
-                old_path
+                old_path,
+                "Unable to rename file."
             );
         }
 
@@ -366,8 +365,8 @@ void RawFile::rename(std::string path, bool readonly){
         if (_wremove(new_wpath.c_str())){
             throw FileException(
                 err, "RawFile::rename()",
-                "Unable to rename file because the existing one can't be deleted.",
-                old_path
+                old_path,
+                "Unable to rename file because the existing one can't be deleted."
             );
         }
 
@@ -377,8 +376,8 @@ void RawFile::rename(std::string path, bool readonly){
             _get_errno(&err);
             throw FileException(
                 err, "RawFile::rename()",
-                "Unable to rename file.",
-                old_path
+                old_path,
+                "Unable to rename file."
             );
         }
     }

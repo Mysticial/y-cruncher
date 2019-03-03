@@ -122,7 +122,7 @@ void warn_fallocate_fail(const std::string& path){
 void warn_ftruncate_fail(const std::string& path){
     static FailPrinter_ftruncate printer(path);
 }
-void handle_error(int errorcode, std::string path, std::string msg){
+void handle_error(int errorcode, const char* function, std::string path, std::string msg){
     msg += "\n\n";
     switch (errorcode){
         case EACCES:
@@ -143,7 +143,7 @@ void handle_error(int errorcode, std::string path, std::string msg){
         default:
             msg += "Unknown C/C++ Error";
     }
-    throw FileException(errorcode, "", std::move(path), std::move(msg));
+    throw FileException(errorcode, function, std::move(path), std::move(msg));
 }
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -207,7 +207,7 @@ RawFile::RawFile(std::string path, Mode mode, bool persistent)
             }
 
             int errorcode = errno;
-            handle_error(errorcode, m_path, "Unable to create file.");
+            handle_error(errorcode, "RawFile()", m_path, "Unable to create file.");
         }while (false);
 
         try{
@@ -240,7 +240,7 @@ RawFile::RawFile(std::string path, Mode mode, bool persistent)
             }
 
             int errorcode = errno;
-            handle_error(errorcode, m_path, "Unable to open file.");
+            handle_error(errorcode, "RawFile()", m_path, "Unable to open file.");
         }while (false);
         break;
 
@@ -266,7 +266,7 @@ RawFile::RawFile(std::string path, Mode mode, bool persistent)
             }
 
             int errorcode = errno;
-            handle_error(errorcode, m_path, "Unable to open file.");
+            handle_error(errorcode, "RawFile()", m_path, "Unable to open file.");
         }while (false);
         break;
 
@@ -299,7 +299,7 @@ RawFile::RawFile(ufL_t bytes, std::string path, bool persistent)
         }
 
         int errorcode = errno;
-        handle_error(errorcode, m_path, "Unable to create file.");
+        handle_error(errorcode, "RawFile()", m_path, "Unable to create file.");
     }while (false);
 
     try{
@@ -381,7 +381,7 @@ void RawFile::close_and_set_size(ufL_t bytes){
     );
     if (handle == -1){
         int errorcode = errno;
-        handle_error(errorcode, path, "Unable to open file.");
+        handle_error(errorcode, "RawFile::close_and_set_size()", path, "Unable to open file.");
     }
 
     try{
@@ -405,12 +405,12 @@ void RawFile::close_and_set_size(ufL_t bytes){
 }
 void RawFile::rename(std::string path, bool readonly){
     if (m_filehandle == -1){
-        throw InvalidParametersException("RawFile::read()", "File isn't open.");
+        throw FileException("RawFile::rename()", path, "File isn't open.");
     }
 
     //  Flush
     if (fsync(m_filehandle) == -1){
-        Console::Warning("L0_RaidFile::~L0_RaidFile(): Unable to flush file.");
+        Console::Warning("RawFile::rename(): Unable to flush file.");
     }
 
     bool persistent = m_persistent;
@@ -423,19 +423,19 @@ void RawFile::rename(std::string path, bool readonly){
         //  Failed because of something other than file already exists.
         if (errno != EEXIST){
             int errorcode = errno;
-            handle_error(errorcode, old_path, "Unable to rename file.");
+            handle_error(errorcode, "RawFile::rename()", old_path, "Unable to rename file.");
         }
 
         //  File already exists. Remove the existing one.
         if (remove(path.c_str())){
             int errorcode = errno;
-            handle_error(errorcode, old_path, "Unable to rename file because the existing one can't be deleted.");
+            handle_error(errorcode, "RawFile::rename()", old_path, "Unable to rename file because the existing one can't be deleted.");
         }
 
         //  Try one last time.
         if (::rename(old_path.c_str(), path.c_str())){
             int errorcode = errno;
-            handle_error(errorcode, old_path, "Unable to rename file.");
+            handle_error(errorcode, "RawFile::rename()", old_path, "Unable to rename file.");
         }
     }
 
@@ -481,7 +481,7 @@ upL_t RawFile::load(void* data, ufL_t offset, upL_t bytes, bool throw_on_partial
     //  Set File Pointer
     if (lseek64(m_filehandle, offset, SEEK_SET) == -1){
         int errorcode = errno;
-        handle_error(errorcode, m_path, "lseek64() failed.");
+        handle_error(errorcode, "RawFile::load()", m_path, "lseek64() failed.");
     }
 
     //  Read
@@ -492,7 +492,7 @@ upL_t RawFile::load(void* data, ufL_t offset, upL_t bytes, bool throw_on_partial
         spL_t IO_bytes = read(m_filehandle, data, current);
         if (IO_bytes == -1){
             int errorcode = errno;
-            handle_error(errorcode, m_path, "read() failed.");
+            handle_error(errorcode, "RawFile::load()", m_path, "read() failed.");
         }
 
         processed += IO_bytes;
@@ -525,7 +525,7 @@ upL_t RawFile::store(const void* data, ufL_t offset, upL_t bytes, bool throw_on_
     //  Set File Pointer
     if (lseek64(m_filehandle, offset, SEEK_SET) == -1){
         int errorcode = errno;
-        handle_error(errorcode, m_path, "lseek64() failed.");
+        handle_error(errorcode, "RawFile::store()", m_path, "lseek64() failed.");
     }
 
     //  Write
@@ -536,7 +536,7 @@ upL_t RawFile::store(const void* data, ufL_t offset, upL_t bytes, bool throw_on_
         spL_t IO_bytes = write(m_filehandle, data, current);
         if (IO_bytes == -1){
             int errorcode = errno;
-            handle_error(errorcode, m_path, "write() failed.");
+            handle_error(errorcode, "RawFile::store()", m_path, "write() failed.");
         }
 
         processed += IO_bytes;

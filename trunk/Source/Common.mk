@@ -35,7 +35,7 @@ CFLAGS += -D X64_13_Haswell        -march=haswell -mtune=haswell
 #BINARY := 16-KNL
 #CFLAGS += -D X64_16_KnightsLanding -march=knl -mtune=knl
 
-#BINARY := 17-ZD1
+#BINARY := 17-ZN1
 #CFLAGS += -D X64_17_Zen            -march=znver1 -mtune=znver1
 
 #BINARY := 17-SKX

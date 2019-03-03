@@ -24,6 +24,7 @@
 #ifdef YMP_STANDALONE
 #include "PrivateLibs/SystemLibs/ParallelFrameworks/ParallelFrameworks.h"
 #endif
+#include "DigitViewer2/Globals.h"
 #include "DigitViewer2/PrintHelpers.h"
 #include "DigitViewer2/RawToAscii/RawToAscii.h"
 #include "DigitViewer2/DigitWriters/BasicDigitWriter.h"
@@ -362,10 +363,23 @@ void to_ycd_file_all(BasicDigitReader& reader){
     if (limit == 0){
         limit = (uiL_t)0 - 1;
     }
+    if (limit < MIN_COMPRESS_DIGITS){
+        Console::println("Too few digits to compress.");
+        return;
+    }
 
     Console::println("Starting Digit: 1");
     uiL_t start = 1;
-    uiL_t end   = Console::scan_label_uiL_range("Ending Digit:   ", start, limit);
+    uiL_t end;
+    while (true){
+        end = Console::scan_label_uiL_range("Ending Digit:   ", 0, limit);
+        if (end >= MIN_COMPRESS_DIGITS){
+            break;
+        }
+        Console::print("Please select at least ", 'Y');
+        Console::print_commas(MIN_COMPRESS_DIGITS, 'G');
+        Console::println(" digits.", 'Y');
+    }
     start--;
     uiL_t digits = end - start;
     Console::println();
@@ -386,8 +400,8 @@ void to_ycd_file_all(BasicDigitReader& reader){
                 );
             }
         }
-        if (digits_per_file < 1000000){
-            Console::Warning("Must be at least 1,000,000.\n");
+        if (digits_per_file < MIN_COMPRESS_DIGITS){
+            Console::Warning("Must be at least " + StringTools::tostr((uiL_t)MIN_COMPRESS_DIGITS) + ".\n");
             continue;
         }
         break;
@@ -420,13 +434,13 @@ void to_ycd_file_partial(BasicDigitReader& reader){
         limit = (uiL_t)0 - 1;
     }
 
-    if (limit < 1000000){
+    if (limit < MIN_COMPRESS_DIGITS){
         Console::println("Too few digits to compress.");
         return;
     }
 
     ufL_t digits_per_file = (ufL_t)Console::scan_label_uiL_suffix_range(
-        "Digits per file: ", 1000000, limit
+        "Digits per file: ", MIN_COMPRESS_DIGITS, limit
     );
 
     Console::println();
