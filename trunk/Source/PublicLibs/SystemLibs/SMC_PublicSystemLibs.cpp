@@ -13,7 +13,9 @@
 #include "FileIO/FileException.cpp"
 #include "FileIO/FileIO.cpp"
 #include "FileIO/BasicFile.cpp"
-#include "FileIO/RawFile.cpp"
+#include "FileIO/AlignedAccessFile.cpp"
+#include "FileIO/RawFile/RawFile.cpp"
+#include "FileIO/BufferredStreamFile.cpp"
 
 #include "Concurrency/Parallelizers.cpp"
 #include "ManagedMemory/CppAllocator.cpp"

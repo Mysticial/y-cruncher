@@ -52,7 +52,7 @@ bool cpu_x86::detect_OS_AVX(){
     bool avxSupported = false;
 
     int cpuInfo[4];
-    cpuid(cpuInfo, 1);
+    cpuid(cpuInfo, 1, 0);
 
     bool osUsesXSAVE_XRSTORE = (cpuInfo[2] & (1 << 27)) != 0;
     bool cpuAVXSuport = (cpuInfo[2] & (1 << 28)) != 0;
@@ -76,7 +76,7 @@ std::string cpu_x86::get_vendor_string(){
     s32_t CPUInfo[4];
     char name[13];
 
-    cpuid(CPUInfo, 0);
+    cpuid(CPUInfo, 0, 0);
     memcpy(name + 0, &CPUInfo[1], 4);
     memcpy(name + 4, &CPUInfo[3], 4);
     memcpy(name + 8, &CPUInfo[2], 4);
@@ -103,15 +103,15 @@ void cpu_x86::detect_host(){
     }
 
     int info[4];
-    cpuid(info, 0);
+    cpuid(info, 0, 0);
     int nIds = info[0];
 
-    cpuid(info, 0x80000000);
+    cpuid(info, 0x80000000, 0);
     u32_t nExIds = info[0];
 
     //  Detect Features
     if (nIds >= 0x00000001){
-        cpuid(info, 0x00000001);
+        cpuid(info, 0x00000001, 0);
         HW_MMX    = (info[3] & ((int)1 << 23)) != 0;
         HW_SSE    = (info[3] & ((int)1 << 25)) != 0;
         HW_SSE2   = (info[3] & ((int)1 << 26)) != 0;
@@ -128,7 +128,7 @@ void cpu_x86::detect_host(){
         HW_RDRAND = (info[2] & ((int)1 << 30)) != 0;
     }
     if (nIds >= 0x00000007){
-        cpuid(info, 0x00000007);
+        cpuid(info, 0x00000007, 0);
         HW_AVX2         = (info[1] & ((int)1 <<  5)) != 0;
 
         HW_BMI1         = (info[1] & ((int)1 <<  3)) != 0;
@@ -164,9 +164,13 @@ void cpu_x86::detect_host(){
         HW_AVX512_VPCLMUL   = (info[2] & ((int)1 << 10)) != 0;
         HW_AVX512_BITALG    = (info[2] & ((int)1 << 12)) != 0;
 
+
+        cpuid(info, 0x00000007, 1);
+        HW_AVX512_BF16      = (info[0] & ((int)1 <<  5)) != 0;
+
     }
     if (nExIds >= 0x80000001){
-        cpuid(info, 0x80000001);
+        cpuid(info, 0x80000001, 0);
         HW_x64          = (info[3] & ((int)1 << 29)) != 0;
         HW_ABM          = (info[2] & ((int)1 <<  5)) != 0;
         HW_SSE4a        = (info[2] & ((int)1 <<  6)) != 0;
@@ -218,7 +222,7 @@ void cpu_x86::print() const{
 
     Console::println("SIMD: 256-bit");
     Console::print("  * AVX         = "); print_bool(HW_AVX);
-    Console::print("  * XOP         = "); print_bool(HW_XOP);
+    Console::print("    XOP         = "); print_bool(HW_XOP);
     Console::print("  * FMA3        = "); print_bool(HW_FMA3);
     Console::print("  * FMA4        = "); print_bool(HW_FMA4);
     Console::print("  * AVX2        = "); print_bool(HW_AVX2);
@@ -244,6 +248,7 @@ void cpu_x86::print() const{
     Console::print("    AVX512-VPCLMUL   = "); print_bool(HW_AVX512_VPCLMUL);
     Console::print("    AVX512-VNNI      = "); print_bool(HW_AVX512_VNNI);
     Console::print("    AVX512-BITALG    = "); print_bool(HW_AVX512_BITALG);
+    Console::print("    AVX512-BF16      = "); print_bool(HW_AVX512_BF16);
     Console::println();
 }
 void cpu_x86::print_host(){

@@ -27,7 +27,7 @@
 //  Dependencies
 #include <mutex>
 #include "PublicLibs/BasicLibs/SparseRegion.h"
-#include "PublicLibs/SystemLibs/FileIO/RawFile.h"
+#include "PublicLibs/SystemLibs/FileIO/RawFile/RawFile.h"
 #include "BasicDigitWriter.h"
 namespace DigitViewer2{
     using namespace ymp;
@@ -36,7 +36,7 @@ namespace DigitViewer2{
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 class BasicYcdFileWriter : public BasicDigitWriter{
-    static const upL_t FILE_ALIGNMENT = FileIO::RAWIO_ALIGNMENT;
+    static const upL_t FILE_ALIGNMENT = FileIO::DEFAULT_FILE_ALIGNMENT;
 
 public:
     BasicYcdFileWriter(
@@ -57,7 +57,7 @@ public:
     virtual void store_digits(
         const char* input,
         uiL_t offset, upL_t digits,
-        void* P, upL_t Pbytes,
+        const AlignedBufferC<BUFFER_ALIGNMENT>& buffer,
         BasicParallelizer& parallelizer, upL_t tds
     ) override;
 

@@ -51,10 +51,10 @@ struct ExceptionWrapper{
 //public:
     ExceptionWrapper(const Exception& exception)
         : m_deleter(&deleter)
-        , m_stream(exception.serialize())
+        , m_stream(serialize_exception(exception))
     {}
     void rethrow(){
-        Exception::rethrow(m_stream);
+        rethrow_serialized_exception(m_stream);
     }
     void suicide(){
         m_deleter(this);

@@ -34,6 +34,8 @@ enum NumberFormat{
 //  Integer
 YM_NO_INLINE    std::string tostr       (uiL_t x, NumberFormat format = NORMAL);
 YM_NO_INLINE    std::string tostr       (siL_t x, NumberFormat format = NORMAL);
+static          std::string tostr       (u32_t x, NumberFormat format = NORMAL){ return tostr((uiL_t)x, format); }
+static          std::string tostr       (s32_t x, NumberFormat format = NORMAL){ return tostr((siL_t)x, format); }
 YM_NO_INLINE    std::string tostrln     (uiL_t x, NumberFormat format = NORMAL);
 YM_NO_INLINE    std::string tostrln     (siL_t x, NumberFormat format = NORMAL);
 static          std::string tostrln     (u32_t x, NumberFormat format = NORMAL){ return tostrln((uiL_t)x, format); }

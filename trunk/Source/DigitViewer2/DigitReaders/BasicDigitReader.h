@@ -14,7 +14,9 @@
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 //  Dependencies
+#include "PublicLibs/BasicLibs/LinearHeapBuffer.h"
 #include "PublicLibs/BasicLibs/Concurrency/BasicParallelizer.h"
+#include "DigitViewer2/Globals.h"
 #include "DigitViewer2/DigitCount/DigitCount.h"
 #include "DigitViewer2/DigitHash/DigitHash.h"
 namespace DigitViewer2{
@@ -80,10 +82,6 @@ private:
 ////////////////////////////////////////////////////////////////////////////////
 class BasicDigitReader{
 public:
-    //  Buffers need to be aligned to the disk I/O sector size since implementations
-    //  will use raw I/O.
-    static const upL_t BUFFER_ALIGNMENT = 4096;
-
     static const upL_t MAX_RECOMMENDED_BUFFER_SIZE = (upL_t)1 << 30;
 
 public:
@@ -122,9 +120,9 @@ public:
     //  If an exception is thrown, the contents of "stats" is undefined.
     virtual void load_stats(
         DigitStats& stats,
-        uiL_t offset, uiL_t digits,                 //  Range of digits to load and process.
-        void* P, upL_t Pbytes,                      //  Scratch buffer. Must be aligned to BUFFER_ALIGNMENT.
-        BasicParallelizer& parallelizer, upL_t tds  //  Parallelism
+        uiL_t offset, uiL_t digits,                     //  Range of digits to load and process.
+        const AlignedBufferC<BUFFER_ALIGNMENT>& buffer, //  Scratch buffer.
+        BasicParallelizer& parallelizer, upL_t tds      //  Parallelism
     ) = 0;
 
     //  Load the digits [offset, offset + digits) and optionally computes stats.
@@ -134,10 +132,10 @@ public:
     //  If an exception is thrown, the contents of "output" and "stats" are undefined.
     virtual void load_digits(
         char* output,
-        DigitStats* stats,                          //  If null, no stats are computed.
-        uiL_t offset, upL_t digits,                 //  Range of digits to load and process.
-        void* P, upL_t Pbytes,                      //  Scratch buffer. Must be aligned to BUFFER_ALIGNMENT.
-        BasicParallelizer& parallelizer, upL_t tds  //  Parallelism
+        DigitStats* stats,                              //  If null, no stats are computed.
+        uiL_t offset, upL_t digits,                     //  Range of digits to load and process.
+        const AlignedBufferC<BUFFER_ALIGNMENT>& buffer, //  Scratch buffer.
+        BasicParallelizer& parallelizer, upL_t tds      //  Parallelism
     ) = 0;
 
 

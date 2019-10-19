@@ -14,7 +14,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 //  Dependencies
-#include "PublicLibs/ArchSpecificLibs/Shuffle/x86_256/Unpack_x86_AVX2.h"
+#include "PublicLibs/ArchSpecificLibs/Shuffle/x86_256/AdjacentLanePermute_x86_256.h"
 #include "DigitViewer2/RawToDecKernels/Kernels_dec_to_i64_x64_AVX512-BW.h"
 #include "DigitViewer2/RawToDecKernels/Kernels_i64_to_dec_x64_AVX512-BW.h"
 namespace DigitViewer2{
@@ -41,10 +41,10 @@ YM_FORCE_INLINE bool dec_to_i64_u8_x64_AVX512BW(__m512i* T, const char* raw, upL
         a0 = _mm512_i64gather_epi64(GATHER, raw + 11, 1);
 #else
         {
-            __m256i r0 = SIMD::load2_m128i_AVX(raw +  3, raw +  41);
-            __m256i r1 = SIMD::load2_m128i_AVX(raw + 22, raw +  60);
-            __m256i r2 = SIMD::load2_m128i_AVX(raw + 79, raw + 117);
-            __m256i r3 = SIMD::load2_m128i_AVX(raw + 98, raw + 136);
+            __m256i r0 = SIMD::mm256_splitload_si256(raw +  3, raw +  41);
+            __m256i r1 = SIMD::mm256_splitload_si256(raw + 22, raw +  60);
+            __m256i r2 = SIMD::mm256_splitload_si256(raw + 79, raw + 117);
+            __m256i r3 = SIMD::mm256_splitload_si256(raw + 98, raw + 136);
 
             __m512i z0 = _mm512_inserti64x4(_mm512_castsi256_si512(r0), r2, 1);
             __m512i z1 = _mm512_inserti64x4(_mm512_castsi256_si512(r1), r3, 1);
@@ -85,10 +85,10 @@ YM_FORCE_INLINE void i64_to_dec_u8_x64_AVX512BW(char* raw, const __m512i* T, upL
         __m512i z0 = _mm512_unpacklo_epi64(b0, a0);
         __m512i z1 = _mm512_unpackhi_epi64(b0, a0);
 
-        SIMD::store2_m128i_AVX(raw +  3, raw +  41, _mm512_castsi512_si256(z0));
-        SIMD::store2_m128i_AVX(raw + 22, raw +  60, _mm512_castsi512_si256(z1));
-        SIMD::store2_m128i_AVX(raw + 79, raw + 117, _mm512_extracti64x4_epi64(z0, 1));
-        SIMD::store2_m128i_AVX(raw + 98, raw + 136, _mm512_extracti64x4_epi64(z1, 1));
+        SIMD::mm256_splitstore_si256(raw +  3, raw +  41, _mm512_castsi512_si256(z0));
+        SIMD::mm256_splitstore_si256(raw + 22, raw +  60, _mm512_castsi512_si256(z1));
+        SIMD::mm256_splitstore_si256(raw + 79, raw + 117, _mm512_extracti64x4_epi64(z0, 1));
+        SIMD::mm256_splitstore_si256(raw + 98, raw + 136, _mm512_extracti64x4_epi64(z1, 1));
 #endif
 
         raw += 152;

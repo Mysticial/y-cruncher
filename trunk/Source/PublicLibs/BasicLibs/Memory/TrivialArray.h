@@ -78,12 +78,12 @@ public:
 
 
 public:
-    const Type& operator[](upL_t index) const{
-        return m_ptr[index];
-    }
-    Type& operator[](upL_t index){
-        return m_ptr[index];
-    }
+    //const Type& operator[](upL_t index) const{
+    //    return m_ptr[index];
+    //}
+    //Type& operator[](upL_t index){
+    //    return m_ptr[index];
+    //}
 
     //  Implicit cast to same-typed pointer.
     operator const Type*() const{

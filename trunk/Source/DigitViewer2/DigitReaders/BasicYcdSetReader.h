@@ -222,14 +222,14 @@ public:
     virtual void load_stats(
         DigitStats& stats,
         uiL_t offset, uiL_t digits,
-        void* P, upL_t Pbytes,
+        const AlignedBufferC<BUFFER_ALIGNMENT>& buffer,
         BasicParallelizer& parallelizer, upL_t tds
     ) override;
     virtual void load_digits(
         char* output,
         DigitStats* stats,
         uiL_t offset, upL_t digits,
-        void* P, upL_t Pbytes,
+        const AlignedBufferC<BUFFER_ALIGNMENT>& buffer,
         BasicParallelizer& parallelizer, upL_t tds
     ) override;
 

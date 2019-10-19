@@ -4,8 +4,8 @@
  * Date Created     : 07/31/2011
  * Last Modified    : 03/24/2018
  * 
- *      Please read the comments for "RawFile_Windows.ipp" before you continue
- *  reading here.
+ *      Please read the comments for "RawFile_Windows.ipp" before you
+ *  continue reading here.
  * 
  *  Windows is "barely" able to achieve zero-overhead disk access thanks to two
  *  key WinAPI features. Unfortunately, Linux seems to fall slightly short.
@@ -69,7 +69,7 @@
 #include "PublicLibs/Exceptions/InvalidParametersException.h"
 #include "PublicLibs/Exceptions/SystemException.h"
 #include "PublicLibs/BasicLibs/Alignment/AlignmentTools.h"
-#include "FileException.h"
+#include "PublicLibs/SystemLibs/FileIO/FileException.h"
 #include "RawFile.h"
 namespace ymp{
 namespace FileIO{
@@ -90,16 +90,9 @@ struct FailPrinter_O_DIRECT{
 };
 struct FailPrinter_fallocate{
     FailPrinter_fallocate(const std::string& path){
-        int errorcode = errno;
-        if (errorcode == 95){
-            Console::Warning(
-                "fallocate() is not supported on this volume. Expect performance degradation.\n"
-            );
-        }else{
-            Console::Warning(
-                "fallocate() has failed. (errno = " + std::to_string(errorcode) +  ")  Expect performance degradation.\n"
-            );
-        }
+        Console::Warning(
+            "fallocate() is not supported on this volume. Expect performance degradation.\n"
+        );
         Console::println_labelc("Path: ", path, 'Y');
         Console::Warning("Further messages for this warning will be suppressed.\n");
     }
@@ -116,8 +109,21 @@ struct FailPrinter_ftruncate{
 void warn_O_DIRECT_fail(const std::string& path){
     static FailPrinter_O_DIRECT printer(path);
 }
-void warn_fallocate_fail(const std::string& path){
-    static FailPrinter_fallocate printer(path);
+void warn_fallocate_fail(int errorcode, const std::string& path){
+    switch (errorcode){
+    case EOPNOTSUPP:{
+        static FailPrinter_fallocate printer(path);
+        return;
+    }
+    case ENOSPC:
+        Console::Warning("fallocate() has failed. Disk is full.\n");
+        break;
+    default:
+        Console::Warning(
+            "fallocate() has failed. (errno = " + std::to_string(errorcode) +  ")  Expect performance degradation.\n"
+        );
+    }
+    Console::println_labelc("Path: ", path, 'Y');
 }
 void warn_ftruncate_fail(const std::string& path){
     static FailPrinter_ftruncate printer(path);
@@ -140,8 +146,14 @@ void handle_error(int errorcode, const char* function, std::string path, std::st
         case EIO:
             msg += "Hardware Error";
             break;
+        case EMFILE:
+            msg += "Too many open files. Try increasing the ulimit for file handles.";
+            break;
+        case EINVAL :
+            msg += "Invalid parameter. This can happen if the sector alignment is too small.";
+            break;
         default:
-            msg += "Unknown C/C++ Error";
+            msg += "Unknown POSIX or C/C++ Error";
     }
     throw FileException(errorcode, function, std::move(path), std::move(msg));
 }
@@ -153,41 +165,18 @@ void handle_error(int errorcode, const char* function, std::string path, std::st
 RawFile::~RawFile(){
     close(m_persistent);
 }
-RawFile::RawFile(RawFile&& x)
-    : m_filehandle(x.m_filehandle)
-    , m_path(std::move(x.m_path))
-    , m_persistent(x.m_persistent)
-{
-    x.m_filehandle = -1;
-    x.m_persistent = false;
-}
-void RawFile::operator=(RawFile&& x){
-    close(m_persistent);
-    m_filehandle = x.m_filehandle;
-    m_path = std::move(x.m_path);
-    m_persistent = x.m_persistent;
-    x.m_filehandle = -1;
-    x.m_persistent = false;
-}
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 //  Constructors
-RawFile::RawFile()
-    : m_filehandle(-1)
-    , m_persistent(false)
-{}
-RawFile::RawFile(std::string path, Mode mode, bool persistent)
-    : m_path(std::move(path))
-    , m_persistent(persistent)
-{
+void RawFile::open(Mode mode){
     switch (mode){
     case CREATE:
         do{
-            m_filehandle = open(
+            m_filehandle = ::open(
                 m_path.c_str(),
-                O_CREAT | O_RDWR | O_LARGEFILE | (RAW_IO ? O_DIRECT : 0),
+                O_CREAT | O_RDWR | O_LARGEFILE | (m_raw_io ? O_DIRECT : 0),
                 S_IRUSR | S_IWUSR
             );
             if (m_filehandle != -1){
@@ -196,7 +185,7 @@ RawFile::RawFile(std::string path, Mode mode, bool persistent)
 
             if (errno == EINVAL){
                 warn_O_DIRECT_fail(m_path);
-                m_filehandle = open(
+                m_filehandle = ::open(
                     m_path.c_str(),
                     O_CREAT | O_RDWR | O_LARGEFILE,
                     S_IRUSR | S_IWUSR
@@ -220,9 +209,9 @@ RawFile::RawFile(std::string path, Mode mode, bool persistent)
 
     case OPEN_READONLY:
         do{
-            m_filehandle = open(
+            m_filehandle = ::open(
                 m_path.c_str(),
-                O_RDONLY | O_LARGEFILE | (RAW_IO ? O_DIRECT : 0)
+                O_RDONLY | O_LARGEFILE | (m_raw_io ? O_DIRECT : 0)
             );
             if (m_filehandle != -1){
                 break;
@@ -230,7 +219,7 @@ RawFile::RawFile(std::string path, Mode mode, bool persistent)
 
             if (errno == EINVAL){
                 warn_O_DIRECT_fail(m_path);
-                m_filehandle = open(
+                m_filehandle = ::open(
                     m_path.c_str(),
                     O_RDONLY | O_LARGEFILE
                 );
@@ -246,9 +235,9 @@ RawFile::RawFile(std::string path, Mode mode, bool persistent)
 
     case OPEN_READWRITE:
         do{
-            m_filehandle = open(
+            m_filehandle = ::open(
                 m_path.c_str(),
-                O_RDWR | O_LARGEFILE | (RAW_IO ? O_DIRECT : 0)
+                O_RDWR | O_LARGEFILE | (m_raw_io ? O_DIRECT : 0)
             );
             if (m_filehandle != -1){
                 break;
@@ -256,7 +245,7 @@ RawFile::RawFile(std::string path, Mode mode, bool persistent)
 
             if (errno == EINVAL){
                 warn_O_DIRECT_fail(m_path);
-                m_filehandle = open(
+                m_filehandle = ::open(
                     m_path.c_str(),
                     O_RDWR | O_LARGEFILE
                 );
@@ -272,14 +261,30 @@ RawFile::RawFile(std::string path, Mode mode, bool persistent)
 
     }
 }
-RawFile::RawFile(ufL_t bytes, std::string path, bool persistent)
-    : m_path(std::move(path))
+RawFile::RawFile(
+    ukL_t alignment_k,
+    std::string path, Mode mode,
+    bool persistent, bool raw_io
+)
+    : AlignedAccessFile(alignment_k, std::move(path))
     , m_persistent(persistent)
+    , m_raw_io(raw_io)
+{
+    open(mode);
+}
+RawFile::RawFile(
+    ukL_t alignment_k,
+    ufL_t bytes, std::string path,
+    bool persistent, bool raw_io
+)
+    : AlignedAccessFile(alignment_k, std::move(path))
+    , m_persistent(persistent)
+    , m_raw_io(raw_io)
 {
     do{
-        m_filehandle = open(
+        m_filehandle = ::open(
             m_path.c_str(),
-            O_CREAT | O_RDWR | O_LARGEFILE | (RAW_IO ? O_DIRECT : 0),
+            O_CREAT | O_RDWR | O_LARGEFILE | (raw_io ? O_DIRECT : 0),
             S_IRUSR | S_IWUSR
         );
         if (m_filehandle != -1){
@@ -288,7 +293,7 @@ RawFile::RawFile(ufL_t bytes, std::string path, bool persistent)
 
         if (errno == EINVAL){
             warn_O_DIRECT_fail(m_path);
-            m_filehandle = open(
+            m_filehandle = ::open(
                 m_path.c_str(),
                 O_CREAT | O_RDWR | O_LARGEFILE,
                 S_IRUSR | S_IWUSR
@@ -309,7 +314,7 @@ RawFile::RawFile(ufL_t bytes, std::string path, bool persistent)
         if (!fallocate(m_filehandle, 0, 0, bytes)){
             return;
         }
-        warn_fallocate_fail(m_path);
+        warn_fallocate_fail(errno, m_path);
 
         //  If we can't allocate up front, the next best thing is a sparse file.
         if (!ftruncate(m_filehandle, bytes)){
@@ -330,25 +335,28 @@ RawFile::RawFile(ufL_t bytes, std::string path, bool persistent)
 RawFile::operator bool() const{
     return m_filehandle != -1;
 }
+void RawFile::flush(){
+    if (fsync(m_filehandle) == -1){
+        Console::Warning("RawFile::close(): Unable to flush file.");
+    }
+}
 void RawFile::close(bool keep_file){
     if (m_filehandle == -1){
         return;
     }
 
     //  Flush
-    if (fsync(m_filehandle) == -1){
-        Console::Warning("RawFile::~RawFile(): Unable to flush file.");
-    }
+    flush();
 
     //  Close
     if (::close(m_filehandle) == -1){
-        Console::Warning("RawFile::~RawFile(): Unable to close file.");
+        Console::Warning("RawFile::close(): Unable to close file.");
     }
     m_filehandle = -1;
 
     //  Delete
     if (!keep_file && remove(m_path.c_str()) != 0){
-        Console::Warning("RawFile::~RawFile(): Unable to delete file.");
+        Console::Warning("RawFile::close(): Unable to delete file.");
     }
 
     m_path.clear();
@@ -359,13 +367,11 @@ void RawFile::close_and_set_size(ufL_t bytes){
     }
 
     //  Flush
-    if (fsync(m_filehandle) == -1){
-        Console::Warning("RawFile::~RawFile(): Unable to flush file.");
-    }
+    flush();
 
     //  Close
     if (::close(m_filehandle) == -1){
-        Console::Warning("RawFile::~RawFile(): Unable to close file.");
+        Console::Warning("RawFile::close_and_set_size(): Unable to close file.");
     }
     m_filehandle = -1;
 
@@ -375,7 +381,7 @@ void RawFile::close_and_set_size(ufL_t bytes){
     //  At this point forward, the object is closed. No matter what happens next,
     //  the object will remain in the closed state.
 
-    int handle = open(
+    int handle = ::open(
         path.c_str(),
         O_RDWR | O_LARGEFILE
     );
@@ -405,18 +411,11 @@ void RawFile::close_and_set_size(ufL_t bytes){
 }
 void RawFile::rename(std::string path, bool readonly){
     if (m_filehandle == -1){
-        throw FileException("RawFile::rename()", path, "File isn't open.");
+        throw FileException("RawFile::rename()", std::move(path), "File isn't open.");
     }
 
-    //  Flush
-    if (fsync(m_filehandle) == -1){
-        Console::Warning("RawFile::rename(): Unable to flush file.");
-    }
-
-    bool persistent = m_persistent;
-    std::string old_path = m_path;
+    std::string old_path = std::move(m_path);
     close(true);
-
 
     //  Rename it
     if (::rename(old_path.c_str(), path.c_str())){
@@ -439,11 +438,8 @@ void RawFile::rename(std::string path, bool readonly){
         }
     }
 
-    *this = RawFile(
-        std::move(path),
-        readonly ? OPEN_READONLY : OPEN_READWRITE,
-        persistent
-    );
+    m_path = std::move(path);
+    open(readonly ? OPEN_READONLY : OPEN_READWRITE);
 }
 void RawFile::set_size(ufL_t bytes){
     if (m_filehandle == -1){
@@ -453,17 +449,6 @@ void RawFile::set_size(ufL_t bytes){
         throw SystemException("RawFile::set_size()", "ftruncate() failed.", errno);
     }
 }
-void RawFile::check_alignment(const void* data, ufL_t offset, upL_t bytes){
-    if (Alignment::ptr_past_aligned<RAWIO_ALIGNMENT>(data) != 0){
-        throw InvalidParametersException("RawFile::check_alignment()", "Buffer is misaligned.");
-    }
-    if (Alignment::int_past_aligned<RAWIO_ALIGNMENT>(offset) != 0){
-        throw InvalidParametersException("RawFile::check_alignment()", "Offset is misaligned.");
-    }
-    if (Alignment::int_past_aligned<RAWIO_ALIGNMENT>(bytes) != 0){
-        throw InvalidParametersException("RawFile::check_alignment()", "Length is misaligned.");
-    }
-}
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -471,7 +456,7 @@ void RawFile::check_alignment(const void* data, ufL_t offset, upL_t bytes){
 //  Read/Write
 upL_t RawFile::load(void* data, ufL_t offset, upL_t bytes, bool throw_on_partial){
     if (m_filehandle == -1){
-        throw InvalidParametersException("RawFile::read()", "File isn't open.");
+        throw InvalidParametersException("RawFile::load()", "File isn't open.");
     }
     check_alignment(data, offset, bytes);
     if (bytes == 0){
@@ -499,7 +484,7 @@ upL_t RawFile::load(void* data, ufL_t offset, upL_t bytes, bool throw_on_partial
         if ((upL_t)IO_bytes != current){
             if (throw_on_partial){
                 int errorcode = errno;
-                throw FileIO::FileException(
+                handle_error(
                     errorcode, "RawFile::load()", m_path,
                     "Incomplete Read: " + std::to_string(IO_bytes) + " / " + std::to_string(current)
                 );
@@ -515,7 +500,7 @@ upL_t RawFile::load(void* data, ufL_t offset, upL_t bytes, bool throw_on_partial
 }
 upL_t RawFile::store(const void* data, ufL_t offset, upL_t bytes, bool throw_on_partial){
     if (m_filehandle == -1){
-        throw InvalidParametersException("RawFile::write()", "File isn't open.");
+        throw InvalidParametersException("RawFile::store()", "File isn't open.");
     }
     check_alignment(data, offset, bytes);
     if (bytes == 0){
@@ -543,7 +528,7 @@ upL_t RawFile::store(const void* data, ufL_t offset, upL_t bytes, bool throw_on_
         if ((upL_t)IO_bytes != current){
             if (throw_on_partial){
                 int errorcode = errno;
-                throw FileIO::FileException(
+                handle_error(
                     errorcode, "RawFile::store()", m_path,
                     "Incomplete Write: " + std::to_string(IO_bytes) + " / " + std::to_string(current)
                 );
@@ -556,6 +541,12 @@ upL_t RawFile::store(const void* data, ufL_t offset, upL_t bytes, bool throw_on_
     }
 
     return processed;
+}
+void RawFile::load(void* data, ufL_t offset, upL_t bytes, void* P, upL_t PL){
+    load(data, offset, bytes, true);
+}
+void RawFile::store(const void* data, ufL_t offset, upL_t bytes, void* P, upL_t PL){
+    store(data, offset, bytes, true);
 }
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////

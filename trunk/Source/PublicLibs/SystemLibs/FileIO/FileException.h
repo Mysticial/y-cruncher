@@ -23,27 +23,18 @@ namespace FileIO{
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 class FileException : public Exception{
-public:
-    static const char TYPENAME[];
+    YMP_EXCEPTION_DECLARATIONS()
 
+public:
     FileException(const char* function, std::string path, std::string message);
     FileException(int code, const char* function, std::string path, std::string message);
 
-public:
-    [[noreturn]] virtual void fire() const override{
-        throw *this;
-    }
-    virtual const char* get_typename() const override{
-        return TYPENAME;
-    }
-    virtual Exception* clone() const override{
-        return new FileException(*this);
-    }
     virtual void print() const override;
 
 public:
-    FileException(const DllSafeStream& data);
-    virtual DllSafeStream serialize() const override;
+    //  Serialization
+    FileException(SerializationPassKey key, const char*& stream);
+    virtual void serialize(std::string& stream) const override;
 
 protected:
     std::string m_function;

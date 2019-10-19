@@ -148,8 +148,11 @@ public:
         , m_input(input)
     {}
 
-    void run(void* P, upL_t Pbytes, BasicParallelizer& parallelizer, upL_t tds){
-        m_file.store_digits(m_input, m_offset, m_digits, P, Pbytes, parallelizer, tds);
+    void run(
+        const AlignedBufferC<BUFFER_ALIGNMENT>& buffer,
+        BasicParallelizer& parallelizer, upL_t tds
+    ){
+        m_file.store_digits(m_input, m_offset, m_digits, buffer, parallelizer, tds);
     }
 
     void print() const{
@@ -203,7 +206,7 @@ std::vector<BasicYcdSetWriter::Command> BasicYcdSetWriter::make_commands(
 void BasicYcdSetWriter::store_digits(
     const char* input,
     uiL_t offset, upL_t digits,
-    void* P, upL_t Pbytes,
+    const AlignedBufferC<BUFFER_ALIGNMENT>& buffer,
     BasicParallelizer& parallelizer, upL_t tds
 ){
     if (digits == 0){
@@ -220,7 +223,7 @@ void BasicYcdSetWriter::store_digits(
     //  TODO: Parallelize this for files that are on different physical storage devices.
     for (Command& command : commands){
 //        command.print();
-        command.run(P, Pbytes, parallelizer, tds);
+        command.run(buffer, parallelizer, tds);
     }
 }
 ////////////////////////////////////////////////////////////////////////////////

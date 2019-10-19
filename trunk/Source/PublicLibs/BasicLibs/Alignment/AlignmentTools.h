@@ -27,18 +27,24 @@ namespace Alignment{
 ////////////////////////////////////////////////////////////////////////////////
 //  Determine alignment of an integer.
 template <upL_t alignment, typename LengthType>
-YM_FORCE_INLINE upL_t int_past_aligned(LengthType x){
+YM_FORCE_INLINE LengthType int_past_aligned(LengthType x){
     static_assert(std::is_unsigned<LengthType>::value, "Length must be an unsigned integer.");
     static_assert((alignment & (alignment - 1)) == 0, "Alignment must be a power-of-two.");
     constexpr LengthType MASK = alignment - 1;
     return x & MASK;
 }
 template <upL_t alignment, typename LengthType>
-YM_FORCE_INLINE upL_t int_to_aligned(LengthType x){
+YM_FORCE_INLINE LengthType int_to_aligned(LengthType x){
     static_assert(std::is_unsigned<LengthType>::value, "Length must be an unsigned integer.");
     static_assert((alignment & (alignment - 1)) == 0, "Alignment must be a power-of-two.");
     constexpr LengthType MASK = alignment - 1;
     return (0 - x) & MASK;
+}
+template <typename LengthType>
+YM_FORCE_INLINE LengthType int_past_aligned_k(ukL_t alignment_k, LengthType x){
+    static_assert(std::is_unsigned<LengthType>::value, "Length must be an unsigned integer.");
+    LengthType mask = ((LengthType)1 << alignment_k) - 1;
+    return x & mask;
 }
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -46,21 +52,30 @@ YM_FORCE_INLINE upL_t int_to_aligned(LengthType x){
 //  "ptr" must already be aligned to its type. Otherwise the behavior is undefined.
 template <upL_t alignment, typename Type>
 YM_FORCE_INLINE upL_t ptr_past_aligned(Type* ptr){
-    constexpr upL_t TYPE_ALIGN = SizeOf<Type>::value;
-    static_assert((TYPE_ALIGN & (TYPE_ALIGN - 1)) == 0, "sizeof(Type) must be a power-of-two.");
+    constexpr upL_t SIZE = SizeOf<Type>::value;
+    static_assert((SIZE & (SIZE - 1)) == 0, "sizeof(Type) must be a power-of-two.");
     static_assert((alignment & (alignment - 1)) == 0, "Alignment must be a power-of-two.");
-    constexpr upL_t ALIGN = TYPE_ALIGN > alignment ? TYPE_ALIGN : alignment;
+    constexpr upL_t ALIGN = SIZE > alignment ? SIZE : alignment;
     constexpr upL_t MASK = ALIGN - 1;
-    return ((upL_t)ptr & MASK) / TYPE_ALIGN;
+    return ((upL_t)ptr & MASK) / SIZE;
 }
 template <upL_t alignment, typename Type>
 YM_FORCE_INLINE upL_t ptr_to_aligned(Type* ptr){
-    constexpr upL_t TYPE_ALIGN = SizeOf<Type>::value;
-    static_assert((TYPE_ALIGN & (TYPE_ALIGN - 1)) == 0, "sizeof(Type) must be a power-of-two.");
+    constexpr upL_t SIZE = SizeOf<Type>::value;
+    static_assert((SIZE & (SIZE - 1)) == 0, "sizeof(Type) must be a power-of-two.");
     static_assert((alignment & (alignment - 1)) == 0, "Alignment must be a power-of-two.");
-    constexpr upL_t ALIGN = TYPE_ALIGN > alignment ? TYPE_ALIGN : alignment;
+    constexpr upL_t ALIGN = SIZE > alignment ? SIZE : alignment;
     constexpr upL_t MASK = ALIGN - 1;
-    return ((0 - (upL_t)ptr) & MASK) / TYPE_ALIGN;
+    return ((0 - (upL_t)ptr) & MASK) / SIZE;
+}
+template <typename Type>
+YM_FORCE_INLINE upL_t ptr_past_aligned_k(ukL_t alignment_k, Type* ptr){
+    constexpr upL_t SIZE = SizeOf<Type>::value;
+    static_assert((SIZE & (SIZE - 1)) == 0, "sizeof(Type) must be a power-of-two.");
+    upL_t alignment = (upL_t)1 << alignment_k;
+    upL_t align = SIZE > alignment ? SIZE : alignment;
+    upL_t mask = align - 1;
+    return ((upL_t)ptr & mask) / SIZE;
 }
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -81,25 +96,41 @@ YM_FORCE_INLINE LengthType align_int_up(LengthType x){
     constexpr LengthType MASK = alignment - 1;
     return (x + MASK) & ~MASK;
 }
+template <typename LengthType>
+YM_FORCE_INLINE LengthType align_int_down_k(ukL_t alignment_k, LengthType x){
+    static_assert(std::is_unsigned<LengthType>::value, "Length must be an unsigned integer.");
+    upL_t alignment = (upL_t)1 << alignment_k;
+    LengthType MASK = alignment - 1;
+    return x & ~MASK;
+}
+template <typename LengthType>
+YM_FORCE_INLINE LengthType align_int_up_k(ukL_t alignment_k, LengthType x){
+    static_assert(std::is_unsigned<LengthType>::value, "Length must be an unsigned integer.");
+    upL_t alignment = (upL_t)1 << alignment_k;
+    LengthType mask = alignment - 1;
+    return (x + mask) & ~mask;
+}
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 //  Align a Word Length
 template <typename WordType, upL_t byte_alignment, typename LengthType>
 YM_FORCE_INLINE LengthType align_length_down(LengthType length){
+    constexpr upL_t SIZE = SizeOf<WordType>::value;
     static_assert(std::is_unsigned<LengthType>::value, "Length must be an unsigned integer.");
-    static_assert((sizeof(WordType) & (sizeof(WordType) - 1)) == 0, "sizeof(WordType) must be a power-of-two.");
+    static_assert((SIZE & (SIZE - 1)) == 0, "sizeof(WordType) must be a power-of-two.");
     static_assert((byte_alignment & (byte_alignment - 1)) == 0, "Alignment must be a power-of-two.");
-    constexpr LengthType ALIGN = sizeof(WordType) > byte_alignment ? sizeof(WordType) : byte_alignment;
-    constexpr LengthType MASK = ALIGN / sizeof(WordType) - 1;
+    constexpr LengthType ALIGN = SIZE > byte_alignment ? SIZE : byte_alignment;
+    constexpr LengthType MASK = ALIGN / SIZE - 1;
     return length & ~MASK;
 }
 template <typename WordType, upL_t byte_alignment, typename LengthType>
 YM_FORCE_INLINE LengthType align_length_up(LengthType length){
+    constexpr upL_t SIZE = SizeOf<WordType>::value;
     static_assert(std::is_unsigned<LengthType>::value, "Length must be an unsigned integer.");
-    static_assert((sizeof(WordType) & (sizeof(WordType) - 1)) == 0, "sizeof(WordType) must be a power-of-two.");
+    static_assert((SIZE & (SIZE - 1)) == 0, "sizeof(WordType) must be a power-of-two.");
     static_assert((byte_alignment & (byte_alignment - 1)) == 0, "Alignment must be a power-of-two.");
-    constexpr LengthType ALIGN = sizeof(WordType) > byte_alignment ? sizeof(WordType) : byte_alignment;
-    constexpr LengthType MASK = ALIGN / sizeof(WordType) - 1;
+    constexpr LengthType ALIGN = SIZE > byte_alignment ? SIZE : byte_alignment;
+    constexpr LengthType MASK = ALIGN / SIZE - 1;
     return (length + MASK) & ~MASK;
 }
 ////////////////////////////////////////////////////////////////////////////////
@@ -112,6 +143,10 @@ YM_FORCE_INLINE Type* align_ptr_down(Type* ptr){
 template <upL_t alignment, typename Type>
 YM_FORCE_INLINE Type* align_ptr_up(Type* ptr){
     return (Type*)align_int_up<alignment>((upL_t)ptr);
+}
+template <typename Type>
+YM_FORCE_INLINE Type* align_ptr_up_k(ukL_t alignment_k, Type* ptr){
+    return (Type*)align_int_up_k(alignment_k, (upL_t)ptr);
 }
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////

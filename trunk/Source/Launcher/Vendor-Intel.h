@@ -32,6 +32,7 @@ void dispatch_Intel(const cpu_x86& features){
 #ifdef YCR_ENABLE_2016_x64_KnightsLanding
     dispatch_2016_x64_KnightsLanding(features);
 #endif
+    warn_KnightsLanding(features);
     warn_noAVX512(features);
     warn_AVX512_OS(features);
 

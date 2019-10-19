@@ -21,7 +21,6 @@
 #include <vector>
 #include <map>
 #include <mutex>
-#include "PublicLibs/SystemLibs/FileIO/BasicFile.h"
 #include "BasicDigitWriter.h"
 #include "BasicYcdFileWriter.h"
 namespace DigitViewer2{
@@ -46,7 +45,7 @@ public:
     virtual void store_digits(
         const char* input,
         uiL_t offset, upL_t digits,
-        void* P, upL_t Pbytes,
+        const AlignedBufferC<BUFFER_ALIGNMENT>& buffer,
         BasicParallelizer& parallelizer, upL_t tds
     ) override;
 

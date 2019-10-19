@@ -142,9 +142,6 @@ uiL_t GetTotalPhysicalMemory(){
 }
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-u64_t x86_rdtsc(){
-    return __rdtsc();
-}
 void x86_cpuid(u32_t eabcdx[4], u32_t eax, u32_t ecx){
     int out[4];
     __cpuidex(out, eax, ecx);
@@ -152,6 +149,66 @@ void x86_cpuid(u32_t eabcdx[4], u32_t eax, u32_t ecx){
     eabcdx[1] = out[1];
     eabcdx[2] = out[2];
     eabcdx[3] = out[3];
+}
+u64_t x86_rdtsc(){
+    return __rdtsc();
+}
+u64_t x86_measure_rdtsc_ticks_per_sec(){
+    HANDLE thread = GetCurrentThread();
+
+    GROUP_AFFINITY before_affinity;
+    if (GetThreadGroupAffinity(thread, &before_affinity) == 0){
+        Console::Warning("Unable to read thread affinity.");
+    }
+
+    KAFFINITY t = 1;
+    while ((t & before_affinity.Mask) == 0){
+        t <<= 1;
+    }
+
+    GROUP_AFFINITY placeholder;
+    GROUP_AFFINITY new_affinity = before_affinity;
+    new_affinity.Mask = t;
+    if (SetThreadGroupAffinity(thread, &new_affinity, &placeholder) == 0){
+        Console::Warning("Unable to set Affinity Mask.");
+        Console::Quit(1);
+    }
+
+    LARGE_INTEGER frequency;
+    if (!QueryPerformanceFrequency(&frequency)){
+        Console::Warning("Unable to measure clock speed.");
+        Console::Quit(1);
+    }
+    u64_t freq = frequency.QuadPart;
+    freq >>= 4;
+
+
+    u64_t start_cycles = __rdtsc();
+
+    LARGE_INTEGER start_timer;
+    if (!QueryPerformanceCounter(&start_timer)){
+        Console::Warning("Unable to measure clock speed.");
+        Console::Quit(1);
+    }
+    LARGE_INTEGER current_timer;
+    do {
+        if (!QueryPerformanceCounter(&current_timer)){
+            Console::Warning("Unable to measure clock speed.");
+            Console::Quit(1);
+        }
+    }while ((u64_t)current_timer.QuadPart - (u64_t)start_timer.QuadPart < freq);
+
+    u64_t end_cycles = __rdtsc();
+
+    if (SetThreadGroupAffinity(thread, &before_affinity, &placeholder) == 0){
+        Console::Warning("Unable to set Affinity Mask.");
+        Console::Quit(1);
+    }
+
+    double cycle_dif = (double)(end_cycles - start_cycles);
+    double timer_dif = (double)((u64_t)current_timer.QuadPart - (u64_t)start_timer.QuadPart);
+
+    return (u64_t)(cycle_dif / timer_dif * frequency.QuadPart);
 }
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////

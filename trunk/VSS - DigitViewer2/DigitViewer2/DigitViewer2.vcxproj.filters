@@ -121,6 +121,12 @@
     <Filter Include="Source Files\PublicLibs\SystemLibs\ProcessorCapability">
       <UniqueIdentifier>{2f30c1ff-729b-4896-a50f-17d7f766bca4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\PublicLibs\SystemLibs\FileIO\RawFile">
+      <UniqueIdentifier>{f35edac0-2c8a-4a8f-9338-fc5a8db918d9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\PublicLibs\SystemLibs\FileIO\BaseFile">
+      <UniqueIdentifier>{043e4b04-697b-405d-9bb9-6fd9e755c1e4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Source\DigitViewer2\makefile">
@@ -201,16 +207,10 @@
     <None Include="..\..\Source\PublicLibs\Objects.mk">
       <Filter>Source Files\PublicLibs</Filter>
     </None>
-    <None Include="..\..\Source\PublicLibs\SystemLibs\FileIO\BaseFile_Windows.ipp">
-      <Filter>Source Files\PublicLibs\SystemLibs\FileIO</Filter>
-    </None>
     <None Include="..\..\Source\PublicLibs\SystemLibs\FileIO\FileIO_Default.ipp">
       <Filter>Source Files\PublicLibs\SystemLibs\FileIO</Filter>
     </None>
     <None Include="..\..\Source\PublicLibs\SystemLibs\FileIO\FileIO_WinAPI.ipp">
-      <Filter>Source Files\PublicLibs\SystemLibs\FileIO</Filter>
-    </None>
-    <None Include="..\..\Source\PublicLibs\SystemLibs\FileIO\BaseFile_Default.ipp">
       <Filter>Source Files\PublicLibs\SystemLibs\FileIO</Filter>
     </None>
     <None Include="..\..\Source\PublicLibs\ConsoleIO\ConsoleIO_Posix.ipp">
@@ -259,15 +259,6 @@
     </ClCompile>
     <ClCompile Include="..\..\Source\DigitViewer2\DigitHash\DigitHash.cpp">
       <Filter>Source Files\DigitViewer2\DigitHash</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\DigitViewer2\DigitReaders\BasicTextReader.cpp">
-      <Filter>Source Files\DigitViewer2\DigitReaders</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\DigitViewer2\DigitReaders\BasicYcdFileReader.cpp">
-      <Filter>Source Files\DigitViewer2\DigitReaders</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\DigitViewer2\DigitReaders\BasicYcdSetReader.cpp">
-      <Filter>Source Files\DigitViewer2\DigitReaders</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\DigitViewer2\DigitViewer\DigitViewerUI2.cpp">
       <Filter>Source Files\DigitViewer2\DigitViewer</Filter>
@@ -380,11 +371,14 @@
     <ClCompile Include="..\..\Source\PublicLibs\SystemLibs\SMC_PublicSystemLibs.cpp">
       <Filter>Source Files\PublicLibs\SystemLibs</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Source\PublicLibs\SystemLibs\FileIO\RawFile.cpp">
-      <Filter>Source Files\PublicLibs\SystemLibs\FileIO</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Source\PublicLibs\CompileOptions_PublicLibs.cpp">
       <Filter>Source Files\PublicLibs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\DigitViewer2\DigitReaders\BasicYcdFileReader.cpp">
+      <Filter>Source Files\DigitViewer2\DigitReaders</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\DigitViewer2\DigitReaders\BasicYcdSetReader.cpp">
+      <Filter>Source Files\DigitViewer2\DigitReaders</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\DigitViewer2\DigitReaders\InconsistentMetadataException.cpp">
       <Filter>Source Files\DigitViewer2\DigitReaders</Filter>
@@ -392,8 +386,20 @@
     <ClCompile Include="..\..\Source\DigitViewer2\DigitReaders\ParsingTools.cpp">
       <Filter>Source Files\DigitViewer2\DigitReaders</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Source\DigitViewer2\DigitReaders\BasicTextReader.cpp">
+      <Filter>Source Files\DigitViewer2\DigitReaders</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\DigitViewer2\PrintHelpers.cpp">
       <Filter>Source Files\DigitViewer2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\PublicLibs\SystemLibs\FileIO\RawFile\RawFile.cpp">
+      <Filter>Source Files\PublicLibs\SystemLibs\FileIO\RawFile</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\PublicLibs\SystemLibs\FileIO\AlignedAccessFile.cpp">
+      <Filter>Source Files\PublicLibs\SystemLibs\FileIO</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\PublicLibs\SystemLibs\FileIO\BufferredStreamFile.cpp">
+      <Filter>Source Files\PublicLibs\SystemLibs\FileIO</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -423,18 +429,6 @@
     </ClInclude>
     <ClInclude Include="..\..\Source\DigitViewer2\DigitHash\Kernels\DigitHash_x64_AVX512BW.h">
       <Filter>Source Files\DigitViewer2\DigitHash\Kernels</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\DigitViewer2\DigitReaders\BasicTextReader.h">
-      <Filter>Source Files\DigitViewer2\DigitReaders</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\DigitViewer2\DigitReaders\BasicYcdFileReader.h">
-      <Filter>Source Files\DigitViewer2\DigitReaders</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\DigitViewer2\DigitReaders\BasicYcdSetReader.h">
-      <Filter>Source Files\DigitViewer2\DigitReaders</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\DigitViewer2\DigitReaders\BasicDigitReader.h">
-      <Filter>Source Files\DigitViewer2\DigitReaders</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\DigitViewer2\DigitViewer\DigitViewerUI2.h">
       <Filter>Source Files\DigitViewer2\DigitViewer</Filter>
@@ -586,12 +580,6 @@
     <ClInclude Include="..\..\Source\PublicLibs\SystemLibs\FileIO\FileIO.h">
       <Filter>Source Files\PublicLibs\SystemLibs\FileIO</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\PublicLibs\SystemLibs\FileIO\BaseFile_Default.h">
-      <Filter>Source Files\PublicLibs\SystemLibs\FileIO</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\PublicLibs\SystemLibs\FileIO\BaseFile_Windows.h">
-      <Filter>Source Files\PublicLibs\SystemLibs\FileIO</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Source\PublicLibs\MathIntrinsics\ChecksumHash.h">
       <Filter>Source Files\PublicLibs\MathIntrinsics</Filter>
     </ClInclude>
@@ -727,20 +715,11 @@
     <ClInclude Include="..\..\Source\PublicLibs\SystemLibs\ProcessorCapability\ProcessorCapability_x86.h">
       <Filter>Source Files\PublicLibs\SystemLibs\ProcessorCapability</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\PublicLibs\SystemLibs\FileIO\RawFile_Linux.h">
-      <Filter>Source Files\PublicLibs\SystemLibs\FileIO</Filter>
+    <ClInclude Include="..\..\Source\DigitViewer2\DigitReaders\BasicYcdFileReader.h">
+      <Filter>Source Files\DigitViewer2\DigitReaders</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\PublicLibs\SystemLibs\FileIO\RawFile_Linux.ipp">
-      <Filter>Source Files\PublicLibs\SystemLibs\FileIO</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\PublicLibs\SystemLibs\FileIO\RawFile_Windows.h">
-      <Filter>Source Files\PublicLibs\SystemLibs\FileIO</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\PublicLibs\SystemLibs\FileIO\RawFile_Windows.ipp">
-      <Filter>Source Files\PublicLibs\SystemLibs\FileIO</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\PublicLibs\SystemLibs\FileIO\RawFile.h">
-      <Filter>Source Files\PublicLibs\SystemLibs\FileIO</Filter>
+    <ClInclude Include="..\..\Source\DigitViewer2\DigitReaders\BasicYcdSetReader.h">
+      <Filter>Source Files\DigitViewer2\DigitReaders</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\DigitViewer2\DigitReaders\InconsistentMetadataException.h">
       <Filter>Source Files\DigitViewer2\DigitReaders</Filter>
@@ -748,8 +727,47 @@
     <ClInclude Include="..\..\Source\DigitViewer2\DigitReaders\ParsingTools.h">
       <Filter>Source Files\DigitViewer2\DigitReaders</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Source\DigitViewer2\DigitReaders\BasicDigitReader.h">
+      <Filter>Source Files\DigitViewer2\DigitReaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\DigitViewer2\DigitReaders\BasicTextReader.h">
+      <Filter>Source Files\DigitViewer2\DigitReaders</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\DigitViewer2\PrintHelpers.h">
       <Filter>Source Files\DigitViewer2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\SystemLibs\FileIO\RawFile\RawFile_Linux.h">
+      <Filter>Source Files\PublicLibs\SystemLibs\FileIO\RawFile</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\SystemLibs\FileIO\RawFile\RawFile_Linux.ipp">
+      <Filter>Source Files\PublicLibs\SystemLibs\FileIO\RawFile</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\SystemLibs\FileIO\RawFile\RawFile_Windows.h">
+      <Filter>Source Files\PublicLibs\SystemLibs\FileIO\RawFile</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\SystemLibs\FileIO\RawFile\RawFile_Windows.ipp">
+      <Filter>Source Files\PublicLibs\SystemLibs\FileIO\RawFile</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\SystemLibs\FileIO\RawFile\RawFile.h">
+      <Filter>Source Files\PublicLibs\SystemLibs\FileIO\RawFile</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\SystemLibs\FileIO\AlignedAccessFile.h">
+      <Filter>Source Files\PublicLibs\SystemLibs\FileIO</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\SystemLibs\FileIO\BufferredStreamFile.h">
+      <Filter>Source Files\PublicLibs\SystemLibs\FileIO</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\SystemLibs\FileIO\BaseFile\BaseFile_Default.ipp">
+      <Filter>Source Files\PublicLibs\SystemLibs\FileIO\BaseFile</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\SystemLibs\FileIO\BaseFile\BaseFile_Windows.h">
+      <Filter>Source Files\PublicLibs\SystemLibs\FileIO\BaseFile</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\SystemLibs\FileIO\BaseFile\BaseFile_Windows.ipp">
+      <Filter>Source Files\PublicLibs\SystemLibs\FileIO\BaseFile</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\SystemLibs\FileIO\BaseFile\BaseFile_Default.h">
+      <Filter>Source Files\PublicLibs\SystemLibs\FileIO\BaseFile</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

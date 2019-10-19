@@ -57,6 +57,7 @@ public:
     bool open(std::string m_path);
     bool create(std::string m_path, ufL_t bytes = 0);
     void close(bool delete_file = false);
+    void rename(std::string path);
 
 public:
     bool set_ptr(ufL_t offset);

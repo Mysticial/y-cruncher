@@ -17,22 +17,29 @@
 #include "PublicLibs/ConsoleIO/BasicIO.h"
 #include "PublicLibs/ConsoleIO/Label.h"
 #include "PublicLibs/ExportSafeLibs/Stream.h"
+#include "PublicLibs/Exceptions/ExceptionSerialization.h"
 #include "Exception.h"
 namespace ymp{
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
+//  UnknownException is special and doesn't follow the pattern of all other
+//  exceptions. It can never be thrown and is only generated as a placeholder
+//  when deserializing an exception that isn't known to this module.
+//  There is no TYPENAME or exception factory for UnknownException.
 class UnknownException : public Exception{
 public:
+    using SerializationPassKey = Exception::SerializationPassKey;
+
     [[noreturn]] virtual void fire() const override{
         throw *this;
     }
     virtual const char* get_typename() const{
         return (const char*)m_data.get();
     }
-    virtual Exception* clone() const override{
-        return new UnknownException(*this);
+    virtual std::unique_ptr<Exception> move_from() override{
+        return std::make_unique<UnknownException>(std::move(*this));
     }
     virtual void print() const{
         Console::println("\n", 'R');
@@ -42,11 +49,20 @@ public:
     }
 
 public:
-    UnknownException(const DllSafeStream& data)
-        : m_data(data)
-    {}
-    virtual DllSafeStream serialize() const{
-        return m_data;
+    //  Serialization
+
+    //  Even if the exception is unknown to this module, the data is preserved
+    //  so that if it propagates back to a module that is aware of it, it can
+    //  still reconstruct the original exception.
+
+    UnknownException(SerializationPassKey key, const char*& stream, upL_t bytes)
+        : Exception(key, stream)
+        , m_data(bytes)
+    {
+        memcpy(m_data.get(), stream, bytes);
+    }
+    virtual void serialize(std::string& stream) const override{
+        stream.append((const char*)m_data.get(), m_data.size());
     }
 
 private:
@@ -74,18 +90,32 @@ void register_exception(const char* name, ExceptionFactory* factory){
     }
     map[str] = factory;
 }
-Exception* Exception::deserialize(const DllSafeStream& data){
-    std::string name = (const char*)data.get();
+DllSafeStream serialize_exception(const Exception& exception){
+    std::string stream;
+    ExceptionTools::write(stream, exception.get_typename());
+    exception.serialize(stream);
+    DllSafeStream ret(stream.size());
+    memcpy(ret.get(), stream.c_str(), stream.size());
+    return ret;
+}
+void rethrow_serialized_exception(const DllSafeStream& data){
+    const char* stream = (const char*)data.get();
+
+    const char* name;
+    ExceptionTools::parse(stream, name);
+
+    upL_t bytes = stream - (const char*)data.get();
+    std::unique_ptr<Exception> exception;
+
     std::map<std::string, ExceptionFactory*>& map = exception_map();
     auto iter = map.find(name);
     if (iter != map.end()){
-        return iter->second->deserialize(std::move(data));
+        exception.reset(iter->second->deserialize(stream));
+    }else{
+        exception.reset(new UnknownException(UnknownException::SerializationPassKey(), stream, bytes));
     }
-    return new UnknownException(std::move(data));
-}
-void Exception::rethrow(const DllSafeStream& data){
-    std::unique_ptr<Exception> e(deserialize(std::move(data)));
-    e->fire();
+
+    exception->fire();
 }
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////

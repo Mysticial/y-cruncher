@@ -62,7 +62,7 @@
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{78460907-F11F-45DF-A8B3-BCF1D8E54EC5}</ProjectGuid>
     <RootNamespace>DigitViewer2</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -150,7 +150,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='17-Skylake|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>Intel C++ Compiler 18.0</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -551,8 +551,6 @@
     <None Include="..\..\Source\PublicLibs\SystemLibs\Environment\Environment_Windows7.ipp" />
     <None Include="..\..\Source\PublicLibs\SystemLibs\Environment\Environment_WindowsCommon.ipp" />
     <None Include="..\..\Source\PublicLibs\SystemLibs\Environment\Environment_WindowsVista.ipp" />
-    <None Include="..\..\Source\PublicLibs\SystemLibs\FileIO\BaseFile_Default.ipp" />
-    <None Include="..\..\Source\PublicLibs\SystemLibs\FileIO\BaseFile_Windows.ipp" />
     <None Include="..\..\Source\PublicLibs\SystemLibs\FileIO\FileIO_Default.ipp" />
     <None Include="..\..\Source\PublicLibs\SystemLibs\FileIO\FileIO_WinAPI.ipp" />
     <None Include="..\..\Source\PublicLibs\SystemLibs\makefile" />
@@ -662,10 +660,12 @@
     </ClCompile>
     <ClCompile Include="..\..\Source\PublicLibs\SystemLibs\Concurrency\Parallelizers.cpp" />
     <ClCompile Include="..\..\Source\PublicLibs\SystemLibs\Environment\Environment.cpp" />
+    <ClCompile Include="..\..\Source\PublicLibs\SystemLibs\FileIO\AlignedAccessFile.cpp" />
     <ClCompile Include="..\..\Source\PublicLibs\SystemLibs\FileIO\BasicFile.cpp" />
+    <ClCompile Include="..\..\Source\PublicLibs\SystemLibs\FileIO\BufferredStreamFile.cpp" />
     <ClCompile Include="..\..\Source\PublicLibs\SystemLibs\FileIO\FileException.cpp" />
     <ClCompile Include="..\..\Source\PublicLibs\SystemLibs\FileIO\FileIO.cpp" />
-    <ClCompile Include="..\..\Source\PublicLibs\SystemLibs\FileIO\RawFile.cpp" />
+    <ClCompile Include="..\..\Source\PublicLibs\SystemLibs\FileIO\RawFile\RawFile.cpp" />
     <ClCompile Include="..\..\Source\PublicLibs\SystemLibs\SMC_PublicSystemLibs.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
@@ -789,16 +789,20 @@
     <ClInclude Include="..\..\Source\PublicLibs\SystemLibs\Concurrency\Parallelizer_NoParallelism.h" />
     <ClInclude Include="..\..\Source\PublicLibs\SystemLibs\Concurrency\Parallelizer_WindowsThreadPool.h" />
     <ClInclude Include="..\..\Source\PublicLibs\SystemLibs\Environment\Environment.h" />
-    <ClInclude Include="..\..\Source\PublicLibs\SystemLibs\FileIO\BaseFile_Default.h" />
-    <ClInclude Include="..\..\Source\PublicLibs\SystemLibs\FileIO\BaseFile_Windows.h" />
+    <ClInclude Include="..\..\Source\PublicLibs\SystemLibs\FileIO\AlignedAccessFile.h" />
+    <ClInclude Include="..\..\Source\PublicLibs\SystemLibs\FileIO\BaseFile\BaseFile_Default.h" />
+    <ClInclude Include="..\..\Source\PublicLibs\SystemLibs\FileIO\BaseFile\BaseFile_Default.ipp" />
+    <ClInclude Include="..\..\Source\PublicLibs\SystemLibs\FileIO\BaseFile\BaseFile_Windows.h" />
+    <ClInclude Include="..\..\Source\PublicLibs\SystemLibs\FileIO\BaseFile\BaseFile_Windows.ipp" />
     <ClInclude Include="..\..\Source\PublicLibs\SystemLibs\FileIO\BasicFile.h" />
+    <ClInclude Include="..\..\Source\PublicLibs\SystemLibs\FileIO\BufferredStreamFile.h" />
     <ClInclude Include="..\..\Source\PublicLibs\SystemLibs\FileIO\FileException.h" />
     <ClInclude Include="..\..\Source\PublicLibs\SystemLibs\FileIO\FileIO.h" />
-    <ClInclude Include="..\..\Source\PublicLibs\SystemLibs\FileIO\RawFile.h" />
-    <ClInclude Include="..\..\Source\PublicLibs\SystemLibs\FileIO\RawFile_Linux.h" />
-    <ClInclude Include="..\..\Source\PublicLibs\SystemLibs\FileIO\RawFile_Linux.ipp" />
-    <ClInclude Include="..\..\Source\PublicLibs\SystemLibs\FileIO\RawFile_Windows.h" />
-    <ClInclude Include="..\..\Source\PublicLibs\SystemLibs\FileIO\RawFile_Windows.ipp" />
+    <ClInclude Include="..\..\Source\PublicLibs\SystemLibs\FileIO\RawFile\RawFile.h" />
+    <ClInclude Include="..\..\Source\PublicLibs\SystemLibs\FileIO\RawFile\RawFile_Linux.h" />
+    <ClInclude Include="..\..\Source\PublicLibs\SystemLibs\FileIO\RawFile\RawFile_Linux.ipp" />
+    <ClInclude Include="..\..\Source\PublicLibs\SystemLibs\FileIO\RawFile\RawFile_Windows.h" />
+    <ClInclude Include="..\..\Source\PublicLibs\SystemLibs\FileIO\RawFile\RawFile_Windows.ipp" />
     <ClInclude Include="..\..\Source\PublicLibs\SystemLibs\ProcessorCapability\ProcessorCapability.h" />
     <ClInclude Include="..\..\Source\PublicLibs\SystemLibs\ProcessorCapability\ProcessorCapability_x86.h" />
     <ClInclude Include="..\..\Source\PublicLibs\Types.h" />

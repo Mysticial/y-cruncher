@@ -17,6 +17,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 //  Dependencies
 #include "AlignedMalloc.h"
+#include "SmartPointerI.h"
 namespace ymp{
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -25,13 +26,8 @@ namespace ymp{
 template <typename Type>
 class SmartPointerA{
 public:
-    ~SmartPointerA(){
-        if (m_ptr == nullptr){
-            return;
-        }
-        m_ptr->~Type();
-        aligned_free(m_ptr);
-    }
+    //  Rule of 5
+    ~SmartPointerA();
 
     template <typename Child>
     SmartPointerA(SmartPointerA<Child>&& x)
@@ -52,25 +48,17 @@ public:
 
 
 public:
+    //  Construction
+
     //  Construct pointer with no object.
     SmartPointerA() : m_ptr(nullptr) {}
 
     //  Construct pointer with object by emplacement.
     template <class... Args>
-    SmartPointerA(Args&&... args);
-
-    //  Static version of above. This one allows default construction of the object.
-    template <class... Args>
-    static SmartPointerA make(Args&&... args);
+    SmartPointerA(SmartPointerToken, Args&&... args);
 
     //  Clear Pointer
-    void clear(){
-        if (m_ptr != nullptr){
-            m_ptr->~Type();
-            aligned_free(m_ptr);
-            m_ptr = nullptr;
-        }
-    }
+    void clear();
 
     //  Basic reset.
     template <class... Args>

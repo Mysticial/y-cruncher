@@ -88,6 +88,9 @@ struct cpu_x86{
     //  Cascade Lake
     bool HW_AVX512_VNNI;
 
+    //  Cooper Lake
+    bool HW_AVX512_BF16;
+
     //  Ice Lake
     bool HW_AVX512_VBMI2;
     bool HW_GFNI;
@@ -102,7 +105,7 @@ public:
     void print() const;
     static void print_host();
 
-    static void cpuid(s32_t out[4], s32_t x);
+    static void cpuid(s32_t out[4], u32_t eax, u32_t ecx);
     static std::string get_vendor_string();
 
 private:

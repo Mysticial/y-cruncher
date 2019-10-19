@@ -136,7 +136,7 @@ BasicYcdFileReader& BasicYcdSetReader::load_file(const std::string& path, uiL_t 
         ref_file.stream_end() != 0 &&
         m_stream_end != ref_file.stream_end()
     ){
-        throw InconsistentMetaData("BasicYcdSetReader::load_file", path, "Total digit does not match.");
+        throw InconsistentMetaData("BasicYcdSetReader::load_file", path, "Total digits does not match.");
     }
 
     //  Set new total digits.
@@ -273,11 +273,14 @@ public:
         return *m_stats;
     }
 
-    void run(void* P, upL_t Pbytes, BasicParallelizer& parallelizer, upL_t tds){
+    void run(
+        const AlignedBufferC<BUFFER_ALIGNMENT>& buffer,
+        BasicParallelizer& parallelizer, upL_t tds
+    ){
         if (m_output == nullptr){
-            m_file.load_stats(*m_stats, m_offset, m_digits, P, Pbytes, parallelizer, tds);
+            m_file.load_stats(*m_stats, m_offset, m_digits, buffer, parallelizer, tds);
         }else{
-            m_file.load_digits(m_output, m_stats.get(), m_offset, (upL_t)m_digits, P, Pbytes, parallelizer, tds);
+            m_file.load_digits(m_output, m_stats.get(), m_offset, (upL_t)m_digits, buffer, parallelizer, tds);
         }
         if (m_stats){
             m_stats->scale_up_hash(m_scale_hash);
@@ -358,7 +361,7 @@ std::vector<BasicYcdSetReader::Command> BasicYcdSetReader::make_commands(
 void BasicYcdSetReader::load_stats(
     DigitStats& stats,
     uiL_t offset, uiL_t digits,
-    void* P, upL_t Pbytes,
+    const AlignedBufferC<BUFFER_ALIGNMENT>& buffer,
     BasicParallelizer& parallelizer, upL_t tds
 ){
     if (digits == 0){
@@ -370,16 +373,12 @@ void BasicYcdSetReader::load_stats(
         throw FileIO::FileException("BasicYcdSetReader::load_stats()", m_name, "Out of range.");
     }
 
-    if (Alignment::int_past_aligned<DEFAULT_ALIGNMENT>((upL_t)P) != 0){
-        throw InvalidParametersException("BasicYcdSetReader::load_digits()", "Buffer is misaligned.");
-    }
-
     std::vector<Command> commands = make_commands(nullptr, true, offset, digits);
 
     //  TODO: Parallelize this for files that are on different physical storage devices.
     for (Command& command : commands){
 //        command.print();
-        command.run(P, Pbytes, parallelizer, tds);
+        command.run(buffer, parallelizer, tds);
     }
 
     //  Aggregate stats
@@ -392,7 +391,7 @@ void BasicYcdSetReader::load_digits(
     char* output,
     DigitStats* stats,
     uiL_t offset, upL_t digits,
-    void* P, upL_t Pbytes,
+    const AlignedBufferC<BUFFER_ALIGNMENT>& buffer,
     BasicParallelizer& parallelizer, upL_t tds
 ){
     if (digits == 0){
@@ -404,16 +403,12 @@ void BasicYcdSetReader::load_digits(
         throw FileIO::FileException("BasicYcdSetReader::load_stats()", m_name, "Out of range.");
     }
 
-    if (Alignment::int_past_aligned<DEFAULT_ALIGNMENT>((upL_t)P) != 0){
-        throw InvalidParametersException("BasicYcdSetReader::load_digits()", "Buffer is misaligned.");
-    }
-
     std::vector<Command> commands = make_commands(output, stats != nullptr, offset, digits);
 
     //  TODO: Parallelize this for files that are on different physical storage devices.
     for (Command& command : commands){
 //        command.print();
-        command.run(P, Pbytes, parallelizer, tds);
+        command.run(buffer, parallelizer, tds);
     }
 
     //  Combine the hashes.

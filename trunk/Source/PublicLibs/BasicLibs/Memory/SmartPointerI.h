@@ -31,6 +31,8 @@ enum SmartPointerToken{
 template <typename Type>
 class SmartPointerI{
 public:
+    //  Rule of 5
+
     ~SmartPointerI();
 
     SmartPointerI(SmartPointerI&& x)
@@ -49,9 +51,14 @@ public:
 
 
 public:
+    //  Construction
+
     SmartPointerI()
         : m_ptr(nullptr)
     {}
+
+    template <class... Args>
+    SmartPointerI(SmartPointerToken, Args&&... args);
 
     template <typename T>
     SmartPointerI(SmartPointerI<T> ptr)
@@ -60,13 +67,16 @@ public:
         ptr.m_ptr = nullptr;
     }
 
-    template <class... Args>
-    SmartPointerI(SmartPointerToken, Args&&... args);
-
     void clear();
 
     template <class... Args>
     void reset(Args&&... args);
+
+    Type* release(){
+        Type* ptr = m_ptr;
+        m_ptr = nullptr;
+        return ptr;
+    }
 
 
 public:

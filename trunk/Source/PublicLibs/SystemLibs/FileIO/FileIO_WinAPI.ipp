@@ -180,6 +180,34 @@ bool DirectoryIsWritable(const std::string& directory){
 
     return true;
 }
+std::vector<std::string> list_directory(const std::string& path){
+    //  Get a list of files in the specified directory.
+
+    std::string ppath = path;
+    if (!path.empty() && path.back() != '/' && path.back() != '\\'){
+        ppath += "/";
+    }
+    ppath += "*";
+
+    WIN32_FIND_DATAW FindFileData;
+    HANDLE hFind;
+    std::vector<std::string> files;
+
+    //  Get first file
+    hFind = FindFirstFileW(StringTools::utf8_to_wstr(ppath).c_str(), &FindFileData);
+    if (hFind == INVALID_HANDLE_VALUE){
+        return files;
+    }
+
+    //  Get rest of files.
+    do{
+        files.push_back(StringTools::wstr_to_utf8(FindFileData.cFileName));
+    }while (FindNextFileW(hFind, &FindFileData));
+
+    FindClose(hFind);
+
+    return files;
+}
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////

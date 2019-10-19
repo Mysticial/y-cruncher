@@ -14,14 +14,14 @@
 #include "PublicLibs/ConsoleIO/BasicIO.h"
 #include "PublicLibs/ConsoleIO/Label.h"
 #include "PublicLibs/ExportSafeLibs/Stream.h"
+#include "ExceptionSerialization.h"
 #include "StdException.h"
 namespace ymp{
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-const char StdException::TYPENAME[] = "StdException";
-ExceptionFactoryT<StdException> StdException_Instance;
+YMP_EXCEPTION_DEFINITIONS(StdException)
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -45,21 +45,14 @@ void StdException::print() const{
     Console::println("\n");
     Console::SetColor('w');
 }
-StdException::StdException(const DllSafeStream& data){
-    const char* str = (const char*)data.get() + sizeof(TYPENAME);
-    m_message = str;
+StdException::StdException(SerializationPassKey key, const char*& stream)
+    : Exception(key, stream)
+{
+    ExceptionTools::parse(stream, m_message);
 }
-DllSafeStream StdException::serialize() const{
-    upL_t message_size = m_message.size() + 1;
-
-    DllSafeStream ptr(sizeof(TYPENAME) + message_size);
-    char* str = (char*)ptr.get();
-    memcpy(str, TYPENAME, sizeof(TYPENAME));
-    str += sizeof(TYPENAME);
-
-    memcpy(str, &m_message.front(), message_size);
-
-    return ptr;
+void StdException::serialize(std::string& stream) const{
+    Exception::serialize(stream);
+    ExceptionTools::write(stream, m_message);
 }
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////

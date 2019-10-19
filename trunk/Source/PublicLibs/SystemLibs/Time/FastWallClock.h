@@ -24,7 +24,6 @@
 //  Dependencies
 #include "PublicLibs/Types.h"
 #include "PublicLibs/SystemLibs/Environment/Environment.h"
-#include "PrivateLibs/SystemLibs/Environment/ProcessorHardware.h"
 namespace ymp{
 namespace Time{
     class FastWallClock;
@@ -36,7 +35,7 @@ class FastDuration{
 public:
     FastDuration() = default;
     FastDuration(double seconds)
-        : m_ticks((s64_t)(seconds * (double)frequency()))
+        : m_ticks((s64_t)(seconds * (double)Environment::x86_rdtsc_ticks_per_sec()))
     {}
 
 //    s64_t ticks() const{ return m_ticks; }
@@ -48,12 +47,8 @@ public:
 
 
 public:
-    static u64_t frequency(){
-        static u64_t ticks_per_sec = Environment::get_processor_frequency();
-        return ticks_per_sec;
-    }
     static double scale(){
-        static double secs_per_tick = 1. / (double)frequency();
+        static double secs_per_tick = 1. / (double)Environment::x86_rdtsc_ticks_per_sec();
         return secs_per_tick;
     }
 

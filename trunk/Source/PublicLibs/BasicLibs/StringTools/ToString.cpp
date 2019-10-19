@@ -29,10 +29,10 @@ YM_NO_INLINE std::string tostr_u_commas(uiL_t x){
     std::string out;
 
     const char* ptr = str.c_str();
-    size_t len = str.size();
+    upL_t len = str.size();
 
-    size_t commas = (len + 2) / 3 - 1;
-    size_t shift = len - commas * 3;
+    upL_t commas = (len + 2) / 3 - 1;
+    upL_t shift = len - commas * 3;
 
     while (1){
         char ch = *ptr++;

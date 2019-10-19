@@ -27,7 +27,7 @@ namespace DigitViewer2{
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 BasicTextReader::BasicTextReader(const std::string& path, char radix)
-    : m_file(std::move(path), FileIO::OPEN_READONLY)
+    : m_file(FileIO::DEFAULT_FILE_ALIGNMENT_K, std::move(path), FileIO::OPEN_READONLY)
 {
     alignas(FILE_ALIGNMENT) char buffer[FILE_ALIGNMENT];
 
@@ -266,7 +266,7 @@ void BasicTextReader::process(
 void BasicTextReader::load_stats(
     DigitStats& stats,
     uiL_t offset, uiL_t digits,
-    void* P, upL_t Pbytes,
+    const AlignedBufferC<BUFFER_ALIGNMENT>& buffer,
     BasicParallelizer& parallelizer, upL_t tds
 ){
     //  Ends past the end.
@@ -275,13 +275,9 @@ void BasicTextReader::load_stats(
         throw StringException("BasicTextReader::load_stats()", "Out of range.");
     }
 
-    char* buffer = (char*)P;
-    if (Alignment::ptr_past_aligned<FILE_ALIGNMENT>(buffer) != 0){
-        throw InvalidParametersException("BasicTextReader::load_stats()", "Buffer is misaligned.");
-    }
-
-    Pbytes = Alignment::align_int_down<FILE_ALIGNMENT>(Pbytes);
-    check_BufferTooSmall("BasicTextReader::load_stats()", Pbytes, FILE_ALIGNMENT);
+    char* P = (char*)buffer.ptr();
+    upL_t PL = Alignment::align_int_down<FILE_ALIGNMENT>(buffer.len());
+    check_BufferTooSmall("BasicTextReader::load_stats()", PL, FILE_ALIGNMENT);
 
     //  This is the ugly sector alignment logic.
 
@@ -299,13 +295,13 @@ void BasicTextReader::load_stats(
 
     ufL_t aligned_bytes_left = file_aligned_offset_e - file_aligned_offset_s;
     while (aligned_bytes_left > 0){
-        upL_t current = (upL_t)std::min((ufL_t)Pbytes, aligned_bytes_left);
+        upL_t current = (upL_t)std::min((ufL_t)PL, aligned_bytes_left);
 
         //  Read from file.
         upL_t bytes_read;
         {
             std::lock_guard<std::mutex> lg(m_lock);
-            bytes_read = m_file.load(buffer, file_aligned_offset_s, current, false);
+            bytes_read = m_file.load(P, file_aligned_offset_s, current, false);
         }
 
         sfL_t logical_aligned_offset_s = (sfL_t)file_aligned_offset_s - (sfL_t)m_data_offset;
@@ -329,8 +325,8 @@ void BasicTextReader::load_stats(
         upL_t processed = current - shift_f - shift_e;
         process(
             &stats,
-            buffer + shift_f,
-            buffer + shift_f,
+            P + shift_f,
+            P + shift_f,
             processed,
             parallelizer, tds
         );
@@ -344,7 +340,7 @@ void BasicTextReader::load_digits(
     char* output,
     DigitStats* stats,
     uiL_t offset, upL_t digits,
-    void* P, upL_t Pbytes,
+    const AlignedBufferC<BUFFER_ALIGNMENT>& buffer,
     BasicParallelizer& parallelizer, upL_t tds
 ){
     //  Ends past the end.
@@ -353,13 +349,9 @@ void BasicTextReader::load_digits(
         throw StringException("BasicTextReader::load_stats()", "Out of range.");
     }
 
-    char* buffer = (char*)P;
-    if (Alignment::ptr_past_aligned<FILE_ALIGNMENT>(buffer) != 0){
-        throw InvalidParametersException("BasicTextReader::load_stats()", "Buffer is misaligned.");
-    }
-
-    Pbytes = Alignment::align_int_down<FILE_ALIGNMENT>(Pbytes);
-    check_BufferTooSmall("BasicTextReader::load_stats()", Pbytes, FILE_ALIGNMENT);
+    char* P = (char*)buffer.ptr();
+    upL_t PL = Alignment::align_int_down<FILE_ALIGNMENT>(buffer.len());
+    check_BufferTooSmall("BasicTextReader::load_stats()", PL, FILE_ALIGNMENT);
 
     //  This is the ugly sector alignment logic.
 
@@ -377,13 +369,13 @@ void BasicTextReader::load_digits(
 
     ufL_t aligned_bytes_left = file_aligned_offset_e - file_aligned_offset_s;
     while (aligned_bytes_left > 0){
-        upL_t current = (upL_t)std::min((ufL_t)Pbytes, aligned_bytes_left);
+        upL_t current = (upL_t)std::min((ufL_t)PL, aligned_bytes_left);
 
         //  Read from file.
         upL_t bytes_read;
         {
             std::lock_guard<std::mutex> lg(m_lock);
-            bytes_read = m_file.load(buffer, file_aligned_offset_s, current, false);
+            bytes_read = m_file.load(P, file_aligned_offset_s, current, false);
         }
 
         sfL_t logical_aligned_offset_s = (sfL_t)file_aligned_offset_s - (sfL_t)m_data_offset;
@@ -408,7 +400,7 @@ void BasicTextReader::load_digits(
         process(
             stats,
             output,
-            buffer + shift_f,
+            P + shift_f,
             processed,
             parallelizer, tds
         );

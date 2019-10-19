@@ -22,6 +22,29 @@ namespace ymp{
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
+//  COMPILER-BUG-GCC: Missing AVX2 intrinsics
+#ifdef __GNUC__
+YM_FORCE_INLINE __m256 _mm256_loadu2_m128(const float* H, const float* L){
+    __m256 x = _mm256_castps128_ps256(_mm_loadu_ps(L));
+    return _mm256_insertf128_ps(x, *(const __m128*)H, 1);
+}
+YM_FORCE_INLINE void _mm256_storeu2_m128(float* H, float* L, __m256 x){
+    _mm_storeu_ps(L, _mm256_castps256_ps128(x));
+    *(__m128*)H = _mm256_extractf128_ps(x, 1);
+}
+YM_FORCE_INLINE __m256d _mm256_loadu2_m128d(const double* H, const double* L){
+    __m256d x = _mm256_castpd128_pd256(_mm_loadu_pd(L));
+    return _mm256_insertf128_pd(x, *(const __m128d*)H, 1);
+}
+YM_FORCE_INLINE void _mm256_storeu2_m128d(double* H, double* L, __m256d x){
+    _mm_storeu_pd(L, _mm256_castpd256_pd128(x));
+    *(__m128d*)H = _mm256_extractf128_pd(x, 1);
+}
+#endif
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 YM_FORCE_INLINE __m128i _mm_mulhi_epu32(__m128i a, __m128i b){
      __m128i L, H;
 

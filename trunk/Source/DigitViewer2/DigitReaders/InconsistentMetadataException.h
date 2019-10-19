@@ -22,21 +22,11 @@ namespace DigitViewer2{
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 class InconsistentMetaData : public FileIO::FileException{
-public:
-    static const char TYPENAME[];
+    YMP_EXCEPTION_DECLARATIONS()
 
+public:
     using FileException::FileException;
 
-public:
-    virtual void fire() const override{
-        throw *this;
-    }
-    virtual const char* get_typename() const override{
-        return TYPENAME;
-    }
-    virtual Exception* clone() const override{
-        return new InconsistentMetaData(*this);
-    }
 };
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////

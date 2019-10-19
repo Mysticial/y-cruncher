@@ -22,18 +22,29 @@ namespace ymp{
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 template <typename Type>
+SmartPointerA<Type>::~SmartPointerA(){
+    if (m_ptr == nullptr){
+        return;
+    }
+    m_ptr->~Type();
+    aligned_free(m_ptr);
+}
+template <typename Type>
+void SmartPointerA<Type>::clear(){
+    if (m_ptr != nullptr){
+        m_ptr->~Type();
+        aligned_free(m_ptr);
+        m_ptr = nullptr;
+    }
+}
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+template <typename Type>
 template <class... Args>
-SmartPointerA<Type>::SmartPointerA(Args&&... args)
+SmartPointerA<Type>::SmartPointerA(SmartPointerToken, Args&&... args)
     : m_ptr(nullptr)
 {
     reset_aligned_extended(alignof(Type), 0, std::forward<Args>(args)...);
-}
-template <typename Type>
-template <class... Args>
-SmartPointerA<Type> SmartPointerA<Type>::make(Args&&... args){
-    SmartPointerA ret;
-    ret.reset(std::forward<Args>(args)...);
-    return ret;
 }
 template <typename Type>
 template <class... Args>

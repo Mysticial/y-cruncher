@@ -17,3 +17,4 @@
 #include "ArithmeticException.cpp"
 #include "LimitExceededException.cpp"
 #include "AlgorithmFailedException.cpp"
+#include "ResourceAcquisitionFailedException.cpp"

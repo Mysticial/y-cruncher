@@ -12,6 +12,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 //  Dependencies
 #include "PublicLibs/BasicLibs/StringTools/Unicode.h"
+#include "PublicLibs/SystemLibs/FileIO/FileException.h"
 #include "BaseFile_Default.h"
 namespace ymp{
 namespace FileIO{
@@ -59,6 +60,55 @@ void BaseFile::close(bool delete_file){
     }
 
     m_path.clear();
+}
+void BaseFile::rename(std::string path){
+    if (m_path.empty()){
+        throw FileException("BaseFile::rename()", std::move(path), "File isn't open.");
+    }
+
+    std::string old_path = m_path;
+    close();
+
+    //  Rename it
+    if (::rename(old_path.c_str(), path.c_str())){
+        //  Failed because of something other than file already exists.
+        if (errno != EEXIST){
+            int errorcode = errno;
+            throw FileException(
+                errorcode, "RawFile::rename()",
+                std::move(old_path),
+                "Unable to rename file."
+            );
+        }
+
+        //  File already exists. Remove the existing one.
+        if (remove(path.c_str())){
+            int errorcode = errno;
+            throw FileException(
+                errorcode, "RawFile::rename()",
+                std::move(old_path),
+                "Unable to rename file because the existing one can't be deleted."
+            );
+        }
+
+        //  Try one last time.
+        if (::rename(old_path.c_str(), path.c_str())){
+            int errorcode = errno;
+            throw FileException(
+                errorcode, "RawFile::rename()",
+                std::move(old_path),
+                "Unable to rename file."
+            );
+        }
+    }
+
+    if (!open(std::move(path))){
+        throw FileException(
+            "RawFile::rename()",
+            std::move(path),
+            "Unable to reopen file."
+        );
+    }
 }
 bool BaseFile::set_ptr(ufL_t offset){
 #ifdef _MSC_VER

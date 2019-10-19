@@ -23,22 +23,12 @@ namespace ymp{
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 class SystemException : public Exception{
-public:
-    static const char TYPENAME[];
+    YMP_EXCEPTION_DECLARATIONS()
 
+public:
     YM_NO_INLINE SystemException(const char* function, const char* message, int code);
     YM_NO_INLINE SystemException(const char* function, std::string message, int code);
 
-public:
-    [[noreturn]] virtual void fire() const override{
-        throw *this;
-    }
-    virtual const char* get_typename() const override{
-        return TYPENAME;
-    }
-    virtual Exception* clone() const override{
-        return new SystemException(*this);
-    }
     virtual void print() const override;
 
     const std::string& message() const{
@@ -46,8 +36,9 @@ public:
     }
 
 public:
-    SystemException(const DllSafeStream& data);
-    virtual DllSafeStream serialize() const override;
+    //  Serialization
+    SystemException(SerializationPassKey key, const char*& stream);
+    virtual void serialize(std::string& stream) const override;
 
 protected:
     std::string m_function;

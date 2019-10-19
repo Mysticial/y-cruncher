@@ -51,7 +51,7 @@ bool hardware_2011_x64_SandyBridge(const cpu_x86& features){
 bool hardware_2011_x64_Bulldozer(const cpu_x86& features){
     return hardware_2011_x64_SandyBridge(features)
         && features.HW_ABM
-        && features.HW_XOP
+//        && features.HW_XOP
         && features.HW_FMA4;
 }
 bool hardware_2013_x64_Haswell(const cpu_x86& features){
@@ -90,6 +90,9 @@ bool hardware_2018_x64_CannonLake(const cpu_x86& features){
     return hardware_2017_x64_Skylake(features)
         && features.HW_AVX512_IFMA
         && features.HW_AVX512_VBMI;
+}
+bool hardware_2019_x64_Zen2(const cpu_x86& features){
+    return hardware_2017_x64_Zen(features);
 }
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -139,7 +142,7 @@ bool can_run_2016_x64_KnightsLanding(const cpu_x86& features){
         && features.OS_AVX
         && features.OS_AVX512;
 }
-bool can_run_2017_x64_Zen(const cpu_x86& features){
+bool can_run_2017_x64_Zen1(const cpu_x86& features){
     return hardware_2017_x64_Zen(features)
         && features.OS_x64
         && features.OS_AVX;
@@ -155,6 +158,11 @@ bool can_run_2018_x64_CannonLake(const cpu_x86& features){
         && features.OS_x64
         && features.OS_AVX
         && features.OS_AVX512;
+}
+bool can_run_2019_x64_Zen2(const cpu_x86& features){
+    return hardware_2019_x64_Zen2(features)
+        && features.OS_x64
+        && features.OS_AVX;
 }
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////

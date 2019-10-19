@@ -14,6 +14,7 @@
 #include "PublicLibs/ConsoleIO/BasicIO.h"
 #include "PublicLibs/ConsoleIO/Label.h"
 #include "PublicLibs/ExportSafeLibs/Stream.h"
+#include "ExceptionSerialization.h"
 #include "BufferTooSmallException.h"
 #include "BufferTooSmallThrower.h"
 namespace ymp{
@@ -21,8 +22,7 @@ namespace ymp{
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-const char BufferTooSmallException::TYPENAME[] = "BufferTooSmallException";
-ExceptionFactoryT<BufferTooSmallException> BufferTooSmallException_Instance;
+YMP_EXCEPTION_DEFINITIONS(BufferTooSmallException)
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -47,35 +47,16 @@ void BufferTooSmallException::print() const{
     Console::println("\n");
     Console::SetColor('w');
 }
-BufferTooSmallException::BufferTooSmallException(const DllSafeStream& data){
-    const char* str = (const char*)data.get() + sizeof(TYPENAME);
-
-    m_function = str;
-    str += m_function.size() + 1;
-
-    memcpy(&m_buffer_size, str, sizeof(m_buffer_size));
-    str += sizeof(m_buffer_size);
-
-    memcpy(&m_required_size, str, sizeof(m_required_size));
+BufferTooSmallException::BufferTooSmallException(SerializationPassKey key, const char*& stream)
+    : Exception(key, stream)
+{
+    ExceptionTools::parse(stream, m_buffer_size);
+    ExceptionTools::parse(stream, m_required_size);
 }
-DllSafeStream BufferTooSmallException::serialize() const{
-    upL_t func_length = m_function.size() + 1;
-    upL_t bytes = func_length + sizeof(m_buffer_size) + sizeof(m_required_size);
-
-    DllSafeStream ptr(sizeof(TYPENAME) + bytes);
-    char* str = (char*)ptr.get();
-    memcpy(str, TYPENAME, sizeof(TYPENAME));
-    str += sizeof(TYPENAME);
-
-    memcpy(str, m_function.c_str(), func_length);
-    str += func_length;
-
-    memcpy(str, &m_buffer_size, sizeof(m_buffer_size));
-    str += sizeof(m_buffer_size);
-
-    memcpy(str, &m_required_size, sizeof(m_required_size));
-
-    return ptr;
+void BufferTooSmallException::serialize(std::string& stream) const{
+    Exception::serialize(stream);
+    ExceptionTools::write(stream, m_buffer_size);
+    ExceptionTools::write(stream, m_required_size);
 }
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////

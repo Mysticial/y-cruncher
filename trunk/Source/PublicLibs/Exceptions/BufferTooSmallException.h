@@ -24,26 +24,17 @@ namespace ymp{
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 class BufferTooSmallException : public Exception{
-public:
-    static const char TYPENAME[];
+    YMP_EXCEPTION_DECLARATIONS()
 
+public:
     YM_NO_INLINE BufferTooSmallException(const char* function, siL_t buffer_size, uiL_t required_size);
 
-public:
-    [[noreturn]] virtual void fire() const override{
-        throw *this;
-    }
-    virtual const char* get_typename() const override{
-        return TYPENAME;
-    }
-    virtual Exception* clone() const override{
-        return new BufferTooSmallException(*this);
-    }
     virtual void print() const override;
 
 public:
-    BufferTooSmallException(const DllSafeStream& data);
-    virtual DllSafeStream serialize() const override;
+    //  Serialization
+    BufferTooSmallException(SerializationPassKey key, const char*& stream);
+    virtual void serialize(std::string& stream) const override;
 
 private:
     std::string m_function;

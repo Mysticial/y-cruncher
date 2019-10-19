@@ -14,6 +14,9 @@
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 //  Dependencies
+#include <memory>
+#include <string>
+#include "PublicLibs/CompilerSettings.h"
 namespace ymp{
     class DllSafeStream;
 ////////////////////////////////////////////////////////////////////////////////
@@ -22,16 +25,55 @@ namespace ymp{
 ////////////////////////////////////////////////////////////////////////////////
 class Exception{
 public:
+    Exception() = default;
     virtual ~Exception() = default;
+
+public:
+    //  These are the same for all child classes.
     [[noreturn]] virtual void fire() const = 0;
     virtual const char* get_typename() const = 0;
-    virtual Exception* clone() const = 0;   //  Must be manually freed.
-    virtual void print() const = 0;
-    virtual DllSafeStream serialize() const = 0;
+    virtual std::unique_ptr<Exception> move_from() = 0;
 
-    static Exception* deserialize(const DllSafeStream& data);    //  Must be manually freed.
-    static void rethrow(const DllSafeStream& data);
+public:
+    virtual void print() const = 0;
+
+protected:
+    //  Serialization
+    enum class SerializationPassKey{};
+    template <typename ExceptionType> friend class ExceptionFactoryT;
+public:
+    Exception(SerializationPassKey key, const char*& stream){}
+    virtual void serialize(std::string& stream) const{}
 };
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+//  Required Exception Fields
+#define YMP_STRINGIFY(x) #x
+#define YMP_TOSTRING(x) YMP_STRINGIFY(x)
+
+#define YMP_EXCEPTION_DECLARATIONS()    \
+public: \
+    static const char TYPENAME[];   \
+    [[noreturn]] virtual void fire() const override;    \
+    virtual const char* get_typename() const override;  \
+    virtual std::unique_ptr<Exception> move_from() override;    \
+
+#define YMP_EXCEPTION_DEFINITIONS(ExceptionName)    \
+    const char ExceptionName::TYPENAME[] = YMP_STRINGIFY(ExceptionName);    \
+    ExceptionFactoryT<ExceptionName> ExceptionName##_Instance;  \
+    [[noreturn]] void ExceptionName::fire() const{  \
+        throw *this;    \
+    }   \
+    const char* ExceptionName::get_typename() const{    \
+        return TYPENAME;    \
+    }   \
+    std::unique_ptr<ymp::Exception> ExceptionName::move_from(){ \
+        using SelfType = typename std::remove_reference<decltype(*this)>::type; \
+        return std::make_unique<SelfType>(std::move(*this));    \
+    }   \
+
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -40,10 +82,12 @@ public:
 class ExceptionFactory{
 public:
     //  Must be manually freed.
-    virtual Exception* deserialize(const DllSafeStream& data) const = 0;
+    virtual Exception* deserialize(const char*& stream) const = 0;
 };
 ////////////////////////////////////////////////////////////////////////////////
 void register_exception(const char* name, ExceptionFactory* factory);
+DllSafeStream serialize_exception(const Exception& exception);
+void rethrow_serialized_exception(const DllSafeStream& data);
 ////////////////////////////////////////////////////////////////////////////////
 template <typename ExceptionType>
 class ExceptionFactoryT : public ExceptionFactory{
@@ -51,8 +95,8 @@ public:
     ExceptionFactoryT(){
         register_exception(ExceptionType::TYPENAME, this);
     }
-    virtual Exception* deserialize(const DllSafeStream& data) const override{
-        return new ExceptionType(data);
+    virtual Exception* deserialize(const char*& stream) const override{
+        return new ExceptionType(Exception::SerializationPassKey(), stream);
     }
 };
 ////////////////////////////////////////////////////////////////////////////////

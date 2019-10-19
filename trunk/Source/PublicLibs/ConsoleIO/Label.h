@@ -53,6 +53,7 @@ YM_NO_INLINE    upL_t   print_labelc_ebytes     (std::string label, siL_t x, cha
 YM_NO_INLINE    upL_t   println_labelc_ebytes   (std::string label, siL_t x, char color = ' ');
 ////////////////////////////////////////////////////////////////////////////////
 YM_NO_INLINE    siL_t   scan_label_siL                  (const std::string& label, char color = 'T');
+YM_NO_INLINE    siL_t   scan_label_siL_range            (const std::string& label, siL_t low, siL_t high, char color = 'T');
 YM_NO_INLINE    upL_t   scan_label_upL_range            (const std::string& label, upL_t low = 0, upL_t high = (upL_t)0 - 1, char color = 'T');
 YM_NO_INLINE    uiL_t   scan_label_uiL_range            (const std::string& label, uiL_t low = 0, uiL_t high = (uiL_t)0 - 1, char color = 'T');
 YM_NO_INLINE    siL_t   scan_label_siL_suffix           (const std::string& label, char color = 'T');

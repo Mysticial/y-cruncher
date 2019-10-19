@@ -16,6 +16,7 @@
 //  Dependencies
 #include <memory>
 #include "PublicLibs/BasicLibs/Concurrency/BasicParallelizer.h"
+#include "DigitViewer2/Globals.h"
 #include "DigitViewer2/DigitReaders/BasicDigitReader.h"
 namespace DigitViewer2{
     using namespace ymp;
@@ -25,10 +26,6 @@ namespace DigitViewer2{
 ////////////////////////////////////////////////////////////////////////////////
 class BasicDigitWriter{
 public:
-    //  Buffers need to be aligned to the disk I/O sector size since implementations
-    //  will use raw I/O.
-    static const upL_t BUFFER_ALIGNMENT = 4096;
-
     static const upL_t MAX_RECOMMENDED_BUFFER_SIZE = (upL_t)1 << 30;
 
 public:
@@ -46,9 +43,9 @@ public:
     //  Must be thread-safe even if there is no benefit to concurrent calls.
     virtual void store_digits(
         const char* input,
-        uiL_t offset, upL_t digits,                 //  Range of digits to store.
-        void* P, upL_t Pbytes,                      //  Scratch buffer. Must be aligned to DEFAULT_ALIGNMENT.
-        BasicParallelizer& parallelizer, upL_t tds  //  Parallelism
+        uiL_t offset, upL_t digits,                     //  Range of digits to store.
+        const AlignedBufferC<BUFFER_ALIGNMENT>& buffer, //  Scratch buffer.
+        BasicParallelizer& parallelizer, upL_t tds      //  Parallelism
     ) = 0;
 
 protected:

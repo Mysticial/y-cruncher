@@ -16,8 +16,8 @@
 //  Dependencies
 #include "PublicLibs/CompilerSettings.h"
 #include "PublicLibs/Types.h"
-#include "PublicLibs/ArchSpecificLibs/Shuffle/x86_128/Unpack_x86_SSE2.h"
-#include "PublicLibs/ArchSpecificLibs/Shuffle/x86_256/Unpack_x86_AVX2.h"
+#include "PublicLibs/ArchSpecificLibs/Shuffle/x86_128/AdjacentLanePermute_x86_128.h"
+#include "PublicLibs/ArchSpecificLibs/Shuffle/x86_256/AdjacentLanePermute_x86_256.h"
 #include "DigitViewer2/RawToDecKernels/Kernels_i64_to_dec_x64_AVX2.h"
 namespace DigitViewer2{
 namespace WordToRaw{
@@ -83,19 +83,19 @@ YM_FORCE_INLINE void w64_to_dec_u4_x64_AVX2(char* raw, const __m256i* T, upL_t b
         __m256i a0, b0, c0;
         RawToDec::i64_to_dec_x64_AVX2(T[0], a0, b0, c0);
 
-        SIMD::store2_m64i_SSE2(raw + 57, raw + 38, _mm256_castsi256_si128(c0));
-        SIMD::store2_m64i_SSE2(raw + 19, raw +  0, _mm256_extracti128_si256(c0, 1));
+        SIMD::mm_splitstore_si128(raw + 57, raw + 38, _mm256_castsi256_si128(c0));
+        SIMD::mm_splitstore_si128(raw + 19, raw +  0, _mm256_extracti128_si256(c0, 1));
 #if 0
-        SIMD::store2_m64i_SSE2(raw + 60, raw + 41, _mm256_castsi256_si128(b0));
-        SIMD::store2_m64i_SSE2(raw + 22, raw +  3, _mm256_extracti128_si256(b0, 1));
+        SIMD::mm_splitstore_si128(raw + 60, raw + 41, _mm256_castsi256_si128(b0));
+        SIMD::mm_splitstore_si128(raw + 22, raw +  3, _mm256_extracti128_si256(b0, 1));
 
-        SIMD::store2_m64i_SSE2(raw + 68, raw + 49, _mm256_castsi256_si128(a0));
-        SIMD::store2_m64i_SSE2(raw + 30, raw + 11, _mm256_extracti128_si256(a0, 1));
+        SIMD::mm_splitstore_si128(raw + 68, raw + 49, _mm256_castsi256_si128(a0));
+        SIMD::mm_splitstore_si128(raw + 30, raw + 11, _mm256_extracti128_si256(a0, 1));
 #else
         __m256i y0 = _mm256_unpacklo_epi64(b0, a0);
         __m256i y1 = _mm256_unpackhi_epi64(b0, a0);
-        SIMD::store2_m128i_AVX(raw + 60, raw + 22, y0);
-        SIMD::store2_m128i_AVX(raw + 41, raw +  3, y1);
+        SIMD::mm256_splitstore_si256(raw + 60, raw + 22, y0);
+        SIMD::mm256_splitstore_si256(raw + 41, raw +  3, y1);
 #endif
 
         T += 1;

@@ -14,6 +14,7 @@
 #include "PublicLibs/ConsoleIO/BasicIO.h"
 #include "PublicLibs/ConsoleIO/Label.h"
 #include "PublicLibs/ExportSafeLibs/Stream.h"
+#include "PublicLibs/Exceptions/ExceptionSerialization.h"
 #include "FileException.h"
 namespace ymp{
 namespace FileIO{
@@ -21,8 +22,7 @@ namespace FileIO{
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-const char FileException::TYPENAME[] = "FileException";
-ExceptionFactoryT<FileException> FileException_Instance;
+YMP_EXCEPTION_DEFINITIONS(FileException)
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -57,42 +57,20 @@ void FileException::print() const{
     Console::println("\n");
     Console::SetColor('w');
 }
-FileException::FileException(const DllSafeStream& data){
-    const char* str = (const char*)data.get() + sizeof(TYPENAME);
-
-    m_function = str;
-    str += m_function.size() + 1;
-
-    m_message = str;
-    str += m_message.size() + 1;
-
-    m_path = str;
-    str += m_path.size() + 1;
-
-    memcpy(&m_code, str, sizeof(m_code));
+FileException::FileException(SerializationPassKey key, const char*& stream)
+    : Exception(key, stream)
+{
+    ExceptionTools::parse(stream, m_function);
+    ExceptionTools::parse(stream, m_message);
+    ExceptionTools::parse(stream, m_path);
+    ExceptionTools::parse(stream, m_code);
 }
-DllSafeStream FileException::serialize() const{
-    upL_t function_size = m_function.size() + 1;
-    upL_t message_size = m_message.size() + 1;
-    upL_t path_size = m_path.size() + 1;
-
-    DllSafeStream ptr(sizeof(TYPENAME) + function_size + message_size + path_size + sizeof(m_code));
-    char* str = (char*)ptr.get();
-    memcpy(str, TYPENAME, sizeof(TYPENAME));
-    str += sizeof(TYPENAME);
-
-    memcpy(str, &m_function.front(), function_size);
-    str += function_size;
-
-    memcpy(str, &m_message.front(), message_size);
-    str += message_size;
-
-    memcpy(str, &m_path.front(), path_size);
-    str += path_size;
-
-    memcpy(str, &m_code, sizeof(m_code));
-
-    return ptr;
+void FileException::serialize(std::string& stream) const{
+    Exception::serialize(stream);
+    ExceptionTools::write(stream, m_function);
+    ExceptionTools::write(stream, m_message);
+    ExceptionTools::write(stream, m_path);
+    ExceptionTools::write(stream, m_code);
 }
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////

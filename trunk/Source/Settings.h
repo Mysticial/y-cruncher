@@ -35,9 +35,11 @@
 #define     YCR_ENABLE_2007_x64_Penryn
 #define     YCR_ENABLE_2008_x64_Nehalem
 #define     YCR_ENABLE_2014_x64_Broadwell
-#define     YCR_ENABLE_2016_x64_KnightsLanding
-#define     YCR_ENABLE_2017_x64_Zen
+//#define     YCR_ENABLE_2016_x64_KnightsLanding
+#define     YCR_ENABLE_2017_x64_Zen1
 #define     YCR_ENABLE_2017_x64_Skylake
+//#define     YCR_ENABLE_2018_x64_CannonLake
+//#define     YCR_ENABLE_2019_x64_Zen2
 
 #endif
 ////////////////////////////////////////////////////////////////////////////////
@@ -58,10 +60,11 @@
 //#define     YCR_ENABLE_2007_x64_Penryn
 #define     YCR_ENABLE_2008_x64_Nehalem
 #define     YCR_ENABLE_2014_x64_Broadwell
-#define     YCR_ENABLE_2016_x64_KnightsLanding
-#define     YCR_ENABLE_2017_x64_Zen
+//#define     YCR_ENABLE_2016_x64_KnightsLanding
+#define     YCR_ENABLE_2017_x64_Zen1
 #define     YCR_ENABLE_2017_x64_Skylake
-//#define     YCR_ENABLE_2018_x64_CannonLake
+#define     YCR_ENABLE_2018_x64_CannonLake
+//#define     YCR_ENABLE_2019_x64_Zen2
 
 #endif
 ////////////////////////////////////////////////////////////////////////////////
@@ -79,10 +82,11 @@
 #define     YCR_ENABLE_2007_x64_Penryn
 #define     YCR_ENABLE_2008_x64_Nehalem
 #define     YCR_ENABLE_2014_x64_Broadwell
-#define     YCR_ENABLE_2016_x64_KnightsLanding
-#define     YCR_ENABLE_2017_x64_Zen
+//#define     YCR_ENABLE_2016_x64_KnightsLanding
+#define     YCR_ENABLE_2017_x64_Zen1
 #define     YCR_ENABLE_2017_x64_Skylake
-//#define     YCR_ENABLE_2018_x64_CannonLake
+#define     YCR_ENABLE_2018_x64_CannonLake
+//#define     YCR_ENABLE_2019_x64_Zen2
 
 #endif
 ////////////////////////////////////////////////////////////////////////////////
@@ -101,9 +105,10 @@
 #define     YCR_ENABLE_2008_x64_Nehalem
 #define     YCR_ENABLE_2014_x64_Broadwell
 #define     YCR_ENABLE_2016_x64_KnightsLanding
-#define     YCR_ENABLE_2017_x64_Zen
+#define     YCR_ENABLE_2017_x64_Zen1
 #define     YCR_ENABLE_2017_x64_Skylake
 #define     YCR_ENABLE_2018_x64_CannonLake
+#define     YCR_ENABLE_2019_x64_Zen2
 
 #endif
 ////////////////////////////////////////////////////////////////////////////////

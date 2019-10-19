@@ -1,14 +1,18 @@
-/* RawFile_Linux.h
+/* AlignedAccessFile.h
  * 
  * Author           : Alexander J. Yee
- * Date Created     : 07/31/2011
- * Last Modified    : 03/24/2018
+ * Date Created     : 03/19/2018
+ * Last Modified    : 07/03/2019
+ * 
+ *      AlignedAccessFile is a random access file that requires all buffers,
+ *  offsets, and lengths to be aligned to the sector. This is the basis for
+ *  unbuffered raw I/O.
  * 
  */
 
 #pragma once
-#ifndef ymp_FileIO_RawFile_Linux_H
-#define ymp_FileIO_RawFile_Linux_H
+#ifndef ymp_FileIO_AlignedAccessFile_H
+#define ymp_FileIO_AlignedAccessFile_H
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -22,57 +26,36 @@ namespace FileIO{
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-enum Mode{
-    CREATE,
-    OPEN_READONLY,
-    OPEN_READWRITE,
-};
+const ukL_t DEFAULT_FILE_ALIGNMENT_K = 12;
+const upL_t DEFAULT_FILE_ALIGNMENT = (upL_t)1 << DEFAULT_FILE_ALIGNMENT_K;
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-class RawFile{
-    static const upL_t MAX_IO_BYTES = (upL_t)1 << 30;
-    static const bool RAW_IO = true;
-
+class AlignedAccessFile{
 public:
-    ~RawFile();
+    virtual ~AlignedAccessFile() = default;
 
-    RawFile(RawFile&& x);
-    void operator=(RawFile&& x);
+    AlignedAccessFile(ukL_t alignment_k, std::string path);
 
-    RawFile(const RawFile& x) = delete;
-    void operator=(const RawFile& x) = delete;
-
-public:
-    RawFile();
-    RawFile(std::string path, Mode mode, bool persistent = true);       //  Create or open file.
-    RawFile(ufL_t bytes, std::string path, bool persistent = false);    //  Create a file with a specific size.
-
-    operator bool() const;
+    ukL_t alignment_k() const{ return m_alignment_k; }
     const std::string& path() const{ return m_path; }
 
-    void close(bool keep_file);
-    void close_and_set_size(ufL_t bytes);
-    void rename(std::string path, bool readonly);
+public:
+    virtual void flush() = 0;
+    virtual void rename(std::string path, bool readonly) = 0;
 
 public:
-    //  All parameters must be aligned to "ALIGNMENT".
-    //  If "throw_on_partial" is true, it will throw an exception if it is
-    //  unable to read/write the full requested bytes. For reads, this may imply
-    //  reaching the end of the file. For stores, this almost always implies a
-    //  more serious error such as disk-is-full or a hardware failure.
-    upL_t load (      void* data, ufL_t offset, upL_t bytes, bool throw_on_partial);
-    upL_t store(const void* data, ufL_t offset, upL_t bytes, bool throw_on_partial = true);
+    //  All parameters must be aligned to "2^m_alignment_k".
+    virtual void load (      void* data, ufL_t offset, upL_t bytes, void* P, upL_t PL) = 0;
+    virtual void store(const void* data, ufL_t offset, upL_t bytes, void* P, upL_t PL) = 0;
 
-private:
-    void set_size(ufL_t bytes);
+protected:
     void check_alignment(const void* data, ufL_t offset, upL_t bytes);
 
-private:
-    int m_filehandle;
+protected:
+    const ukL_t m_alignment_k;
     std::string m_path;
-    bool m_persistent;
 };
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////

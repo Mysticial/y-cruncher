@@ -16,7 +16,7 @@
 //  Dependencies
 #include "PublicLibs/CompilerSettings.h"
 #include "PublicLibs/Types.h"
-#include "PublicLibs/ArchSpecificLibs/Shuffle/x86_128/Unpack_x86_SSE2.h"
+#include "PublicLibs/ArchSpecificLibs/Shuffle/x86_128/AdjacentLanePermute_x86_128.h"
 #include "DigitViewer2/RawToDecKernels/Kernels_i64_to_dec_x64_SSE41.h"
 namespace DigitViewer2{
 namespace WordToRaw{
@@ -83,9 +83,9 @@ YM_FORCE_INLINE void w64_to_dec_u2_x64_SSE41(char* raw, const __m128i* T, upL_t 
         __m128i a0, b0, c0;
         RawToDec::i64_to_dec_x64_SSE41(T[0], a0, b0, c0);
 
-        SIMD::store2_m64i_SSE2(raw + 19, raw +  0, c0);
-        SIMD::store2_m64i_SSE2(raw + 22, raw +  3, b0);
-        SIMD::store2_m64i_SSE2(raw + 30, raw + 11, a0);
+        SIMD::mm_splitstore_si128(raw + 19, raw +  0, c0);
+        SIMD::mm_splitstore_si128(raw + 22, raw +  3, b0);
+        SIMD::mm_splitstore_si128(raw + 30, raw + 11, a0);
 
         T += 1;
     }while (--blocks);

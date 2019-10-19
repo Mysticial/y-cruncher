@@ -92,6 +92,22 @@ void warn_noAVX512(const cpu_x86& features){
     }
 #endif
 }
+void warn_KnightsLanding(const cpu_x86& features){
+#ifndef YCR_ENABLE_2016_x64_KnightsLanding
+    if (can_run_2016_x64_KnightsLanding(features) && !can_run_2017_x64_Skylake(features)){
+        Console::println("", 'Y');
+        Console::println("Knights Landing AVX512 is no longer supported. Falling back to");
+        Console::println("best available AVX2 binary.");
+        Console::println();
+        Console::println("To use AVX512 on Knights Landing, please use y-cruncher v0.7.7.");
+        Console::println("Alternatively, please switch to Skylake-based AVX512 hardware.");
+        Console::println();
+        Console::SetColor('w');
+        Console::Pause();
+        Console::println("\n");
+    }
+#endif
+}
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////

@@ -40,13 +40,17 @@ public:
     bool operator==(const Region<Type>& region) const;
 
     void operator|=(const Region<Type>& region);
-    void operator|=(const SparseRegion& region);
+//    void operator|=(const SparseRegion& region);
 
     void print() const;
 
 private:
     std::map<Type, Type> m_ranges;
 };
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -129,12 +133,12 @@ void SparseRegion<Type>::operator|=(const Region<Type>& region){
         m_ranges.erase(next);
     }
 }
-template <typename Type>
-void SparseRegion<Type>::operator|=(const SparseRegion& region){
-    for (const auto& item : region.m_ranges){
-        set(item.first, item.second);
-    }
-}
+//template <typename Type>
+//void SparseRegion<Type>::operator|=(const SparseRegion& region){
+//    for (const auto& item : region.m_ranges){
+//        set(item.first, item.second);
+//    }
+//}
 template <typename Type>
 void SparseRegion<Type>::print() const{
     Console::println("Sparse Region:");

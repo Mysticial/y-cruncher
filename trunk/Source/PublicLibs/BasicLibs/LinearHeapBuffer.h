@@ -23,6 +23,7 @@ namespace ymp{
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
+//  Words only. No alignment enforcement.
 template <typename Type>
 class LinearWordBuffer{
 public:
@@ -58,18 +59,19 @@ private:
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
+//  Compile-time Alignment
 template <upL_t ALIGNMENT = DEFAULT_ALIGNMENT>
-class LinearHeapBuffer{
+class AlignedBufferC{
     static_assert((ALIGNMENT & (ALIGNMENT - 1)) == 0, "Alignment must be a power-of-two.");
     static const upL_t MASK = ALIGNMENT - 1;
 
 public:
-    YM_FORCE_INLINE LinearHeapBuffer(void* ptr, upL_t L)
+    YM_FORCE_INLINE AlignedBufferC(void* ptr, upL_t L)
         : m_ptr((char*)ptr)
         , m_len(L)
     {
         if ((upL_t)ptr & MASK){
-            throw_InvalidParametersException("LinearHeapBuffer::LinearHeapBuffer()", "Pointer is misaligned.");
+            throw_InvalidParametersException("AlignedBufferC::AlignedBufferC()", "Pointer is misaligned.");
         }
     }
 
@@ -79,29 +81,56 @@ public:
 
 
 public:
+    //  Convert this buffer into a typed raw-pointer with size checking.
+    template <typename WordType, typename SizeType>
+    WordType* extract(SizeType size) const{
+        check_BufferTooSmall("AlignedBufferC::extract()", m_len, size * sizeof(WordType));
+        return (WordType*)m_ptr;
+    }
+
+    //  Return a new AlignedBuffer with a new alignment.
+    template <upL_t NEW_ALIGNMENT>
+    AlignedBufferC<NEW_ALIGNMENT> align() const{
+        static_assert((NEW_ALIGNMENT & (NEW_ALIGNMENT - 1)) == 0, "Alignment must be a power-of-two.");
+        if (NEW_ALIGNMENT < ALIGNMENT){
+            return AlignedBufferC<NEW_ALIGNMENT>(m_ptr, m_len);
+        }
+        const upL_t NEW_MASK = NEW_ALIGNMENT - 1;
+        char* ptr = (char*)(((upL_t)m_ptr + NEW_MASK) & ~NEW_MASK);
+        char* end = m_ptr + m_len;
+        if (ptr > end){
+            throw_BufferTooSmallException("AlignedBufferC::extract_aligned()", m_len, ptr - m_ptr);
+        }
+        return AlignedBufferC<NEW_ALIGNMENT>(ptr, end - ptr);
+    }
+
+
+public:
     //  Cut out a new buffer from the bottom of the current one.
     //  The current buffer will be shrunk to remove that bottom portion.
+    //  These enforce that the length is aligned so that the truncated buffer
+    //  remains properly aligned.
 
     template <typename SizeType>
-    LinearHeapBuffer spawn(SizeType size){
-        check_BufferTooSmall("LinearHeapBuffer::spawn()", m_len, size);
+    AlignedBufferC spawn(SizeType size){
+        check_BufferTooSmall("AlignedBufferC::spawn()", m_len, size);
         upL_t length = (upL_t)size;
         if (length & MASK){
-            throw_InvalidParametersException("LinearHeapBuffer::spawn()", "Size is misaligned.");
+            throw_InvalidParametersException("AlignedBufferC::spawn()", "Size is misaligned.");
         }
         char* ptr = m_ptr;
         m_ptr = ptr + length;
         m_len -= length;
-        return LinearHeapBuffer(ptr, length);
+        return AlignedBufferC(ptr, length);
     }
 
     template <typename SubType, typename SizeType>
     LinearWordBuffer<SubType> spawn_words(SizeType size){
         upL_t length = (upL_t)size;
         upL_t bytes = length * sizeof(SubType);
-        check_BufferTooSmall("LinearHeapBuffer::spawn_words()", m_len, bytes);
+        check_BufferTooSmall("AlignedBufferC::spawn_words()", m_len, bytes);
         if (bytes & MASK){
-            throw_InvalidParametersException("LinearHeapBuffer::spawn_words()", "Size is misaligned.");
+            throw_InvalidParametersException("AlignedBufferC::spawn_words()", "Size is misaligned.");
         }
         SubType* ptr = (SubType*)m_ptr;
         m_ptr = (char*)m_ptr + bytes;

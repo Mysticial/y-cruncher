@@ -14,7 +14,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 //  Dependencies
-#include "PublicLibs/ArchSpecificLibs/Shuffle/x86_128/Unpack_x86_SSE2.h"
+#include "PublicLibs/ArchSpecificLibs/Shuffle/x86_128/AdjacentLanePermute_x86_128.h"
 #include "DigitViewer2/RawToDecKernels/Kernels_dec_to_i64_x64_SSE41.h"
 #include "DigitViewer2/RawToDecKernels/Kernels_i64_to_dec_x64_SSE41.h"
 namespace DigitViewer2{
@@ -31,9 +31,9 @@ YM_FORCE_INLINE bool dec_to_i64_u2_x64_SSE41(__m128i* T, const char* raw, upL_t 
 
     __m128i bad = _mm_setzero_si128();
     do{
-        __m128i c0 = SIMD::load2_m64i_SSE2(raw +  0, raw + 19);
-        __m128i b0 = SIMD::load2_m64i_SSE2(raw +  3, raw + 22);
-        __m128i a0 = SIMD::load2_m64i_SSE2(raw + 11, raw + 30);
+        __m128i c0 = SIMD::mm_splitload_si128(raw +  0, raw + 19);
+        __m128i b0 = SIMD::mm_splitload_si128(raw +  3, raw + 22);
+        __m128i a0 = SIMD::mm_splitload_si128(raw + 11, raw + 30);
         c0 = _mm_and_si128(c0, _mm_set1_epi64x(0x0000000000ffffff));
 
         __m128i t0;
@@ -55,12 +55,12 @@ YM_FORCE_INLINE bool dec_to_i64_u4_x64_SSE41(__m128i* T, const char* raw, upL_t 
 
     __m128i bad = _mm_setzero_si128();
     do{
-        __m128i c0 = SIMD::load2_m64i_SSE2(raw +  0, raw + 19);
-        __m128i b0 = SIMD::load2_m64i_SSE2(raw +  3, raw + 22);
-        __m128i a0 = SIMD::load2_m64i_SSE2(raw + 11, raw + 30);
-        __m128i c1 = SIMD::load2_m64i_SSE2(raw + 38, raw + 57);
-        __m128i b1 = SIMD::load2_m64i_SSE2(raw + 41, raw + 60);
-        __m128i a1 = SIMD::load2_m64i_SSE2(raw + 49, raw + 68);
+        __m128i c0 = SIMD::mm_splitload_si128(raw +  0, raw + 19);
+        __m128i b0 = SIMD::mm_splitload_si128(raw +  3, raw + 22);
+        __m128i a0 = SIMD::mm_splitload_si128(raw + 11, raw + 30);
+        __m128i c1 = SIMD::mm_splitload_si128(raw + 38, raw + 57);
+        __m128i b1 = SIMD::mm_splitload_si128(raw + 41, raw + 60);
+        __m128i a1 = SIMD::mm_splitload_si128(raw + 49, raw + 68);
 
         c0 = _mm_and_si128(c0, _mm_set1_epi64x(0x0000000000ffffff));
         c1 = _mm_and_si128(c1, _mm_set1_epi64x(0x0000000000ffffff));
@@ -95,9 +95,9 @@ YM_FORCE_INLINE void i64_to_dec_u2_x64_SSE41(char* raw, const __m128i* T, upL_t 
         __m128i a0, b0, c0;
         RawToDec::i64_to_dec_x64_SSE41(_mm_loadu_si128(T), a0, b0, c0);
 
-        SIMD::store2_m64i_SSE2(raw +  0, raw + 19, c0);
-        SIMD::store2_m64i_SSE2(raw +  3, raw + 22, b0);
-        SIMD::store2_m64i_SSE2(raw + 11, raw + 30, a0);
+        SIMD::mm_splitstore_si128(raw +  0, raw + 19, c0);
+        SIMD::mm_splitstore_si128(raw +  3, raw + 22, b0);
+        SIMD::mm_splitstore_si128(raw + 11, raw + 30, a0);
 
         raw += 38;
         T += 1;

@@ -65,15 +65,16 @@ void view_range(BasicDigitReader& reader){
         return;
     }
 
+    using DigitViewer2::BUFFER_ALIGNMENT;
     upL_t bytes = reader.recommend_buffer_size(digits);
-    SmartBuffer<> buffer(bytes, BasicDigitReader::BUFFER_ALIGNMENT);
+    SmartBuffer<> buffer(bytes, BUFFER_ALIGNMENT);
 
     //  Read digits
     std::string str(digits, '-');
     reader.load_digits(
         &str[0], nullptr,
         start, digits,
-        buffer, bytes,
+        AlignedBufferC<BUFFER_ALIGNMENT>(buffer, bytes),
         parallelizer_none, 1
     );
 
@@ -99,7 +100,7 @@ void process_start(
     BasicDigitReader& reader,
     uiL_t start, uiL_t digits
 ){
-    Console::println("Processing " + StringTools::tostr(digits, StringTools::COMMAS) + " digits..");
+    Console::println("Processing " + StringTools::tostr(digits, StringTools::COMMAS) + " digits...");
     Console::println("    From: " + StringTools::tostr(start + 1, StringTools::COMMAS));
     Console::println("    To  : " + StringTools::tostr(start + digits, StringTools::COMMAS));
     Console::println();
@@ -189,7 +190,7 @@ BasicParallelizer& get_parallelizer(){
     //  If we're compiling inside y-cruncher, we can use the (better) internal
     //  parallel frameworks. Not that it will make much of a difference anyway
     //  since the parallelism here is very simple.
-    static std::unique_ptr<BasicParallelizer> parallelizer = ParallelFrameworks::get_default();
+    static std::unique_ptr<BasicParallelizer> parallelizer = ParallelFrameworks::get_default()->make();
     return *parallelizer;
 #else
     return parallelizer_default;
@@ -230,7 +231,8 @@ void compute_stats(BasicDigitReader& reader){
     }
 
     //  Allocate buffers.
-    SmartBuffer<> buffer(bytes, BasicDigitReader::BUFFER_ALIGNMENT);
+    using DigitViewer2::BUFFER_ALIGNMENT;
+    SmartBuffer<> buffer(bytes, BUFFER_ALIGNMENT);
 
     //  Stats Tracker
     StatsTracker tracker(reader, start);
@@ -244,7 +246,7 @@ void compute_stats(BasicDigitReader& reader){
         reader.load_stats(
             tracker.stats(),
             offset, block,
-            buffer, bytes,
+            AlignedBufferC<BUFFER_ALIGNMENT>(buffer, bytes),
             parallelizer, tds
         );
 
@@ -284,8 +286,10 @@ void process_write(
 //    cout << "bytes = " << bytes << endl;
 
     //  Allocate buffers.
-    SmartBuffer<> buffer(bytes, BasicDigitReader::BUFFER_ALIGNMENT);
+    using DigitViewer2::BUFFER_ALIGNMENT;
+    SmartBuffer<> buffer(bytes, BUFFER_ALIGNMENT);
     SmartBuffer<char> raw(block_size);
+    AlignedBufferC<BUFFER_ALIGNMENT> frame0(buffer, bytes);
 
     //  Stats Tracker
     StatsTracker tracker(reader, read_offset);
@@ -300,13 +304,13 @@ void process_write(
             reader.load_digits(
                 raw, &tracker.stats(),
                 read_offset, block,
-                buffer, bytes,
+                frame0,
                 parallelizer, tds
             );
             writer.store_digits(
                 raw,
                 write_offset, block,
-                buffer, bytes,
+                frame0,
                 parallelizer, tds
             );
 
@@ -329,7 +333,7 @@ void to_text_file(BasicDigitReader& reader){
     }
 
     uiL_t start = Console::scan_label_uiL_range("Starting Digit: ", 1, limit);
-    uiL_t end   = Console::scan_label_uiL_range("Ending Digit:   ", start, limit);
+    uiL_t end   = Console::scan_label_uiL_range("Ending Digit:   ", start + MIN_COMPRESS_DIGITS, limit);
     start--;
     uiL_t digits = end - start;
     Console::println();
@@ -401,7 +405,7 @@ void to_ycd_file_all(BasicDigitReader& reader){
             }
         }
         if (digits_per_file < MIN_COMPRESS_DIGITS){
-            Console::Warning("Must be at least " + StringTools::tostr((uiL_t)MIN_COMPRESS_DIGITS) + ".\n");
+            Console::Warning("Must be at least " + StringTools::tostr(MIN_COMPRESS_DIGITS) + ".\n");
             continue;
         }
         break;
@@ -433,7 +437,6 @@ void to_ycd_file_partial(BasicDigitReader& reader){
     if (limit == 0){
         limit = (uiL_t)0 - 1;
     }
-
     if (limit < MIN_COMPRESS_DIGITS){
         Console::println("Too few digits to compress.");
         return;

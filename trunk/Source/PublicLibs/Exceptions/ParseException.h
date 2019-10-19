@@ -21,68 +21,38 @@ namespace ymp{
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 class ParseException : public StringException{
-public:
-    static const char TYPENAME[];
+    YMP_EXCEPTION_DECLARATIONS()
 
+public:
     using StringException::StringException;
 
-public:
-    [[noreturn]] virtual void fire() const override{
-        throw *this;
-    }
-    virtual const char* get_typename() const override{
-        return TYPENAME;
-    }
-    virtual Exception* clone() const override{
-        return new ParseException(*this);
-    }
 };
 ////////////////////////////////////////////////////////////////////////////////
 class EndOfStreamException : public ParseException{
-public:
-    static const char TYPENAME[];
+    YMP_EXCEPTION_DECLARATIONS()
 
+public:
     EndOfStreamException();
 
 public:
-    [[noreturn]] virtual void fire() const override{
-        throw *this;
-    }
-    virtual const char* get_typename() const override{
-        return TYPENAME;
-    }
-    virtual Exception* clone() const override{
-        return new EndOfStreamException(*this);
-    }
-
-public:
-    EndOfStreamException(const DllSafeStream& data)
-        : ParseException(data)
+    //  Serialization
+    EndOfStreamException(SerializationPassKey key, const char*& stream)
+        : ParseException(key, stream)
     {}
 };
 ////////////////////////////////////////////////////////////////////////////////
 class KeyNotFoundException : public ParseException{
-public:
-    static const char TYPENAME[];
+    YMP_EXCEPTION_DECLARATIONS()
 
+public:
     KeyNotFoundException(std::string key)
         : ParseException(std::move(key))
     {}
 
 public:
-    [[noreturn]] virtual void fire() const override{
-        throw *this;
-    }
-    virtual const char* get_typename() const override{
-        return TYPENAME;
-    }
-    virtual Exception* clone() const override{
-        return new KeyNotFoundException(*this);
-    }
-
-public:
-    KeyNotFoundException(const DllSafeStream& data)
-        : ParseException(data)
+    //  Serialization
+    KeyNotFoundException(SerializationPassKey key, const char*& stream)
+        : ParseException(key, stream)
     {}
 };
 ////////////////////////////////////////////////////////////////////////////////

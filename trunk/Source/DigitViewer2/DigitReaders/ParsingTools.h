@@ -16,7 +16,7 @@
 //  Dependencies
 #include <string>
 #include "PublicLibs/SystemLibs/FileIO/BasicFile.h"
-#include "PublicLibs/SystemLibs/FileIO/RawFile.h"
+#include "PublicLibs/SystemLibs/FileIO/BufferredStreamFile.h"
 namespace DigitViewer2{
     using namespace ymp;
 ////////////////////////////////////////////////////////////////////////////////

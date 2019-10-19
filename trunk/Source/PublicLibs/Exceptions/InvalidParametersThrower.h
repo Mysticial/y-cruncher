@@ -5,7 +5,7 @@
  * Last Modified    : 10/23/2018
  * 
  *      Lightweight header. Use this if you only need to throw and you don't
- *  want to pull in <string>.
+ *  want to pull in all the headers that "Exception.h" pulls in.
  * 
  */
 

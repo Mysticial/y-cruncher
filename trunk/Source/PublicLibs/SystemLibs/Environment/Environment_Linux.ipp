@@ -23,6 +23,7 @@
 #include <unistd.h>
 #include "PublicLibs/BasicLibs/StringTools/Unicode.h"
 #include "PublicLibs/ConsoleIO/BasicIO.h"
+#include "PublicLibs/SystemLibs/Time/Time.h"
 #include "Environment.h"
 namespace ymp{
 namespace Environment{
@@ -161,13 +162,22 @@ uiL_t GetTotalPhysicalMemory(){
     return (uiL_t)sysconf(_SC_PHYS_PAGES) * sysconf(_SC_PAGE_SIZE);
 }
 ////////////////////////////////////////////////////////////////////////////////
+void x86_cpuid(u32_t eabcdx[4], u32_t eax, u32_t ecx){
+    __cpuid_count(eax, ecx, eabcdx[0], eabcdx[1], eabcdx[2], eabcdx[3]);
+}
 u64_t x86_rdtsc(){
     unsigned int lo, hi;
     __asm__ volatile ("rdtsc" : "=a" (lo), "=d" (hi));
     return ((u64_t)hi << 32) | lo;
 }
-void x86_cpuid(u32_t eabcdx[4], u32_t eax, u32_t ecx){
-    __cpuid_count(eax, ecx, eabcdx[0], eabcdx[1], eabcdx[2], eabcdx[3]);
+u64_t x86_measure_rdtsc_ticks_per_sec(){
+    Time::WallClock w_start = Time::WallClock::Now();
+    u64_t r_start = x86_rdtsc();
+    while (w_start.SecondsElapsed() < 0.0625);
+    Time::WallClock w_end = Time::WallClock::Now();
+    u64_t r_end = x86_rdtsc();
+
+    return (u64_t)((double)(r_end - r_start) / (w_end - w_start));
 }
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////

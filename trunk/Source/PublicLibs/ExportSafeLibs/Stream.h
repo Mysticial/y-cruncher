@@ -75,6 +75,7 @@ public:
 
 public:
     //  Getters
+    upL_t size() const{ return m_bytes; }
     void* get(upL_t offset = 0){
         return m_ptr + offset;
     }

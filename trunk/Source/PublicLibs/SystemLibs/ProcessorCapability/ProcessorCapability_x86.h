@@ -14,11 +14,13 @@
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 #if 0
+#elif defined X64_19_Zen2
+#define YMP_Arch_2014_x64_Broadwell
 #elif defined X64_18_CannonLake
 #define YMP_Arch_2018_x64_CannonLake
 #elif defined X64_17_Skylake
 #define YMP_Arch_2017_x64_Skylake
-#elif defined X64_17_Zen
+#elif defined X64_17_Zen1
 #define YMP_Arch_2014_x64_Broadwell
 #elif defined X64_16_KnightsLanding
 #define YMP_Arch_2016_x64_KnightsLanding

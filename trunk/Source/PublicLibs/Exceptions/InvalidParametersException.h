@@ -21,9 +21,9 @@ namespace ymp{
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 class InvalidParametersException : public StringException{
-public:
-    static const char TYPENAME[];
+    YMP_EXCEPTION_DECLARATIONS()
 
+public:
     using StringException::StringException;
 
     InvalidParametersException()
@@ -32,17 +32,6 @@ public:
     InvalidParametersException(const char* function)
         : StringException(function, "Invalid Parameters")
     {}
-
-public:
-    [[noreturn]] virtual void fire() const override{
-        throw *this;
-    }
-    virtual const char* get_typename() const override{
-        return TYPENAME;
-    }
-    virtual Exception* clone() const override{
-        return new InvalidParametersException(*this);
-    }
 };
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////

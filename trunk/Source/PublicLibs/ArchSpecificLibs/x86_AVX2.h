@@ -23,10 +23,12 @@ namespace ymp{
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 //  COMPILER-BUG-GCC: Missing AVX2 intrinsics
-#ifdef __GNUC__
+#if defined __GNUC__ && __GNUC__ < 8
 YM_FORCE_INLINE __m256i _mm256_setr_m128i(__m128i L, __m128i H){
     return _mm256_inserti128_si256(_mm256_castsi128_si256(L), (H), 1);
 }
+#endif
+#ifdef __GNUC__
 YM_FORCE_INLINE __m256i _mm256_loadu2_m128i(const __m128i* H, const __m128i* L){
     return _mm256_inserti128_si256(
         _mm256_castsi128_si256(_mm_loadu_si128(L)),
@@ -44,6 +46,14 @@ YM_FORCE_INLINE void _mm256_storeu2_m128i(__m128i* H, __m128i* L, __m256i x){
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 YM_FORCE_INLINE __m256i _mm256_cvtsi64_si256(u64_t x){
+#ifndef __INTEL_COMPILER
+    __m256i r0 = _mm256_castsi128_si256(_mm_cvtsi64_si128(x));
+    return _mm256_blend_epi32(r0, _mm256_setzero_si256(), 0xfc);
+#else
+    return _mm256_zextsi128_si256(_mm_cvtsi64_si128(x));
+#endif
+}
+YM_FORCE_INLINE __m256i _mm256_setl_epi64(u64_t x){
 #ifndef __INTEL_COMPILER
     __m256i r0 = _mm256_castsi128_si256(_mm_cvtsi64_si128(x));
     return _mm256_blend_epi32(r0, _mm256_setzero_si256(), 0xfc);

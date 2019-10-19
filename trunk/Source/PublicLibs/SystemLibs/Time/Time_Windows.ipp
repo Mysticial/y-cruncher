@@ -91,10 +91,10 @@ PerformanceTimeDuration operator-(const PerformanceTimeStamp& end, const Perform
 ////////////////////////////////////////////////////////////////////////////////
 YM_NO_INLINE std::string tostr_now(){
     struct tm newtime;
-    __time32_t aclock;
+    time_t aclock;
 
-    _time32(&aclock);
-    _localtime32_s(&newtime, &aclock);
+    time(&aclock);
+    localtime_s(&newtime, &aclock);
 
     char buffer[32];
     asctime_s(buffer, 32, &newtime);

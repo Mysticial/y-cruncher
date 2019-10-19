@@ -1,8 +1,10 @@
-/* RawFile.cpp
+/* BufferredStreamFile.cpp
  * 
  * Author           : Alexander J. Yee
  * Date Created     : 03/19/2018
- * Last Modified    : 03/19/2018
+ * Last Modified    : 07/03/2019
+ * 
+ *      RawFile is a file with direct and unbufferred I/O.
  * 
  */
 
@@ -12,37 +14,19 @@
 ////////////////////////////////////////////////////////////////////////////////
 //  Dependencies
 #include <string.h>
-#include "PublicLibs/BasicLibs/Alignment/AlignmentTools.h"
-#if _WIN32
-#include "RawFile_Windows.ipp"
-#else
-#include "RawFile_Linux.ipp"
-#endif
+#include "FileException.h"
+#include "BufferredStreamFile.h"
 namespace ymp{
 namespace FileIO{
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-RawIoBuffer::RawIoBuffer(void* buffer, upL_t bytes)
-    : m_buffer(buffer)
-    , m_bytes(bytes)
-{
-    if (Alignment::ptr_past_aligned<RAWIO_ALIGNMENT>(buffer) != 0){
-        throw InvalidParametersException("RawIoBuffer::RawIoBuffer()", "Buffer is misaligned.");
-    }
-    if (Alignment::int_past_aligned<RAWIO_ALIGNMENT>(bytes) != 0){
-        throw InvalidParametersException("RawIoBuffer::RawIoBuffer()", "Length is misaligned.");
-    }
-}
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
 BufferedReader::BufferedReader(RawFile& file)
-    : m_buffer(RAWIO_ALIGNMENT, RAWIO_ALIGNMENT)
-    , m_buffer_offset(RAWIO_ALIGNMENT)
-    , m_buffer_end(RAWIO_ALIGNMENT)
+    : m_block((upL_t)1 << file.alignment_k())
+    , m_buffer(m_block, m_block)
+    , m_buffer_offset(m_block)
+    , m_buffer_end(m_block)
     , m_file_offset(0)
     , m_file(file)
 {}
@@ -50,30 +34,31 @@ const std::string& BufferedReader::path() const{
     return m_file.path();
 }
 ufL_t BufferedReader::offset() const{
-    return m_file_offset - RAWIO_ALIGNMENT + m_buffer_offset;
+    return m_file_offset - m_block + m_buffer_offset;
 }
 void BufferedReader::refill(){
-    if (m_buffer_end < RAWIO_ALIGNMENT){
+    if (m_buffer_end < m_block){
         throw FileIO::FileException("BufferedReader()", m_file.path(), "Unexpected end of file.");
     }
-    m_buffer_end = m_file.load(m_buffer, m_file_offset, RAWIO_ALIGNMENT, false);
+    m_buffer_end = m_file.load(m_buffer, m_file_offset, m_block, false);
     if (m_buffer_end == 0){
         throw FileIO::FileException("BufferedReader()", m_file.path(), "Unexpected end of file.");
     }
     m_buffer_offset = 0;
-    m_file_offset += RAWIO_ALIGNMENT;
+    m_file_offset += m_block;
 }
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 BufferedWriter::BufferedWriter(RawFile& file)
-    : m_buffer(RAWIO_ALIGNMENT, RAWIO_ALIGNMENT)
+    : m_block((upL_t)1 << file.alignment_k())
+    , m_buffer(m_block, m_block)
     , m_buffer_offset(0)
     , m_file_offset(0)
     , m_file(file)
 {
-    memset(m_buffer, 0, RAWIO_ALIGNMENT);
+    memset(m_buffer, 0, m_block);
 }
 BufferedWriter::~BufferedWriter(){
     if (m_buffer_offset != 0){
@@ -92,13 +77,13 @@ void BufferedWriter::push(const char* buffer, upL_t bytes){
     }
 }
 void BufferedWriter::flush(){
-    m_file.store(m_buffer, m_file_offset, RAWIO_ALIGNMENT);
+    m_file.store(m_buffer, m_file_offset, m_block, true);
 }
 void BufferedWriter::refill(){
     flush();
     m_buffer_offset = 0;
-    m_file_offset += RAWIO_ALIGNMENT;
-    memset(m_buffer, 0, RAWIO_ALIGNMENT);
+    m_file_offset += m_block;
+    memset(m_buffer, 0, m_block);
 }
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////

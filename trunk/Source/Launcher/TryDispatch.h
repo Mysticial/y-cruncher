@@ -22,9 +22,10 @@
 #define     YCR_ENABLE_2008_x64_Nehalem
 #define     YCR_ENABLE_2014_x64_Broadwell
 #define     YCR_ENABLE_2016_x64_KnightsLanding
-#define     YCR_ENABLE_2017_x64_Zen
+#define     YCR_ENABLE_2017_x64_Zen1
 #define     YCR_ENABLE_2017_x64_Skylake
 #define     YCR_ENABLE_2018_x64_CannonLake
+#define     YCR_ENABLE_2019_x64_Zen2
 #endif
 #include "BinaryNames.h"
 #include "Dispatcher.h"
@@ -90,10 +91,10 @@ void dispatch_2016_x64_KnightsLanding(const cpu_x86& features){
     }
 #endif
 }
-void dispatch_2017_x64_Zen(const cpu_x86& features){
-#ifdef YCR_ENABLE_2017_x64_Zen
-    if (can_run_2017_x64_Zen(features)){
-        launch(BINARY_NAME_2017_x64_Zen);
+void dispatch_2017_x64_Zen1(const cpu_x86& features){
+#ifdef YCR_ENABLE_2017_x64_Zen1
+    if (can_run_2017_x64_Zen1(features)){
+        launch(BINARY_NAME_2017_x64_Zen1);
     }
 #endif
 }
@@ -108,7 +109,14 @@ void dispatch_2018_x64_CannonLake(const cpu_x86& features){
 #ifdef YCR_ENABLE_2018_x64_CannonLake
     if (can_run_2018_x64_CannonLake(features)){
         launch(BINARY_NAME_2018_x64_CannonLake);
+    }
+#endif
 }
+void dispatch_2019_x64_Zen2(const cpu_x86& features){
+#ifdef YCR_ENABLE_2019_x64_Zen2
+    if (can_run_2019_x64_Zen2(features)){
+        launch(BINARY_NAME_2017_x64_Zen1);
+    }
 #endif
 }
 ////////////////////////////////////////////////////////////////////////////////

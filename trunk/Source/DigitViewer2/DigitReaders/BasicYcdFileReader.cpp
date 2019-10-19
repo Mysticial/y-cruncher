@@ -31,7 +31,7 @@ namespace DigitViewer2{
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 BasicYcdFileReader::BasicYcdFileReader(std::string path)
-    : m_file(std::move(path), FileIO::OPEN_READONLY)
+    : m_file(FileIO::DEFAULT_FILE_ALIGNMENT_K, std::move(path), FileIO::OPEN_READONLY)
 {
     //  Parse the file
     FileIO::BufferedReader reader(m_file);
@@ -592,12 +592,15 @@ upL_t BasicYcdFileReader::start_access(
 void BasicYcdFileReader::load_stats(
     DigitStats& stats,
     uiL_t offset, uiL_t digits,
-    void* P, upL_t Pbytes,
+    const AlignedBufferC<BUFFER_ALIGNMENT>& buffer,
     BasicParallelizer& parallelizer, upL_t tds
 ){
     if (digits == 0){
         return;
     }
+
+    void* P = buffer.ptr();
+    upL_t Pbytes = buffer.len();
 
     upL_t max_digits = start_access(offset, digits, P, Pbytes);
     while (digits > 0){
@@ -613,12 +616,15 @@ void BasicYcdFileReader::load_digits(
     char* output,
     DigitStats* stats,
     uiL_t offset, upL_t digits,
-    void* P, upL_t Pbytes,
+    const AlignedBufferC<BUFFER_ALIGNMENT>& buffer,
     BasicParallelizer& parallelizer, upL_t tds
 ){
     if (digits == 0){
         return;
     }
+
+    void* P = buffer.ptr();
+    upL_t Pbytes = buffer.len();
 
     upL_t max_digits = start_access(offset, digits, P, Pbytes);
     while (digits > 0){

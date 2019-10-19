@@ -14,20 +14,17 @@
 #include "PublicLibs/ConsoleIO/BasicIO.h"
 #include "PublicLibs/ConsoleIO/Label.h"
 #include "PublicLibs/ExportSafeLibs/Stream.h"
+#include "ExceptionSerialization.h"
 #include "ArithmeticException.h"
 namespace ymp{
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-const char ArithmeticException::TYPENAME[] = "ArithmeticException";
-ExceptionFactoryT<ArithmeticException> ArithmeticException_Instance;
+YMP_EXCEPTION_DEFINITIONS(ArithmeticException)
+YMP_EXCEPTION_DEFINITIONS(ExponentOverflowException)
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
-const char ExponentOverflowException::TYPENAME[] = "ExponentOverflowException";
-ExceptionFactoryT<ExponentOverflowException> ExponentOverflowException_Instance;
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ExponentOverflowException::ExponentOverflowException(const char* function, siL_t value, siL_t limit)
@@ -46,35 +43,16 @@ void ExponentOverflowException::print() const{
     Console::println("\n");
     Console::SetColor('w');
 }
-ExponentOverflowException::ExponentOverflowException(const DllSafeStream& data){
-    const char* str = (const char*)data.get() + sizeof(TYPENAME);
-
-    m_function = str;
-    str += m_function.size() + 1;
-
-    memcpy(&m_value, str, sizeof(m_value));
-    str += sizeof(m_value);
-
-    memcpy(&m_limit, str, sizeof(m_limit));
+ExponentOverflowException::ExponentOverflowException(SerializationPassKey key, const char*& stream)
+    : ArithmeticException(key, stream)
+{
+    ExceptionTools::parse(stream, m_value);
+    ExceptionTools::parse(stream, m_limit);
 }
-DllSafeStream ExponentOverflowException::serialize() const{
-    upL_t func_length = m_function.size() + 1;
-    upL_t bytes = func_length + sizeof(m_value) + sizeof(m_limit);
-
-    DllSafeStream ptr(sizeof(TYPENAME) + bytes);
-    char* str = (char*)ptr.get();
-    memcpy(str, TYPENAME, sizeof(TYPENAME));
-    str += sizeof(TYPENAME);
-
-    memcpy(str, m_function.c_str(), func_length);
-    str += func_length;
-
-    memcpy(str, &m_value, sizeof(m_value));
-    str += sizeof(m_value);
-
-    memcpy(str, &m_limit, sizeof(m_limit));
-
-    return ptr;
+void ExponentOverflowException::serialize(std::string& stream) const{
+    ArithmeticException::serialize(stream);
+    ExceptionTools::write(stream, m_value);
+    ExceptionTools::write(stream, m_limit);
 }
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////

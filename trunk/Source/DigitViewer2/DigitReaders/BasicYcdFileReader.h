@@ -26,7 +26,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 //  Dependencies
 #include <mutex>
-#include "PublicLibs/SystemLibs/FileIO/RawFile.h"
+#include "PublicLibs/SystemLibs/FileIO/RawFile/RawFile.h"
 #include "BasicDigitReader.h"
 namespace DigitViewer2{
     using namespace ymp;
@@ -35,7 +35,7 @@ namespace DigitViewer2{
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 class BasicYcdFileReader : public BasicDigitReader{
-    static const upL_t FILE_ALIGNMENT = FileIO::RAWIO_ALIGNMENT;
+    static const upL_t FILE_ALIGNMENT = FileIO::DEFAULT_FILE_ALIGNMENT;
 
 public:
     BasicYcdFileReader(std::string path);
@@ -61,14 +61,14 @@ public:
     virtual void load_stats(
         DigitStats& stats,
         uiL_t offset, uiL_t digits,
-        void* P, upL_t Pbytes,
+        const AlignedBufferC<BUFFER_ALIGNMENT>& buffer,
         BasicParallelizer& parallelizer, upL_t tds
     ) override;
     virtual void load_digits(
         char* output,
         DigitStats* stats,
         uiL_t offset, upL_t digits,
-        void* P, upL_t Pbytes,
+        const AlignedBufferC<BUFFER_ALIGNMENT>& buffer,
         BasicParallelizer& parallelizer, upL_t tds
     ) override;
 

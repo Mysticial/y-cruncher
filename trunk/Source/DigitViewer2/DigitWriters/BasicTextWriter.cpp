@@ -16,6 +16,7 @@
 #include "PublicLibs/Exceptions/InvalidParametersException.h"
 #include "PublicLibs/BasicLibs/Alignment/AlignmentTools.h"
 #include "PublicLibs/SystemLibs/FileIO/FileException.h"
+#include "PublicLibs/SystemLibs/FileIO/BufferredStreamFile.h"
 #include "PublicLibs/SystemLibs/Concurrency/Parallelizers.h"
 #include "DigitViewer2/RawToAscii/RawToAscii.h"
 #include "DigitViewer2/DigitReaders/BasicTextReader.h"
@@ -30,7 +31,7 @@ BasicTextWriter::BasicTextWriter(
     const std::string& first_digits,
     char radix
 )
-    : m_file(path, FileIO::CREATE)
+    : m_file(FileIO::DEFAULT_FILE_ALIGNMENT_K, path, FileIO::CREATE)
     , m_data_offset(0)
     , m_offset_extent(0)
 {
@@ -85,20 +86,15 @@ std::unique_ptr<BasicDigitReader> BasicTextWriter::close_and_get_basic_reader(){
 void BasicTextWriter::store_digits(
     const char* input,
     uiL_t offset, upL_t digits,
-    void* P, upL_t Pbytes,
+    const AlignedBufferC<BUFFER_ALIGNMENT>& buffer,
     BasicParallelizer& parallelizer, upL_t tds
 ){
     if (!m_file){
         throw InvalidParametersException("BasicTextWriter::store_digits()", "File is closed.");
     }
 
-    char* buffer = (char*)P;
-    if (Alignment::ptr_past_aligned<FILE_ALIGNMENT>(buffer) != 0){
-        throw InvalidParametersException("BasicTextReader::load_stats()", "Buffer is misaligned.");
-    }
-
-    Pbytes = Alignment::align_int_down<FILE_ALIGNMENT>(Pbytes);
-    check_BufferTooSmall("BasicTextReader::load_stats()", Pbytes, FILE_ALIGNMENT);
+    char* P = (char*)buffer.ptr();
+    check_BufferTooSmall("BasicTextReader::load_stats()", buffer.len(), FILE_ALIGNMENT);
 
     //  This is the ugly sector alignment logic.
 
@@ -116,7 +112,7 @@ void BasicTextWriter::store_digits(
 
     ufL_t aligned_bytes_left = file_aligned_offset_e - file_aligned_offset_s;
     while (aligned_bytes_left > 0){
-        upL_t current = (upL_t)std::min((ufL_t)Pbytes, aligned_bytes_left);
+        upL_t current = (upL_t)std::min((ufL_t)buffer.len(), aligned_bytes_left);
 
         sfL_t logical_aligned_offset_s = (sfL_t)file_aligned_offset_s - (sfL_t)m_data_offset;
         sfL_t logical_aligned_offset_e = logical_aligned_offset_s + (sfL_t)current;
@@ -140,11 +136,11 @@ void BasicTextWriter::store_digits(
             locked = true;
         }
         if (shift_f != 0){
-            m_file.load(buffer, file_aligned_offset_s, FILE_ALIGNMENT, false);
+            m_file.load(P, file_aligned_offset_s, FILE_ALIGNMENT, false);
         }
         if (shift_e != 0 && current > FILE_ALIGNMENT){
             upL_t shift = current - FILE_ALIGNMENT;
-            m_file.load(buffer + shift, file_aligned_offset_s + shift, FILE_ALIGNMENT, false);
+            m_file.load(P + shift, file_aligned_offset_s + shift, FILE_ALIGNMENT, false);
         }
 
         //  Process digits
@@ -152,7 +148,7 @@ void BasicTextWriter::store_digits(
 //        cout << "current = " << current << ", shift_f = " << shift_f << ", shift_e = " << shift_e << endl;
         bool bad = RawToAscii::parallel_convert(
             m_fp_convert,
-            buffer + shift_f,
+            P + shift_f,
             input,
             processed,
             parallelizer, tds
@@ -166,7 +162,7 @@ void BasicTextWriter::store_digits(
             if (!locked){
                 lock.lock();
             }
-            m_file.store(buffer, file_aligned_offset_s, current, true);
+            m_file.store(P, file_aligned_offset_s, current, true);
         }
 
         input += processed;

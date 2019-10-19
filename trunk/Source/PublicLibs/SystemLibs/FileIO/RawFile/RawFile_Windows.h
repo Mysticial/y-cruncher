@@ -14,8 +14,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 //  Dependencies
-#include <string>
-#include "PublicLibs/Types.h"
+#include "PublicLibs/SystemLibs/FileIO/AlignedAccessFile.h"
 namespace ymp{
 namespace FileIO{
 ////////////////////////////////////////////////////////////////////////////////
@@ -31,52 +30,60 @@ enum Mode{
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-class RawFile{
+class RawFile : public AlignedAccessFile{
     static const upL_t MAX_IO_BYTES = (upL_t)1 << 30;
     static const upL_t CHECK_MEM_THRESHOLD = (upL_t)64 << 20;
-    static const upL_t ALIGNMENT = 4096;
-    static const bool RAW_IO = true;
 
 public:
-    ~RawFile();
-
-    RawFile(RawFile&& x);
-    void operator=(RawFile&& x);
+    virtual ~RawFile() override;
 
     RawFile(const RawFile& x) = delete;
     void operator=(const RawFile& x) = delete;
 
 public:
-    RawFile();
-    RawFile(std::string path, Mode mode, bool persistent = true);       //  Create or open file.
-    RawFile(ufL_t bytes, std::string path, bool persistent = false);    //  Create a file with a specific size.
+    RawFile(      //  Create or open file.
+        ukL_t alignment_k,
+        std::string path, Mode mode,
+        bool persistent = true,
+        bool raw_io = true
+    );
+    RawFile(      //  Create a file with a specific size.
+        ukL_t alignment_k,
+        ufL_t bytes, std::string path,
+        bool persistent = false,
+        bool raw_io = true
+    );
 
     operator bool() const;
     const std::string& path() const{ return m_path; }
+    bool persistent() const{ return m_persistent; }
 
+    virtual void flush() override;
     void close(bool keep_file);
     void close_and_set_size(ufL_t bytes);
-    void rename(std::string path, bool readonly); 
+    virtual void rename(std::string path, bool readonly) override;
 
 public:
-    //  All parameters must be aligned to "ALIGNMENT".
+    //  All parameters must be aligned to "2^m_alignment_k".
     //  If "throw_on_partial" is true, it will throw an exception if it is
     //  unable to read/write the full requested bytes. For reads, this may imply
     //  reaching the end of the file. For stores, this almost always implies a
     //  more serious error such as disk-is-full or a hardware failure.
     upL_t load (      void* data, ufL_t offset, upL_t bytes, bool throw_on_partial);
-    upL_t store(const void* data, ufL_t offset, upL_t bytes, bool throw_on_partial = true);
+    upL_t store(const void* data, ufL_t offset, upL_t bytes, bool throw_on_partial);
+    virtual void load (      void* data, ufL_t offset, upL_t bytes, void* P, upL_t PL) override;
+    virtual void store(const void* data, ufL_t offset, upL_t bytes, void* P, upL_t PL) override;
 
 private:
+    void open(Mode mode);
     void set_size(ufL_t bytes);
-    void check_alignment(const void* data, ufL_t offset, upL_t bytes);
-    static upL_t pick_buffer_size(upL_t bytes);
+    upL_t pick_buffer_size(upL_t bytes) const;
 
 private:
     void* m_filehandle;
-    std::string m_path;
     std::wstring m_wpath;
     bool m_persistent;
+    bool m_raw_io;
 };
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////

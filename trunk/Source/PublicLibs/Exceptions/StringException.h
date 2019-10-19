@@ -23,25 +23,15 @@ namespace ymp{
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 class StringException : public Exception{
-public:
-    static const char TYPENAME[];
+    YMP_EXCEPTION_DECLARATIONS()
 
+public:
     YM_NO_INLINE StringException();
     YM_NO_INLINE StringException(const char* message);
     YM_NO_INLINE StringException(std::string message);
     YM_NO_INLINE StringException(const char* function, const char* message);
     YM_NO_INLINE StringException(const char* function, std::string message);
 
-public:
-    [[noreturn]] virtual void fire() const override{
-        throw *this;
-    }
-    virtual const char* get_typename() const override{
-        return TYPENAME;
-    }
-    virtual Exception* clone() const override{
-        return new StringException(*this);
-    }
     virtual void print() const override;
 
     const std::string& message() const{
@@ -49,8 +39,9 @@ public:
     }
 
 public:
-    StringException(const DllSafeStream& data);
-    virtual DllSafeStream serialize() const override;
+    //  Serialization
+    StringException(SerializationPassKey key, const char*& stream);
+    virtual void serialize(std::string& stream) const override;
 
 protected:
     std::string m_function;

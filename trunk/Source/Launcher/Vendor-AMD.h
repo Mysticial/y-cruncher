@@ -36,14 +36,14 @@ void dispatch_AMD(const cpu_x86& features){
     warn_AVX512_OS(features);
 
     //  AVX
-//#ifdef YCR_ENABLE_2014_x64_Broadwell
-//    if (features.HW_RDPID){
-//        dispatch_2014_x64_Broadwell(features);
-//    }
-//#endif
-#ifdef YCR_ENABLE_2017_x64_Zen
+#ifdef YCR_ENABLE_2019_x64_Zen2
+    if (features.HW_RDPID){
+        dispatch_2019_x64_Zen2(features);
+    }
+#endif
+#ifdef YCR_ENABLE_2017_x64_Zen1
     if (features.HW_ADX){
-        dispatch_2017_x64_Zen(features);
+        dispatch_2017_x64_Zen1(features);
     }
 #endif
     dispatch_2011_x64_Bulldozer(features);

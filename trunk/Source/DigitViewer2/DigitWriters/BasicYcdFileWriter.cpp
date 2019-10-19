@@ -12,10 +12,6 @@
  *  Once the file is completely written out, it is automatically closed and
  *  renamed to the proper name. At this point, no more writes will be accepted.
  * 
- *  This behavior of disallowing further writes is just a side-effect of the
- *  "FileIO::BasicFile" class. This restriction may be removed in the future,
- *  though there are no real use-cases of it.
- * 
  */
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -30,6 +26,7 @@
 #include "PublicLibs/BasicLibs/Alignment/AlignmentTools.h"
 #include "PublicLibs/SystemLibs/FileIO/FileException.h"
 #include "PublicLibs/SystemLibs/FileIO/FileIO.h"
+#include "PublicLibs/SystemLibs/FileIO/BufferredStreamFile.h"
 #include "DigitViewer2/Globals.h"
 #include "DigitViewer2/RawToCompressed/RawToCompressed.h"
 #include "BasicYcdFileWriter.h"
@@ -47,7 +44,7 @@ BasicYcdFileWriter::BasicYcdFileWriter(
     uiL_t fileid
 )
     : m_path(path + ".ycd")
-    , m_file(path + " (incomplete).ycd", FileIO::CREATE)
+    , m_file(FileIO::DEFAULT_FILE_ALIGNMENT_K, path + " (incomplete).ycd", FileIO::CREATE)
     , m_stream_end(stream_end)
     , m_digits_per_file(digits_per_file)
     , m_file_id(fileid)
@@ -304,7 +301,7 @@ void BasicYcdFileWriter::store_digits_B(
     }
 
     if (digits_left == 0){
-        m_file.store(P, write_offset, write_bytes);
+        m_file.store(P, write_offset, write_bytes, true);
         return;
     }
 
@@ -344,7 +341,7 @@ void BasicYcdFileWriter::store_digits_B(
         }
     }
 
-    m_file.store(P, write_offset, write_bytes);
+    m_file.store(P, write_offset, write_bytes, true);
     m_offset_extent = std::max(m_offset_extent, write_offset + write_bytes);
 }
 ////////////////////////////////////////////////////////////////////////////////
@@ -397,12 +394,15 @@ upL_t BasicYcdFileWriter::start_access(
 void BasicYcdFileWriter::store_digits(
     const char* input,
     uiL_t offset, upL_t digits,
-    void* P, upL_t Pbytes,
+    const AlignedBufferC<BUFFER_ALIGNMENT>& buffer,
     BasicParallelizer& parallelizer, upL_t tds
 ){
     if (digits == 0){
         return;
     }
+
+    void* P = buffer.ptr();
+    upL_t Pbytes = buffer.len();
 
     uiL_t s = offset;
     uiL_t e = offset + digits;

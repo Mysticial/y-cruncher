@@ -15,7 +15,7 @@
  *  Windows is so bad that it literally commits suicide.
  * 
  *  For random access on very large files, it has been observed that the OS
- *  tries so hard to cache file that it pages itself out of memory and
+ *  tries so hard to cache the file that it pages itself out of memory and
  *  terminally hangs the system in a pagefile "thrash of death". This is the
  *  case for all buffering modes other than FILE_FLAG_NO_BUFFERING.
  *
@@ -45,6 +45,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 //  Dependencies
+#include "Settings.h"
 #include <algorithm>
 #include <Windows.h>
 #include "PublicLibs/ConsoleIO/BasicIO.h"
@@ -53,7 +54,7 @@
 #include "PublicLibs/BasicLibs/StringTools/Unicode.h"
 #include "PublicLibs/BasicLibs/Alignment/AlignmentTools.h"
 #include "PublicLibs/SystemLibs/Environment/Environment.h"
-#include "FileException.h"
+#include "PublicLibs/SystemLibs/FileIO/FileException.h"
 #include "RawFile.h"
 namespace ymp{
 namespace FileIO{
@@ -75,7 +76,7 @@ struct FailPrinter_SetFileValidData{
 void warn_SetFileValidData_fail(const std::string& path){
     static FailPrinter_SetFileValidData printer(path);
 }
-void handle_error(DWORD errorcode, std::string path, std::string msg){
+void handle_error(DWORD errorcode, const char* function, std::string path, std::string msg){
     msg += "\n\n";
     switch (errorcode){
         case ERROR_ACCESS_DENIED:
@@ -101,16 +102,22 @@ void handle_error(DWORD errorcode, std::string path, std::string msg){
         case ERROR_CRC:
             msg += "Cyclic Redundancy Check - Possible Hardware Failure";
             break;
+        case ERROR_NOT_READY:
+            msg += "The device is not ready. Is the connection stable?";
+            break;
         case ERROR_DEVICE_NOT_CONNECTED:
-            msg += "The device has been disconnected - Is the connection stable?";
+            msg += "The device has been disconnected. Is the connection stable?";
             break;
         case ERROR_WORKING_SET_QUOTA:
             msg += "Insufficient quota. System may be low on memory.";
             break;
+        case ERROR_INVALID_PARAMETER:
+            msg += "Invalid parameter. This can happen if the sector alignment is too small.";
+            break;
         default:
             msg += "Unknown Error, See:\nhttp://msdn.microsoft.com/en-us/library/ms681381(VS.85).aspx";
     }
-    throw FileException(errorcode, "", std::move(path), std::move(msg));
+    throw FileException(errorcode, function, std::move(path), std::move(msg));
 }
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -120,38 +127,12 @@ void handle_error(DWORD errorcode, std::string path, std::string msg){
 RawFile::~RawFile(){
     close(m_persistent);
 }
-RawFile::RawFile(RawFile&& x)
-    : m_filehandle(x.m_filehandle)
-    , m_path(std::move(x.m_path))
-    , m_wpath(std::move(x.m_wpath))
-    , m_persistent(x.m_persistent)
-{
-    x.m_filehandle = INVALID_HANDLE_VALUE;
-    x.m_persistent = false;
-}
-void RawFile::operator=(RawFile&& x){
-    close(m_persistent);
-    m_filehandle = x.m_filehandle;
-    m_path = std::move(x.m_path);
-    m_wpath = std::move(x.m_wpath);
-    m_persistent = x.m_persistent;
-    x.m_filehandle = INVALID_HANDLE_VALUE;
-    x.m_persistent = false;
-}
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 //  Constructors
-RawFile::RawFile()
-    : m_filehandle(INVALID_HANDLE_VALUE)
-    , m_persistent(false)
-{}
-RawFile::RawFile(std::string path, Mode mode, bool persistent)
-    : m_path(std::move(path))
-    , m_wpath(StringTools::utf8_to_wstr(m_path))
-    , m_persistent(persistent)
-{
+void RawFile::open(Mode mode){
     switch (mode){
     case CREATE:
         m_filehandle = CreateFileW(
@@ -160,12 +141,12 @@ RawFile::RawFile(std::string path, Mode mode, bool persistent)
             0,
             nullptr,
             OPEN_ALWAYS,
-            RAW_IO ? FILE_FLAG_NO_BUFFERING : FILE_FLAG_WRITE_THROUGH,
+            m_raw_io ? FILE_FLAG_NO_BUFFERING : FILE_FLAG_WRITE_THROUGH,
             nullptr
         );
         if (m_filehandle == INVALID_HANDLE_VALUE){
             DWORD errorcode = GetLastError();
-            handle_error(errorcode, m_path, "Unable to create file.");
+            handle_error(errorcode, "RawFile()", m_path, "Unable to create file.");
         }
 
         try{
@@ -183,12 +164,12 @@ RawFile::RawFile(std::string path, Mode mode, bool persistent)
             FILE_SHARE_READ,
             nullptr,
             OPEN_EXISTING,
-            RAW_IO ? FILE_FLAG_NO_BUFFERING : 0,
+            m_raw_io ? FILE_FLAG_NO_BUFFERING : 0,
             nullptr
         );
         if (m_filehandle == INVALID_HANDLE_VALUE){
             DWORD errorcode = GetLastError();
-            handle_error(errorcode, m_path, "Unable to open file.");
+            handle_error(errorcode, "RawFile()", m_path, "Unable to open file.");
         }
         break;
 
@@ -199,21 +180,38 @@ RawFile::RawFile(std::string path, Mode mode, bool persistent)
             0,
             nullptr,
             OPEN_EXISTING,
-            RAW_IO ? FILE_FLAG_NO_BUFFERING : FILE_FLAG_WRITE_THROUGH,
+            m_raw_io ? FILE_FLAG_NO_BUFFERING : FILE_FLAG_WRITE_THROUGH,
             nullptr
         );
         if (m_filehandle == INVALID_HANDLE_VALUE){
             DWORD errorcode = GetLastError();
-            handle_error(errorcode, m_path, "Unable to open file.");
+            handle_error(errorcode, "RawFile()", m_path, "Unable to open file.");
         }
         break;
 
     }
 }
-RawFile::RawFile(ufL_t bytes, std::string path, bool persistent)
-    : m_path(std::move(path))
+RawFile::RawFile(
+    ukL_t alignment_k,
+    std::string path, Mode mode,
+    bool persistent, bool raw_io
+)
+    : AlignedAccessFile(alignment_k, std::move(path))
     , m_wpath(StringTools::utf8_to_wstr(m_path))
     , m_persistent(persistent)
+    , m_raw_io(raw_io)
+{
+    open(mode);
+}
+RawFile::RawFile(
+    ukL_t alignment_k,
+    ufL_t bytes, std::string path,
+    bool persistent, bool raw_io
+)
+    : AlignedAccessFile(alignment_k, std::move(path))
+    , m_wpath(StringTools::utf8_to_wstr(m_path))
+    , m_persistent(persistent)
+    , m_raw_io(raw_io)
 {
     m_filehandle = CreateFileW(
         m_wpath.c_str(),
@@ -221,12 +219,12 @@ RawFile::RawFile(ufL_t bytes, std::string path, bool persistent)
         0,
         nullptr,
         OPEN_ALWAYS,
-        RAW_IO ? FILE_FLAG_NO_BUFFERING : FILE_FLAG_WRITE_THROUGH,
+        raw_io ? FILE_FLAG_NO_BUFFERING : FILE_FLAG_WRITE_THROUGH,
         nullptr
     );
     if (m_filehandle == INVALID_HANDLE_VALUE){
         DWORD errorcode = GetLastError();
-        handle_error(errorcode, m_path, "Unable to create file.");
+        handle_error(errorcode, "RawFile()", m_path, "Unable to create file.");
     }
 
     try{
@@ -251,23 +249,30 @@ RawFile::RawFile(ufL_t bytes, std::string path, bool persistent)
 RawFile::operator bool() const{
     return m_filehandle != INVALID_HANDLE_VALUE;
 }
+void RawFile::flush(){
+    //  Flushing is not necessary since FILE_FLAG_NO_BUFFERING implies no caching.
+    //  https://msdn.microsoft.com/en-us/library/windows/desktop/aa364439%28v=vs.85%29.aspx
+    if (!m_raw_io){
+        FlushFileBuffers(m_filehandle);
+    }
+}
 void RawFile::close(bool keep_file){
     if (m_filehandle == INVALID_HANDLE_VALUE){
         return;
     }
 
-    //  Flushing is not necessary since FILE_FLAG_NO_BUFFERING implies no caching.
-    //  https://msdn.microsoft.com/en-us/library/windows/desktop/aa364439%28v=vs.85%29.aspx
+    //  Flush
+    flush();
 
     //  Close
     if (!CloseHandle(m_filehandle)){
-        Console::Warning("RawFile::~RawFile(): Unable to close file.");
+        Console::Warning("RawFile::close(): Unable to close file.");
     }
     m_filehandle = INVALID_HANDLE_VALUE;
 
     //  Delete
     if (!keep_file && _wremove(m_wpath.c_str())){
-        Console::Warning("RawFile::~RawFile(): Unable to delete file.");
+        Console::Warning("RawFile::close(): Unable to delete file.");
     }
 
     m_path.clear();
@@ -278,8 +283,8 @@ void RawFile::close_and_set_size(ufL_t bytes){
         return;
     }
 
-    //  Flushing is not necessary since FILE_FLAG_NO_BUFFERING implies no caching.
-    //  https://msdn.microsoft.com/en-us/library/windows/desktop/aa364439%28v=vs.85%29.aspx
+    //  Flush
+    flush();
 
     //  Close
     if (!CloseHandle(m_filehandle)){
@@ -307,7 +312,7 @@ void RawFile::close_and_set_size(ufL_t bytes){
     );
     if (handle == INVALID_HANDLE_VALUE){
         DWORD error = GetLastError();
-        handle_error(error, path, "Unable to reopen file.");
+        handle_error(error, "RawFile::close_and_set_size()", path, "Unable to reopen file.");
     }
 
     try{
@@ -315,11 +320,11 @@ void RawFile::close_and_set_size(ufL_t bytes){
         t.QuadPart = (LONGLONG)bytes;
         if (!SetFilePointerEx(handle, t, nullptr, FILE_BEGIN)){
             DWORD error = GetLastError();
-            handle_error(error, path, "SetFilePointerEx() failed.");
+            handle_error(error, "RawFile::close_and_set_size()", path, "SetFilePointerEx() failed.");
         }
         if (!SetEndOfFile(handle)){
             DWORD error = GetLastError();
-            handle_error(error, path, "SetEndOfFile() failed.");
+            handle_error(error, "RawFile::close_and_set_size()", path, "SetEndOfFile() failed.");
         }
 
         //  Close
@@ -336,14 +341,12 @@ void RawFile::close_and_set_size(ufL_t bytes){
 }
 void RawFile::rename(std::string path, bool readonly){
     if (m_filehandle == INVALID_HANDLE_VALUE){
-        throw FileException("RawFile::rename()", path, "File isn't open.");
+        throw FileException("RawFile::rename()", std::move(path), "File isn't open.");
     }
 
-    bool persistent = m_persistent;
-    std::string old_path = m_path;
-    std::wstring old_wpath = m_wpath;
+    std::string old_path = std::move(m_path);
+    std::wstring old_wpath = std::move(m_wpath);
     std::wstring new_wpath = StringTools::utf8_to_wstr(path);
-
     close(true);
 
     //  Rename it
@@ -356,7 +359,7 @@ void RawFile::rename(std::string path, bool readonly){
         if (err != EEXIST){
             throw FileException(
                 err, "RawFile::rename()",
-                old_path,
+                std::move(old_path),
                 "Unable to rename file."
             );
         }
@@ -365,7 +368,7 @@ void RawFile::rename(std::string path, bool readonly){
         if (_wremove(new_wpath.c_str())){
             throw FileException(
                 err, "RawFile::rename()",
-                old_path,
+                std::move(old_path),
                 "Unable to rename file because the existing one can't be deleted."
             );
         }
@@ -376,17 +379,15 @@ void RawFile::rename(std::string path, bool readonly){
             _get_errno(&err);
             throw FileException(
                 err, "RawFile::rename()",
-                old_path,
+                std::move(old_path),
                 "Unable to rename file."
             );
         }
     }
 
-    *this = RawFile(
-        std::move(path),
-        readonly ? OPEN_READONLY : OPEN_READWRITE,
-        persistent
-    );
+    m_path = std::move(path);
+    m_wpath = std::move(new_wpath);
+    open(readonly ? OPEN_READONLY : OPEN_READWRITE);
 }
 void RawFile::set_size(ufL_t bytes){
     if (m_filehandle == INVALID_HANDLE_VALUE){
@@ -396,32 +397,21 @@ void RawFile::set_size(ufL_t bytes){
     t.QuadPart = (LONGLONG)bytes;
     if (!SetFilePointerEx(m_filehandle, t, nullptr, FILE_BEGIN)){
         DWORD error = GetLastError();
-        handle_error(error, m_path, "SetFilePointerEx() failed.");
+        handle_error(error, "RawFile::set_size()", m_path, "SetFilePointerEx() failed.");
     }
     if (!SetEndOfFile(m_filehandle)){
         DWORD error = GetLastError();
-        handle_error(error, m_path, "SetEndOfFile() failed.");
+        handle_error(error, "RawFile::set_size()", m_path, "SetEndOfFile() failed.");
     }
 }
-void RawFile::check_alignment(const void* data, ufL_t offset, upL_t bytes){
-    if (Alignment::ptr_past_aligned<RAWIO_ALIGNMENT>(data) != 0){
-        throw InvalidParametersException("RawFile::check_alignment()", "Buffer is misaligned.");
-    }
-    if (Alignment::int_past_aligned<RAWIO_ALIGNMENT>(offset) != 0){
-        throw InvalidParametersException("RawFile::check_alignment()", "Offset is misaligned.");
-    }
-    if (Alignment::int_past_aligned<RAWIO_ALIGNMENT>(bytes) != 0){
-        throw InvalidParametersException("RawFile::check_alignment()", "Length is misaligned.");
-    }
-}
-upL_t RawFile::pick_buffer_size(upL_t bytes){
+upL_t RawFile::pick_buffer_size(upL_t bytes) const{
     //  Speculative work-around for quota errors (1453) that may occur for large
     //  accesses when the system is low on memory.
     if (bytes <= CHECK_MEM_THRESHOLD){
         return bytes;
     }
     upL_t buffer = Environment::GetFreePhysicalMemory();
-    buffer = Alignment::align_int_down<ALIGNMENT>(buffer / 2);
+    buffer = Alignment::align_int_down_k(m_alignment_k, buffer / 2);
     buffer = std::max(buffer, CHECK_MEM_THRESHOLD);
     buffer = std::min(buffer, bytes);
     buffer = std::min(buffer, MAX_IO_BYTES);
@@ -434,7 +424,7 @@ upL_t RawFile::pick_buffer_size(upL_t bytes){
 //  Read/Write
 upL_t RawFile::load(void* data, ufL_t offset, upL_t bytes, bool throw_on_partial){
     if (m_filehandle == INVALID_HANDLE_VALUE){
-        throw InvalidParametersException("RawFile::read()", "File isn't open.");
+        throw InvalidParametersException("RawFile::load()", "File isn't open.");
     }
     check_alignment(data, offset, bytes);
     if (bytes == 0){
@@ -446,7 +436,7 @@ upL_t RawFile::load(void* data, ufL_t offset, upL_t bytes, bool throw_on_partial
     t.QuadPart = (LONGLONG)offset;
     if (!SetFilePointerEx(m_filehandle, t, nullptr, FILE_BEGIN)){
         DWORD errorcode = GetLastError();
-        handle_error(errorcode, m_path, "SetFilePointerEx() failed.");
+        handle_error(errorcode, "RawFile::load()", m_path, "SetFilePointerEx() failed.");
     }
 
     upL_t block_size = pick_buffer_size(bytes);
@@ -460,15 +450,16 @@ upL_t RawFile::load(void* data, ufL_t offset, upL_t bytes, bool throw_on_partial
         bool ret = !ReadFile(m_filehandle, data, (DWORD)current, &IO_bytes, nullptr);
         if (ret){
             DWORD errorcode = GetLastError();
-            handle_error(errorcode, m_path, "ReadFile() failed.");
+            handle_error(errorcode, "RawFile::load()", m_path, "ReadFile() failed.");
         }
 
         processed += IO_bytes;
         if (IO_bytes != current){
             if (throw_on_partial){
                 DWORD errorcode = GetLastError();
-                throw FileIO::FileException(
-                    errorcode, "RawFile::load()", m_path,
+                handle_error(
+                    errorcode,
+                    "RawFile::load()", m_path,
                     "Incomplete Read: " + std::to_string(IO_bytes) + " / " + std::to_string(current)
                 );
             }
@@ -483,7 +474,7 @@ upL_t RawFile::load(void* data, ufL_t offset, upL_t bytes, bool throw_on_partial
 }
 upL_t RawFile::store(const void* data, ufL_t offset, upL_t bytes, bool throw_on_partial){
     if (m_filehandle == INVALID_HANDLE_VALUE){
-        throw InvalidParametersException("RawFile::write()", "File isn't open.");
+        throw InvalidParametersException("RawFile::store()", "File isn't open.");
     }
     check_alignment(data, offset, bytes);
     if (bytes == 0){
@@ -495,7 +486,7 @@ upL_t RawFile::store(const void* data, ufL_t offset, upL_t bytes, bool throw_on_
     t.QuadPart = (LONGLONG)offset;
     if (!SetFilePointerEx(m_filehandle, t, nullptr, FILE_BEGIN)){
         DWORD errorcode = GetLastError();
-        handle_error(errorcode, m_path, "SetFilePointerEx() failed.");
+        handle_error(errorcode, "RawFile::store()", m_path, "SetFilePointerEx() failed.");
     }
 
     upL_t block_size = pick_buffer_size(bytes);
@@ -509,15 +500,16 @@ upL_t RawFile::store(const void* data, ufL_t offset, upL_t bytes, bool throw_on_
         bool ret = !WriteFile(m_filehandle, data, (DWORD)current, &IO_bytes, nullptr);
         if (ret){
             DWORD errorcode = GetLastError();
-            handle_error(errorcode, m_path, "WriteFile() failed.");
+            handle_error(errorcode, "RawFile::store()", m_path, "WriteFile() failed.");
         }
 
         processed += IO_bytes;
         if (IO_bytes != current){
             if (throw_on_partial){
                 DWORD errorcode = GetLastError();
-                throw FileIO::FileException(
-                    errorcode, "RawFile::store()", m_path,
+                handle_error(
+                    errorcode,
+                    "RawFile::store()", m_path,
                     "Incomplete Write: " + std::to_string(IO_bytes) + " / " + std::to_string(current)
                 );
             }
@@ -529,6 +521,12 @@ upL_t RawFile::store(const void* data, ufL_t offset, upL_t bytes, bool throw_on_
     }
 
     return processed;
+}
+void RawFile::load(void* data, ufL_t offset, upL_t bytes, void* P, upL_t PL){
+    load(data, offset, bytes, true);
+}
+void RawFile::store(const void* data, ufL_t offset, upL_t bytes, void* P, upL_t PL){
+    store(data, offset, bytes, true);
 }
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////

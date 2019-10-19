@@ -14,6 +14,7 @@
 #include <vector>
 #include <stdio.h>
 #include <errno.h>
+#include <dirent.h>
 #ifdef _MSC_VER
 #include <direct.h>
 #else
@@ -150,6 +151,22 @@ bool DirectoryIsWritable(const std::string& directory){
     }
 
     return true;
+}
+std::vector<std::string> list_directory(const std::string& path){
+    //  Get a list of files in the specified directory.
+    std::vector<std::string> files;
+
+    DIR *directory;
+    struct dirent *entry;
+
+    if ((directory = opendir(path.c_str())) != nullptr){
+        while ((entry = readdir(directory)) != nullptr){
+            files.push_back(entry->d_name);
+        }
+        closedir(directory);
+    }
+
+    return files;
 }
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////

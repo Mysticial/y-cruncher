@@ -14,7 +14,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 #include "PublicLibs/Types.h"
-#include "PublicLibs/ArchSpecificLibs/Shuffle/x86_512/Unpack_x86_AVX512.h"
+#include "PublicLibs/ArchSpecificLibs/Shuffle/x86_512/AdjacentLanePermute_x86_512.h"
 namespace ymp{
 namespace SIMD{
 ////////////////////////////////////////////////////////////////////////////////
@@ -28,14 +28,14 @@ YM_FORCE_INLINE void transpose_f64_8x8_AVX512(
 #ifdef ymp_SIMD_fast_2_input_permute
     __m512d a0, a1;
 
-    a0 = unpackhi_f64_AVX512<1>(r0, r1);
-    r1 = unpacklo_f64_AVX512<1>(r0, r1);
-    a1 = unpackhi_f64_AVX512<1>(r2, r3);
-    r2 = unpacklo_f64_AVX512<1>(r2, r3);
-    r0 = unpackhi_f64_AVX512<1>(r4, r5);
-    r4 = unpacklo_f64_AVX512<1>(r4, r5);
-    r5 = unpacklo_f64_AVX512<1>(r6, r7);
-    r7 = unpackhi_f64_AVX512<1>(r6, r7);
+    a0 = mm512_permuteaj64_11(r0, r1);
+    r1 = mm512_permuteaj64_00(r0, r1);
+    a1 = mm512_permuteaj64_11(r2, r3);
+    r2 = mm512_permuteaj64_00(r2, r3);
+    r0 = mm512_permuteaj64_11(r4, r5);
+    r4 = mm512_permuteaj64_00(r4, r5);
+    r5 = mm512_permuteaj64_00(r6, r7);
+    r7 = mm512_permuteaj64_11(r6, r7);
 
     r3 = _mm512_shuffle_f64x2(r1, r2, 221);
     r1 = _mm512_shuffle_f64x2(r1, r2, 136);
@@ -57,32 +57,32 @@ YM_FORCE_INLINE void transpose_f64_8x8_AVX512(
 #else
     __m512d a0, a1, a2, a3, a4, a5, a6, a7;
 
-    a0 = unpacklo_f64_AVX512<4>(r0, r4);
-    a1 = unpacklo_f64_AVX512<4>(r1, r5);
-    a2 = unpacklo_f64_AVX512<4>(r2, r6);
-    a3 = unpacklo_f64_AVX512<4>(r3, r7);
-    a4 = unpackhi_f64_AVX512<4>(r0, r4);
-    a5 = unpackhi_f64_AVX512<4>(r1, r5);
-    a6 = unpackhi_f64_AVX512<4>(r2, r6);
-    a7 = unpackhi_f64_AVX512<4>(r3, r7);
+    a0 = mm512_permuteaj256_00(r0, r4);
+    a1 = mm512_permuteaj256_00(r1, r5);
+    a2 = mm512_permuteaj256_00(r2, r6);
+    a3 = mm512_permuteaj256_00(r3, r7);
+    a4 = mm512_permuteaj256_11(r0, r4);
+    a5 = mm512_permuteaj256_11(r1, r5);
+    a6 = mm512_permuteaj256_11(r2, r6);
+    a7 = mm512_permuteaj256_11(r3, r7);
 
-    r0 = unpacklo_f64_AVX512<2>(a0, a2);
-    r1 = unpackhi_f64_AVX512<2>(a0, a2);
-    r2 = unpacklo_f64_AVX512<2>(a1, a3);
-    r3 = unpackhi_f64_AVX512<2>(a1, a3);
-    r4 = unpacklo_f64_AVX512<2>(a4, a6);
-    r5 = unpackhi_f64_AVX512<2>(a4, a6);
-    r6 = unpacklo_f64_AVX512<2>(a5, a7);
-    r7 = unpackhi_f64_AVX512<2>(a5, a7);
+    r0 = mm512_permuteaj128_00(a0, a2);
+    r1 = mm512_permuteaj128_11(a0, a2);
+    r2 = mm512_permuteaj128_00(a1, a3);
+    r3 = mm512_permuteaj128_11(a1, a3);
+    r4 = mm512_permuteaj128_00(a4, a6);
+    r5 = mm512_permuteaj128_11(a4, a6);
+    r6 = mm512_permuteaj128_00(a5, a7);
+    r7 = mm512_permuteaj128_11(a5, a7);
 
-    a0 = unpacklo_f64_AVX512<1>(r0, r2);
-    a1 = unpackhi_f64_AVX512<1>(r0, r2);
-    a2 = unpacklo_f64_AVX512<1>(r1, r3);
-    a3 = unpackhi_f64_AVX512<1>(r1, r3);
-    a4 = unpacklo_f64_AVX512<1>(r4, r6);
-    a5 = unpackhi_f64_AVX512<1>(r4, r6);
-    a6 = unpacklo_f64_AVX512<1>(r5, r7);
-    a7 = unpackhi_f64_AVX512<1>(r5, r7);
+    a0 = mm512_permuteaj64_00(r0, r2);
+    a1 = mm512_permuteaj64_11(r0, r2);
+    a2 = mm512_permuteaj64_00(r1, r3);
+    a3 = mm512_permuteaj64_11(r1, r3);
+    a4 = mm512_permuteaj64_00(r4, r6);
+    a5 = mm512_permuteaj64_11(r4, r6);
+    a6 = mm512_permuteaj64_00(r5, r7);
+    a7 = mm512_permuteaj64_11(r5, r7);
 
     r0 = a0;
     r1 = a1;
@@ -130,32 +130,32 @@ YM_FORCE_INLINE void transpose_i64_8x8_AVX512(
 #else
     __m512i a0, a1, a2, a3, a4, a5, a6, a7;
 
-    a0 = unpacklo_AVX512<256>(r0, r4);
-    a1 = unpacklo_AVX512<256>(r1, r5);
-    a2 = unpacklo_AVX512<256>(r2, r6);
-    a3 = unpacklo_AVX512<256>(r3, r7);
-    a4 = unpackhi_AVX512<256>(r0, r4);
-    a5 = unpackhi_AVX512<256>(r1, r5);
-    a6 = unpackhi_AVX512<256>(r2, r6);
-    a7 = unpackhi_AVX512<256>(r3, r7);
+    a0 = mm512_permuteaj256_00(r0, r4);
+    a1 = mm512_permuteaj256_00(r1, r5);
+    a2 = mm512_permuteaj256_00(r2, r6);
+    a3 = mm512_permuteaj256_00(r3, r7);
+    a4 = mm512_permuteaj256_11(r0, r4);
+    a5 = mm512_permuteaj256_11(r1, r5);
+    a6 = mm512_permuteaj256_11(r2, r6);
+    a7 = mm512_permuteaj256_11(r3, r7);
 
-    r0 = unpacklo_AVX512<128>(a0, a2);
-    r1 = unpackhi_AVX512<128>(a0, a2);
-    r2 = unpacklo_AVX512<128>(a1, a3);
-    r3 = unpackhi_AVX512<128>(a1, a3);
-    r4 = unpacklo_AVX512<128>(a4, a6);
-    r5 = unpackhi_AVX512<128>(a4, a6);
-    r6 = unpacklo_AVX512<128>(a5, a7);
-    r7 = unpackhi_AVX512<128>(a5, a7);
+    r0 = mm512_permuteaj128_00(a0, a2);
+    r1 = mm512_permuteaj128_11(a0, a2);
+    r2 = mm512_permuteaj128_00(a1, a3);
+    r3 = mm512_permuteaj128_11(a1, a3);
+    r4 = mm512_permuteaj128_00(a4, a6);
+    r5 = mm512_permuteaj128_11(a4, a6);
+    r6 = mm512_permuteaj128_00(a5, a7);
+    r7 = mm512_permuteaj128_11(a5, a7);
 
-    a0 = unpacklo_AVX512<64>(r0, r2);
-    a1 = unpackhi_AVX512<64>(r0, r2);
-    a2 = unpacklo_AVX512<64>(r1, r3);
-    a3 = unpackhi_AVX512<64>(r1, r3);
-    a4 = unpacklo_AVX512<64>(r4, r6);
-    a5 = unpackhi_AVX512<64>(r4, r6);
-    a6 = unpacklo_AVX512<64>(r5, r7);
-    a7 = unpackhi_AVX512<64>(r5, r7);
+    a0 = mm512_permuteaj64_00(r0, r2);
+    a1 = mm512_permuteaj64_11(r0, r2);
+    a2 = mm512_permuteaj64_00(r1, r3);
+    a3 = mm512_permuteaj64_11(r1, r3);
+    a4 = mm512_permuteaj64_00(r4, r6);
+    a5 = mm512_permuteaj64_11(r4, r6);
+    a6 = mm512_permuteaj64_00(r5, r7);
+    a7 = mm512_permuteaj64_11(r5, r7);
 
     r0 = a0;
     r1 = a1;
@@ -178,14 +178,14 @@ YM_FORCE_INLINE void transpose_i64_8x8_forward_AVX512(
 ){
     __m512i a0, a1, a2, a3, a4, a5, a6, a7;
 
-    r0 = load2_m256i_AVX512(T +  0, T + 16);
-    r1 = load2_m256i_AVX512(T +  4, T + 20);
-    r2 = load2_m256i_AVX512(T +  8, T + 24);
-    r3 = load2_m256i_AVX512(T + 12, T + 28);
-    r4 = load2_m256i_AVX512(T + 32, T + 48);
-    r5 = load2_m256i_AVX512(T + 36, T + 52);
-    r6 = load2_m256i_AVX512(T + 40, T + 56);
-    r7 = load2_m256i_AVX512(T + 44, T + 60);
+    r0 = mm512_splitload_si512(T +  0, T + 16);
+    r1 = mm512_splitload_si512(T +  4, T + 20);
+    r2 = mm512_splitload_si512(T +  8, T + 24);
+    r3 = mm512_splitload_si512(T + 12, T + 28);
+    r4 = mm512_splitload_si512(T + 32, T + 48);
+    r5 = mm512_splitload_si512(T + 36, T + 52);
+    r6 = mm512_splitload_si512(T + 40, T + 56);
+    r7 = mm512_splitload_si512(T + 44, T + 60);
 
     a0 = _mm512_shuffle_i64x2(r0, r4, 136);
     a1 = _mm512_shuffle_i64x2(r0, r4, 221);

@@ -14,14 +14,14 @@
 #include "PublicLibs/ConsoleIO/BasicIO.h"
 #include "PublicLibs/ConsoleIO/Label.h"
 #include "PublicLibs/ExportSafeLibs/Stream.h"
+#include "ExceptionSerialization.h"
 #include "StringException.h"
 namespace ymp{
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-const char StringException::TYPENAME[] = "StringException";
-ExceptionFactoryT<StringException> StringException_Instance;
+YMP_EXCEPTION_DEFINITIONS(StringException)
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -59,29 +59,16 @@ void StringException::print() const{
     Console::println("\n");
     Console::SetColor('w');
 }
-StringException::StringException(const DllSafeStream& data){
-    const char* str = (const char*)data.get() + sizeof(TYPENAME);
-
-    m_function = str;
-    str += m_function.size() + 1;
-
-    m_message = str;
+StringException::StringException(SerializationPassKey key, const char*& stream)
+    : Exception(key, stream)
+{
+    ExceptionTools::parse(stream, m_function);
+    ExceptionTools::parse(stream, m_message);
 }
-DllSafeStream StringException::serialize() const{
-    upL_t function_size = m_function.size() + 1;
-    upL_t message_size = m_message.size() + 1;
-
-    DllSafeStream ptr(sizeof(TYPENAME) + function_size + message_size);
-    char* str = (char*)ptr.get();
-    memcpy(str, TYPENAME, sizeof(TYPENAME));
-    str += sizeof(TYPENAME);
-
-    memcpy(str, &m_function.front(), function_size);
-    str += function_size;
-
-    memcpy(str, &m_message.front(), message_size);
-
-    return ptr;
+void StringException::serialize(std::string& stream) const{
+    Exception::serialize(stream);
+    ExceptionTools::write(stream, m_function);
+    ExceptionTools::write(stream, m_message);
 }
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////

@@ -18,6 +18,7 @@
 #include "PublicLibs/BasicLibs/StringTools/ToString.cpp"
 #include "PublicLibs/BasicLibs/StringTools/Unicode.cpp"
 #include "PublicLibs/BasicLibs/StringTools/ymb_STR.cpp"
+#include "PublicLibs/SystemLibs/Time/Time.cpp"
 #include "PublicLibs/SystemLibs/Environment/Environment.cpp"
 #include "PublicLibs/SystemLibs/ProcessorCapability/cpu_x86.cpp"
 

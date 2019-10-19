@@ -16,6 +16,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 //  Dependencies
+#include <vector>
 #include <string>
 #include "PublicLibs/Types.h"
 namespace ymp{
@@ -32,6 +33,7 @@ ufL_t   GetFileSize         (const std::string& path);
 bool    FileExists          (const std::string& path);
 void    RemoveFile          (const std::string& path);
 bool    DirectoryIsWritable (const std::string& directory);
+std::vector<std::string> list_directory(const std::string& path);
 ////////////////////////////////////////////////////////////////////////////////
 int     GetLastErrorCode    ();
 void    PrintLastError      ();

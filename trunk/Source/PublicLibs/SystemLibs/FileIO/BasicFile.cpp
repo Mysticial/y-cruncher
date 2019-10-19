@@ -15,9 +15,9 @@
 #include "FileIO.h"
 #include "FileException.h"
 #if _WIN32
-#include "BaseFile_Windows.ipp"
+#include "BaseFile/BaseFile_Windows.ipp"
 #else
-#include "BaseFile_Default.ipp"
+#include "BaseFile/BaseFile_Default.ipp"
 #endif
 #include "BasicFile.h"
 namespace ymp{

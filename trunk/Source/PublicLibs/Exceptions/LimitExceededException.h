@@ -17,16 +17,16 @@
 #include <string>
 #include "PublicLibs/CompilerSettings.h"
 #include "PublicLibs/Types.h"
-#include "Exception.h"
+#include "StringException.h"
 namespace ymp{
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-class LimitExceededException : public Exception{
-public:
-    static const char TYPENAME[];
+class LimitExceededException : public StringException{
+    YMP_EXCEPTION_DECLARATIONS()
 
+public:
     LimitExceededException(uiL_t attempted);
     LimitExceededException(const char* function, uiL_t limit, uiL_t attempted);
     LimitExceededException(
@@ -35,25 +35,14 @@ public:
         uiL_t limit, uiL_t attempted
     );
 
-public:
-    [[noreturn]] virtual void fire() const override{
-        throw *this;
-    }
-    virtual const char* get_typename() const override{
-        return TYPENAME;
-    }
-    virtual Exception* clone() const override{
-        return new LimitExceededException(*this);
-    }
     virtual void print() const override;
 
 public:
-    LimitExceededException(const DllSafeStream& data);
-    virtual DllSafeStream serialize() const override;
+    //  Serialization
+    LimitExceededException(SerializationPassKey key, const char*& stream);
+    virtual void serialize(std::string& stream) const override;
 
 private:
-    std::string m_function;
-    std::string m_message;
     uiL_t m_limit;
     uiL_t m_attempted;
 };
