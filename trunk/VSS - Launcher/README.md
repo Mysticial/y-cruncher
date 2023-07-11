@@ -9,7 +9,7 @@ This is the project folder for launcher application. It is the "y-cruncher(.exe)
 
 Windows:
  - Open the Visual Studio project and compile from within the IDE.
- - Visual Studio 2015 is required.
+ - Visual Studio 2022 is required.
 
 Linux:
  - There is currently no stand-alone script to compile it for Linux.
