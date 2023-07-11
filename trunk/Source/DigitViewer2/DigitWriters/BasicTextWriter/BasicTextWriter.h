@@ -1,43 +1,50 @@
-/* BasicYcdSetWriter.h
+/* BasicTextWriter.h
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 02/06/2018
- * Last Modified    : 03/28/2018
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 02/03/2018
+ *  Last Modified   : 03/25/2018
  * 
- *      This write does not officially support multiple writes to the same
- *  digit. This is because individual .ycd files that have been completely
- *  written out are automatically closed and renamed.
+ *      This writer uses raw (unbuffered) I/O.
+ * 
+ *  The advantages of raw disk I/O are:
+ *      -   Faster for bulk transfers because it eliminates the OS memcpy().
+ *      -   Saves memory since the OS doesn't need to allocate a buffer.
+ *      -   Prevents the OS from doing any stupid caching that may lead to
+ *          the pagefile Thrash of Death.
+ *
+ *  The disadvantage is that the buffer needs to be larger and must satisfy
+ *  stricter alignment requirements. It is also more difficult to implement.
  * 
  */
 
 #pragma once
-#ifndef ydv_DigitViewer_BasicYcdSetWriter_H
-#define ydv_DigitViewer_BasicYcdSetWriter_H
+#ifndef ydv_DigitViewer_BasicTextWriter_H
+#define ydv_DigitViewer_BasicTextWriter_H
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 //  Dependencies
-#include <vector>
-#include <map>
+#include <memory>
 #include <mutex>
-#include "BasicDigitWriter.h"
-#include "BasicYcdFileWriter.h"
+#include "PublicLibs/SystemLibs/FileIO/RawFile/RawFile.h"
+#include "DigitViewer2/DigitWriters/BasicDigitWriter.h"
 namespace DigitViewer2{
     using namespace ymp;
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-class BasicYcdSetWriter : public BasicDigitWriter{
+class BasicTextWriter : public BasicDigitWriter{
+    static const upL_t FILE_ALIGNMENT = FileIO::DEFAULT_FILE_ALIGNMENT;
+
 public:
-    BasicYcdSetWriter(
-        const std::string& path,
-        const std::string& name,
+    BasicTextWriter(
+        const std::string& path,    //  UTF-8
         const std::string& first_digits,
-        char radix,
-        ufL_t digits_per_file, uiL_t stream_end
+        char radix, bool raw_io
     );
+    ~BasicTextWriter();
 
     virtual upL_t recommend_buffer_size(uiL_t digits, upL_t limit) const override;
     virtual std::unique_ptr<BasicDigitReader> close_and_get_basic_reader() override;
@@ -50,26 +57,16 @@ public:
     ) override;
 
 
-public:
-    BasicYcdFileWriter& get_file(uiL_t id);
-
-    class Command;
-
-    std::vector<Command> make_commands(const char* input, uiL_t offset, upL_t digits);
-
-
 private:
-    std::string m_path;
-    std::string m_name;
+    using ConvertFunction = bool (*)(char* dec, const char* raw, upL_t digits);
 
-    std::string m_first_digits;
+    std::mutex m_lock;
+    FileIO::RawFile m_file;
 
-    upL_t m_digits_per_word;
-    ufL_t m_digits_per_file;
-    uiL_t m_stream_end;
+    ConvertFunction m_fp_convert;
 
-    std::mutex m_files_lock;
-    std::map<uiL_t, BasicYcdFileWriter> m_files;
+    ufL_t m_data_offset;    //  Offset in the file of the first digit after the decimal place.
+    ufL_t m_offset_extent;  //  Largest offset written + 1.
 };
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////

@@ -1,8 +1,8 @@
 /* RawFile.h
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 03/19/2018
- * Last Modified    : 03/24/2018
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 03/19/2018
+ *  Last Modified   : 03/24/2018
  * 
  *      RawFile is a file with direct and unbufferred I/O.
  * 

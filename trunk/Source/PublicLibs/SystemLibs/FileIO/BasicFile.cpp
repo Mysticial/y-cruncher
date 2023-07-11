@@ -1,8 +1,8 @@
 /* BasicFile.cpp
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 12/30/2015
- * Last Modified    : 12/30/2015
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 12/30/2015
+ *  Last Modified   : 12/30/2015
  * 
  */
 
@@ -37,12 +37,12 @@ BasicFile::BasicFile(const std::string& path, bool retry){
             FileException(GetLastErrorCode(), nullptr, path, "Unable to open file.").fire();
         }
 
-        Console::Warning("Unable to open file.", true);
+        Console::warning("Unable to open file.", true);
         Console::println(path);
         PrintLastError();
         Console::println();
         Console::println("Re-attempting...");
-        Console::Pause('w');
+        Console::pause('w');
     }while (true);
 }
 BasicFile::BasicFile(ufL_t bytes, const std::string& path, bool retry){
@@ -55,12 +55,12 @@ BasicFile::BasicFile(ufL_t bytes, const std::string& path, bool retry){
             FileException(GetLastErrorCode(), nullptr, path, "Unable to create file.").fire();
         }
 
-        Console::Warning("Unable to create file.", true);
+        Console::warning("Unable to create file.", true);
         Console::println(path);
         PrintLastError();
         Console::println();
         Console::println("Re-attempting...");
-        Console::Pause('w');
+        Console::pause('w');
     }while (true);
 }
 ////////////////////////////////////////////////////////////////////////////////

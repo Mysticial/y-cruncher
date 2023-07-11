@@ -1,8 +1,8 @@
 /* DigitCount_x86_SSE2.h
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 01/13/2018
- * Last Modified    : 01/13/2018
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 01/13/2018
+ *  Last Modified   : 01/13/2018
  * 
  */
 
@@ -16,6 +16,7 @@
 //  Dependencies
 #include <emmintrin.h>
 #include "PublicLibs/CompilerSettings.h"
+#include "PublicLibs/Types.h"
 namespace DigitViewer2{
 namespace DigitCount{
 ////////////////////////////////////////////////////////////////////////////////

@@ -1,8 +1,8 @@
 /* Parallelizer_WindowsThreadPool.h
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 02/19/2017
- * Last Modified    : 02/19/2017
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 02/19/2017
+ *  Last Modified   : 02/19/2017
  * 
  */
 
@@ -14,11 +14,12 @@
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 //  Dependencies
-#include <vector>
+#include <deque>
 #include <Windows.h>
 #include "PublicLibs/ConsoleIO/BasicIO.h"
 #include "PublicLibs/Exceptions/Exception.h"
 #include "PublicLibs/Exceptions/SystemException.h"
+#include "PublicLibs/BasicLibs/Concurrency/ExceptionHolder.h"
 #include "PublicLibs/BasicLibs/Concurrency/BasicParallelizer.h"
 namespace ymp{
 namespace BasicFrameworks{
@@ -26,7 +27,7 @@ namespace BasicFrameworks{
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-class WinPoolWork{
+class WinPoolWork : public ExceptionHolder{
 public:
     WinPoolWork(BasicAction& action, upL_t index)
         : m_action(action)
@@ -42,12 +43,21 @@ public:
         }
     }
     ~WinPoolWork(){
-        WaitForThreadpoolWorkCallbacks(m_work, FALSE);
-        CloseThreadpoolWork(m_work);
+        wait_and_ignore_exceptions();
     }
 
     void run(){
         SubmitThreadpoolWork(m_work);
+    }
+    void wait_and_ignore_exceptions(){
+        if (m_work != nullptr){
+            WaitForThreadpoolWorkCallbacks(m_work, FALSE);
+            CloseThreadpoolWork(m_work);
+        }
+    }
+    void wait_and_rethrow_exceptions(){
+        wait_and_ignore_exceptions();
+        rethrow_stored_exceptions();
     }
 
 private:
@@ -56,78 +66,39 @@ private:
     TP_WORK* m_work;
 
     static void NTAPI callback(PTP_CALLBACK_INSTANCE instance, void* context, PTP_WORK){
+        WinPoolWork* work = (WinPoolWork*)context;
         try{
-            WinPoolWork* work = (WinPoolWork*)context;
             work->m_action.run(work->m_index);
-        }catch (Exception& e){
-            e.print();
-            Console::Quit(1);
-        }catch (std::exception& e){
-            Console::Warning(e.what());
-            Console::Quit(1);
         }catch (...){
-            Console::Warning(EXCEPTION_THREAD_BARRIER);
-            Console::Quit(1);
+            work->store_current_exception();
         }
     }
 };
 class WindowsThreadPool : public BasicParallelizer{
 public:
     virtual void run_in_parallel(BasicAction& a0, BasicAction& a1) override{
-        TP_WORK* work = CreateThreadpoolWork(basic_callback, &a0, nullptr);
-        if (work == nullptr){
-            throw SystemException(
-                "CreateThreadpoolWork()",
-                "Unable to create thread pool work.",
-                GetLastError()
-            );
-        }
-
-        SubmitThreadpoolWork(work);
-
-        try{
-            a1.run();
-        }catch (...){
-            WaitForThreadpoolWorkCallbacks(work, FALSE);
-            CloseThreadpoolWork(work);
-            throw;
-        }
-
-        WaitForThreadpoolWorkCallbacks(work, FALSE);
-        CloseThreadpoolWork(work);
+        WinPoolWork work(a0, 0);
+        work.run();
+        a1.run();
+        work.wait_and_rethrow_exceptions();
     }
     virtual void run_in_parallel(BasicAction& action, upL_t si, upL_t ei) override{
         if (si >= ei){
             return;
         }
 
-        std::vector<WinPoolWork> work;
-        work.reserve(ei - si - 1);
+        std::deque<WinPoolWork> tasks;
+//        tasks.reserve(ei - si - 1);
 
         //  Run everything.
         for (upL_t c = si + 1; c < ei; c++){
-            work.emplace_back(action, c);
-            work.back().run();
+            tasks.emplace_back(action, c);
+            tasks.back().run();
         }
         action.run(si);
 
-        //  Waits are done implicitly on destruction.
-    }
-
-private:
-    static void NTAPI basic_callback(PTP_CALLBACK_INSTANCE instance, void* context, PTP_WORK){
-        try{
-            BasicAction* action = (BasicAction*)context;
-            action->run();
-        }catch (Exception& e){
-            e.print();
-            Console::Quit(1);
-        }catch (std::exception& e){
-            Console::Warning(e.what());
-            Console::Quit(1);
-        }catch (...){
-            Console::Warning(EXCEPTION_THREAD_BARRIER);
-            Console::Quit(1);
+        for (WinPoolWork& work : tasks){
+            work.wait_and_rethrow_exceptions();
         }
     }
 };

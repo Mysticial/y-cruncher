@@ -1,8 +1,8 @@
 /* ParsingTools.cpp
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 01/30/2018
- * Last Modified    : 01/30/2018
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 01/30/2018
+ *  Last Modified   : 01/30/2018
  * 
  */
 

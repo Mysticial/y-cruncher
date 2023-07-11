@@ -1,8 +1,8 @@
 /* Transpose_64x8x8_x86_AVX512.h
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 08/30/2015
- * Last Modified    : 01/20/2017
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 08/30/2015
+ *  Last Modified   : 01/20/2017
  * 
  */
 
@@ -171,6 +171,40 @@ YM_FORCE_INLINE void transpose_i64_8x8_AVX512(
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
+YM_FORCE_INLINE void transpose_f64_8x8_forward_AVX512(
+    const double T[64],
+    __m512d& r0, __m512d& r1, __m512d& r2, __m512d& r3,
+    __m512d& r4, __m512d& r5, __m512d& r6, __m512d& r7
+){
+    __m512d a0, a1, a2, a3, a4, a5, a6, a7;
+
+    r0 = mm512_splitload_pd(T +  0, T + 16);
+    r1 = mm512_splitload_pd(T +  4, T + 20);
+    r2 = mm512_splitload_pd(T +  8, T + 24);
+    r3 = mm512_splitload_pd(T + 12, T + 28);
+    r4 = mm512_splitload_pd(T + 32, T + 48);
+    r5 = mm512_splitload_pd(T + 36, T + 52);
+    r6 = mm512_splitload_pd(T + 40, T + 56);
+    r7 = mm512_splitload_pd(T + 44, T + 60);
+
+    a0 = _mm512_shuffle_f64x2(r0, r4, 136);
+    a1 = _mm512_shuffle_f64x2(r0, r4, 221);
+    a2 = _mm512_shuffle_f64x2(r1, r5, 136);
+    a3 = _mm512_shuffle_f64x2(r1, r5, 221);
+    a4 = _mm512_shuffle_f64x2(r2, r6, 136);
+    a5 = _mm512_shuffle_f64x2(r2, r6, 221);
+    a6 = _mm512_shuffle_f64x2(r3, r7, 136);
+    a7 = _mm512_shuffle_f64x2(r3, r7, 221);
+
+    r0 = _mm512_unpacklo_pd(a0, a4);
+    r1 = _mm512_unpackhi_pd(a0, a4);
+    r2 = _mm512_unpacklo_pd(a1, a5);
+    r3 = _mm512_unpackhi_pd(a1, a5);
+    r4 = _mm512_unpacklo_pd(a2, a6);
+    r5 = _mm512_unpackhi_pd(a2, a6);
+    r6 = _mm512_unpacklo_pd(a3, a7);
+    r7 = _mm512_unpackhi_pd(a3, a7);
+}
 YM_FORCE_INLINE void transpose_i64_8x8_forward_AVX512(
     const u64_t T[64],
     __m512i& r0, __m512i& r1, __m512i& r2, __m512i& r3,
@@ -209,6 +243,25 @@ YM_FORCE_INLINE void transpose_i64_8x8_forward_AVX512(
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
+YM_FORCE_INLINE void transpose_f64_8x8_forward_AVX512(
+    const __m512d T[8],
+    __m512d& r0, __m512d& r1, __m512d& r2, __m512d& r3,
+    __m512d& r4, __m512d& r5, __m512d& r6, __m512d& r7
+){
+#if 1
+    transpose_f64_8x8_forward_AVX512((const double*)T, r0, r1, r2, r3, r4, r5, r6, r7);
+#else
+    r0 = _mm512_load_pd(T + 0);
+    r1 = _mm512_load_pd(T + 1);
+    r2 = _mm512_load_pd(T + 2);
+    r3 = _mm512_load_pd(T + 3);
+    r4 = _mm512_load_pd(T + 4);
+    r5 = _mm512_load_pd(T + 5);
+    r6 = _mm512_load_pd(T + 6);
+    r7 = _mm512_load_pd(T + 7);
+    transpose_f64_8x8_AVX512(r0, r1, r2, r3, r4, r5, r6, r7);
+#endif
+}
 YM_FORCE_INLINE void transpose_i64_8x8_forward_AVX512(
     const __m512i T[8],
     __m512i& r0, __m512i& r1, __m512i& r2, __m512i& r3,
@@ -227,6 +280,21 @@ YM_FORCE_INLINE void transpose_i64_8x8_forward_AVX512(
     r7 = _mm512_load_si512(T + 7);
     transpose_i64_8x8_AVX512(r0, r1, r2, r3, r4, r5, r6, r7);
 #endif
+}
+YM_FORCE_INLINE void transpose_f64_8x8_inverse_AVX512(
+    __m512d T[8],
+    __m512d& r0, __m512d& r1, __m512d& r2, __m512d& r3,
+    __m512d& r4, __m512d& r5, __m512d& r6, __m512d& r7
+){
+    transpose_f64_8x8_AVX512(r0, r1, r2, r3, r4, r5, r6, r7);
+    _mm512_store_pd(T + 0, r0);
+    _mm512_store_pd(T + 1, r1);
+    _mm512_store_pd(T + 2, r2);
+    _mm512_store_pd(T + 3, r3);
+    _mm512_store_pd(T + 4, r4);
+    _mm512_store_pd(T + 5, r5);
+    _mm512_store_pd(T + 6, r6);
+    _mm512_store_pd(T + 7, r7);
 }
 YM_FORCE_INLINE void transpose_i64_8x8_inverse_AVX512(
     __m512i T[8],

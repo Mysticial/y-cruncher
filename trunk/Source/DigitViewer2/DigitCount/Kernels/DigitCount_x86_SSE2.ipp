@@ -1,8 +1,8 @@
 /* DigitCount_x86_SSE2.ipp
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 01/13/2018
- * Last Modified    : 01/13/2018
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 01/13/2018
+ *  Last Modified   : 01/13/2018
  * 
  */
 

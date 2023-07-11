@@ -1,8 +1,8 @@
 /* Unicode.cpp
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 12/29/2015
- * Last Modified    : 12/29/2015
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 12/29/2015
+ *  Last Modified   : 12/29/2015
  * 
  *  Notes:
  *      -   The UTF8 parser doesn't error on overlong characters.
@@ -236,6 +236,14 @@ std::wstring utf16_to_wstr(const std::u16string& str){
 std::u16string wstr_to_utf16(const std::wstring& str){
     return std::u16string(str.begin(), str.end());
 }
+std::wstring utf32_to_wstr(const std::u32string& str){
+    std::u16string tmp(utf32_to_utf16(str));
+    return std::wstring(tmp.begin(), tmp.end());
+}
+std::u32string wstr_to_utf32(const std::wstring& str){
+    std::u16string tmp(str.begin(), str.end());
+    return utf16_to_utf32(tmp);
+}
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 #else
@@ -255,6 +263,12 @@ std::wstring utf16_to_wstr(const std::u16string& str){
 std::u16string wstr_to_utf16(const std::wstring& str){
     std::u32string tmp(str.begin(), str.end());
     return utf32_to_utf16(tmp);
+}
+std::wstring utf32_to_wstr(const std::u32string& str){
+    return std::wstring(str.begin(), str.end());
+}
+std::u32string wstr_to_utf32(const std::wstring& str){
+    return std::u32string(str.begin(), str.end());
 }
 #endif
 ////////////////////////////////////////////////////////////////////////////////

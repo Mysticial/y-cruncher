@@ -1,8 +1,8 @@
 /* WordToRaw.h
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 02/12/2018
- * Last Modified    : 02/12/2018
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 02/12/2018
+ *  Last Modified   : 02/12/2018
  * 
  */
 

@@ -23,19 +23,18 @@
 ////////////////////////////////////////////////////////////////////////////////
 void dispatch_AMD(const cpu_x86& features){
     //  AVX512
-#ifdef YCR_ENABLE_2018_x64_CannonLake
-    dispatch_2018_x64_CannonLake(features);
+#ifdef YCR_ENABLE_2022_x64_Zen4
+    dispatch_2022_x64_Zen4(features);
 #endif
-#ifdef YCR_ENABLE_2017_x64_Skylake
-    dispatch_2017_x64_Skylake(features);
-#endif
-#ifdef YCR_ENABLE_2016_x64_KnightsLanding
-    dispatch_2016_x64_KnightsLanding(features);
-#endif
-    warn_noAVX512(features);
+//    warn_noAVX512(features);
     warn_AVX512_OS(features);
 
     //  AVX
+//#ifdef YCR_ENABLE_2020_x64_Zen3
+//    if (features.HW_VAES){
+//        dispatch_2020_x64_Zen3(features);
+//    }
+//#endif
 #ifdef YCR_ENABLE_2019_x64_Zen2
     if (features.HW_RDPID){
         dispatch_2019_x64_Zen2(features);

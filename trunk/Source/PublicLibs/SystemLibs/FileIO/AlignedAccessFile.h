@@ -1,8 +1,8 @@
 /* AlignedAccessFile.h
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 03/19/2018
- * Last Modified    : 07/03/2019
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 03/19/2018
+ *  Last Modified   : 07/03/2019
  * 
  *      AlignedAccessFile is a random access file that requires all buffers,
  *  offsets, and lengths to be aligned to the sector. This is the basis for

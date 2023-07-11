@@ -1,8 +1,8 @@
 /* StopWatch.h
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 02/12/2015
- * Last Modified    : 03/07/2016
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 02/12/2015
+ *  Last Modified   : 03/07/2016
  * 
  *      A stopwatch that tracks both wall time and CPU time. This is used for
  *  generating CPU utilization and efficiency profiles.

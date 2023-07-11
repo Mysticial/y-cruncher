@@ -1,8 +1,8 @@
 /* Margin.cpp
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 09/02/2014
- * Last Modified    : 09/02/2014
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 09/02/2014
+ *  Last Modified   : 09/02/2014
  * 
  */
 
@@ -21,7 +21,8 @@ namespace Console{
 ////////////////////////////////////////////////////////////////////////////////
 //  String Margins
 YM_NO_INLINE    upL_t print_marginl(upL_t margin, std::string x, char color){
-    SetColor(color);
+    ConsoleLockScope lock;
+    set_color(color);
 
     upL_t size = x.size();
     if (size >= margin){
@@ -32,13 +33,15 @@ YM_NO_INLINE    upL_t print_marginl(upL_t margin, std::string x, char color){
     return print(x);
 }
 YM_NO_INLINE    upL_t println_marginl(upL_t margin, std::string x, char color){
+    ConsoleLockScope lock;
     upL_t ret = 0;
     ret += print_marginl(margin, std::move(x), color);
     ret += println();
     return ret;
 }
 YM_NO_INLINE    upL_t print_marginr(upL_t margin, const std::string& x, char color){
-    SetColor(color);
+    ConsoleLockScope lock;
+    set_color(color);
 
     upL_t size = x.size();
     if (size >= margin){
@@ -50,6 +53,7 @@ YM_NO_INLINE    upL_t print_marginr(upL_t margin, const std::string& x, char col
     return print(out);
 }
 YM_NO_INLINE    upL_t println_marginr(upL_t margin, const std::string& x, char color){
+    ConsoleLockScope lock;
     upL_t ret = 0;
     ret += print_marginr(margin, x, color);
     ret += println();
@@ -83,6 +87,12 @@ YM_NO_INLINE    upL_t print_marginr_commas(upL_t margin, siL_t x, char color){
 }
 YM_NO_INLINE    upL_t println_marginr_commas(upL_t margin, siL_t x, char color){
     return println_marginr(margin, StringTools::tostr(x, StringTools::COMMAS), color);
+}
+YM_NO_INLINE    upL_t print_marginl_quotes(upL_t margin, siL_t x, char color){
+    return print_marginl(margin, StringTools::tostr(x, StringTools::QUOTES), color);
+}
+YM_NO_INLINE    upL_t print_marginr_quotes(upL_t margin, siL_t x, char color){
+    return print_marginr(margin, StringTools::tostr(x, StringTools::QUOTES), color);
 }
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////

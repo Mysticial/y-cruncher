@@ -1,8 +1,8 @@
 /* LimitExceededException.cpp
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 04/09/2017
- * Last Modified    : 04/09/2017
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 04/09/2017
+ *  Last Modified   : 04/09/2017
  * 
  */
 
@@ -21,6 +21,11 @@ namespace ymp{
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
+//#define YMP_FATAL_ON_EXCEPTION
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 YMP_EXCEPTION_DEFINITIONS(LimitExceededException)
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -29,12 +34,20 @@ YMP_EXCEPTION_DEFINITIONS(LimitExceededException)
 YM_NO_INLINE LimitExceededException::LimitExceededException(uiL_t attempted)
     : m_limit(0)
     , m_attempted(attempted)
-{}
+{
+#ifdef YMP_FATAL_ON_EXCEPTION
+    std::terminate();
+#endif
+}
 YM_NO_INLINE LimitExceededException::LimitExceededException(const char* function, uiL_t limit, uiL_t attempted)
     : StringException(function, "")
     , m_limit(limit)
     , m_attempted(attempted)
-{}
+{
+#ifdef YMP_FATAL_ON_EXCEPTION
+    std::terminate();
+#endif
+}
 YM_NO_INLINE LimitExceededException::LimitExceededException(
     const char* function,
     std::string message,
@@ -43,12 +56,17 @@ YM_NO_INLINE LimitExceededException::LimitExceededException(
     : StringException(function, message)
     , m_limit(limit)
     , m_attempted(attempted)
-{}
+{
+#ifdef YMP_FATAL_ON_EXCEPTION
+    std::terminate();
+#endif
+}
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 void LimitExceededException::print() const{
+    Console::ConsoleLockScope lock;
     Console::println("\n", 'R');
     Console::println_labelc("Exception Encountered", get_typename());
     Console::println();
@@ -68,7 +86,7 @@ void LimitExceededException::print() const{
     }
     Console::println_labelm_commas("    Attempted: ", m_attempted);
     Console::println("\n");
-    Console::SetColor('w');
+    Console::set_color('w');
 }
 LimitExceededException::LimitExceededException(SerializationPassKey key, const char*& stream)
     : StringException(key, stream)

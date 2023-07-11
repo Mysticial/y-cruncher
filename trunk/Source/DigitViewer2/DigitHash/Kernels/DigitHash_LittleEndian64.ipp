@@ -1,8 +1,8 @@
 /* DigitHash_LittleEndian64.ipp
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 01/14/2018
- * Last Modified    : 01/14/2018
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 01/14/2018
+ *  Last Modified   : 01/14/2018
  * 
  */
 

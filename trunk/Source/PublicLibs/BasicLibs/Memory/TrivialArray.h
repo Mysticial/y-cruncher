@@ -1,8 +1,8 @@
 /* TrivialArray.h
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 09/06/2016
- * Last Modified    : 09/23/2016
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 09/06/2016
+ *  Last Modified   : 09/23/2016
  * 
  *      A lightweight smart array for trivial types.
  * 
@@ -43,12 +43,12 @@ public:
         aligned_free(m_ptr);
     }
 
-    TrivialArray(TrivialArray&& x)
+    TrivialArray(TrivialArray&& x) noexcept
         : m_ptr(x.m_ptr)
     {
         x.m_ptr = nullptr;
     }
-    void operator=(TrivialArray&& x){
+    void operator=(TrivialArray&& x) noexcept{
         aligned_free(m_ptr);
         m_ptr = x.m_ptr;
         x.m_ptr = nullptr;
@@ -59,14 +59,14 @@ public:
 
 
 public:
-    TrivialArray()
+    TrivialArray() noexcept
         : m_ptr(nullptr)
     {}
     TrivialArray(upL_t size, upL_t alignment = alignof(Type))
         : m_ptr((Type*)aligned_malloc(size * sizeof(Type), alignment))
     {}
 
-    void clear(){
+    void clear() noexcept{
         aligned_free(m_ptr);
         m_ptr = nullptr;
     }

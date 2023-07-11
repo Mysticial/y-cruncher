@@ -1,8 +1,8 @@
 /* BasicYcdSetReader.h
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 01/31/2018
- * Last Modified    : 02/01/2018
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 01/31/2018
+ *  Last Modified   : 02/01/2018
  * 
  * 
  * 
@@ -199,7 +199,7 @@ namespace DigitViewer2{
 ////////////////////////////////////////////////////////////////////////////////
 class BasicYcdSetReader : public BasicDigitReader{
 public:
-    BasicYcdSetReader(const std::string& path);
+    BasicYcdSetReader(const std::string& path, bool raw_io = true);
 
     void print_paths() const;
 
@@ -264,6 +264,7 @@ private:
 
     std::mutex m_files_lock;
     std::map<uiL_t, std::unique_ptr<BasicYcdFileReader>> m_files;
+    bool m_raw_io;
 };
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////

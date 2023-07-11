@@ -5,7 +5,7 @@ CC=g++
 
 CFLAGS := -D YMP_BUILD_DEVELOPER
 CFLAGS += -I $(SOURCE_ROOT) -std=c++17 -fno-rtti -Wall -O2 -g -ggdb
-CFLAGS += -D YMP_STANDALONE -D YMP_ENABLE_LIBNUMA -D YMP_ENABLE_CILK -D YMP_ENABLE_TBB
+CFLAGS += -D YMP_STANDALONE -D YMP_ENABLE_LIBNUMA -D YMP_ENABLE_TBB
 CFLAGS += -lpthread -lnuma -fcilkplus -ltbb
 CFLAGS += -Wl,-rpath=.,-rpath=Binaries
 
@@ -16,7 +16,7 @@ dump:
 clean:
 	rm -r $(OUTPUT_ROOT)
 
-all: 05-A64 07-PNR 08-NHM 11-BD1 11-SNB 13-HSW 14-BDW 16-KNL 17-ZN1 17-SKX 18-CNL 19-ZN2
+all: 05-A64 07-PNR 08-NHM 11-BD1 11-SNB 13-HSW 14-BDW 16-KNL 17-ZN1 17-SKX 18-CNL 19-ZN2 20-ZN3 22-ZN4
 
 .DEFAULT_GOAL := all
 
@@ -161,7 +161,7 @@ $(OUTPUT_17SKX)/%.o: $(SOURCE_ROOT)/%.cpp
 17-SKX: $(addprefix $(OUTPUT_17SKX)/, $(SOURCES:.cpp=.o))
 
 
-CFLAGS_18CNL := $(CFLAGS) -D X64_18_CannonLake     -march=skylake-avx512 -mavx512ifma -mavx512vbmi -mtune=skylake-avx512
+CFLAGS_18CNL := $(CFLAGS) -D X64_18_CannonLake     -march=skylake-avx512 -mavx512ifma -mavx512vbmi -mtune=icelake-client
 OUTPUT_18CNL := $(OUTPUT_ROOT)/18-CNL
 -include $(addprefix $(OUTPUT_18CNL)/, $(SOURCES:.cpp=.d))
 $(OUTPUT_18CNL)/%.o: $(SOURCE_ROOT)/%.cpp
@@ -175,7 +175,7 @@ $(OUTPUT_18CNL)/%.o: $(SOURCE_ROOT)/%.cpp
 18-CNL: $(addprefix $(OUTPUT_18CNL)/, $(SOURCES:.cpp=.o))
 
 
-CFLAGS_19ZN2 := $(CFLAGS) -D X64_19_Zen2           -march=znver1 -mtune=znver1
+CFLAGS_19ZN2 := $(CFLAGS) -D X64_19_Zen2           -march=znver1 -mtune=znver2
 OUTPUT_19ZN2 := $(OUTPUT_ROOT)/19-ZN2
 -include $(addprefix $(OUTPUT_19ZN2)/, $(SOURCES:.cpp=.d))
 $(OUTPUT_19ZN2)/%.o: $(SOURCE_ROOT)/%.cpp
@@ -187,6 +187,34 @@ $(OUTPUT_19ZN2)/%.o: $(SOURCE_ROOT)/%.cpp
 	 sed -e 's/^ *//' -e 's/$$/:/' >> $(@:.o=.d)
 	@rm -f $(@:.o=.d.tmp)
 19-ZN2: $(addprefix $(OUTPUT_19ZN2)/, $(SOURCES:.cpp=.o))
+
+
+CFLAGS_20ZN3 := $(CFLAGS) -D X64_20_Zen3           -march=znver1 -mtune=znver3
+OUTPUT_20ZN3 := $(OUTPUT_ROOT)/20-ZN3
+-include $(addprefix $(OUTPUT_20ZN3)/, $(SOURCES:.cpp=.d))
+$(OUTPUT_20ZN3)/%.o: $(SOURCE_ROOT)/%.cpp
+	mkdir -p $(shell dirname $@)
+	$(CC) $< $(CFLAGS_20ZN3) -c  -o $@
+	$(CC) $< $(CFLAGS_20ZN3) -MM -MT $@ > $(@:.o=.d)
+	@cp -f $(@:.o=.d) $(@:.o=.d.tmp)
+	@sed -e 's/.*://' -e 's/\\$$//' < $(@:.o=.d.tmp) | fmt -1 | \
+	 sed -e 's/^ *//' -e 's/$$/:/' >> $(@:.o=.d)
+	@rm -f $(@:.o=.d.tmp)
+20-ZN3: $(addprefix $(OUTPUT_20ZN3)/, $(SOURCES:.cpp=.o))
+
+
+CFLAGS_22ZN4 := $(CFLAGS) -D X64_22_Zen4           -march=icelake-client -mtune=znver3
+OUTPUT_22ZN4 := $(OUTPUT_ROOT)/22-ZN4
+-include $(addprefix $(OUTPUT_22ZN4)/, $(SOURCES:.cpp=.d))
+$(OUTPUT_22ZN4)/%.o: $(SOURCE_ROOT)/%.cpp
+	mkdir -p $(shell dirname $@)
+	$(CC) $< $(CFLAGS_22ZN4) -c  -o $@
+	$(CC) $< $(CFLAGS_22ZN4) -MM -MT $@ > $(@:.o=.d)
+	@cp -f $(@:.o=.d) $(@:.o=.d.tmp)
+	@sed -e 's/.*://' -e 's/\\$$//' < $(@:.o=.d.tmp) | fmt -1 | \
+	 sed -e 's/^ *//' -e 's/$$/:/' >> $(@:.o=.d)
+	@rm -f $(@:.o=.d.tmp)
+22-ZN4: $(addprefix $(OUTPUT_22ZN4)/, $(SOURCES:.cpp=.o))
 
 
 

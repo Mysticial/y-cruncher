@@ -1,8 +1,8 @@
 /* StdException.h
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 04/09/2017
- * Last Modified    : 04/09/2017
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 04/09/2017
+ *  Last Modified   : 04/09/2017
  * 
  */
 
@@ -38,12 +38,13 @@ YM_NO_INLINE StdException::StdException(std::string message)
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 void StdException::print() const{
+    Console::ConsoleLockScope lock;
     Console::println("\n", 'R');
     Console::println_labelc("Exception Encountered", get_typename());
     Console::println();
     Console::println(m_message);
     Console::println("\n");
-    Console::SetColor('w');
+    Console::set_color('w');
 }
 StdException::StdException(SerializationPassKey key, const char*& stream)
     : Exception(key, stream)

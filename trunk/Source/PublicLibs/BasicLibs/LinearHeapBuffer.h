@@ -1,8 +1,8 @@
 /* LinearHeapBuffer.h
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 09/08/2018
- * Last Modified    : 09/08/2018
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 09/08/2018
+ *  Last Modified   : 09/08/2018
  * 
  */
 
@@ -27,11 +27,16 @@ namespace ymp{
 template <typename Type>
 class LinearWordBuffer{
 public:
+    YM_FORCE_INLINE LinearWordBuffer()
+        : m_ptr(nullptr)
+        , m_len(0)
+    {}
     YM_FORCE_INLINE LinearWordBuffer(Type* ptr, upL_t L)
         : m_ptr(ptr)
         , m_len(L)
     {}
 
+    YM_FORCE_INLINE operator Type*() const{ return m_ptr; }
     YM_FORCE_INLINE Type* ptr() const{ return m_ptr; }
     YM_FORCE_INLINE Type* end() const{ return m_ptr + m_len; }
     YM_FORCE_INLINE upL_t len() const{ return m_len; }
@@ -41,9 +46,9 @@ public:
     //  Cut out a new buffer from the bottom of the current one.
     //  The current buffer will be shrunk to remove that bottom portion.
     template <typename SizeType>
-    LinearWordBuffer cut_from_bottom(SizeType size){
-        check_BufferTooSmall("LinearWordBuffer::cut_from_bottom()", m_len, size);
-        upL_t length = (upL_t)size;
+    LinearWordBuffer cut_from_bottom(SizeType words){
+        check_BufferTooSmall("LinearWordBuffer::cut_from_bottom()", m_len, words);
+        upL_t length = (upL_t)words;
         Type* ptr = (Type*)m_ptr;
         m_ptr += length;
         m_len -= length;
@@ -66,6 +71,10 @@ class AlignedBufferC{
     static const upL_t MASK = ALIGNMENT - 1;
 
 public:
+    YM_FORCE_INLINE AlignedBufferC()
+        : m_ptr(nullptr)
+        , m_len(0)
+    {}
     YM_FORCE_INLINE AlignedBufferC(void* ptr, upL_t L)
         : m_ptr((char*)ptr)
         , m_len(L)
@@ -75,16 +84,20 @@ public:
         }
     }
 
+    template <typename Type>
+    YM_FORCE_INLINE explicit operator Type*() const{ return (Type*)m_ptr; }
+    YM_FORCE_INLINE operator void*() const{ return m_ptr; }
+//    YM_FORCE_INLINE explicit operator void*() const{ return m_ptr; }
     YM_FORCE_INLINE void* ptr() const{ return m_ptr; }
     YM_FORCE_INLINE void* end() const{ return m_ptr + m_len; }
-    YM_FORCE_INLINE upL_t len() const{ return m_len; }
+    YM_FORCE_INLINE upL_t bytes() const{ return m_len; }
 
 
 public:
     //  Convert this buffer into a typed raw-pointer with size checking.
     template <typename WordType, typename SizeType>
-    WordType* extract(SizeType size) const{
-        check_BufferTooSmall("AlignedBufferC::extract()", m_len, size * sizeof(WordType));
+    WordType* extract(SizeType words) const{
+        check_BufferTooSmall("AlignedBufferC::extract()", m_len, words * sizeof(WordType));
         return (WordType*)m_ptr;
     }
 
@@ -108,13 +121,11 @@ public:
 public:
     //  Cut out a new buffer from the bottom of the current one.
     //  The current buffer will be shrunk to remove that bottom portion.
-    //  These enforce that the length is aligned so that the truncated buffer
-    //  remains properly aligned.
 
     template <typename SizeType>
-    AlignedBufferC spawn(SizeType size){
-        check_BufferTooSmall("AlignedBufferC::spawn()", m_len, size);
-        upL_t length = (upL_t)size;
+    AlignedBufferC spawn(SizeType bytes){
+        check_BufferTooSmall("AlignedBufferC::spawn()", m_len, bytes);
+        upL_t length = (upL_t)bytes;
         if (length & MASK){
             throw_InvalidParametersException("AlignedBufferC::spawn()", "Size is misaligned.");
         }
@@ -125,17 +136,28 @@ public:
     }
 
     template <typename SubType, typename SizeType>
-    LinearWordBuffer<SubType> spawn_words(SizeType size){
-        upL_t length = (upL_t)size;
+    LinearWordBuffer<SubType> spawn_words(SizeType words){
+        upL_t length = (upL_t)words;
         upL_t bytes = length * sizeof(SubType);
+        bytes = (bytes + MASK) & ~MASK;
         check_BufferTooSmall("AlignedBufferC::spawn_words()", m_len, bytes);
-        if (bytes & MASK){
-            throw_InvalidParametersException("AlignedBufferC::spawn_words()", "Size is misaligned.");
-        }
+//        if (bytes & MASK){
+//            throw_InvalidParametersException("AlignedBufferC::spawn_words()", "Size is misaligned.");
+//        }
         SubType* ptr = (SubType*)m_ptr;
         m_ptr = (char*)m_ptr + bytes;
         m_len -= bytes;
         return LinearWordBuffer<SubType>(ptr, length);
+    }
+    template <typename SubType, typename SizeType>
+    SubType* spawn_objects(SizeType objects){
+        upL_t bytes = (upL_t)objects * sizeof(SubType);
+        bytes = (bytes + MASK) & ~MASK;
+        check_BufferTooSmall("AlignedBufferC::spawn_words()", m_len, bytes);
+        SubType* ptr = (SubType*)m_ptr;
+        m_ptr = (char*)m_ptr + bytes;
+        m_len -= bytes;
+        return ptr;
     }
 
 

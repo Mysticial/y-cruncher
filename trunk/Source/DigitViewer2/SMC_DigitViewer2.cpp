@@ -1,8 +1,8 @@
 /* SMC_DigitViewer2.cpp - Single Module Compile
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 01/13/2018
- * Last Modified    : 01/13/2018
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 01/13/2018
+ *  Last Modified   : 01/13/2018
  * 
  */
 
@@ -20,9 +20,9 @@
 #include "DigitReaders/BasicYcdFileReader.cpp"
 #include "DigitReaders/BasicYcdSetReader.cpp"
 
-#include "DigitWriters/BasicTextWriter.cpp"
-#include "DigitWriters/BasicYcdFileWriter.cpp"
-#include "DigitWriters/BasicYcdSetWriter.cpp"
+#include "DigitWriters/BasicTextWriter/BasicTextWriter.cpp"
+#include "DigitWriters/BasicYcdWriter/BasicYcdFileWriter.cpp"
+#include "DigitWriters/BasicYcdWriter/BasicYcdSetWriter.cpp"
 
 #include "DigitViewer/DigitViewerTasks.cpp"
 #include "DigitViewer/DigitViewerUI2.cpp"

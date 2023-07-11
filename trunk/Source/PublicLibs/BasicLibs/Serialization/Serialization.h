@@ -1,8 +1,8 @@
 /* Serialization.h - Serialization
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 10/28/2012
- * Last Modified    : 09/26/2014
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 10/28/2012
+ *  Last Modified   : 09/26/2014
  * 
  *      Mostly used for checkpoint restart.
  * 

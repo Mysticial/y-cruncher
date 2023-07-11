@@ -1,8 +1,8 @@
 /* BasicIO.h
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 08/31/2014
- * Last Modified    : 08/31/2014
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 08/31/2014
+ *  Last Modified   : 08/31/2014
  * 
  */
 
@@ -29,7 +29,7 @@ const int DEFAULT_PRECISION = 6;
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-void CompileOptions();
+void compile_options();
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -41,30 +41,30 @@ YM_NO_INLINE    upL_t   print   (const std::wstring& str, char color = ' ');
 ////////////////////////////////////////////////////////////////////////////////
 YM_NO_INLINE    std::string     scan_utf8   (char color = 'T');
 YM_NO_INLINE    std::wstring    scan_wstr   (char color = 'T');
-YM_NO_INLINE    void            Pause       (char color = ' ');
+YM_NO_INLINE    void            pause       (char color = ' ');
 ////////////////////////////////////////////////////////////////////////////////
-YM_NO_INLINE    void    SetColor        (char color);
-YM_NO_INLINE    void    SetColorDefault ();
-YM_NO_INLINE    bool    SetConsoleWindowSize(int width = 80, int height = 25);
-extern bool EnableColors;
+YM_NO_INLINE    void    set_color               (char color);
+YM_NO_INLINE    void    set_color_default       ();
+YM_NO_INLINE    bool    set_console_window_size (int width = 80, int height = 25);
+extern bool enable_colors;
 ////////////////////////////////////////////////////////////////////////////////
 //  Basic Derived
 YM_NO_INLINE    upL_t   println     ();
 YM_NO_INLINE    upL_t   println     (std::string str, char color = ' ');
 YM_NO_INLINE    upL_t   println     (std::wstring str, char color = ' ');
-YM_NO_INLINE    void    ClearLine   (int characters = 79);
-YM_NO_INLINE    void    Warning     (std::string str, bool sticky = false);
+YM_NO_INLINE    void    clear_line  (int characters = 79);
+YM_NO_INLINE    void    warning     (std::string str, bool sticky = false);
 ////////////////////////////////////////////////////////////////////////////////
 extern bool pause_on_error; //  Temporary hack. TODO: Get rid of this entirely.
-[[noreturn]] YM_NO_INLINE void Quit (int code);
+[[noreturn]] YM_NO_INLINE void quit_program (int code);
 ////////////////////////////////////////////////////////////////////////////////
-class ConsoleLock{
+class ConsoleLockScope{
 public:
-    ConsoleLock();
-    ~ConsoleLock();
+    ConsoleLockScope();
+    ~ConsoleLockScope();
 
-    ConsoleLock(const ConsoleLock&) = delete;
-    void operator=(const ConsoleLock&) = delete;
+    ConsoleLockScope(const ConsoleLockScope&) = delete;
+    void operator=(const ConsoleLockScope&) = delete;
 };
 ////////////////////////////////////////////////////////////////////////////////
 //  Chains

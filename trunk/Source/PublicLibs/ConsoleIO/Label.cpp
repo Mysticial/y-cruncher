@@ -1,8 +1,8 @@
 /* Label.cpp
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 08/31/2014
- * Last Modified    : 09/19/2014
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 08/31/2014
+ *  Last Modified   : 09/19/2014
  * 
  */
 
@@ -27,38 +27,44 @@ const upL_t DEFAULT_MARGIN = 20;
 ////////////////////////////////////////////////////////////////////////////////
 //  String Labels
 YM_NO_INLINE upL_t print_labelc(std::string label, const std::string& x, char color){
+    Console::ConsoleLockScope lock;
+
     upL_t ret = 0;
 
-    if (color != ' ') SetColor('w');
+    if (color != ' ') set_color('w');
     label += ": ";
     ret += print(label);
 
-    if (color != ' ') SetColor(color);
+    if (color != ' ') set_color(color);
     ret += print(x);
-    if (color != ' ') SetColor('w');
+    if (color != ' ') set_color('w');
 
     return ret;
 }
 YM_NO_INLINE upL_t println_labelc(std::string label, const std::string& x, char color){
+    Console::ConsoleLockScope lock;
     upL_t ret = 0;
     ret += print_labelc(label, x, color);
     ret += println();
     return ret;
 }
 YM_NO_INLINE upL_t print_labelc(std::string label, const std::wstring& x, char color){
+    Console::ConsoleLockScope lock;
+
     upL_t ret = 0;
 
-    if (color != ' ') SetColor('w');
+    if (color != ' ') set_color('w');
     label += ": ";
     ret += print(label);
 
-    if (color != ' ') SetColor(color);
+    if (color != ' ') set_color(color);
     ret += print(x);
-    if (color != ' ') SetColor('w');
+    if (color != ' ') set_color('w');
 
     return ret;
 }
 YM_NO_INLINE upL_t println_labelc(std::string label, const std::wstring& x, char color){
+    Console::ConsoleLockScope lock;
     upL_t ret = 0;
     ret += print_labelc(label, x, color);
     ret += println();
@@ -79,40 +85,46 @@ YM_NO_INLINE upL_t println_labelm(std::string label, const std::wstring& x, char
 }
 ////////////////////////////////////////////////////////////////////////////////
 YM_NO_INLINE upL_t print_labelm(upL_t margin, std::string label, const std::string& x, char color){
+    Console::ConsoleLockScope lock;
+
     upL_t ret = 0;
 
-    if (color != ' ') SetColor('w');
+    if (color != ' ') set_color('w');
     label.resize(margin, ' ');
     label.back() = ' ';
     ret += print(label);
 
-    if (color != ' ') SetColor(color);
+    if (color != ' ') set_color(color);
     ret += print(x);
-    if (color != ' ') SetColor('w');
+    if (color != ' ') set_color('w');
 
     return ret;
 }
 YM_NO_INLINE upL_t println_labelm(upL_t margin, std::string label, const std::string& x, char color){
+    Console::ConsoleLockScope lock;
     upL_t ret = 0;
     ret += print_labelm(margin, label, x, color);
     ret += println();
     return ret;
 }
 YM_NO_INLINE upL_t print_labelm(upL_t margin, std::string label, const std::wstring& x, char color){
+    Console::ConsoleLockScope lock;
+
     upL_t ret = 0;
 
-    if (color != ' ') SetColor('w');
+    if (color != ' ') set_color('w');
     label.resize(margin, ' ');
     label.back() = ' ';
     ret += print(label);
 
-    if (color != ' ') SetColor(color);
+    if (color != ' ') set_color(color);
     ret += print(x);
-    if (color != ' ') SetColor('w');
+    if (color != ' ') set_color('w');
 
     return ret;
 }
 YM_NO_INLINE upL_t println_labelm(upL_t margin, std::string label, const std::wstring& x, char color){
+    Console::ConsoleLockScope lock;
     upL_t ret = 0;
     ret += print_labelm(margin, label, x, color);
     ret += println();
@@ -192,28 +204,31 @@ YM_NO_INLINE upL_t println_labelc_ebytes(std::string label, siL_t x, char color)
 }
 ////////////////////////////////////////////////////////////////////////////////
 YM_NO_INLINE siL_t scan_label_siL(const std::string& label, char color){
+    Console::ConsoleLockScope lock;
     print(label, color != ' ' ? 'w' : ' ');
     siL_t out = scan_siL(color);
     if (color != ' '){
-        SetColor('w');
+        set_color('w');
     }
     return out;
 }
 YM_NO_INLINE siL_t scan_label_siL_range(const std::string& label, siL_t low, siL_t high, char color){
+    Console::ConsoleLockScope lock;
     siL_t out;
     do{
         out = scan_label_siL(label, color);
     }while (low > out || out > high);
     if (color != ' '){
-        SetColor('w');
+        set_color('w');
     }
     return out;
 }
 YM_NO_INLINE siL_t scan_label_siL_suffix(const std::string& label, char color){
+    Console::ConsoleLockScope lock;
     print(label, color != ' ' ? 'w' : ' ');
     siL_t out = scan_siL_suffix(color);
     if (color != ' '){
-        SetColor('w');
+        set_color('w');
     }
     return out;
 }
@@ -224,26 +239,29 @@ YM_NO_INLINE upL_t scan_label_upL_suffix_range(const std::string& label, upL_t l
     return (upL_t)scan_label_uiL_suffix_range(label, low, high, color);
 }
 YM_NO_INLINE uiL_t scan_label_uiL_range(const std::string& label, uiL_t low, uiL_t high, char color){
+    Console::ConsoleLockScope lock;
     uiL_t out;
     do{
         out = scan_label_siL(label, color);
     }while (low > out || out > high);
     if (color != ' '){
-        SetColor('w');
+        set_color('w');
     }
     return out;
 }
 YM_NO_INLINE uiL_t scan_label_uiL_suffix_range(const std::string& label, uiL_t low, uiL_t high, char color){
+    Console::ConsoleLockScope lock;
     uiL_t out;
     do{
         out = scan_label_siL_suffix(label, color);
     }while (low > out || out > high);
     if (color != ' '){
-        SetColor('w');
+        set_color('w');
     }
     return out;
 }
 YM_NO_INLINE uiL_t scan_label_bytes(const std::string& label, char color){
+    Console::ConsoleLockScope lock;
     print(label, color != ' ' ? 'w' : ' ');
     return scan_bytes(color);
 }
@@ -410,18 +428,22 @@ YM_NO_INLINE upL_t println_unitl_float(const std::string& units, double x, int p
     return println_unitl_float(16, units, x, precision, color);
 }
 YM_NO_INLINE upL_t print_unitl_float(upL_t margin, const std::string& units, double x, int precision, char color){
+    Console::ConsoleLockScope lock;
     upL_t ret = 0;
     ret += print_marginl_float(margin, x, precision, color);
-    if (color != ' ')
-        SetColor('w');
+    if (color != ' '){
+        set_color('w');
+    }
     ret += print(units);
     return ret;
 }
 YM_NO_INLINE upL_t println_unitl_float(upL_t margin, const std::string& units, double x, int precision, char color){
+    Console::ConsoleLockScope lock;
     upL_t ret = 0;
     ret += print_marginl_float(margin, x, precision, color);
-    if (color != ' ')
-        SetColor('w');
+    if (color != ' '){
+        set_color('w');
+    }
     ret += println(units);
     return ret;
 }

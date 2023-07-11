@@ -14,19 +14,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 //  Dependencies
-#ifdef YMC_FULL_COMPILE
 #include "Settings.h"
-#else
-#define     YCR_ENABLE_2000_x86
-//#define     YCR_ENABLE_2007_x64_Penryn
-#define     YCR_ENABLE_2008_x64_Nehalem
-#define     YCR_ENABLE_2014_x64_Broadwell
-#define     YCR_ENABLE_2016_x64_KnightsLanding
-#define     YCR_ENABLE_2017_x64_Zen1
-#define     YCR_ENABLE_2017_x64_Skylake
-#define     YCR_ENABLE_2018_x64_CannonLake
-#define     YCR_ENABLE_2019_x64_Zen2
-#endif
 #include "BinaryNames.h"
 #include "Dispatcher.h"
 #include "Launch.h"
@@ -115,7 +103,21 @@ void dispatch_2018_x64_CannonLake(const cpu_x86& features){
 void dispatch_2019_x64_Zen2(const cpu_x86& features){
 #ifdef YCR_ENABLE_2019_x64_Zen2
     if (can_run_2019_x64_Zen2(features)){
-        launch(BINARY_NAME_2017_x64_Zen1);
+        launch(BINARY_NAME_2019_x64_Zen2);
+    }
+#endif
+}
+void dispatch_2020_x64_Zen3(const cpu_x86& features){
+#ifdef YCR_ENABLE_2020_x64_Zen3
+    if (can_run_2020_x64_Zen3(features)){
+        launch(BINARY_NAME_2020_x64_Zen3);
+    }
+#endif
+}
+void dispatch_2022_x64_Zen4(const cpu_x86& features){
+#ifdef YCR_ENABLE_2022_x64_Zen4
+    if (can_run_2022_x64_Zen4(features)){
+        launch(BINARY_NAME_2022_x64_Zen4);
     }
 #endif
 }

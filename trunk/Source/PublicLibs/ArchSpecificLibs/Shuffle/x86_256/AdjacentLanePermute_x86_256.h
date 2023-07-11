@@ -1,8 +1,8 @@
 /* AdjacentLanePermute_x86_AVX.h
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 08/30/2015
- * Last Modified    : 06/22/2019
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 08/30/2015
+ *  Last Modified   : 06/22/2019
  * 
  */
 

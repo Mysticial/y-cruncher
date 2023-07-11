@@ -1,8 +1,8 @@
 /* cpu_x86_Macros.h
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 02/14/2015
- * Last Modified    : 02/14/2015
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 02/14/2015
+ *  Last Modified   : 02/14/2015
  * 
  */
 
@@ -14,6 +14,10 @@
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 #if 0
+#elif defined X64_22_Zen4
+#define YMP_Arch_2019_x64_IceLake
+#elif defined X64_20_Zen3
+#define YMP_Arch_2014_x64_Broadwell
 #elif defined X64_19_Zen2
 #define YMP_Arch_2014_x64_Broadwell
 #elif defined X64_18_CannonLake
@@ -40,9 +44,15 @@
 #define YMP_Arch_2004_x64_SSE3
 #elif defined X86_04_SSE3
 #define YMP_Arch_2004_x86_SSE3
+#elif defined X86_00
+//#define YMP_Arch_Default
 #endif
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
+#ifdef YMP_Arch_2019_x64_IceLake
+#define YMP_Arch_2018_x64_CannonLake
+#endif
+
 #ifdef YMP_Arch_2018_x64_CannonLake
 #define YMP_Arch_2017_x64_Skylake
 #endif

@@ -1,8 +1,8 @@
 /* TimeTools.h
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 09/16/2014
- * Last Modified    : 08/24/2018
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 09/16/2014
+ *  Last Modified   : 08/24/2018
  * 
  */
 

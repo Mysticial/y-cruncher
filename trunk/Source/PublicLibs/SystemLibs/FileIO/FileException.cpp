@@ -1,8 +1,8 @@
 /* FileException.cpp
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 04/11/2017
- * Last Modified    : 04/11/2017
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 04/11/2017
+ *  Last Modified   : 04/11/2017
  * 
  */
 
@@ -55,7 +55,7 @@ void FileException::print() const{
     Console::println();
     Console::println(m_message);
     Console::println("\n");
-    Console::SetColor('w');
+    Console::set_color('w');
 }
 FileException::FileException(SerializationPassKey key, const char*& stream)
     : Exception(key, stream)

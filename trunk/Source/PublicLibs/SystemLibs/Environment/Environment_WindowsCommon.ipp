@@ -1,8 +1,8 @@
 /* Environment_Windows7.ipp
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 01/04/2015
- * Last Modified    : 08/27/2016
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 01/04/2015
+ *  Last Modified   : 08/27/2016
  * 
  */
 
@@ -52,8 +52,8 @@ void initialize_process_path(){
         path.resize(buffer_size);
         bytes = GetModuleFileNameW(nullptr, &path[0], buffer_size);
         if (bytes == 0){
-            Console::Warning("Failed to retrieve path.");
-            Console::Quit(1);
+            Console::warning("Failed to retrieve path.");
+            Console::quit_program(1);
         }
     }while (bytes == buffer_size);
     process_path = StringTools::wstr_to_utf8(path.c_str());
@@ -158,7 +158,8 @@ u64_t x86_measure_rdtsc_ticks_per_sec(){
 
     GROUP_AFFINITY before_affinity;
     if (GetThreadGroupAffinity(thread, &before_affinity) == 0){
-        Console::Warning("Unable to read thread affinity.");
+        Console::warning("Unable to read thread affinity.");
+        Console::quit_program(1);
     }
 
     KAFFINITY t = 1;
@@ -170,14 +171,14 @@ u64_t x86_measure_rdtsc_ticks_per_sec(){
     GROUP_AFFINITY new_affinity = before_affinity;
     new_affinity.Mask = t;
     if (SetThreadGroupAffinity(thread, &new_affinity, &placeholder) == 0){
-        Console::Warning("Unable to set Affinity Mask.");
-        Console::Quit(1);
+        Console::warning("Unable to set Affinity Mask.");
+        Console::quit_program(1);
     }
 
     LARGE_INTEGER frequency;
     if (!QueryPerformanceFrequency(&frequency)){
-        Console::Warning("Unable to measure clock speed.");
-        Console::Quit(1);
+        Console::warning("Unable to measure clock speed.");
+        Console::quit_program(1);
     }
     u64_t freq = frequency.QuadPart;
     freq >>= 4;
@@ -187,22 +188,22 @@ u64_t x86_measure_rdtsc_ticks_per_sec(){
 
     LARGE_INTEGER start_timer;
     if (!QueryPerformanceCounter(&start_timer)){
-        Console::Warning("Unable to measure clock speed.");
-        Console::Quit(1);
+        Console::warning("Unable to measure clock speed.");
+        Console::quit_program(1);
     }
     LARGE_INTEGER current_timer;
     do {
         if (!QueryPerformanceCounter(&current_timer)){
-            Console::Warning("Unable to measure clock speed.");
-            Console::Quit(1);
+            Console::warning("Unable to measure clock speed.");
+            Console::quit_program(1);
         }
     }while ((u64_t)current_timer.QuadPart - (u64_t)start_timer.QuadPart < freq);
 
     u64_t end_cycles = __rdtsc();
 
     if (SetThreadGroupAffinity(thread, &before_affinity, &placeholder) == 0){
-        Console::Warning("Unable to set Affinity Mask.");
-        Console::Quit(1);
+        Console::warning("Unable to set Affinity Mask.");
+        Console::quit_program(1);
     }
 
     double cycle_dif = (double)(end_cycles - start_cycles);

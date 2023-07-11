@@ -1,8 +1,8 @@
 /* Parallelizers.cpp
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 02/19/2017
- * Last Modified    : 02/19/2017
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 02/19/2017
+ *  Last Modified   : 02/19/2017
  * 
  */
 
@@ -19,9 +19,9 @@
 #ifdef _WIN32
 #include "Parallelizer_WindowsThreadPool.h"
 #endif
-#ifdef YMP_ENABLE_CILK
-#include "Parallelizer_CilkPlus.h"
-#endif
+//#ifdef YMP_ENABLE_CILK
+//#include "Parallelizer_CilkPlus.h"
+//#endif
 namespace ymp{
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -32,9 +32,9 @@ BasicFrameworks::CppAsync           framework_cppasync;
 #ifdef _WIN32
 BasicFrameworks::WindowsThreadPool  framework_winpool;
 #endif
-#ifdef YMP_ENABLE_CILK
-BasicFrameworks::CilkPlus           framework_cilk;
-#endif
+//#ifdef YMP_ENABLE_CILK
+//BasicFrameworks::CilkPlus           framework_cilk;
+//#endif
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -45,17 +45,17 @@ BasicParallelizer& parallelizer_cppasync    = framework_cppasync;
 #ifdef _WIN32
 BasicParallelizer& parallelizer_winpool     = framework_winpool;
 #endif
-#ifdef YMP_ENABLE_CILK
-BasicParallelizer& parallelizer_cilk        = framework_cilk;
-#endif
+//#ifdef YMP_ENABLE_CILK
+//BasicParallelizer& parallelizer_cilk        = framework_cilk;
+//#endif
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 //  Default Framework
 #if 0
-#elif defined YMP_ENABLE_CILK
-BasicParallelizer& parallelizer_default     = framework_cilk;
+//#elif defined YMP_ENABLE_CILK
+//BasicParallelizer& parallelizer_default     = framework_cilk;
 #elif defined _WIN32
 BasicParallelizer& parallelizer_default     = framework_winpool;
 #else

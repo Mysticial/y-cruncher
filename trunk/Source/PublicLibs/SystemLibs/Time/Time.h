@@ -1,8 +1,8 @@
 /* Time.h
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 09/16/2014
- * Last Modified    : 09/16/2014
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 09/16/2014
+ *  Last Modified   : 09/16/2014
  * 
  */
 

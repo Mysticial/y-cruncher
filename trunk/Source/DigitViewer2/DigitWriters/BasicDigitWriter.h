@@ -1,8 +1,8 @@
 /* BasicDigitWriter.h
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 02/03/2018
- * Last Modified    : 02/03/2018
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 02/03/2018
+ *  Last Modified   : 02/03/2018
  * 
  */
 

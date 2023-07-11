@@ -1,8 +1,8 @@
 /* StdException.h
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 04/14/2017
- * Last Modified    : 04/14/2017
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 04/14/2017
+ *  Last Modified   : 04/14/2017
  * 
  */
 

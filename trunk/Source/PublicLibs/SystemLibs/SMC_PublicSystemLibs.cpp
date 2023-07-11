@@ -1,8 +1,8 @@
 /* SMC_ExternalSystemLibs.cpp - Single Module Compile
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 01/11/2018
- * Last Modified    : 01/11/2018
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 01/11/2018
+ *  Last Modified   : 01/11/2018
  * 
  */
 

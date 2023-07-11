@@ -1,8 +1,8 @@
 /* StopWatch.cpp
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 02/12/2015
- * Last Modified    : 03/07/2016
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 02/12/2015
+ *  Last Modified   : 03/07/2016
  * 
  */
 
@@ -66,7 +66,7 @@ void StopWatch::print() const{
     if (stats.user_time <= 0){
         Console::print("CPU Utilization:        ", 'w');
         Console::println("Too Fast to Measure", 'Y');
-        Console::SetColor('w');
+        Console::set_color('w');
 
         Console::print("Multi-core Efficiency:  ", 'w');
         Console::println("Too Fast to Measure", 'Y');

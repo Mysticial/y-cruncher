@@ -1,8 +1,8 @@
 /* FileIO_Default.ipp
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 08/05/2010
- * Last Modified    : 07/26/2011
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 08/05/2010
+ *  Last Modified   : 07/26/2011
  * 
  */
 
@@ -48,11 +48,11 @@ void PrintLastError(){
     Console::println_labelc("errno", errno);
 }
 ////////////////////////////////////////////////////////////////////////////////
-void MakeDirectory(const std::string& path){
+bool MakeDirectory(const std::string& path){
 #ifdef _WIN32
-    _mkdir(path.c_str());
+    return _mkdir(path.c_str()) == 0;
 #else
-    mkdir(path.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
+    return mkdir(path.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH) == 0;
 #endif
 }
 void RenameFile(const std::string& oldname, const std::string& newname){
@@ -67,11 +67,11 @@ void RenameFile(const std::string& oldname, const std::string& newname){
             return;
         }
 
-        Console::Warning("Unable to rename file.", true);
+        Console::warning("Unable to rename file.", true);
         Console::println(newname);
         Console::println();
         Console::println("Re-attempting...");
-        Console::Pause('w');
+        Console::pause('w');
     }
 }
 ufL_t GetFileSize(const std::string& path){

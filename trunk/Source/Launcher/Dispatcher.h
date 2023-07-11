@@ -94,10 +94,22 @@ bool hardware_2018_x64_CannonLake(const cpu_x86& features){
 bool hardware_2019_x64_Zen2(const cpu_x86& features){
     return hardware_2017_x64_Zen(features);
 }
+bool hardware_2020_x64_Zen3(const cpu_x86& features){
+    return hardware_2019_x64_Zen2(features);
+}
+bool hardware_2022_x64_Zen4(const cpu_x86& features){
+    return hardware_2018_x64_CannonLake(features)
+        && features.HW_AVX_GFNI
+        && features.HW_AVX512_VBMI2
+        && features.HW_AVX512_GFNI;
+}
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
+bool can_run_2000_Default(const cpu_x86&){
+    return true;
+}
 bool can_run_2000_x86(const cpu_x86&){
     return true;
 }
@@ -163,6 +175,17 @@ bool can_run_2019_x64_Zen2(const cpu_x86& features){
     return hardware_2019_x64_Zen2(features)
         && features.OS_x64
         && features.OS_AVX;
+}
+bool can_run_2020_x64_Zen3(const cpu_x86& features){
+    return hardware_2020_x64_Zen3(features)
+        && features.OS_x64
+        && features.OS_AVX;
+}
+bool can_run_2022_x64_Zen4(const cpu_x86& features){
+    return hardware_2022_x64_Zen4(features)
+        && features.OS_x64
+        && features.OS_AVX
+        && features.OS_AVX512;
 }
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////

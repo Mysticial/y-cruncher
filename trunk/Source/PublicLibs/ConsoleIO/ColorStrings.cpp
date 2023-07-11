@@ -1,8 +1,8 @@
 /* ColorStrings.cpp
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 03/09/2018
- * Last Modified    : 03/09/2018
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 03/09/2018
+ *  Last Modified   : 03/09/2018
  * 
  */
 

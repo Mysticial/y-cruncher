@@ -1,8 +1,8 @@
 /* DigitViewerUI2.cpp
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 02/18/2018
- * Last Modified    : 02/18/2018
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 02/18/2018
+ *  Last Modified   : 02/18/2018
  * 
  */
 
@@ -99,7 +99,7 @@ void Menu_YcdFile(BasicYcdSetReader& reader){
         Console::println();
 
         Console::println("Search paths:", 'w');
-        Console::SetColor('Y');
+        Console::set_color('Y');
         reader.print_paths();
         Console::println();
 

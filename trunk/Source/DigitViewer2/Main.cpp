@@ -16,5 +16,5 @@ int main(){
     }
 
     Console::println("\n");
-    Console::Pause('w');
+    Console::pause('w');
 }

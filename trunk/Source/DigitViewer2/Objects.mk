@@ -19,9 +19,9 @@ CURRENT += DigitReaders/BasicTextReader.cpp
 CURRENT += DigitReaders/BasicYcdFileReader.cpp
 CURRENT += DigitReaders/BasicYcdSetReader.cpp
 
-CURRENT += DigitWriters/BasicTextWriter.cpp
-CURRENT += DigitWriters/BasicYcdFileWriter.cpp
-CURRENT += DigitWriters/BasicYcdSetWriter.cpp
+CURRENT += DigitWriters/BasicTextWriter/BasicTextWriter.cpp
+CURRENT += DigitWriters/BasicYcdWriter/BasicYcdFileWriter.cpp
+CURRENT += DigitWriters/BasicYcdWriter/BasicYcdSetWriter.cpp
 
 CURRENT += DigitViewer/DigitViewerTasks.cpp
 CURRENT += DigitViewer/DigitViewerUI2.cpp

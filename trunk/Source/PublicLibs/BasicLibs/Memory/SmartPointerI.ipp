@@ -1,8 +1,8 @@
 /* SmartPointerI.ipp
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 05/28/2017
- * Last Modified    : 05/28/2017
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 05/28/2017
+ *  Last Modified   : 05/28/2017
  * 
  */
 
@@ -29,7 +29,7 @@ SmartPointerI<Type>::~SmartPointerI(){
     }
 }
 template <typename Type>
-void SmartPointerI<Type>::clear(){
+void SmartPointerI<Type>::clear() noexcept{
     if (m_ptr != nullptr){
         delete m_ptr;
         m_ptr = nullptr;

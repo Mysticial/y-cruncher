@@ -1,8 +1,8 @@
 /* CompileOptions_PublicLibs.cpp
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 07/19/2015
- * Last Modified    : 07/19/2015
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 07/19/2015
+ *  Last Modified   : 07/19/2015
  * 
  */
 
@@ -21,13 +21,13 @@ namespace ymp{
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 void CompileOptions_PublicLibs(){
-    Console::SetColor('T');
+    Console::set_color('T');
     Console::println("================================================================");
-    Console::SetColor('Y');
+    Console::set_color('Y');
     Console::println("External Library\n");
-    Console::SetColor('w');
+    Console::set_color('w');
 
-    Console::CompileOptions();
+    Console::compile_options();
 #ifdef YMP_STANDALONE
     Time::CompileOptions();
 #endif

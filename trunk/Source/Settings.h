@@ -64,7 +64,9 @@
 #define     YCR_ENABLE_2017_x64_Zen1
 #define     YCR_ENABLE_2017_x64_Skylake
 #define     YCR_ENABLE_2018_x64_CannonLake
-//#define     YCR_ENABLE_2019_x64_Zen2
+#define     YCR_ENABLE_2019_x64_Zen2
+//#define     YCR_ENABLE_2020_x64_Zen3
+#define     YCR_ENABLE_2022_x64_Zen4
 
 #endif
 ////////////////////////////////////////////////////////////////////////////////
@@ -86,7 +88,9 @@
 #define     YCR_ENABLE_2017_x64_Zen1
 #define     YCR_ENABLE_2017_x64_Skylake
 #define     YCR_ENABLE_2018_x64_CannonLake
-//#define     YCR_ENABLE_2019_x64_Zen2
+#define     YCR_ENABLE_2019_x64_Zen2
+//#define     YCR_ENABLE_2020_x64_Zen3
+#define     YCR_ENABLE_2022_x64_Zen4
 
 #endif
 ////////////////////////////////////////////////////////////////////////////////
@@ -109,6 +113,8 @@
 #define     YCR_ENABLE_2017_x64_Skylake
 #define     YCR_ENABLE_2018_x64_CannonLake
 #define     YCR_ENABLE_2019_x64_Zen2
+#define     YCR_ENABLE_2020_x64_Zen3
+#define     YCR_ENABLE_2022_x64_Zen4
 
 #endif
 ////////////////////////////////////////////////////////////////////////////////

@@ -62,102 +62,102 @@
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{78460907-F11F-45DF-A8B3-BCF1D8E54EC5}</ProjectGuid>
     <RootNamespace>DigitViewer2</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='04-SSE3|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='07-Penryn|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='13-Haswell|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='17-Skylake|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='00-x86|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='04-SSE3|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='07-Penryn|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='13-Haswell|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='17-Skylake|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='00-x86|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -566,9 +566,9 @@
     <ClCompile Include="..\..\Source\DigitViewer2\DigitReaders\ParsingTools.cpp" />
     <ClCompile Include="..\..\Source\DigitViewer2\DigitViewer\DigitViewerTasks.cpp" />
     <ClCompile Include="..\..\Source\DigitViewer2\DigitViewer\DigitViewerUI2.cpp" />
-    <ClCompile Include="..\..\Source\DigitViewer2\DigitWriters\BasicTextWriter.cpp" />
-    <ClCompile Include="..\..\Source\DigitViewer2\DigitWriters\BasicYcdFileWriter.cpp" />
-    <ClCompile Include="..\..\Source\DigitViewer2\DigitWriters\BasicYcdSetWriter.cpp" />
+    <ClCompile Include="..\..\Source\DigitViewer2\DigitWriters\BasicTextWriter\BasicTextWriter.cpp" />
+    <ClCompile Include="..\..\Source\DigitViewer2\DigitWriters\BasicYcdWriter\BasicYcdFileWriter.cpp" />
+    <ClCompile Include="..\..\Source\DigitViewer2\DigitWriters\BasicYcdWriter\BasicYcdSetWriter.cpp" />
     <ClCompile Include="..\..\Source\DigitViewer2\Main.cpp" />
     <ClCompile Include="..\..\Source\DigitViewer2\PrintHelpers.cpp" />
     <ClCompile Include="..\..\Source\DigitViewer2\RawToAscii\RawToAscii.cpp" />
@@ -590,6 +590,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='00-x86|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\..\Source\DigitViewer2\WordToRaw\WordToRaw.cpp" />
+    <ClCompile Include="..\..\Source\PublicLibs\BasicLibs\Concurrency\ExceptionHolder.cpp" />
     <ClCompile Include="..\..\Source\PublicLibs\BasicLibs\Memory\AlignedMalloc.cpp" />
     <ClCompile Include="..\..\Source\PublicLibs\BasicLibs\SMC_PublicBasicLibs.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
@@ -702,9 +703,9 @@
     <ClInclude Include="..\..\Source\DigitViewer2\DigitViewer\DigitViewerTasks.h" />
     <ClInclude Include="..\..\Source\DigitViewer2\DigitViewer\DigitViewerUI2.h" />
     <ClInclude Include="..\..\Source\DigitViewer2\DigitWriters\BasicDigitWriter.h" />
-    <ClInclude Include="..\..\Source\DigitViewer2\DigitWriters\BasicTextWriter.h" />
-    <ClInclude Include="..\..\Source\DigitViewer2\DigitWriters\BasicYcdFileWriter.h" />
-    <ClInclude Include="..\..\Source\DigitViewer2\DigitWriters\BasicYcdSetWriter.h" />
+    <ClInclude Include="..\..\Source\DigitViewer2\DigitWriters\BasicTextWriter\BasicTextWriter.h" />
+    <ClInclude Include="..\..\Source\DigitViewer2\DigitWriters\BasicYcdWriter\BasicYcdFileWriter.h" />
+    <ClInclude Include="..\..\Source\DigitViewer2\DigitWriters\BasicYcdWriter\BasicYcdSetWriter.h" />
     <ClInclude Include="..\..\Source\DigitViewer2\PrintHelpers.h" />
     <ClInclude Include="..\..\Source\DigitViewer2\RawToAscii\Kernels\RawToAscii_Default.h" />
     <ClInclude Include="..\..\Source\DigitViewer2\RawToAscii\Kernels\RawToAscii_Default32.h" />
@@ -748,8 +749,10 @@
     <ClInclude Include="..\..\Source\PublicLibs\BasicLibs\Alignment\AlignmentTools.h" />
     <ClInclude Include="..\..\Source\PublicLibs\BasicLibs\Alignment\DefaultAlignment.h" />
     <ClInclude Include="..\..\Source\PublicLibs\BasicLibs\CommandLine.h" />
+    <ClInclude Include="..\..\Source\PublicLibs\BasicLibs\Concurrency\BasicAction.h" />
     <ClInclude Include="..\..\Source\PublicLibs\BasicLibs\Concurrency\BasicParallelizer.h" />
     <ClInclude Include="..\..\Source\PublicLibs\BasicLibs\Concurrency\BlockSplitting.h" />
+    <ClInclude Include="..\..\Source\PublicLibs\BasicLibs\Concurrency\ExceptionHolder.h" />
     <ClInclude Include="..\..\Source\PublicLibs\BasicLibs\Memory\AlignedMalloc.h" />
     <ClInclude Include="..\..\Source\PublicLibs\BasicLibs\Memory\SmartBuffer.h" />
     <ClInclude Include="..\..\Source\PublicLibs\BasicLibs\Memory\SmartPointerA.h" />

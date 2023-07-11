@@ -1,8 +1,8 @@
 /* Time.cpp
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 09/17/2014
- * Last Modified    : 09/17/2014
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 09/17/2014
+ *  Last Modified   : 09/17/2014
  * 
  */
 

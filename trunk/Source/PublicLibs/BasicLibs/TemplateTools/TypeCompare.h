@@ -1,8 +1,8 @@
 /* TypeCompare.h
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 11/20/2014
- * Last Modified    : 04/08/2017
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 11/20/2014
+ *  Last Modified   : 04/08/2017
  * 
  */
 

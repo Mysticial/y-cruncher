@@ -1,8 +1,8 @@
 /* BufferTooSmallThrower.h
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 05/05/2017
- * Last Modified    : 05/05/2017
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 05/05/2017
+ *  Last Modified   : 05/05/2017
  * 
  *      Lightweight header. Use this if you only need to throw and you don't
  *  want to pull in all the headers that "Exception.h" pulls in.

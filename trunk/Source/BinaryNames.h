@@ -1,8 +1,8 @@
 /* BinaryNames.h
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 02/13/2015
- * Last Modified    : 02/13/2015
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 02/13/2015
+ *  Last Modified   : 02/13/2015
  * 
  */
 
@@ -21,6 +21,7 @@ namespace ymp{
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
+const char BINARY_NAME_2000_Default[]               = "00-CPP";
 const char BINARY_NAME_2000_x86[]                   = "00-x86";
 const char BINARY_NAME_2004_x86_SSE3[]              = "04-P4P";
 const char BINARY_NAME_2004_x64_SSE3[]              = "05-A64 ~ Kasumi";
@@ -36,6 +37,9 @@ const char BINARY_NAME_2017_x64_Zen1[]              = "17-ZN1 ~ Yukina";
 const char BINARY_NAME_2017_x64_Skylake[]           = "17-SKX ~ Kotori";
 const char BINARY_NAME_2018_x64_CannonLake[]        = "18-CNL ~ Shinoa";
 const char BINARY_NAME_2019_x64_Zen2[]              = "19-ZN2 ~ Kagari";
+const char BINARY_NAME_2020_x64_Zen3[]              = "20-ZN3 ~ Yuzuki";
+//const char BINARY_NAME_2021_x64_IceLake[]           = "21-ICX ~ Miyuki";
+const char BINARY_NAME_2022_x64_Zen4[]              = "22-ZN4 ~ Kizuna";
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -43,6 +47,7 @@ const char BINARY_NAME_2019_x64_Zen2[]              = "19-ZN2 ~ Kagari";
 #ifdef YMP_BUILD_DEVELOPER
 const std::vector<const char*> BINARY_NAME_LIST{
     "y-cruncher",
+    BINARY_NAME_2000_Default,
     BINARY_NAME_2000_x86,
     BINARY_NAME_2004_x86_SSE3,
     BINARY_NAME_2004_x64_SSE3,
@@ -57,6 +62,8 @@ const std::vector<const char*> BINARY_NAME_LIST{
     BINARY_NAME_2017_x64_Skylake,
     BINARY_NAME_2018_x64_CannonLake,
     BINARY_NAME_2019_x64_Zen2,
+    BINARY_NAME_2020_x64_Zen3,
+    BINARY_NAME_2022_x64_Zen4,
 };
 #endif
 ////////////////////////////////////////////////////////////////////////////////

@@ -1,8 +1,8 @@
 /* BaseFile_Default.h
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 12/30/2015
- * Last Modified    : 12/30/2015
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 12/30/2015
+ *  Last Modified   : 12/30/2015
  * 
  */
 
@@ -44,7 +44,7 @@ public:
 
 public:
     BaseFile() = default;
-    virtual ~BaseFile(){ close(); }
+    ~BaseFile(){ close(); }
 
     bool is_open() const{
         return !m_path.empty();

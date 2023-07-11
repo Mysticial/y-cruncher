@@ -1,8 +1,8 @@
 /* Kernels_dec_to_i64_x64_AVX512-BW.h
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 02/11/2018
- * Last Modified    : 02/11/2018
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 02/11/2018
+ *  Last Modified   : 02/11/2018
  * 
  */
 
@@ -72,7 +72,7 @@ YM_FORCE_INLINE __mmask64 dec_to_i64_x64_AVX512BW(
         a0 = _mm512_mul_epu32(a0, _mm512_set1_epi64(100000000));
         a0 = _mm512_add_epi64(a0, hi);
 
-        c0 = _mm512_mul_epu32(c0, _mm512_set1_epi32(2500000000));
+        c0 = _mm512_mul_epu32(c0, _mm512_set1_epi32(2500000000u));
     }
 
     T0 = _mm512_add_epi64(a0, c0);

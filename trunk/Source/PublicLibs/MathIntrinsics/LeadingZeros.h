@@ -1,8 +1,8 @@
 /* LeadingZeros.h
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 07/26/2014
- * Last Modified    : 07/26/2014
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 07/26/2014
+ *  Last Modified   : 07/26/2014
  * 
  * 
  *      Return false if no set bits are found.

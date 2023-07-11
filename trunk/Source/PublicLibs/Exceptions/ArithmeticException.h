@@ -1,8 +1,8 @@
 /* ArithmeticException.h
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 04/09/2017
- * Last Modified    : 04/09/2017
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 04/09/2017
+ *  Last Modified   : 04/09/2017
  * 
  */
 

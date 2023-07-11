@@ -10,9 +10,6 @@ includepath="${dir}/../Source" #
 #
 SOURCES= #
 SOURCES+=" ../Source/PublicLibs/SMC_PublicLibs.cpp" #
-SOURCES+=" ../Source/DigitViewer/PrintHelpers.cpp" #
-SOURCES+=" ../Source/DigitViewer/DigitReaders/InconsistentMetadataException.cpp" #
-SOURCES+=" ../Source/DigitViewer/DigitReaders/ParsingTools.cpp" #
 SOURCES+=" ../Source/DigitViewer2/SMC_DigitViewer2.cpp" #
 SOURCES+=" ../Source/DigitViewer2/Main.cpp" #
 #

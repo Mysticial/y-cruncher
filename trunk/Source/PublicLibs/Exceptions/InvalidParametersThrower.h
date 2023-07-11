@@ -1,8 +1,8 @@
 /* InvalidParametersThrower.h
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 10/23/2018
- * Last Modified    : 10/23/2018
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 10/23/2018
+ *  Last Modified   : 10/23/2018
  * 
  *      Lightweight header. Use this if you only need to throw and you don't
  *  want to pull in all the headers that "Exception.h" pulls in.

@@ -1,8 +1,8 @@
 /* ResourceAcquisitionFailedException.h
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 02/16/2019
- * Last Modified    : 02/16/2019
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 02/16/2019
+ *  Last Modified   : 02/16/2019
  * 
  */
 

@@ -1,8 +1,8 @@
 /* i64ToRaw_LittleEndian.ipp
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 02/10/2018
- * Last Modified    : 02/10/2018
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 02/10/2018
+ *  Last Modified   : 02/10/2018
  * 
  */
 

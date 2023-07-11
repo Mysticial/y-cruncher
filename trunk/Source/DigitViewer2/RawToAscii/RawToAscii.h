@@ -1,8 +1,8 @@
 /* RawToAscii.h
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 01/14/2018
- * Last Modified    : 02/10/2018
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 01/14/2018
+ *  Last Modified   : 02/10/2018
  * 
  */
 

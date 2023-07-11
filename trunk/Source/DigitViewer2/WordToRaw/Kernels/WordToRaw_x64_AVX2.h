@@ -1,8 +1,8 @@
 /* WordToRaw_x64_AVX2.h
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 02/11/2018
- * Last Modified    : 02/11/2018
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 02/11/2018
+ *  Last Modified   : 02/11/2018
  * 
  */
 

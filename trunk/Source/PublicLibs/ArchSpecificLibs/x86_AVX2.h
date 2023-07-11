@@ -1,8 +1,8 @@
 /* x86_AVX2.h
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 02/13/2018
- * Last Modified    : 02/13/2018
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 02/13/2018
+ *  Last Modified   : 02/13/2018
  * 
  */
 
@@ -22,7 +22,7 @@ namespace ymp{
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-//  COMPILER-BUG-GCC: Missing AVX2 intrinsics
+//  COMPILER-BUG-GCC: Missing AVX2 intrinsics (https://gcc.gnu.org/bugzilla/show_bug.cgi?id=83250)
 #if defined __GNUC__ && __GNUC__ < 8
 YM_FORCE_INLINE __m256i _mm256_setr_m128i(__m128i L, __m128i H){
     return _mm256_inserti128_si256(_mm256_castsi128_si256(L), (H), 1);
@@ -46,7 +46,7 @@ YM_FORCE_INLINE void _mm256_storeu2_m128i(__m128i* H, __m128i* L, __m256i x){
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 YM_FORCE_INLINE __m256i _mm256_cvtsi64_si256(u64_t x){
-#ifndef __INTEL_COMPILER
+#ifdef __GNUC__
     __m256i r0 = _mm256_castsi128_si256(_mm_cvtsi64_si128(x));
     return _mm256_blend_epi32(r0, _mm256_setzero_si256(), 0xfc);
 #else
@@ -54,7 +54,7 @@ YM_FORCE_INLINE __m256i _mm256_cvtsi64_si256(u64_t x){
 #endif
 }
 YM_FORCE_INLINE __m256i _mm256_setl_epi64(u64_t x){
-#ifndef __INTEL_COMPILER
+#ifdef __GNUC__
     __m256i r0 = _mm256_castsi128_si256(_mm_cvtsi64_si128(x));
     return _mm256_blend_epi32(r0, _mm256_setzero_si256(), 0xfc);
 #else
@@ -62,7 +62,7 @@ YM_FORCE_INLINE __m256i _mm256_setl_epi64(u64_t x){
 #endif
 }
 YM_FORCE_INLINE __m256i _mm256_loadl_epi64(const void* ptr){
-#ifndef __INTEL_COMPILER
+#ifdef __GNUC__
     __m256i r0 = _mm256_castsi128_si256(_mm_loadl_epi64((const __m128i*)ptr));
     return _mm256_blend_epi32(r0, _mm256_setzero_si256(), 0xfc);
 #else

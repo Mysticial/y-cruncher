@@ -1,8 +1,8 @@
 /* BasicIO.cpp
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 08/31/2014
- * Last Modified    : 08/31/2014
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 08/31/2014
+ *  Last Modified   : 08/31/2014
  * 
  */
 
@@ -29,7 +29,7 @@ namespace Console{
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-bool EnableColors = true;
+bool enable_colors = true;
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -48,25 +48,26 @@ YM_NO_INLINE upL_t println(std::wstring str, char color){
     return print(str.c_str(), color);
 }
 ////////////////////////////////////////////////////////////////////////////////
-YM_NO_INLINE void ClearLine(int characters){
+YM_NO_INLINE void clear_line(int characters){
     std::string x;
     x += '\r';
     x.resize(characters + 1, ' ');
     x += '\r';
     print(x);
 }
-YM_NO_INLINE void Warning(std::string str, bool sticky){
-    println();
-    println(std::move(str), 'R');
+YM_NO_INLINE void warning(std::string str, bool sticky){
+    ConsoleLockScope lock;
+    println("\n" + std::move(str), 'R');
     if (!sticky){
-        SetColor('w');
+        set_color('w');
     }
 }
 bool pause_on_error = true;
-[[noreturn]] YM_NO_INLINE void Quit(int code){
-    SetColorDefault();
+[[noreturn]] YM_NO_INLINE void quit_program(int code){
+    ConsoleLockScope lock;
+    set_color_default();
     if (pause_on_error){
-        Pause();
+        pause();
     }
     exit(code);
 }
@@ -76,10 +77,10 @@ bool pause_on_error = true;
 ////////////////////////////////////////////////////////////////////////////////
 //  Console Lock
 std::recursive_mutex console_lock;
-ConsoleLock::ConsoleLock(){
+ConsoleLockScope::ConsoleLockScope(){
     console_lock.lock();
 }
-ConsoleLock::~ConsoleLock(){
+ConsoleLockScope::~ConsoleLockScope(){
     console_lock.unlock();
 }
 ////////////////////////////////////////////////////////////////////////////////
@@ -87,6 +88,7 @@ ConsoleLock::~ConsoleLock(){
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 YM_NO_INLINE upL_t println(const ColoredLine& str){
+    ConsoleLockScope lock;
     upL_t ret = 0;
     for (const ColorString& x : str){
         ret += print(x.text, x.color);
@@ -137,28 +139,8 @@ YM_NO_INLINE upL_t println_ebytes(uiL_t x, char color){
 }
 YM_NO_INLINE siL_t scan_siL(char color){
     auto str = scan_utf8(color);
-    const char* iter = str.c_str();
-
-    siL_t out = 0;
-    bool negative = false;
-
-    if (iter[0] == '-'){
-        negative = true;
-        iter++;
-    }
-
-    do{
-        char ch = *iter++;
-        if ('0' > ch || ch > '9')
-            break;
-    
-        out *= 10;
-        out += ch - '0';
-    }while (true);
-
-    if (negative)
-        out = -out;
-    return out;
+    const char* ptr = str.c_str();
+    return StringTools::fromstr_siL(ptr);
 }
 YM_NO_INLINE siL_t scan_siL_suffix(char color){
     auto str = scan_utf8(color);
@@ -195,8 +177,9 @@ YM_NO_INLINE siL_t scan_siL_suffix(char color){
         ch = *iter++;
     }
 
-    if (negative)
+    if (negative){
         x = -x;
+    }
 
     switch (ch){
     case 'K': return x << 10;   //  Kilo
@@ -286,20 +269,22 @@ YM_NO_INLINE upL_t println_fixed(double x, int precision, char color){
 ////////////////////////////////////////////////////////////////////////////////
 //  Unit Tests
 YM_NO_INLINE void print_test(bool x){
+    ConsoleLockScope lock;
     if (x){
         Console::print("Passed", 'G');
     }else{
         Console::print("Failed", 'R');
     }
-    Console::SetColor('w');
+    Console::set_color('w');
 }
 YM_NO_INLINE void println_test(bool x){
+    ConsoleLockScope lock;
     if (x){
         Console::println("Passed", 'G');
     }else{
         Console::println("Failed", 'R');
     }
-    Console::SetColor('w');
+    Console::set_color('w');
 }
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////

@@ -1,8 +1,8 @@
 /* Margin.h
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 09/01/2014
- * Last Modified    : 09/01/2014
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 09/01/2014
+ *  Last Modified   : 09/01/2014
  * 
  */
 
@@ -39,6 +39,8 @@ YM_NO_INLINE    upL_t print_marginl_commas  (upL_t margin, siL_t x, char color =
 YM_NO_INLINE    upL_t println_marginl_commas(upL_t margin, siL_t x, char color = ' ');
 YM_NO_INLINE    upL_t print_marginr_commas  (upL_t margin, siL_t x, char color = ' ');
 YM_NO_INLINE    upL_t println_marginr_commas(upL_t margin, siL_t x, char color = ' ');
+YM_NO_INLINE    upL_t print_marginl_quotes  (upL_t margin, siL_t x, char color = ' ');
+YM_NO_INLINE    upL_t print_marginr_quotes  (upL_t margin, siL_t x, char color = ' ');
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////

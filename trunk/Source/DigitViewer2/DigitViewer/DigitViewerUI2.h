@@ -1,8 +1,8 @@
 /* DigitViewerUI2.h
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 02/18/2018
- * Last Modified    : 02/18/2018
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 02/18/2018
+ *  Last Modified   : 02/18/2018
  * 
  */
 

@@ -1,8 +1,8 @@
 /* SmartBuffer.h
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 09/06/2016
- * Last Modified    : 09/23/2016
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 09/06/2016
+ *  Last Modified   : 09/23/2016
  * 
  *      A lightweight buffer of raw memory.
  * 
@@ -28,18 +28,18 @@ namespace ymp{
 template <typename Type = void>
 class SmartBuffer{
 public:
-    ~SmartBuffer(){
+    ~SmartBuffer() noexcept{
         if (m_ptr != nullptr){
             aligned_free(m_ptr);
         }
     }
 
-    SmartBuffer(SmartBuffer&& x)
+    SmartBuffer(SmartBuffer&& x) noexcept
         : m_ptr(x.m_ptr)
     {
         x.m_ptr = nullptr;
     }
-    void operator=(SmartBuffer&& x){
+    void operator=(SmartBuffer&& x) noexcept{
         clear();
         m_ptr = x.m_ptr;
         x.m_ptr = nullptr;
@@ -50,14 +50,14 @@ public:
 
 
 public:
-    SmartBuffer()
+    SmartBuffer() noexcept
         : m_ptr(nullptr)
     {}
     SmartBuffer(upL_t bytes, upL_t alignment = alignof(Type))
         : m_ptr((Type*)aligned_malloc(bytes, alignment))
     {}
 
-    void clear(){
+    void clear() noexcept{
         aligned_free(m_ptr);
         m_ptr = nullptr;
     }
@@ -107,12 +107,12 @@ public:
         }
     }
 
-    SmartBuffer(SmartBuffer&& x)
+    SmartBuffer(SmartBuffer&& x) noexcept
         : m_ptr(x.m_ptr)
     {
         x.m_ptr = nullptr;
     }
-    void operator=(SmartBuffer&& x){
+    void operator=(SmartBuffer&& x) noexcept{
         clear();
         m_ptr = x.m_ptr;
         x.m_ptr = nullptr;
@@ -123,14 +123,14 @@ public:
 
 
 public:
-    SmartBuffer()
+    SmartBuffer() noexcept
         : m_ptr(nullptr)
     {}
     SmartBuffer(upL_t bytes, upL_t alignment = DEFAULT_ALIGNMENT)
         : m_ptr(aligned_malloc(bytes, alignment))
     {}
 
-    void clear(){
+    void clear() noexcept{
         aligned_free(m_ptr);
         m_ptr = nullptr;
     }

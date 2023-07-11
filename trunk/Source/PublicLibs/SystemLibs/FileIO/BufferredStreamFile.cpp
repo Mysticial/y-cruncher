@@ -1,8 +1,8 @@
 /* BufferredStreamFile.cpp
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 03/19/2018
- * Last Modified    : 07/03/2019
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 03/19/2018
+ *  Last Modified   : 07/03/2019
  * 
  *      RawFile is a file with direct and unbufferred I/O.
  * 

@@ -1,8 +1,8 @@
 /* ChecksumHash.cpp
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 12/26/2010
- * Last Modified    : 07/14/2014
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 12/26/2010
+ *  Last Modified   : 07/14/2014
  * 
  */
 

@@ -1,8 +1,8 @@
 /* ymb_STR.h - String Tools
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 07/07/2013
- * Last Modified    : 07/13/2014
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 07/07/2013
+ *  Last Modified   : 07/13/2014
  * 
  *      This file is deprecated until it is cleaned up.
  * 

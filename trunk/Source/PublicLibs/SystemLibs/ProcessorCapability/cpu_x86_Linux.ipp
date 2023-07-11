@@ -1,8 +1,8 @@
 /* cpu_x86_Linux.ipp
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 04/12/2014
- * Last Modified    : 04/12/2014
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 04/12/2014
+ *  Last Modified   : 04/12/2014
  * 
  */
 

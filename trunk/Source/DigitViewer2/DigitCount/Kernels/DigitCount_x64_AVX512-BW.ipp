@@ -1,8 +1,8 @@
 /* DigitCount_x64_AVX512-BW.ipp
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 01/13/2018
- * Last Modified    : 01/13/2018
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 01/13/2018
+ *  Last Modified   : 01/13/2018
  * 
  */
 
@@ -55,9 +55,14 @@ void DigitCounts::accumulate(const char* raw_digits, upL_t digits){
             digits -= block;
         }
         while (digits >= 64){
+#if 0
             upL_t blocks = std::min(digits / 64, (upL_t)128);
             DigitCount::accumulate_b64_AVX512_64x8< 0,  1,  2,  3,  4,  5,  6,  7>(m_counts + 0, (const __m512i*)raw_digits, blocks);
             DigitCount::accumulate_b64_AVX512_64x8< 8,  9, 10, 11, 12, 13, 14, 15>(m_counts + 8, (const __m512i*)raw_digits, blocks);
+#else
+            upL_t blocks = digits / 64;
+            DigitCount::accumulate_b64_AVX512_64x16(m_counts, (const __m512i*)raw_digits, blocks);
+#endif
             raw_digits += blocks * 64;
             digits -= blocks * 64;
         }

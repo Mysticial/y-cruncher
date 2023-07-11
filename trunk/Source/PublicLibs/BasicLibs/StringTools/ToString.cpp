@@ -1,8 +1,8 @@
 /* ToString.cpp - String Tools
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 07/07/2013
- * Last Modified    : 08/24/2014
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 07/07/2013
+ *  Last Modified   : 08/24/2014
  * 
  */
 
@@ -22,7 +22,7 @@ namespace StringTools{
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 //  Helpers
-YM_NO_INLINE std::string tostr_u_commas(uiL_t x){
+YM_NO_INLINE std::string tostr_u_commas(uiL_t x, char separator){
     //  Prints out x with comma separators.
 
     std::string str = std::to_string(x);
@@ -39,7 +39,7 @@ YM_NO_INLINE std::string tostr_u_commas(uiL_t x){
         if (ch == '\0')
             break;
         if (shift == 0){
-            out += ',';
+            out += separator;
             shift = 3;
         }
         out += ch;
@@ -48,11 +48,11 @@ YM_NO_INLINE std::string tostr_u_commas(uiL_t x){
 
     return out;
 }
-YM_NO_INLINE std::string tostr_s_commas(siL_t x){
+YM_NO_INLINE std::string tostr_s_commas(siL_t x, char separator){
     if (x < 0)
-        return std::string("-") + tostr_u_commas(-x);
+        return std::string("-") + tostr_u_commas(-x, separator);
     else
-        return tostr_u_commas(x);
+        return tostr_u_commas(x, separator);
 }
 YM_NO_INLINE std::string tostr_u_bytes(uiL_t bytes){
     //  Prints out bytes in one of the following forms:
@@ -179,11 +179,13 @@ YM_NO_INLINE std::string tostr_s_bytes(siL_t bytes){
 YM_NO_INLINE std::string tostr(uiL_t x, NumberFormat format){
     switch (format){
     case COMMAS:
-        return tostr_u_commas(x);
+        return tostr_u_commas(x, ',');
+    case QUOTES:
+        return tostr_u_commas(x, '\'');
     case BYTES:
         return tostr_u_bytes(x);
     case BYTES_EXPANDED:{
-        auto out = tostr_u_commas(x);
+        auto out = tostr_u_commas(x, ',');
         out += " (";
         out += tostr_u_bytes(x);
         out += ")";
@@ -196,11 +198,13 @@ YM_NO_INLINE std::string tostr(uiL_t x, NumberFormat format){
 YM_NO_INLINE std::string tostr(siL_t x, NumberFormat format){
     switch (format){
     case COMMAS:
-        return tostr_s_commas(x);
+        return tostr_s_commas(x, ',');
+    case QUOTES:
+        return tostr_s_commas(x, '\'');
     case BYTES:
         return tostr_s_bytes(x);
     case BYTES_EXPANDED:{
-        auto out = tostr_s_commas(x);
+        auto out = tostr_s_commas(x, ',');
         out += " (";
         out += tostr_s_bytes(x);
         out += ")";
@@ -215,6 +219,51 @@ YM_NO_INLINE std::string tostrln(uiL_t x, NumberFormat format){
 }
 YM_NO_INLINE std::string tostrln(siL_t x, NumberFormat format){
     return tostr(x, format) += "\r\n";
+}
+YM_NO_INLINE uiL_t fromstr_uiL(const char*& str){
+    uiL_t out = 0;
+    do{
+        char ch = *str++;
+        if ('0' > ch || ch > '9'){
+            break;
+        }
+
+        out *= 10;
+        out += ch - '0';
+    }while (true);
+    return out;
+}
+YM_NO_INLINE siL_t fromstr_siL(const char*& str){
+    if (str[0] == '-'){
+        str++;
+        return -(siL_t)fromstr_uiL(str);
+    }else{
+        return fromstr_uiL(str);
+    }
+}
+YM_NO_INLINE uiL_t fromstr_uiL_commas(const char*& str){
+    uiL_t out = 0;
+    do{
+        char ch = *str++;
+        if (ch == ','){
+            continue;
+        }
+        if ('0' > ch || ch > '9'){
+            break;
+        }
+
+        out *= 10;
+        out += ch - '0';
+    }while (true);
+    return out;
+}
+YM_NO_INLINE siL_t fromstr_siL_commas(const char*& str){
+    if (str[0] == '-'){
+        str++;
+        return -(siL_t)fromstr_uiL_commas(str);
+    }else{
+        return fromstr_uiL_commas(str);
+    }
 }
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////

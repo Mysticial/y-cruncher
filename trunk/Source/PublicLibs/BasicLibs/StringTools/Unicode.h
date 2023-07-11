@@ -1,8 +1,8 @@
 /* Unicode.h
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 12/29/2015
- * Last Modified    : 12/29/2015
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 12/29/2015
+ *  Last Modified   : 12/29/2015
  * 
  */
 
@@ -45,6 +45,10 @@ std::string     wstr_to_utf8    (const std::wstring& str);
 //  wchar_t <-> UTF-16
 std::wstring    utf16_to_wstr   (const std::u16string& str);
 std::u16string  wstr_to_utf16   (const std::wstring& str);
+////////////////////////////////////////////////////////////////////////////////
+//  wchar_t <-> UTF-32
+std::wstring    utf32_to_wstr   (const std::u32string& str);
+std::u32string  wstr_to_utf32   (const std::wstring& str);
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////

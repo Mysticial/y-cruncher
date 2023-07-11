@@ -1,8 +1,8 @@
 /* cpu_x86.cpp
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 04/12/2014
- * Last Modified    : 04/12/2014
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 04/12/2014
+ *  Last Modified   : 04/12/2014
  * 
  */
 
@@ -36,7 +36,7 @@ void print_bool(int x){
     }else{
         Console::print("No", 'R');
     }
-    Console::SetColor('w');
+    Console::set_color('w');
     Console::println();
 }
 ////////////////////////////////////////////////////////////////////////////////
@@ -51,7 +51,7 @@ bool cpu_x86::detect_OS_AVX(){
 
     bool avxSupported = false;
 
-    int cpuInfo[4];
+    s32_t cpuInfo[4];
     cpuid(cpuInfo, 1, 0);
 
     bool osUsesXSAVE_XRSTORE = (cpuInfo[2] & (1 << 27)) != 0;
@@ -102,7 +102,7 @@ void cpu_x86::detect_host(){
         Vendor_AMD = true;
     }
 
-    int info[4];
+    s32_t info[4];
     cpuid(info, 0, 0);
     int nIds = info[0];
 
@@ -112,20 +112,21 @@ void cpu_x86::detect_host(){
     //  Detect Features
     if (nIds >= 0x00000001){
         cpuid(info, 0x00000001, 0);
-        HW_MMX    = (info[3] & ((int)1 << 23)) != 0;
-        HW_SSE    = (info[3] & ((int)1 << 25)) != 0;
-        HW_SSE2   = (info[3] & ((int)1 << 26)) != 0;
-        HW_SSE3   = (info[2] & ((int)1 <<  0)) != 0;
+        HW_MMX          = (info[3] & ((int)1 << 23)) != 0;
+        HW_SSE          = (info[3] & ((int)1 << 25)) != 0;
+        HW_SSE2         = (info[3] & ((int)1 << 26)) != 0;
+        HW_SSE3         = (info[2] & ((int)1 <<  0)) != 0;
 
-        HW_SSSE3  = (info[2] & ((int)1 <<  9)) != 0;
-        HW_SSE41  = (info[2] & ((int)1 << 19)) != 0;
-        HW_SSE42  = (info[2] & ((int)1 << 20)) != 0;
-        HW_AES    = (info[2] & ((int)1 << 25)) != 0;
+        HW_SSSE3        = (info[2] & ((int)1 <<  9)) != 0;
+        HW_SSE41        = (info[2] & ((int)1 << 19)) != 0;
+        HW_SSE42        = (info[2] & ((int)1 << 20)) != 0;
+        HW_AES          = (info[2] & ((int)1 << 25)) != 0;
 
-        HW_AVX    = (info[2] & ((int)1 << 28)) != 0;
-        HW_FMA3   = (info[2] & ((int)1 << 12)) != 0;
+        HW_AVX          = (info[2] & ((int)1 << 28)) != 0;
+        HW_FMA3         = (info[2] & ((int)1 << 12)) != 0;
 
-        HW_RDRAND = (info[2] & ((int)1 << 30)) != 0;
+        HW_PCLMULQDQ    = (info[2] & ((int)1 <<  1)) != 0;
+        HW_RDRAND       = (info[2] & ((int)1 << 30)) != 0;
     }
     if (nIds >= 0x00000007){
         cpuid(info, 0x00000007, 0);
@@ -134,11 +135,13 @@ void cpu_x86::detect_host(){
         HW_BMI1         = (info[1] & ((int)1 <<  3)) != 0;
         HW_BMI2         = (info[1] & ((int)1 <<  8)) != 0;
         HW_ADX          = (info[1] & ((int)1 << 19)) != 0;
-        HW_MPX          = (info[1] & ((int)1 << 14)) != 0;
+//        HW_MPX          = (info[1] & ((int)1 << 14)) != 0;
         HW_SHA          = (info[1] & ((int)1 << 29)) != 0;
         HW_RDSEED       = (info[1] & ((int)1 << 18)) != 0;
         HW_PREFETCHWT1  = (info[2] & ((int)1 <<  0)) != 0;
         HW_RDPID        = (info[2] & ((int)1 << 22)) != 0;
+        HW_SERIALIZE    = (info[3] & ((int)1 << 14)) != 0;
+        HW_CLDEMOTE     = (info[2] & ((int)1 << 25)) != 0;
 
         HW_AVX512_F     = (info[1] & ((int)1 << 16)) != 0;
         HW_AVX512_CD    = (info[1] & ((int)1 << 28)) != 0;
@@ -153,20 +156,36 @@ void cpu_x86::detect_host(){
         HW_AVX512_VBMI  = (info[2] & ((int)1 <<  1)) != 0;
 
         HW_AVX512_VPOPCNTDQ = (info[2] & ((int)1 << 14)) != 0;
-        HW_AVX512_4FMAPS    = (info[3] & ((int)1 <<  2)) != 0;
-        HW_AVX512_4VNNIW    = (info[3] & ((int)1 <<  3)) != 0;
+        HW_AVX512_4VNNIW    = (info[3] & ((int)1 <<  2)) != 0;
+        HW_AVX512_4FMAPS    = (info[3] & ((int)1 <<  3)) != 0;
 
         HW_AVX512_VNNI      = (info[2] & ((int)1 << 11)) != 0;
 
-        HW_AVX512_VBMI2     = (info[2] & ((int)1 <<  6)) != 0;
-        HW_GFNI             = (info[2] & ((int)1 <<  8)) != 0;
-        HW_VAES             = (info[2] & ((int)1 <<  9)) != 0;
-        HW_AVX512_VPCLMUL   = (info[2] & ((int)1 << 10)) != 0;
-        HW_AVX512_BITALG    = (info[2] & ((int)1 << 12)) != 0;
+        HW_AVX512_VBMI2         = (info[2] & ((int)1 <<  6)) != 0;
+        HW_VAES                 = (info[2] & ((int)1 <<  9)) != 0;
+        HW_GFNI                 = (info[2] & ((int)1 <<  8)) != 0;
+        HW_AVX512_VPCLMULQDQ    = (info[2] & ((int)1 << 10)) != 0;
+        HW_AVX512_BITALG        = (info[2] & ((int)1 << 12)) != 0;
 
+        HW_AVX_GFNI             = HW_GFNI && HW_AVX;
+        HW_AVX512_VAES          = HW_VAES && HW_AVX512_F;
+        HW_AVX512_GFNI          = HW_GFNI && HW_AVX512_F;
+
+        HW_AVX512_VP2INTERSECT  = (info[3] & ((int)1 <<  8)) != 0;
+        HW_AVX512_FP16          = (info[3] & ((int)1 << 23)) != 0;
+
+        HW_AMX_TILE             = (info[3] & ((int)1 << 24)) != 0;
+        HW_AMX_INT8             = (info[3] & ((int)1 << 25)) != 0;
+        HW_AMX_BF16             = (info[3] & ((int)1 << 22)) != 0;
 
         cpuid(info, 0x00000007, 1);
+        HW_AVX_VNNI         = (info[0] & ((int)1 <<  4)) != 0;
         HW_AVX512_BF16      = (info[0] & ((int)1 <<  5)) != 0;
+        HW_AVX_IFMA         = (info[0] & ((int)1 << 23)) != 0;
+        HW_AMX_FP16         = (info[0] & ((int)1 << 21)) != 0;
+        HW_AVX_VNNI_INT8    = (info[2] & ((int)1 <<  4)) != 0;
+        HW_AVX_NE_CONVERT   = (info[2] & ((int)1 <<  5)) != 0;
+        HW_AMX_COMPLEX      = (info[2] & ((int)1 <<  8)) != 0;
 
     }
     if (nExIds >= 0x80000001){
@@ -180,6 +199,10 @@ void cpu_x86::detect_host(){
     }
 }
 void cpu_x86::print() const{
+    Console::println("Hardware Features:");
+    Console::println("(*) Indicates it is used explicitly by y-cruncher.");
+    Console::println();
+
     Console::println("CPU Vendor:");
     Console::print("    AMD         = "); print_bool(Vendor_AMD);
     Console::print("    Intel       = "); print_bool(Vendor_Intel);
@@ -197,15 +220,15 @@ void cpu_x86::print() const{
     Console::print("  * ABM         = "); print_bool(HW_ABM);
     Console::print("    RDRAND      = "); print_bool(HW_RDRAND);
     Console::print("    RDSEED      = "); print_bool(HW_RDSEED);
-    Console::print("    BMI1        = "); print_bool(HW_BMI1);
+    Console::print("  * BMI1        = "); print_bool(HW_BMI1);
     Console::print("  * BMI2        = "); print_bool(HW_BMI2);
     Console::print("  * ADX         = "); print_bool(HW_ADX);
-    Console::print("    MPX         = "); print_bool(HW_MPX);
+//    Console::print("    MPX         = "); print_bool(HW_MPX);
     Console::print("    PREFETCHW   = "); print_bool(HW_PREFETCHW);
     Console::print("    PREFETCHWT1 = "); print_bool(HW_PREFETCHWT1);
     Console::print("    RDPID       = "); print_bool(HW_RDPID);
-    Console::print("    GFNI        = "); print_bool(HW_GFNI);
-    Console::print("    VAES        = "); print_bool(HW_VAES);
+    Console::print("    SERIALIZE   = "); print_bool(HW_SERIALIZE);
+    Console::print("    CLDEMOTE    = "); print_bool(HW_CLDEMOTE);
     Console::println();
 
     Console::println("SIMD: 128-bit");
@@ -216,40 +239,58 @@ void cpu_x86::print() const{
     Console::print("    SSE4a       = "); print_bool(HW_SSE4a);
     Console::print("  * SSE4.1      = "); print_bool(HW_SSE41);
     Console::print("  * SSE4.2      = "); print_bool(HW_SSE42);
-    Console::print("    AES-NI      = "); print_bool(HW_AES);
+    Console::print("    PCLMULQDQ   = "); print_bool(HW_PCLMULQDQ);
+    Console::print("    AES         = "); print_bool(HW_AES);
     Console::print("    SHA         = "); print_bool(HW_SHA);
+    Console::print("    GFNI        = "); print_bool(HW_GFNI);
     Console::println();
 
     Console::println("SIMD: 256-bit");
-    Console::print("  * AVX         = "); print_bool(HW_AVX);
-    Console::print("    XOP         = "); print_bool(HW_XOP);
-    Console::print("  * FMA3        = "); print_bool(HW_FMA3);
-    Console::print("  * FMA4        = "); print_bool(HW_FMA4);
-    Console::print("  * AVX2        = "); print_bool(HW_AVX2);
+    Console::print("  * AVX             = "); print_bool(HW_AVX);
+    Console::print("  * FMA4            = "); print_bool(HW_FMA4);
+    Console::print("    XOP             = "); print_bool(HW_XOP);
+    Console::print("  * FMA3            = "); print_bool(HW_FMA3);
+    Console::print("  * AVX2            = "); print_bool(HW_AVX2);
+    Console::print("    VAES            = "); print_bool(HW_VAES);
+    Console::print("  * AVX-GFNI        = "); print_bool(HW_AVX_GFNI);
+    Console::print("    AVX-VNNI        = "); print_bool(HW_AVX_VNNI);
+    Console::print("    AVX-VNNI_INT8   = "); print_bool(HW_AVX_VNNI_INT8);
+    Console::print("    AVX-IFMA        = "); print_bool(HW_AVX_IFMA);
+    Console::print("    AVX-NE-CONVERT  = "); print_bool(HW_AVX_NE_CONVERT);
     Console::println();
 
     Console::println("SIMD: 512-bit");
-    Console::print("  * AVX512-F         = "); print_bool(HW_AVX512_F);
-    Console::print("    AVX512-CD        = "); print_bool(HW_AVX512_CD);
-    Console::print("    AVX512-PF        = "); print_bool(HW_AVX512_PF);
-    Console::print("    AVX512-ER        = "); print_bool(HW_AVX512_ER);
-    Console::print("  * AVX512-VL        = "); print_bool(HW_AVX512_VL);
-    Console::print("  * AVX512-BW        = "); print_bool(HW_AVX512_BW);
-    Console::print("  * AVX512-DQ        = "); print_bool(HW_AVX512_DQ);
-    Console::print("  * AVX512-IFMA      = "); print_bool(HW_AVX512_IFMA);
-    Console::print("  * AVX512-VBMI      = "); print_bool(HW_AVX512_VBMI);
+    Console::print("  * AVX512-F                = "); print_bool(HW_AVX512_F);
+    Console::print("    AVX512-CD               = "); print_bool(HW_AVX512_CD);
+    Console::print("    AVX512-PF               = "); print_bool(HW_AVX512_PF);
+    Console::print("    AVX512-ER               = "); print_bool(HW_AVX512_ER);
+    Console::print("  * AVX512-VL               = "); print_bool(HW_AVX512_VL);
+    Console::print("  * AVX512-BW               = "); print_bool(HW_AVX512_BW);
+    Console::print("  * AVX512-DQ               = "); print_bool(HW_AVX512_DQ);
+    Console::print("    AVX512-VPOPCNTDQ        = "); print_bool(HW_AVX512_VPOPCNTDQ);
+    Console::print("    AVX512-4VNNIW           = "); print_bool(HW_AVX512_4VNNIW);
+    Console::print("    AVX512-4FMAPS           = "); print_bool(HW_AVX512_4FMAPS);
+    Console::print("  * AVX512-IFMA             = "); print_bool(HW_AVX512_IFMA);
+    Console::print("  * AVX512-VBMI             = "); print_bool(HW_AVX512_VBMI);
+    Console::print("    AVX512-VNNI             = "); print_bool(HW_AVX512_VNNI);
+    Console::print("  * AVX512-VBMI2            = "); print_bool(HW_AVX512_VBMI2);
+    Console::print("    AVX512-BITALG           = "); print_bool(HW_AVX512_BITALG);
+    Console::print("    AVX512-VPCLMULQDQ       = "); print_bool(HW_AVX512_VPCLMULQDQ);
+    Console::print("    AVX512-VAES             = "); print_bool(HW_AVX512_VAES);
+    Console::print("  * AVX512-GFNI             = "); print_bool(HW_AVX512_GFNI);
+    Console::print("    AVX512-BF16             = "); print_bool(HW_AVX512_BF16);
+    Console::print("    AVX512-VP2INTERSECT     = "); print_bool(HW_AVX512_VP2INTERSECT);
+    Console::print("    AVX512-FP16             = "); print_bool(HW_AVX512_FP16);
     Console::println();
 
-    Console::println("Alright Intel, how many drinks have you had tonight?");
-    Console::print("    AVX512-VPOPCNTDQ = "); print_bool(HW_AVX512_VPOPCNTDQ);
-    Console::print("    AVX512-4FMAPS    = "); print_bool(HW_AVX512_4FMAPS);
-    Console::print("    AVX512-4VNNIW    = "); print_bool(HW_AVX512_4VNNIW);
-    Console::print("    AVX512-VBMI2     = "); print_bool(HW_AVX512_VBMI2);
-    Console::print("    AVX512-VPCLMUL   = "); print_bool(HW_AVX512_VPCLMUL);
-    Console::print("    AVX512-VNNI      = "); print_bool(HW_AVX512_VNNI);
-    Console::print("    AVX512-BITALG    = "); print_bool(HW_AVX512_BITALG);
-    Console::print("    AVX512-BF16      = "); print_bool(HW_AVX512_BF16);
+    Console::println("AMX:");
+    Console::print("    AMX-TILE        = "); print_bool(HW_AMX_TILE);
+    Console::print("    AMX-INT8        = "); print_bool(HW_AMX_INT8);
+    Console::print("    AMX-BF16        = "); print_bool(HW_AMX_BF16);
+    Console::print("    AMX-FP16        = "); print_bool(HW_AMX_FP16);
+    Console::print("    AMX-COMPLEX     = "); print_bool(HW_AMX_COMPLEX);
     Console::println();
+
 }
 void cpu_x86::print_host(){
     cpu_x86 features;

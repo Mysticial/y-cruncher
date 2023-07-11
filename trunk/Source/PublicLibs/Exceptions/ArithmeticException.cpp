@@ -1,8 +1,8 @@
 /* ArithmeticException.cpp
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 04/09/2017
- * Last Modified    : 04/09/2017
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 04/09/2017
+ *  Last Modified   : 04/09/2017
  * 
  */
 
@@ -33,6 +33,7 @@ ExponentOverflowException::ExponentOverflowException(const char* function, siL_t
     , m_limit(limit)
 {}
 void ExponentOverflowException::print() const{
+    Console::ConsoleLockScope lock;
     Console::println("\n", 'R');
     Console::println_labelc("Exception Encountered", get_typename());
     Console::println();
@@ -41,7 +42,7 @@ void ExponentOverflowException::print() const{
     Console::println_labelm_commas  ("    Value: ", m_value);
     Console::println_labelm_commas  ("    Limit: ", m_limit);
     Console::println("\n");
-    Console::SetColor('w');
+    Console::set_color('w');
 }
 ExponentOverflowException::ExponentOverflowException(SerializationPassKey key, const char*& stream)
     : ArithmeticException(key, stream)

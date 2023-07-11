@@ -22,7 +22,7 @@
 #include "PublicLibs/SystemLibs/Environment/Environment.cpp"
 #include "PublicLibs/SystemLibs/ProcessorCapability/cpu_x86.cpp"
 
-
+#include "Warnings.h"
 #include "Vendor-AMD.h"
 #include "Vendor-Intel.h"
 
@@ -36,18 +36,31 @@
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
+bool pause_on_warning = true;
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+void handle_pause(CommandLine::Parameters& cmds){
+    auto& value = cmds.CurrentValue();
+    cmds.advance();
+    int pause_on_exit = static_cast<int>(StringTools::parse_sL_text(value));
+    pause_on_warning = pause_on_exit > -1;
+    Console::pause_on_error = pause_on_exit > -2;
+}
 void handle_colors(CommandLine::Parameters& cmds){
     auto& value = cmds.CurrentValue();
     cmds.advance();
-    Console::EnableColors = StringTools::parse_sL_text(value) > 0;
+    Console::enable_colors = StringTools::parse_sL_text(value) > 0;
 }
 void handle_height(CommandLine::Parameters& cmds){
     auto& value = cmds.CurrentValue();
     cmds.advance();
     int height = static_cast<int>(StringTools::parse_sL_text(value));
-    Console::SetConsoleWindowSize(80, height);
+    Console::set_console_window_size(80, height);
 }
 CommandLine::ActionMap GLOBAL_COMMANDS{
+    {"pause", handle_pause},
     {"colors", handle_colors},
     {"height", handle_height},
 };
@@ -69,7 +82,7 @@ int main(int argc, char *argv[]){
     Environment::initialize_environment(argc, argv);
 
     if (!Environment::RunFromConsole()){
-        Console::SetConsoleWindowSize();
+        Console::set_console_window_size();
     }
     process_startup_commands(cmds);
 
@@ -91,7 +104,7 @@ int main(int argc, char *argv[]){
     }
 
     if (Environment::get_cmd_parameters().size() <= 1 && !Environment::RunFromConsole()){
-        Console::Pause();
+        Console::pause();
     }
-    Console::SetColorDefault();
+    Console::set_color_default();
 }

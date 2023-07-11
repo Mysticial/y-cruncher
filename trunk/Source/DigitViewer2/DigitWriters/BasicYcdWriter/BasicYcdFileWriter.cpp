@@ -1,8 +1,8 @@
 /* BasicYcdFileWriter.cpp
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 02/04/2018
- * Last Modified    : 03/26/2018
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 02/04/2018
+ *  Last Modified   : 03/26/2018
  * 
  *      Implements a single file of a set of .ycd compressed files.
  * 
@@ -41,10 +41,11 @@ BasicYcdFileWriter::BasicYcdFileWriter(
     const std::string& first_digits,
     char radix,
     ufL_t digits_per_file, uiL_t stream_end,
-    uiL_t fileid
+    uiL_t fileid,
+    bool raw_io
 )
     : m_path(path + ".ycd")
-    , m_file(FileIO::DEFAULT_FILE_ALIGNMENT_K, path + " (incomplete).ycd", FileIO::CREATE)
+    , m_file(FileIO::DEFAULT_FILE_ALIGNMENT_K, path + " (incomplete).ycd", FileIO::CREATE, true, raw_io)
     , m_stream_end(stream_end)
     , m_digits_per_file(digits_per_file)
     , m_file_id(fileid)
@@ -182,7 +183,7 @@ u64_t* BasicYcdFileWriter::get_range(
 ){
     //  Extract an aligned region from [P, P + Pbytes) that will fit the entire
     //  region in [word_offset, word_offset + words).
-    //  Return a pointer the actual start of the data.
+    //  Return a pointer to the actual start of the data.
 
     //  This function handles the sector alignment.
     //  If either of the end points are misaligned, it will load them.
@@ -402,7 +403,7 @@ void BasicYcdFileWriter::store_digits(
     }
 
     void* P = buffer.ptr();
-    upL_t Pbytes = buffer.len();
+    upL_t Pbytes = buffer.bytes();
 
     uiL_t s = offset;
     uiL_t e = offset + digits;

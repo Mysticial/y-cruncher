@@ -1,8 +1,8 @@
 /* BufferTooSmallException.cpp
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 04/09/2017
- * Last Modified    : 04/09/2017
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 04/09/2017
+ *  Last Modified   : 04/09/2017
  * 
  */
 
@@ -37,6 +37,7 @@ YM_NO_INLINE BufferTooSmallException::BufferTooSmallException(const char* functi
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 void BufferTooSmallException::print() const{
+    Console::ConsoleLockScope lock;
     Console::println("\n", 'R');
     Console::println_labelc("Exception Encountered", get_typename());
     Console::println();
@@ -45,7 +46,7 @@ void BufferTooSmallException::print() const{
     Console::println_labelm_commas  ("    Buffer Size: ", m_buffer_size);
     Console::println_labelm_commas  ("    Required Size: ", m_required_size);
     Console::println("\n");
-    Console::SetColor('w');
+    Console::set_color('w');
 }
 BufferTooSmallException::BufferTooSmallException(SerializationPassKey key, const char*& stream)
     : Exception(key, stream)

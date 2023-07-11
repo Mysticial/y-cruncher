@@ -1,8 +1,8 @@
 /* FileIO_WinAPI.ipp
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 08/05/2010
- * Last Modified    : 07/26/2011
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 08/05/2010
+ *  Last Modified   : 07/26/2011
  * 
  */
 
@@ -68,8 +68,8 @@ void PrintLastError(){
     Console::println("", 'w');
 }
 ////////////////////////////////////////////////////////////////////////////////
-void MakeDirectory(const std::string& path){
-    _wmkdir(StringTools::utf8_to_wstr(path).c_str());
+bool MakeDirectory(const std::string& path){
+    return _wmkdir(StringTools::utf8_to_wstr(path).c_str()) == 0;
 }
 void RenameFile(const std::wstring& oldname, const std::wstring& newname){
     while (true){
@@ -85,13 +85,13 @@ void RenameFile(const std::wstring& oldname, const std::wstring& newname){
 
         errno_t err;
         _get_errno(&err);
-        Console::Warning("Unable to rename file.", true);
+        Console::warning("Unable to rename file.", true);
         Console::println_labelc("Error Code", err);
         Console::println(newname);
         Console::println();
         Console::println("Re-attempting...");
-        Console::SetColor('w');
-        Console::Pause('w');
+        Console::set_color('w');
+        Console::pause('w');
     }
 }
 void RenameFile(const std::string& oldname, const std::string& newname){
@@ -104,15 +104,15 @@ ufL_t GetFileSize(const std::string& path){
     WIN32_FIND_DATAW filedata;
     HANDLE data = FindFirstFileW(StringTools::utf8_to_wstr(path).c_str(), &filedata);
     if (data == INVALID_HANDLE_VALUE){
-        Console::Warning("Path does not exist.");
-        Console::Quit(1);
+        Console::warning("Path does not exist.");
+        Console::quit_program(1);
     }
 
     ufL_t size = ((ufL_t)filedata.nFileSizeHigh << 32) + filedata.nFileSizeLow;
     
     if (!FindClose(data)){
-        Console::Warning("Unable to close file.");
-        Console::Quit(1);
+        Console::warning("Unable to close file.");
+        Console::quit_program(1);
     }
 
     return size;
@@ -165,16 +165,16 @@ bool DirectoryIsWritable(const std::string& directory){
         return false;
     else{
         while (!CloseHandle(file)){
-            Console::Warning("Unable to close file.");
-            Console::Quit(1);
+            Console::warning("Unable to close file.");
+            Console::quit_program(1);
         }
     }
 
     while (_wremove(path.c_str())){
-        Console::Warning("Unable to delete file.", true);
+        Console::warning("Unable to delete file.", true);
         Console::println();
         Console::println("Re-attempting...");
-        Console::Pause('w');
+        Console::pause('w');
         continue;
     }
 

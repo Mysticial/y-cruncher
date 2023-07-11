@@ -1,8 +1,8 @@
 /* String.h
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 05/31/2015
- * Last Modified    : 05/31/2015
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 05/31/2015
+ *  Last Modified   : 05/31/2015
  * 
  */
 
@@ -61,7 +61,7 @@ public:
     const type* c_str() const{
         return m_ptr.get();
     }
-    const size_t size() const{
+    size_t size() const{
         return m_len;
     }
 

@@ -1,8 +1,8 @@
 /* x86_XOP.h
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 09/03/2014
- * Last Modified    : 09/03/2014
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 09/03/2014
+ *  Last Modified   : 09/03/2014
  * 
  */
 

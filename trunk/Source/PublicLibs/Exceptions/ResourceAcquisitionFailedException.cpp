@@ -1,8 +1,8 @@
 /* ResourceAcquisitionFailedException.cpp
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 02/16/2019
- * Last Modified    : 02/16/2019
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 02/16/2019
+ *  Last Modified   : 02/16/2019
  * 
  */
 
@@ -45,6 +45,7 @@ MemoryAllocationFailedException::MemoryAllocationFailedException(const char* fun
     , m_bytes(bytes)
 {}
 void MemoryAllocationFailedException::print() const{
+    Console::ConsoleLockScope lock;
     Console::println("\n", 'R');
     Console::println_labelc("Exception Encountered", get_typename());
     Console::println();
@@ -55,7 +56,7 @@ void MemoryAllocationFailedException::print() const{
     Console::println_labelm("Allocation Type:", m_type, 'Y');
     Console::println_labelm_ebytes("Allocation Size:", m_bytes, 'Y');
     Console::println("\n");
-    Console::SetColor('w');
+    Console::set_color('w');
 }
 MemoryAllocationFailedException::MemoryAllocationFailedException(SerializationPassKey key, const char*& stream)
     : ResourceAcquisitionFailedException(key, stream)

@@ -21,7 +21,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 void warn_no_SSE3(const cpu_x86& features){
     if (!can_run_2004_x86_SSE3(features)){
-        Console::SetColor('R');
+        Console::set_color('R');
 #ifdef YCR_ENABLE_2000_x86
         Console::println("Your system seems kind of old... Consider getting a new computer. :)");
         Console::println();
@@ -31,8 +31,8 @@ void warn_no_SSE3(const cpu_x86& features){
         Console::println("SSE3 instructions are required to run y-cruncher v0.6.1 and later.");
         Console::println();
 #endif
-        Console::SetColor('w');
-        Console::Pause();
+        Console::set_color('w');
+        Console::pause();
         Console::println("\n");
     }
 }

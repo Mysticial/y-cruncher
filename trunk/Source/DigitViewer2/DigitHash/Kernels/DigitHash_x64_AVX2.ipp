@@ -1,8 +1,8 @@
 /* DigitHash_x64_AVX2.ipp
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 01/14/2018
- * Last Modified    : 01/14/2018
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 01/14/2018
+ *  Last Modified   : 01/14/2018
  * 
  */
 
@@ -37,13 +37,13 @@ hash_t accumulate(hash_t hash_in, const char* raw_digits, upL_t digits){
         raw_digits += block;
         digits -= block;
     }
-    if (radix == 10){
+    if constexpr (radix == 10){
         upL_t blocks = digits / 64;
         hash = hash_dec_raw_d64_AVX2(hash, reinterpret_cast<const __m256i*>(raw_digits), blocks);
         raw_digits += blocks * 64;
         digits -= blocks * 64;
     }
-    if (radix == 16){
+    if constexpr (radix == 16){
         upL_t blocks = digits / 64;
         hash = hash_hex_raw_d64_AVX2(hash, reinterpret_cast<const __m256i*>(raw_digits), blocks);
         raw_digits += blocks * 64;

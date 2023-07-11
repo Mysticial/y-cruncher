@@ -1,8 +1,8 @@
 /* BasicMemory.h
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 05/06/2017
- * Last Modified    : 05/06/2017
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 05/06/2017
+ *  Last Modified   : 05/06/2017
  * 
  *      A lightweight allocator + RAII memory type for POD arrays.
  * 

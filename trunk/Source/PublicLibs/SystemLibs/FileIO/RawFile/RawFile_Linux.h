@@ -1,8 +1,8 @@
 /* RawFile_Linux.h
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 07/31/2011
- * Last Modified    : 03/24/2018
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 07/31/2011
+ *  Last Modified   : 03/24/2018
  * 
  */
 
@@ -56,6 +56,7 @@ public:
     operator bool() const;
     const std::string& path() const{ return m_path; }
     bool persistent() const{ return m_persistent; }
+    bool raw_io() const{ return m_raw_io; }
 
     virtual void flush() override;
     void close(bool keep_file);

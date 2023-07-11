@@ -1,8 +1,8 @@
 /* BaseFile_Windows.h
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 12/30/2015
- * Last Modified    : 12/30/2015
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 12/30/2015
+ *  Last Modified   : 12/30/2015
  * 
  */
 
@@ -29,13 +29,14 @@ class BaseFile{
 public:
     BaseFile(const BaseFile&) = delete;
     void operator=(const BaseFile&) = delete;
-    BaseFile::BaseFile(BaseFile&& x)
+
+    BaseFile(BaseFile&& x)
         : m_path(std::move(x.m_path))
         , m_filehandle(std::move(x.m_filehandle))
     {
         x.m_path.clear();
     }
-    void BaseFile::operator=(BaseFile&& x){
+    void operator=(BaseFile&& x){
         m_path = std::move(x.m_path);
         m_filehandle = std::move(x.m_filehandle);
         x.m_path.clear();

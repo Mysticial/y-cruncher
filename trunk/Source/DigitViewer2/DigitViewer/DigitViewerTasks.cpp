@@ -1,8 +1,8 @@
 /* DigitViewerTasks.cpp
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 02/15/2018
- * Last Modified    : 02/18/2018
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 02/15/2018
+ *  Last Modified   : 02/18/2018
  * 
  */
 
@@ -28,8 +28,8 @@
 #include "DigitViewer2/PrintHelpers.h"
 #include "DigitViewer2/RawToAscii/RawToAscii.h"
 #include "DigitViewer2/DigitWriters/BasicDigitWriter.h"
-#include "DigitViewer2/DigitWriters/BasicTextWriter.h"
-#include "DigitViewer2/DigitWriters/BasicYcdSetWriter.h"
+#include "DigitViewer2/DigitWriters/BasicTextWriter/BasicTextWriter.h"
+#include "DigitViewer2/DigitWriters/BasicYcdWriter/BasicYcdSetWriter.h"
 #include "DigitViewerTasks.h"
 namespace DigitViewer2{
 ////////////////////////////////////////////////////////////////////////////////
@@ -90,7 +90,7 @@ void view_range(BasicDigitReader& reader){
     }
 
     //  Display
-    DisplayFancy(start, &str[0], digits);
+    display_fancy(start, &str[0], digits);
 }
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -355,7 +355,8 @@ void to_text_file(BasicDigitReader& reader){
     BasicTextWriter writer(
         path,
         start == 0 ? reader.first_digits() : "",
-        reader.radix()
+        reader.radix(),
+        true
     );
     process_write(reader, start, digits, writer, 0);
 }
@@ -405,7 +406,7 @@ void to_ycd_file_all(BasicDigitReader& reader){
             }
         }
         if (digits_per_file < MIN_COMPRESS_DIGITS){
-            Console::Warning("Must be at least " + StringTools::tostr(MIN_COMPRESS_DIGITS) + ".\n");
+            Console::warning("Must be at least " + StringTools::tostr(MIN_COMPRESS_DIGITS) + ".\n");
             continue;
         }
         break;
@@ -425,7 +426,8 @@ void to_ycd_file_all(BasicDigitReader& reader){
         reader.first_digits(),
         reader.radix(),
         digits_per_file,
-        digits
+        digits,
+        true
     );
     process_write(reader, start, digits, writer, 0);
 }
@@ -454,7 +456,7 @@ void to_ycd_file_partial(BasicDigitReader& reader){
     uiL_t start_pos = digits_per_file * start_id;
     uiL_t end_pos   = digits_per_file * end_id;
     if (start_pos >= limit){
-        Console::Warning("No Digits to Recompress.");
+        Console::warning("No Digits to Recompress.");
         return;
     }
     if (end_pos > limit){
@@ -475,7 +477,8 @@ void to_ycd_file_partial(BasicDigitReader& reader){
         reader.first_digits(),
         reader.radix(),
         digits_per_file,
-        limit
+        limit,
+        true
     );
     process_write(reader, start_pos, end_pos - start_pos, writer, start_pos);
 }

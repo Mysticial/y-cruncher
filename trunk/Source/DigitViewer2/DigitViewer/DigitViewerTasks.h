@@ -1,8 +1,8 @@
 /* DigitViewerTasks.h
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 02/15/2018
- * Last Modified    : 02/18/2018
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 02/15/2018
+ *  Last Modified   : 02/18/2018
  * 
  */
 

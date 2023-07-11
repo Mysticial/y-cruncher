@@ -1,8 +1,8 @@
 /* BasicTextWriter.cpp
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 02/03/2018
- * Last Modified    : 03/25/2018
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 02/03/2018
+ *  Last Modified   : 03/25/2018
  * 
  */
 
@@ -29,9 +29,9 @@ namespace DigitViewer2{
 BasicTextWriter::BasicTextWriter(
     const std::string& path,
     const std::string& first_digits,
-    char radix
+    char radix, bool raw_io
 )
-    : m_file(FileIO::DEFAULT_FILE_ALIGNMENT_K, path, FileIO::CREATE)
+    : m_file(FileIO::DEFAULT_FILE_ALIGNMENT_K, path, FileIO::CREATE, true, raw_io)
     , m_data_offset(0)
     , m_offset_extent(0)
 {
@@ -77,7 +77,7 @@ std::unique_ptr<BasicDigitReader> BasicTextWriter::close_and_get_basic_reader(){
     }
     std::string path = m_file.path();
     m_file.close_and_set_size(m_data_offset + m_offset_extent);
-    return std::make_unique<BasicTextReader>(path, m_radix);
+    return std::make_unique<BasicTextReader>(path, m_radix, m_file.raw_io());
 }
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -94,7 +94,7 @@ void BasicTextWriter::store_digits(
     }
 
     char* P = (char*)buffer.ptr();
-    check_BufferTooSmall("BasicTextReader::load_stats()", buffer.len(), FILE_ALIGNMENT);
+    check_BufferTooSmall("BasicTextReader::load_stats()", buffer.bytes(), FILE_ALIGNMENT);
 
     //  This is the ugly sector alignment logic.
 
@@ -112,7 +112,7 @@ void BasicTextWriter::store_digits(
 
     ufL_t aligned_bytes_left = file_aligned_offset_e - file_aligned_offset_s;
     while (aligned_bytes_left > 0){
-        upL_t current = (upL_t)std::min((ufL_t)buffer.len(), aligned_bytes_left);
+        upL_t current = (upL_t)std::min((ufL_t)buffer.bytes(), aligned_bytes_left);
 
         sfL_t logical_aligned_offset_s = (sfL_t)file_aligned_offset_s - (sfL_t)m_data_offset;
         sfL_t logical_aligned_offset_e = logical_aligned_offset_s + (sfL_t)current;

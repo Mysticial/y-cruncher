@@ -1,8 +1,8 @@
 /* BasicTextReader.cpp
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 01/14/2018
- * Last Modified    : 03/20/2018
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 01/14/2018
+ *  Last Modified   : 03/20/2018
  * 
  */
 
@@ -26,8 +26,8 @@ namespace DigitViewer2{
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-BasicTextReader::BasicTextReader(const std::string& path, char radix)
-    : m_file(FileIO::DEFAULT_FILE_ALIGNMENT_K, std::move(path), FileIO::OPEN_READONLY)
+BasicTextReader::BasicTextReader(std::string path, char radix, bool raw_io)
+    : m_file(FileIO::DEFAULT_FILE_ALIGNMENT_K, std::move(path), FileIO::OPEN_READONLY, true, raw_io)
 {
     alignas(FILE_ALIGNMENT) char buffer[FILE_ALIGNMENT];
 
@@ -276,7 +276,7 @@ void BasicTextReader::load_stats(
     }
 
     char* P = (char*)buffer.ptr();
-    upL_t PL = Alignment::align_int_down<FILE_ALIGNMENT>(buffer.len());
+    upL_t PL = Alignment::align_int_down<FILE_ALIGNMENT>(buffer.bytes());
     check_BufferTooSmall("BasicTextReader::load_stats()", PL, FILE_ALIGNMENT);
 
     //  This is the ugly sector alignment logic.
@@ -350,7 +350,7 @@ void BasicTextReader::load_digits(
     }
 
     char* P = (char*)buffer.ptr();
-    upL_t PL = Alignment::align_int_down<FILE_ALIGNMENT>(buffer.len());
+    upL_t PL = Alignment::align_int_down<FILE_ALIGNMENT>(buffer.bytes());
     check_BufferTooSmall("BasicTextReader::load_stats()", PL, FILE_ALIGNMENT);
 
     //  This is the ugly sector alignment logic.

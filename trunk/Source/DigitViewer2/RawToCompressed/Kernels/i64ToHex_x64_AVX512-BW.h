@@ -1,8 +1,8 @@
 /* i64ToRaw_x64_AVX512-BW.h
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 02/10/2018
- * Last Modified    : 02/10/2018
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 02/10/2018
+ *  Last Modified   : 02/10/2018
  * 
  */
 
@@ -64,7 +64,7 @@ YM_FORCE_INLINE bool hex_to_i64_u8_x64_AVX512BW(__m512i* T, const __m512i* raw, 
         T += 1;
     }while (--blocks);
 
-    return _mm512_test_epi8_mask(bad, _mm512_set1_epi8((char)0xf0)) != 0;
+    return _mm512_test_epi8_mask(bad, _mm512_set1_epi8((unsigned char)0xf0)) != 0;
 }
 YM_FORCE_INLINE void i64_to_hex_u8_x64_AVX512BW(__m512i* raw, const __m256i* T, upL_t blocks){
     if (blocks == 0){

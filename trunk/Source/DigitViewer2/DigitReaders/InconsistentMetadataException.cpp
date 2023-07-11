@@ -1,8 +1,8 @@
 /* InconsistentMetadataException.cpp
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 01/31/2018
- * Last Modified    : 01/31/2018
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 01/31/2018
+ *  Last Modified   : 01/31/2018
  * 
  */
 

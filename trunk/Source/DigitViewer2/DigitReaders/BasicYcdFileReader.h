@@ -1,8 +1,8 @@
 /* BasicYcdFileReader.h
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 01/29/2018
- * Last Modified    : 03/21/2018
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 01/29/2018
+ *  Last Modified   : 03/21/2018
  * 
  *      This reader uses raw (unbuffered) I/O.
  * 
@@ -38,7 +38,7 @@ class BasicYcdFileReader : public BasicDigitReader{
     static const upL_t FILE_ALIGNMENT = FileIO::DEFAULT_FILE_ALIGNMENT;
 
 public:
-    BasicYcdFileReader(std::string path);
+    BasicYcdFileReader(std::string path, bool raw_io);
 
     virtual std::string first_digits            () override{ return m_first_digits; }
     virtual uiL_t       stream_end              () const override{ return m_stream_end; }
@@ -129,13 +129,13 @@ private:
 
     std::string m_file_version;
     std::string m_first_digits;
-    uiL_t m_stream_end;
-    ufL_t m_digits_per_file;
-    uiL_t m_file_id;
+    uiL_t m_stream_end = 0;
+    ufL_t m_digits_per_file = 0;
+    uiL_t m_file_id = 0;
 
     upL_t m_digits_per_word;
     ufL_t m_words_in_this_file;
-    ufL_t m_data_offset;        //  Offset where the actual data blocks begin.
+    ufL_t m_data_offset = 0;    //  Offset where the actual data blocks begin.
 };
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////

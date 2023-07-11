@@ -1,8 +1,8 @@
 /* SMC_ExternalBasicLibs.cpp - Single Module Compile
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 01/11/2018
- * Last Modified    : 01/11/2018
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 01/11/2018
+ *  Last Modified   : 01/11/2018
  * 
  */
 
@@ -10,5 +10,6 @@
 #include "StringTools/Unicode.cpp"
 #include "StringTools/ymb_STR.cpp"
 
+#include "Concurrency/ExceptionHolder.cpp"
 #include "Memory/AlignedMalloc.cpp"
 #include "Serialization/Serialization.cpp"

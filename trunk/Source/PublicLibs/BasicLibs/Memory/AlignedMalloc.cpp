@@ -1,8 +1,8 @@
 /* AlignedMalloc.cpp
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 09/06/2016
- * Last Modified    : 09/23/2016
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 09/06/2016
+ *  Last Modified   : 09/23/2016
  * 
  */
 
@@ -14,6 +14,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <new>
+#include "PublicLibs/ConsoleIO/BasicIO.h"
 #include "PublicLibs/Exceptions/InvalidParametersException.h"
 #include "PublicLibs/Exceptions/AlgorithmFailedException.h"
 #include "AlignedMalloc.h"
@@ -50,7 +51,7 @@ void* aligned_malloc(upL_t bytes, upL_t align){
 #endif
 
     upL_t actual_bytes = bytes + align + sizeof(upL_t)*4;
-    void *free_ptr = malloc(actual_bytes);
+    void* free_ptr = malloc(actual_bytes);
     if (free_ptr == nullptr){
         throw std::bad_alloc();
 //        return nullptr;
@@ -66,7 +67,7 @@ void* aligned_malloc(upL_t bytes, upL_t align){
     ret_address &= ~(upL_t)(align - 1);
     ret_address += align;
 
-    upL_t *ret = (upL_t*)ret_address;
+    upL_t* ret = (upL_t*)ret_address;
     ret[-3] = free_address;
 
 #ifdef YMP_ENABLE_MALLOC_CHECKING
@@ -77,30 +78,30 @@ void* aligned_malloc(upL_t bytes, upL_t align){
 
     return ret;
 }
-void aligned_free(void *ptr){
+void aligned_free(void* ptr){
     if (ptr == nullptr){
         return;
+    }
+
+    try{
+        check_aligned_ptr(ptr);
+    }catch (Exception& e){
+        e.print();
+        Console::warning("Exception thrown on destruction path.");
+        Console::quit_program(1);
+    }catch (...){
+        Console::warning("Exception thrown on destruction path.");
+        Console::quit_program(1);
     }
 
     upL_t* ret = (upL_t*)ptr;
     upL_t free_int = ret[-3];
 
-#ifdef YMP_ENABLE_MALLOC_CHECKING
-    upL_t bytes = ret[-2];
-    upL_t check = ret[-1];
-    if (check != BUFFER_CHECK_BOT){
-        throw AlgorithmFailedException("aligned_free()", "Memory buffer has been underrun.");
-    }
-    memcpy(&check, (char*)ptr + bytes, sizeof(upL_t));
-    if (check != BUFFER_CHECK_TOP){
-        throw AlgorithmFailedException("aligned_free()", "Memory buffer has been overrun.");
-    }
-#endif
-
     ptr = (void*)free_int;
     free(ptr);
 }
 void check_aligned_ptr(const void *ptr){
+#ifdef YMP_ENABLE_MALLOC_CHECKING
     if (ptr == nullptr){
         return;
     }
@@ -117,6 +118,7 @@ void check_aligned_ptr(const void *ptr){
     if (check != BUFFER_CHECK_TOP){
         throw AlgorithmFailedException("aligned_free()", "Memory buffer has been overrun.");
     }
+#endif
 }
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////

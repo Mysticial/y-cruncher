@@ -1,8 +1,8 @@
 /* SmartPointerA.ipp
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 09/06/2016
- * Last Modified    : 05/08/2017
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 09/06/2016
+ *  Last Modified   : 05/08/2017
  * 
  */
 
@@ -30,7 +30,7 @@ SmartPointerA<Type>::~SmartPointerA(){
     aligned_free(m_ptr);
 }
 template <typename Type>
-void SmartPointerA<Type>::clear(){
+void SmartPointerA<Type>::clear() noexcept{
     if (m_ptr != nullptr){
         m_ptr->~Type();
         aligned_free(m_ptr);

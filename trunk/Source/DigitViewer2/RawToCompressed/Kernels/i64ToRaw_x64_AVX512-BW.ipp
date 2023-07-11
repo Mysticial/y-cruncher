@@ -1,8 +1,8 @@
 /* DigitViewer_RawToI64_x64_AVX512-BW.ipp
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 02/10/2018
- * Last Modified    : 02/10/2018
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 02/10/2018
+ *  Last Modified   : 02/10/2018
  * 
  */
 

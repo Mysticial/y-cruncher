@@ -9,6 +9,7 @@ CURRENT += StringTools/ToString.cpp
 CURRENT += StringTools/Unicode.cpp
 CURRENT += StringTools/ymb_STR.cpp
 
+CURRENT += Concurrency/ExceptionHolder.cpp
 CURRENT += Memory/AlignedMalloc.cpp
 CURRENT += Serialization/Serialization.cpp
 

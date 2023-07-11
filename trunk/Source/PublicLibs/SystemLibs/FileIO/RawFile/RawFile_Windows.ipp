@@ -1,8 +1,8 @@
 /* RawFile_Windows.ipp
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 07/20/2011
- * Last Modified    : 03/24/2018
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 07/20/2011
+ *  Last Modified   : 03/24/2018
  * 
  *      There are two key components to achieving zero-overhead disk access on
  *  Windows: FILE_FLAG_NO_BUFFERING and SetFileValidData().
@@ -45,7 +45,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 //  Dependencies
-#include "Settings.h"
 #include <algorithm>
 #include <Windows.h>
 #include "PublicLibs/ConsoleIO/BasicIO.h"
@@ -65,12 +64,12 @@ namespace FileIO{
 //  Errors
 struct FailPrinter_SetFileValidData{
     FailPrinter_SetFileValidData(const std::string& path){
-        Console::Warning(
+        Console::warning(
             "SetFileValidData() has failed. Expect performance degradation.\n"
             "Try re-running as administrator.\n"
         );
         Console::println_labelc("Path: ", path, 'Y');
-        Console::Warning("Further messages for this warning will be suppressed.\n");
+        Console::warning("Further messages for this warning will be suppressed.\n");
     }
 };
 void warn_SetFileValidData_fail(const std::string& path){
@@ -266,13 +265,13 @@ void RawFile::close(bool keep_file){
 
     //  Close
     if (!CloseHandle(m_filehandle)){
-        Console::Warning("RawFile::close(): Unable to close file.");
+        Console::warning("RawFile::close(): Unable to close file.");
     }
     m_filehandle = INVALID_HANDLE_VALUE;
 
     //  Delete
     if (!keep_file && _wremove(m_wpath.c_str())){
-        Console::Warning("RawFile::close(): Unable to delete file.");
+        Console::warning("RawFile::close(): Unable to delete file.");
     }
 
     m_path.clear();
@@ -288,7 +287,7 @@ void RawFile::close_and_set_size(ufL_t bytes){
 
     //  Close
     if (!CloseHandle(m_filehandle)){
-        Console::Warning("RawFile::close_and_set_size(): Unable to close file.");
+        Console::warning("RawFile::close_and_set_size(): Unable to close file.");
     }
     m_filehandle = INVALID_HANDLE_VALUE;
 
@@ -329,12 +328,12 @@ void RawFile::close_and_set_size(ufL_t bytes){
 
         //  Close
         if (!CloseHandle(handle)){
-            Console::Warning("RawFile::close_and_set_size(): Unable to close file.");
+            Console::warning("RawFile::close_and_set_size(): Unable to close file.");
         }
     }catch (...){
         //  Close
         if (!CloseHandle(handle)){
-            Console::Warning("RawFile::close_and_set_size(): Unable to close file.");
+            Console::warning("RawFile::close_and_set_size(): Unable to close file.");
         }
         throw;
     }

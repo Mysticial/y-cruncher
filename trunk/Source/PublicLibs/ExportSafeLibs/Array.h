@@ -1,8 +1,8 @@
 /* Array.h
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 05/31/2015
- * Last Modified    : 05/31/2015
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 05/31/2015
+ *  Last Modified   : 05/31/2015
  * 
  */
 

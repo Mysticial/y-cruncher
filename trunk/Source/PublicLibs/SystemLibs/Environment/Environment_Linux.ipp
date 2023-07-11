@@ -1,8 +1,8 @@
 /* Environment_Linux.ipp
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 01/04/2015
- * Last Modified    : 01/04/2015
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 01/04/2015
+ *  Last Modified   : 01/04/2015
  * 
  */
 
@@ -12,6 +12,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 //  Dependencies
 #include <algorithm>
+#include <chrono>
 #include <fstream>
 
 //  There are no header guards in cpuid.h.
@@ -23,7 +24,7 @@
 #include <unistd.h>
 #include "PublicLibs/BasicLibs/StringTools/Unicode.h"
 #include "PublicLibs/ConsoleIO/BasicIO.h"
-#include "PublicLibs/SystemLibs/Time/Time.h"
+//#include "PublicLibs/SystemLibs/Time/Time.h"
 #include "Environment.h"
 namespace ymp{
 namespace Environment{
@@ -49,8 +50,8 @@ void initialize_process_path(){
         process_path.resize(buffer_size);
         bytes = readlink("/proc/self/exe", &process_path[0], buffer_size);
         if (bytes == -1){
-            Console::Warning("Failed to retrieve path.");
-            Console::Quit(1);
+            Console::warning("Failed to retrieve path.");
+            Console::quit_program(1);
         }
     }while ((upL_t)bytes == buffer_size);
     process_path = process_path.c_str();
@@ -171,13 +172,19 @@ u64_t x86_rdtsc(){
     return ((u64_t)hi << 32) | lo;
 }
 u64_t x86_measure_rdtsc_ticks_per_sec(){
-    Time::WallClock w_start = Time::WallClock::Now();
+//    Time::WallClock w_start = Time::WallClock::now();
+    auto w_start = std::chrono::system_clock::now();
     u64_t r_start = x86_rdtsc();
-    while (w_start.SecondsElapsed() < 0.0625);
-    Time::WallClock w_end = Time::WallClock::Now();
+    while (std::chrono::system_clock::now() - w_start < std::chrono::microseconds(62500));
+    auto w_end = std::chrono::system_clock::now();
+//    while (w_start.seconds_elapsed() < 0.0625);
+//    Time::WallClock w_end = Time::WallClock::now();
     u64_t r_end = x86_rdtsc();
 
-    return (u64_t)((double)(r_end - r_start) / (w_end - w_start));
+    auto elapsed = std::chrono::duration_cast<std::chrono::microseconds>(w_end - w_start);
+    double seconds = (double)elapsed.count() / 1000000.;
+
+    return (u64_t)((double)(r_end - r_start) / seconds);
 }
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////

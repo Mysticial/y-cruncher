@@ -127,6 +127,12 @@
     <Filter Include="Source Files\PublicLibs\SystemLibs\FileIO\BaseFile">
       <UniqueIdentifier>{043e4b04-697b-405d-9bb9-6fd9e755c1e4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\DigitViewer2\DigitWriters\BasicTextWriter">
+      <UniqueIdentifier>{9d925e55-2001-4fbf-a3a1-4aaa1f2f8711}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\DigitViewer2\DigitWriters\BasicYcdWriter">
+      <UniqueIdentifier>{8f42a79a-6dbf-47a3-b6fd-2b06f80abc92}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Source\DigitViewer2\makefile">
@@ -266,15 +272,6 @@
     <ClCompile Include="..\..\Source\DigitViewer2\DigitViewer\DigitViewerTasks.cpp">
       <Filter>Source Files\DigitViewer2\DigitViewer</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Source\DigitViewer2\DigitWriters\BasicYcdFileWriter.cpp">
-      <Filter>Source Files\DigitViewer2\DigitWriters</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\DigitViewer2\DigitWriters\BasicYcdSetWriter.cpp">
-      <Filter>Source Files\DigitViewer2\DigitWriters</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\DigitViewer2\DigitWriters\BasicTextWriter.cpp">
-      <Filter>Source Files\DigitViewer2\DigitWriters</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Source\DigitViewer2\RawToAscii\RawToAscii.cpp">
       <Filter>Source Files\DigitViewer2\RawToAscii</Filter>
     </ClCompile>
@@ -401,6 +398,18 @@
     <ClCompile Include="..\..\Source\PublicLibs\SystemLibs\FileIO\BufferredStreamFile.cpp">
       <Filter>Source Files\PublicLibs\SystemLibs\FileIO</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Source\DigitViewer2\DigitWriters\BasicTextWriter\BasicTextWriter.cpp">
+      <Filter>Source Files\DigitViewer2\DigitWriters\BasicTextWriter</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\DigitViewer2\DigitWriters\BasicYcdWriter\BasicYcdFileWriter.cpp">
+      <Filter>Source Files\DigitViewer2\DigitWriters\BasicYcdWriter</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\DigitViewer2\DigitWriters\BasicYcdWriter\BasicYcdSetWriter.cpp">
+      <Filter>Source Files\DigitViewer2\DigitWriters\BasicYcdWriter</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\PublicLibs\BasicLibs\Concurrency\ExceptionHolder.cpp">
+      <Filter>Source Files\PublicLibs\BasicLibs\Concurrency</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Source\DigitViewer2\DigitCount\DigitCount.h">
@@ -435,18 +444,6 @@
     </ClInclude>
     <ClInclude Include="..\..\Source\DigitViewer2\DigitViewer\DigitViewerTasks.h">
       <Filter>Source Files\DigitViewer2\DigitViewer</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\DigitViewer2\DigitWriters\BasicTextWriter.h">
-      <Filter>Source Files\DigitViewer2\DigitWriters</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\DigitViewer2\DigitWriters\BasicYcdFileWriter.h">
-      <Filter>Source Files\DigitViewer2\DigitWriters</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\DigitViewer2\DigitWriters\BasicYcdSetWriter.h">
-      <Filter>Source Files\DigitViewer2\DigitWriters</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\DigitViewer2\DigitWriters\BasicDigitWriter.h">
-      <Filter>Source Files\DigitViewer2\DigitWriters</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\DigitViewer2\RawToAscii\RawToAscii.h">
       <Filter>Source Files\DigitViewer2\RawToAscii</Filter>
@@ -768,6 +765,24 @@
     </ClInclude>
     <ClInclude Include="..\..\Source\PublicLibs\SystemLibs\FileIO\BaseFile\BaseFile_Default.h">
       <Filter>Source Files\PublicLibs\SystemLibs\FileIO\BaseFile</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\DigitViewer2\DigitWriters\BasicTextWriter\BasicTextWriter.h">
+      <Filter>Source Files\DigitViewer2\DigitWriters\BasicTextWriter</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\DigitViewer2\DigitWriters\BasicYcdWriter\BasicYcdFileWriter.h">
+      <Filter>Source Files\DigitViewer2\DigitWriters\BasicYcdWriter</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\DigitViewer2\DigitWriters\BasicYcdWriter\BasicYcdSetWriter.h">
+      <Filter>Source Files\DigitViewer2\DigitWriters\BasicYcdWriter</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\DigitViewer2\DigitWriters\BasicDigitWriter.h">
+      <Filter>Source Files\DigitViewer2\DigitWriters</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\BasicLibs\Concurrency\BasicAction.h">
+      <Filter>Source Files\PublicLibs\BasicLibs\Concurrency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\BasicLibs\Concurrency\ExceptionHolder.h">
+      <Filter>Source Files\PublicLibs\BasicLibs\Concurrency</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

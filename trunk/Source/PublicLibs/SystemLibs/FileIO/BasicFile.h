@@ -1,8 +1,8 @@
 /* BasicFile.h
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 12/30/2015
- * Last Modified    : 12/30/2015
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 12/30/2015
+ *  Last Modified   : 12/30/2015
  * 
  *      std::string paths are assumed to be UTF-8.
  * 

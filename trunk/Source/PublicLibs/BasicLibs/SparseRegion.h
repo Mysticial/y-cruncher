@@ -1,8 +1,8 @@
 /* SparseRegion.h
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 02/09/2018
- * Last Modified    : 02/09/2018
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 02/09/2018
+ *  Last Modified   : 02/09/2018
  * 
  */
 

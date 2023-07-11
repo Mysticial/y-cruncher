@@ -1,8 +1,8 @@
 /* TimeTools.cpp
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 09/16/2014
- * Last Modified    : 08/24/2018
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 09/16/2014
+ *  Last Modified   : 08/24/2018
  * 
  */
 
@@ -39,7 +39,7 @@ YM_NO_INLINE std::string string_time_smart(double seconds){
     return str;
 }
 YM_NO_INLINE void print_time_smart(double seconds, char color){
-    Console::SetColor(color);
+    Console::set_color(color);
     Console::print_fixed(seconds);
     Console::print(" seconds  ( ");
 
@@ -55,7 +55,7 @@ YM_NO_INLINE void print_time_smart(double seconds, char color){
     }
 
     if (color != ' '){
-        Console::SetColor('w');
+        Console::set_color('w');
     }
 }
 YM_NO_INLINE void println_time_smart(double seconds, char color){

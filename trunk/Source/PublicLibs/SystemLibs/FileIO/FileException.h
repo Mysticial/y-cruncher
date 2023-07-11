@@ -1,8 +1,8 @@
 /* FileException.h
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 09/17/2014
- * Last Modified    : 04/11/2017
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 09/17/2014
+ *  Last Modified   : 04/11/2017
  * 
  */
 

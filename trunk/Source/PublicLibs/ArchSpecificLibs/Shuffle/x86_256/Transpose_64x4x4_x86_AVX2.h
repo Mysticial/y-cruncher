@@ -1,8 +1,8 @@
 /* Transpose_64x4x4_x86_AVX2.h
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 08/30/2015
- * Last Modified    : 01/20/2017
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 08/30/2015
+ *  Last Modified   : 01/20/2017
  * 
  */
 

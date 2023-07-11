@@ -44,7 +44,7 @@ void launch(const char* name){
 
     Console::println("Launching y-cruncher...", 'Y');
     Console::println("================================================================\n", 'g');
-    Console::SetColor('w');
+    Console::set_color('w');
 
 
     STARTUPINFOW si;
@@ -67,7 +67,7 @@ void launch(const char* name){
         &pi
     )){
         Console::println_labelc("Unable to start y-cruncher", GetLastError());
-        Console::Pause();
+        Console::pause();
         exit(1);
     }
 
@@ -76,7 +76,7 @@ void launch(const char* name){
         Console::println("\n");
     }
     if (Environment::get_cmd_parameters().size() <= 1 && !Environment::RunFromConsole()){
-        Console::Pause();
+        Console::pause();
     }
     exit(ret);
 }

@@ -1,8 +1,8 @@
 /* BasicYcdFileReader.cpp
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 01/29/2018
- * Last Modified    : 03/21/2018
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 01/29/2018
+ *  Last Modified   : 03/21/2018
  * 
  */
 
@@ -30,8 +30,8 @@ namespace DigitViewer2{
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-BasicYcdFileReader::BasicYcdFileReader(std::string path)
-    : m_file(FileIO::DEFAULT_FILE_ALIGNMENT_K, std::move(path), FileIO::OPEN_READONLY)
+BasicYcdFileReader::BasicYcdFileReader(std::string path, bool raw_io)
+    : m_file(FileIO::DEFAULT_FILE_ALIGNMENT_K, std::move(path), FileIO::OPEN_READONLY, true, raw_io)
 {
     //  Parse the file
     FileIO::BufferedReader reader(m_file);
@@ -111,20 +111,20 @@ BasicYcdFileReader::BasicYcdFileReader(std::string path)
 
     //  Check Version
     if (m_file_version.size() == 0){
-        throw FileIO::FileException("BasicYcdFileReader::BasicYcdFileReader()", path, "No version # found.");
+        throw FileIO::FileException("BasicYcdFileReader::BasicYcdFileReader()", m_file.path(), "No version # found.");
     }
     if (m_file_version != "1.0.0" && m_file_version != "1.1.0"){
         throw FileIO::FileException(
             "BasicYcdFileReader::BasicYcdFileReader()",
-            path,
+            m_file.path(),
             "This .ycd file is of a later format version.\n"
             "This version of the digit viewer is unable to view this file."
         );
     }
 
     //  Other checks
-    if (m_digits_per_file < 100){
-        throw FileIO::FileException("BasicYcdFileReader::BasicYcdFileReader()", path, "Invalid Digits per File");
+    if (m_digits_per_file < 50){
+        throw FileIO::FileException("BasicYcdFileReader::BasicYcdFileReader()", m_file.path(), "Invalid Digits per File");
     }
 
     if (m_stream_end != 0 && m_digits_per_file > m_stream_end){
@@ -146,7 +146,7 @@ BasicYcdFileReader::BasicYcdFileReader(std::string path)
             error += "Total Digits: ";
             error += std::to_string(m_stream_end);
             error += "\n";
-            throw FileIO::FileException("BasicYcdFileReader::BasicYcdFileReader()", path, error);
+            throw FileIO::FileException("BasicYcdFileReader::BasicYcdFileReader()", m_file.path(), error);
         }
         if (block_end > m_stream_end){
             block_end = m_stream_end;
@@ -167,7 +167,7 @@ BasicYcdFileReader::BasicYcdFileReader(std::string path)
             m_fp_convert = RawToCompressed::i64_to_hex;
             break;
         default:
-            throw FileIO::FileException("BasicYcdFileReader::BasicYcdFileReader()", path, "Unsupported Radix");
+            throw FileIO::FileException("BasicYcdFileReader::BasicYcdFileReader()", m_file.path(), "Unsupported Radix");
     }
 }
 bool BasicYcdFileReader::range_is_available(uiL_t offset, uiL_t digits){
@@ -600,7 +600,7 @@ void BasicYcdFileReader::load_stats(
     }
 
     void* P = buffer.ptr();
-    upL_t Pbytes = buffer.len();
+    upL_t Pbytes = buffer.bytes();
 
     upL_t max_digits = start_access(offset, digits, P, Pbytes);
     while (digits > 0){
@@ -624,7 +624,7 @@ void BasicYcdFileReader::load_digits(
     }
 
     void* P = buffer.ptr();
-    upL_t Pbytes = buffer.len();
+    upL_t Pbytes = buffer.bytes();
 
     upL_t max_digits = start_access(offset, digits, P, Pbytes);
     while (digits > 0){

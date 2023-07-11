@@ -1,8 +1,8 @@
 /* RawFile_Linux.ipp
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 07/31/2011
- * Last Modified    : 03/24/2018
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 07/31/2011
+ *  Last Modified   : 03/24/2018
  * 
  *      Please read the comments for "RawFile_Windows.ipp" before you
  *  continue reading here.
@@ -66,6 +66,7 @@
 #include <fcntl.h>
 #include "PublicLibs/ConsoleIO/BasicIO.h"
 #include "PublicLibs/ConsoleIO/Label.h"
+#include "PublicLibs/BasicLibs/StringTools/ToString.h"
 #include "PublicLibs/Exceptions/InvalidParametersException.h"
 #include "PublicLibs/Exceptions/SystemException.h"
 #include "PublicLibs/BasicLibs/Alignment/AlignmentTools.h"
@@ -80,30 +81,30 @@ namespace FileIO{
 //  Errors
 struct FailPrinter_O_DIRECT{
     FailPrinter_O_DIRECT(const std::string& path){
-        Console::Warning(
+        Console::warning(
             "O_DIRECT has failed. Expect performance degradation.\n"
             "If the file system has journaling enabled, try disabling it.\n"
         );
         Console::println_labelc("Path: ", path, 'Y');
-        Console::Warning("Further messages for this warning will be suppressed.\n");
+        Console::warning("Further messages for this warning will be suppressed.\n");
     }
 };
 struct FailPrinter_fallocate{
     FailPrinter_fallocate(const std::string& path){
-        Console::Warning(
+        Console::warning(
             "fallocate() is not supported on this volume. Expect performance degradation.\n"
         );
         Console::println_labelc("Path: ", path, 'Y');
-        Console::Warning("Further messages for this warning will be suppressed.\n");
+        Console::warning("Further messages for this warning will be suppressed.\n");
     }
 };
 struct FailPrinter_ftruncate{
     FailPrinter_ftruncate(const std::string& path){
-        Console::Warning(
+        Console::warning(
             "ftruncate() has failed. Expect performance degradation.\n"
         );
         Console::println_labelc("Path: ", path, 'Y');
-        Console::Warning("Further messages for this warning will be suppressed.\n");
+        Console::warning("Further messages for this warning will be suppressed.\n");
     }
 };
 void warn_O_DIRECT_fail(const std::string& path){
@@ -116,10 +117,10 @@ void warn_fallocate_fail(int errorcode, const std::string& path){
         return;
     }
     case ENOSPC:
-        Console::Warning("fallocate() has failed. Disk is full.\n");
+        Console::warning("fallocate() has failed. Disk is full.\n");
         break;
     default:
-        Console::Warning(
+        Console::warning(
             "fallocate() has failed. (errno = " + std::to_string(errorcode) +  ")  Expect performance degradation.\n"
         );
     }
@@ -337,7 +338,7 @@ RawFile::operator bool() const{
 }
 void RawFile::flush(){
     if (fsync(m_filehandle) == -1){
-        Console::Warning("RawFile::close(): Unable to flush file.");
+        Console::warning("RawFile::close(): Unable to flush file.");
     }
 }
 void RawFile::close(bool keep_file){
@@ -350,13 +351,13 @@ void RawFile::close(bool keep_file){
 
     //  Close
     if (::close(m_filehandle) == -1){
-        Console::Warning("RawFile::close(): Unable to close file.");
+        Console::warning("RawFile::close(): Unable to close file.");
     }
     m_filehandle = -1;
 
     //  Delete
     if (!keep_file && remove(m_path.c_str()) != 0){
-        Console::Warning("RawFile::close(): Unable to delete file.");
+        Console::warning("RawFile::close(): Unable to delete file.");
     }
 
     m_path.clear();
@@ -371,7 +372,7 @@ void RawFile::close_and_set_size(ufL_t bytes){
 
     //  Close
     if (::close(m_filehandle) == -1){
-        Console::Warning("RawFile::close_and_set_size(): Unable to close file.");
+        Console::warning("RawFile::close_and_set_size(): Unable to close file.");
     }
     m_filehandle = -1;
 
@@ -394,17 +395,17 @@ void RawFile::close_and_set_size(ufL_t bytes){
         if (ftruncate(handle, bytes) != 0){
             int err = errno;
             if (::close(handle) == -1){
-                Console::Warning("RawFile::close_and_set_size(): Unable to close file.");
+                Console::warning("RawFile::close_and_set_size(): Unable to close file.");
             }
             throw SystemException("RawFile::close_and_set_size()", "ftruncate() failed.", err);
         }
 
         if (::close(handle) == -1){
-            Console::Warning("RawFile::close_and_set_size(): Unable to close file.");
+            Console::warning("RawFile::close_and_set_size(): Unable to close file.");
         }
     }catch (...){
         if (::close(handle) == -1){
-            Console::Warning("RawFile::close_and_set_size(): Unable to close file.");
+            Console::warning("RawFile::close_and_set_size(): Unable to close file.");
         }
         throw;
     }
@@ -446,7 +447,11 @@ void RawFile::set_size(ufL_t bytes){
         throw InvalidParametersException("RawFile::set_size()", "File isn't open.");
     }
     if (ftruncate(m_filehandle, bytes) != 0){
-        throw SystemException("RawFile::set_size()", "ftruncate() failed.", errno);
+        throw SystemException(
+            "RawFile::set_size()",
+            "ftruncate() failed. Size: " + StringTools::tostr(bytes, StringTools::BYTES_EXPANDED),
+            errno
+        );
     }
 }
 ////////////////////////////////////////////////////////////////////////////////

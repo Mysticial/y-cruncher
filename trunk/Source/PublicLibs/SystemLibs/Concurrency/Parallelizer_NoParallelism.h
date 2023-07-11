@@ -1,8 +1,8 @@
 /* Parallelizer_NoParallelism.h
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 02/19/2017
- * Last Modified    : 02/19/2017
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 02/19/2017
+ *  Last Modified   : 02/19/2017
  * 
  */
 

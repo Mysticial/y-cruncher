@@ -1,8 +1,8 @@
 /* FileIO.h - File IO
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 01/24/2015
- * Last Modified    : 12/30/2015
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 01/24/2015
+ *  Last Modified   : 12/30/2015
  * 
  *      std::string paths are assumed to be UTF-8.
  * 
@@ -27,7 +27,7 @@ namespace FileIO{
 ////////////////////////////////////////////////////////////////////////////////
 void    CompileOptions      ();
 ////////////////////////////////////////////////////////////////////////////////
-void    MakeDirectory       (const std::string& path);
+bool    MakeDirectory       (const std::string& path);
 void    RenameFile          (const std::string&, const std::string& newname);
 ufL_t   GetFileSize         (const std::string& path);
 bool    FileExists          (const std::string& path);

@@ -1,8 +1,8 @@
 /* Thread_Windows.h
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 09/15/2014
- * Last Modified    : 03/07/2016
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 09/15/2014
+ *  Last Modified   : 03/07/2016
  * 
  */
 
@@ -24,10 +24,10 @@ class WallClock{
     long long m_ticks;
 
 public:
-    static WallClock Now();
+    static WallClock now();
     double operator-(const WallClock& x) const;
-    double SecondsElapsed() const{
-        return Now() - *this;
+    double seconds_elapsed() const{
+        return now() - *this;
     }
 };
 ////////////////////////////////////////////////////////////////////////////////

@@ -1,8 +1,8 @@
 /* Types.h
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 07/22/2014
- * Last Modified    : 07/22/2014
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 07/22/2014
+ *  Last Modified   : 07/22/2014
  * 
  *      This header is pulled into fucking everything. It doesn't cost much to
  *  avoid pulling in <stdint.h> if we don't need to.

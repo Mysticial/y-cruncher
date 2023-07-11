@@ -1,8 +1,8 @@
 /* ColorStrings.h
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 03/08/2018
- * Last Modified    : 03/08/2018
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 03/08/2018
+ *  Last Modified   : 03/08/2018
  * 
  */
 

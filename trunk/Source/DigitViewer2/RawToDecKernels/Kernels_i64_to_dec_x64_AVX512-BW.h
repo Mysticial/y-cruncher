@@ -1,8 +1,8 @@
 /* Kernels_i64_to_dec_x64_AVX512-BW.h
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 02/11/2018
- * Last Modified    : 02/11/2018
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 02/11/2018
+ *  Last Modified   : 02/11/2018
  * 
  *      This implementation is new to DigitViewer2. While the old approach uses
  *  floating-point reciprocals, this method is an all-integer algorithm based on
@@ -36,9 +36,9 @@ YM_FORCE_INLINE __m512i div_100000000(__m512i x0){
 
     r3 = _mm512_shuffle_epi32(x0, _MM_PERM_CDAB);
 
-    r0 = _mm512_mul_epu32(x0, _mm512_set1_epi32(2882303761));
-    r1 = _mm512_mul_epu32(r3, _mm512_set1_epi32(2221002493));
-    r2 = _mm512_mul_epu32(x0, _mm512_set1_epi32(2221002493));
+    r0 = _mm512_mul_epu32(x0, _mm512_set1_epi32(2882303761u));
+    r1 = _mm512_mul_epu32(r3, _mm512_set1_epi32(2221002493u));
+    r2 = _mm512_mul_epu32(x0, _mm512_set1_epi32(2221002493u));
 
     r2 = _mm512_srli_epi64(r2, 32);
     r0 = _mm512_add_epi64(r0, r2);
@@ -48,7 +48,7 @@ YM_FORCE_INLINE __m512i div_100000000(__m512i x0){
     r0 = _mm512_srli_epi64(r0, 32);
     r1 = _mm512_srli_epi64(r1, 32);
 
-    r3 = _mm512_mul_epu32(r3, _mm512_set1_epi32(2882303761));
+    r3 = _mm512_mul_epu32(r3, _mm512_set1_epi32(2882303761u));
     r3 = _mm512_add_epi64(r3, r0);
     r3 = _mm512_add_epi64(r3, r1);
 
@@ -82,8 +82,8 @@ YM_FORCE_INLINE void i64_to_dec_x64_AVX512BW(
 
         //  Invariant multiply
         hi = _mm512_shuffle_epi32(x0, _MM_PERM_CDAB);
-        lo = _mm512_mul_epu32(x0, _mm512_set1_epi32(3518437209));
-        hi = _mm512_mul_epu32(hi, _mm512_set1_epi32(3518437209));
+        lo = _mm512_mul_epu32(x0, _mm512_set1_epi32(3518437209u));
+        hi = _mm512_mul_epu32(hi, _mm512_set1_epi32(3518437209u));
         hi = _mm512_mask_shuffle_epi32(hi, 0x5555, lo, _MM_PERM_CDAB);
 
         //  Down shift

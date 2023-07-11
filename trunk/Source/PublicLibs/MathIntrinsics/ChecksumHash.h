@@ -1,8 +1,8 @@
 /* ChecksumHash.h - Checksum Hashing
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 12/26/2010
- * Last Modified    : 07/14/2014
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 12/26/2010
+ *  Last Modified   : 07/14/2014
  * 
  *      The prime number used for this hash is 2^61 - 1.
  * 
@@ -63,7 +63,7 @@ public:
 private:
     YM_FORCE_INLINE hash_t(u64_t x, void*) : m_hash(x) {}
     static u64_t reduce(u64_t x);
-    static u64_t reduce(s64_t x);
+    static s64_t reduce(s64_t x);
     static u64_t reduce(u64_t L, u64_t H);
 
 private:
@@ -92,13 +92,13 @@ YM_FORCE_INLINE hash_t::hash_t(u64_t x)
 {}
 YM_FORCE_INLINE u64_t hash_t::value() const{
     u64_t x = reduce(m_hash);
-    return x == PRIME ? 0 : x;
+    return x >= PRIME ? x - PRIME : x;
 }
 YM_FORCE_INLINE u64_t hash_t::reduce(u64_t x){
     //  Reduce any unsigned 64-bit integer into the range [0, 2^61 + 7).
     return (x >> 61) + (x & PRIME);
 }
-YM_FORCE_INLINE u64_t hash_t::reduce(s64_t x){
+YM_FORCE_INLINE s64_t hash_t::reduce(s64_t x){
     //  Reduce any signed 64-bit integer into the range [-4, 2^61 + 3).
     return (x >> 61) + ((u64_t)x & PRIME);
 }

@@ -1,8 +1,8 @@
 /* Label.h
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 08/31/2014
- * Last Modified    : 08/31/2014
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 08/31/2014
+ *  Last Modified   : 08/31/2014
  * 
  */
 

@@ -1,8 +1,8 @@
 /* x86_SSE2.h
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 09/03/2014
- * Last Modified    : 09/03/2014
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 09/03/2014
+ *  Last Modified   : 09/03/2014
  * 
  */
 
@@ -26,7 +26,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 #if !(defined _WIN64) && !(defined __x86_64__)
-//YM_FORCE_INLINE static __m128i _mm_set1_epi64x(s64_t x){
+//static YM_FORCE_INLINE __m128i _mm_set1_epi64x(s64_t x){
 //    __m128i a = _mm_set1_epi32((s32_t)x);
 //    __m128i b = _mm_set1_epi32((s32_t)(x >> 32));
 //    return _mm_unpacklo_epi32(a, b);
@@ -46,6 +46,10 @@ YM_FORCE_INLINE ymp::s64_t _mm_reduce_or_epi64(__m128i x){
 YM_FORCE_INLINE ymp::s64_t _mm_reduce_add_epi64(__m128i x){
     x = _mm_add_epi64(x, _mm_unpackhi_epi64(x, x));
     return _mm_cvtsi128_si64(x);
+}
+YM_FORCE_INLINE double _mm_reduce_add_pd(__m128d x){
+    x = _mm_add_pd(x, _mm_unpackhi_pd(x, x));
+    return _mm_cvtsd_f64(x);
 }
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////

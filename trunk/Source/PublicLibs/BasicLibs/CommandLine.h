@@ -1,8 +1,8 @@
 /* CommandLine.h - Command Line Helpers
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 07/12/2014
- * Last Modified    : 07/12/2014
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 07/12/2014
+ *  Last Modified   : 07/12/2014
  * 
  */
 
@@ -28,11 +28,11 @@ namespace CommandLine{
 ////////////////////////////////////////////////////////////////////////////////
 //  Helpers
 class Parameters;
-inline void UnrecognizedCommand(const char* command){
-    UnrecognizedCommand(command);
-}
 inline void UnrecognizedCommand(const std::string& command){
     throw InvalidParametersException("", "Invalid Command: " + command);
+}
+inline void UnrecognizedCommand(const char* command){
+    UnrecognizedCommand(std::string(command));
 }
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -127,8 +127,9 @@ public:
             return true;
         }
         if (fatal_on_fail){
-            Console::Warning("Invalid Parameter: " + CurrentKey());
-            Console::Quit(1);
+            Console::ConsoleLockScope lock;
+            Console::warning("Invalid Parameter: " + CurrentKey());
+            Console::quit_program(1);
         }
         return false;
     }
@@ -140,8 +141,9 @@ public:
             return true;
         }
         if (fatal_on_fail){
-            Console::Warning("Invalid Parameter: " + CurrentKey());
-            Console::Quit(1);
+            Console::ConsoleLockScope lock;
+            Console::warning("Invalid Parameter: " + CurrentKey());
+            Console::quit_program(1);
         }
         return false;
     }
@@ -162,8 +164,9 @@ public:
 private:
     Token split(const string& token){
         size_t pos = token.find(':');
-        if (pos == string::npos)
+        if (pos == string::npos){
             return Token(token, string());
+        }
 
         return Token(
             token.substr(0, pos),

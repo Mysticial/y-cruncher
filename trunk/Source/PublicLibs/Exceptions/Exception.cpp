@@ -1,8 +1,8 @@
 /* Exception.cpp
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 04/09/2017
- * Last Modified    : 04/09/2017
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 04/09/2017
+ *  Last Modified   : 04/09/2017
  * 
  */
 
@@ -35,17 +35,18 @@ public:
     [[noreturn]] virtual void fire() const override{
         throw *this;
     }
-    virtual const char* get_typename() const{
+    virtual const char* get_typename() const override{
         return (const char*)m_data.get();
     }
     virtual std::unique_ptr<Exception> move_from() override{
         return std::make_unique<UnknownException>(std::move(*this));
     }
-    virtual void print() const{
+    virtual void print() const override{
+        Console::ConsoleLockScope lock;
         Console::println("\n", 'R');
         Console::println_labelc("Exception Encountered", get_typename());
         Console::println("\nException type unknown to this module. Unable to display.\n");
-        Console::SetColor('w');
+        Console::set_color('w');
     }
 
 public:
@@ -85,8 +86,9 @@ void register_exception(const char* name, ExceptionFactory* factory){
     std::map<std::string, ExceptionFactory*>& map = exception_map();
     auto iter = map.find(str);
     if (iter != map.end()){
-        Console::Warning("Duplicate Exception Type");
-        Console::Quit(1);
+        Console::ConsoleLockScope lock;
+        Console::warning("Duplicate Exception Type");
+        Console::quit_program(1);
     }
     map[str] = factory;
 }

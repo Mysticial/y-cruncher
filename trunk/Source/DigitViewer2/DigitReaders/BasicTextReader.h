@@ -1,8 +1,8 @@
 /* BasicTextReader.h
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 01/14/2018
- * Last Modified    : 03/20/2018
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 01/14/2018
+ *  Last Modified   : 03/20/2018
  * 
  *      This reader uses raw (unbuffered) I/O.
  * 
@@ -38,7 +38,7 @@ class BasicTextReader : public BasicDigitReader{
 public:
     static const upL_t FILE_ALIGNMENT = FileIO::DEFAULT_FILE_ALIGNMENT;
 
-    BasicTextReader(const std::string& path, char radix = 0);
+    BasicTextReader(std::string path, char radix = 0, bool raw_io = true);
 
     virtual std::string first_digits            () override;
     virtual uiL_t       stream_end              () const override{ return m_total_digits; }

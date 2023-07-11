@@ -1,8 +1,8 @@
 /* SystemException.h
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 04/09/2017
- * Last Modified    : 04/09/2017
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 04/09/2017
+ *  Last Modified   : 04/09/2017
  * 
  */
 
@@ -41,6 +41,7 @@ YM_NO_INLINE SystemException::SystemException(const char* function, std::string 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 void SystemException::print() const{
+    Console::ConsoleLockScope lock;
     Console::println("\n", 'R');
     Console::println_labelc("System Exception Encountered", get_typename());
     Console::println();
@@ -51,7 +52,7 @@ void SystemException::print() const{
     Console::println();
     Console::println(m_message);
     Console::println("\n");
-    Console::SetColor('w');
+    Console::set_color('w');
 }
 SystemException::SystemException(SerializationPassKey key, const char*& stream)
     : Exception(key, stream)

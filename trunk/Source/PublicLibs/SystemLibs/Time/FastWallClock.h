@@ -1,8 +1,8 @@
 /* FastWallClock.h
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 08/24/2018
- * Last Modified    : 08/24/2018
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 08/24/2018
+ *  Last Modified   : 08/24/2018
  * 
  * 
  *      This is a low-overhead clock that trades away accuracy for better

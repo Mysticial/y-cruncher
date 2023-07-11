@@ -1,8 +1,8 @@
 /* Time_Windows.ipp
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 09/17/2014
- * Last Modified    : 03/07/2016
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 09/17/2014
+ *  Last Modified   : 03/07/2016
  * 
  */
 
@@ -28,11 +28,11 @@ void CompileOptions(){
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-YM_NO_INLINE WallClock WallClock::Now(){
+YM_NO_INLINE WallClock WallClock::now(){
     LARGE_INTEGER x;
     if (!QueryPerformanceCounter(&x)){
-        Console::Warning("Unable to access performance counter.");
-        Console::Quit(1);
+        Console::warning("Unable to access performance counter.");
+        Console::quit_program(1);
     }
     WallClock out;
     out.m_ticks = x.QuadPart;
@@ -41,8 +41,8 @@ YM_NO_INLINE WallClock WallClock::Now(){
 YM_NO_INLINE double WallClock::operator-(const WallClock& x) const{
     LARGE_INTEGER freqency;
     if (!QueryPerformanceFrequency(&freqency)){
-        Console::Warning("Unable to access performance counter.");
-        Console::Quit(1);
+        Console::warning("Unable to access performance counter.");
+        Console::quit_program(1);
     }
     return (double)(m_ticks - x.m_ticks) / freqency.QuadPart;
 }
@@ -52,12 +52,12 @@ YM_NO_INLINE double WallClock::operator-(const WallClock& x) const{
 ////////////////////////////////////////////////////////////////////////////////
 PerformanceTimeStamp PerformanceTimeStamp::now(){
     PerformanceTimeStamp out;
-    out.wall_clock = WallClock::Now();
+    out.wall_clock = WallClock::now();
 
     FILETIME a, b, c, d;
     if (GetProcessTimes(GetCurrentProcess(), &a, &b, &c, &d) == 0){
-        Console::Warning("Unable to get CPU Clock.");
-        Console::Quit(1);
+        Console::warning("Unable to get CPU Clock.");
+        Console::quit_program(1);
     }
 
     out.kernel_clock = (double)(c.dwLowDateTime | ((u64_t)c.dwHighDateTime << 32)) * 0.0000001;

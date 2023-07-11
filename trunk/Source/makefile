@@ -50,4 +50,12 @@ include Common.mk
 	mkdir -p $(OUTPUT_ROOT)/Binaries/
 	$(CC) ScratchLinux.cpp $^ $(CFLAGS_19ZN2) -o $(OUTPUT_ROOT)/Binaries/$@
 
+20-ZN3: $(addprefix $(OUTPUT_20ZN3)/, $(SOURCES:.cpp=.o))
+	mkdir -p $(OUTPUT_ROOT)/Binaries/
+	$(CC) ScratchLinux.cpp $^ $(CFLAGS_20ZN3) -o $(OUTPUT_ROOT)/Binaries/$@
+
+22-ZN4: $(addprefix $(OUTPUT_22ZN4)/, $(SOURCES:.cpp=.o))
+	mkdir -p $(OUTPUT_ROOT)/Binaries/
+	$(CC) ScratchLinux.cpp $^ $(CFLAGS_22ZN4) -o $(OUTPUT_ROOT)/Binaries/$@
+
 

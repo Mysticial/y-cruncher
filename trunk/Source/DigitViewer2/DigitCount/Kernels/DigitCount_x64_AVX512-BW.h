@@ -1,8 +1,8 @@
 /* DigitCount_x64_AVX512-BW.h
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 01/13/2018
- * Last Modified    : 01/13/2018
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 01/13/2018
+ *  Last Modified   : 01/13/2018
  * 
  */
 
@@ -103,9 +103,9 @@ YM_FORCE_INLINE void accumulate_b64_AVX512_64x10(u64_t digits[10], const __m512i
 
     sum0 = _mm512_add_epi64(sum0, sum4);
 
-    sum1 = _mm512_loadu_si512((__m512i*)digits);    //  COMPILER-BUG-GCC: Pointer Type
+    sum1 = _mm512_loadu_si512(digits);
     sum0 = _mm512_add_epi64(sum0, sum1);
-    _mm512_storeu_si512((__m512i*)digits, sum0);
+    _mm512_storeu_si512(digits, sum0);
 
     digits[8] += _mm512_reduce_add_epi64(sum8);
     digits[9] += _mm512_reduce_add_epi64(sum9);
@@ -167,9 +167,111 @@ void accumulate_b64_AVX512_64x8(u64_t digits[8], const __m512i* raw_digits, upL_
 
     sum0 = _mm512_add_epi64(sum0, sum4);
 
-    sum1 = _mm512_loadu_si512((__m512i*)digits);    //  COMPILER-BUG-GCC: Pointer Type
+    sum1 = _mm512_loadu_si512(digits);
     sum0 = _mm512_add_epi64(sum0, sum1);
-    _mm512_storeu_si512((__m512i*)digits, sum0);
+    _mm512_storeu_si512(digits, sum0);
+}
+YM_FORCE_INLINE void accumulate_b64_AVX512_64x16(u64_t digits[16], const __m512i* raw_digits, upL_t blocks){
+    //  AVX512 has enough registers to do this.
+
+    const __m512i DIGIT_0 = _mm512_set1_epi8( 0);
+    const __m512i DIGIT_1 = _mm512_set1_epi8( 1);
+    const __m512i DIGIT_2 = _mm512_set1_epi8( 2);
+    const __m512i DIGIT_3 = _mm512_set1_epi8( 3);
+    const __m512i DIGIT_4 = _mm512_set1_epi8( 4);
+    const __m512i DIGIT_5 = _mm512_set1_epi8( 5);
+    const __m512i DIGIT_6 = _mm512_set1_epi8( 6);
+    const __m512i DIGIT_7 = _mm512_set1_epi8( 7);
+    const __m512i DIGIT_8 = _mm512_set1_epi8( 8);
+    const __m512i DIGIT_9 = _mm512_set1_epi8( 9);
+    const __m512i DIGIT_A = _mm512_set1_epi8(10);
+    const __m512i DIGIT_B = _mm512_set1_epi8(11);
+    const __m512i DIGIT_C = _mm512_set1_epi8(12);
+    const __m512i DIGIT_D = _mm512_set1_epi8(13);
+    const __m512i DIGIT_E = _mm512_set1_epi8(14);
+    const __m512i DIGIT_F = _mm512_set1_epi8(15);
+
+    __m512i sum0 = _mm512_setzero_si512();
+    __m512i sum1 = _mm512_setzero_si512();
+    __m512i sum2 = _mm512_setzero_si512();
+    __m512i sum3 = _mm512_setzero_si512();
+    __m512i sum4 = _mm512_setzero_si512();
+    __m512i sum5 = _mm512_setzero_si512();
+    __m512i sum6 = _mm512_setzero_si512();
+    __m512i sum7 = _mm512_setzero_si512();
+    __m512i sum8 = _mm512_setzero_si512();
+    __m512i sum9 = _mm512_setzero_si512();
+    __m512i sumA = _mm512_setzero_si512();
+    __m512i sumB = _mm512_setzero_si512();
+    __m512i sumC = _mm512_setzero_si512();
+    __m512i sumD = _mm512_setzero_si512();
+    __m512i sumE = _mm512_setzero_si512();
+    __m512i sumF = _mm512_setzero_si512();
+
+    const __m512i NEG = _mm512_set1_epi8(-1);
+    do{
+        __m512i r0 = _mm512_load_si512(raw_digits);
+        sum0 = _mm512_mask_sub_epi8(sum0, _mm512_cmpeq_epi8_mask(r0, DIGIT_0), sum0, NEG);
+        sum1 = _mm512_mask_sub_epi8(sum1, _mm512_cmpeq_epi8_mask(r0, DIGIT_1), sum1, NEG);
+        sum2 = _mm512_mask_sub_epi8(sum2, _mm512_cmpeq_epi8_mask(r0, DIGIT_2), sum2, NEG);
+        sum3 = _mm512_mask_sub_epi8(sum3, _mm512_cmpeq_epi8_mask(r0, DIGIT_3), sum3, NEG);
+        sum4 = _mm512_mask_sub_epi8(sum4, _mm512_cmpeq_epi8_mask(r0, DIGIT_4), sum4, NEG);
+        sum5 = _mm512_mask_sub_epi8(sum5, _mm512_cmpeq_epi8_mask(r0, DIGIT_5), sum5, NEG);
+        sum6 = _mm512_mask_sub_epi8(sum6, _mm512_cmpeq_epi8_mask(r0, DIGIT_6), sum6, NEG);
+        sum7 = _mm512_mask_sub_epi8(sum7, _mm512_cmpeq_epi8_mask(r0, DIGIT_7), sum7, NEG);
+        sum8 = _mm512_mask_sub_epi8(sum8, _mm512_cmpeq_epi8_mask(r0, DIGIT_8), sum8, NEG);
+        sum9 = _mm512_mask_sub_epi8(sum9, _mm512_cmpeq_epi8_mask(r0, DIGIT_9), sum9, NEG);
+        sumA = _mm512_mask_sub_epi8(sumA, _mm512_cmpeq_epi8_mask(r0, DIGIT_A), sumA, NEG);
+        sumB = _mm512_mask_sub_epi8(sumB, _mm512_cmpeq_epi8_mask(r0, DIGIT_B), sumB, NEG);
+        sumC = _mm512_mask_sub_epi8(sumC, _mm512_cmpeq_epi8_mask(r0, DIGIT_C), sumC, NEG);
+        sumD = _mm512_mask_sub_epi8(sumD, _mm512_cmpeq_epi8_mask(r0, DIGIT_D), sumD, NEG);
+        sumE = _mm512_mask_sub_epi8(sumE, _mm512_cmpeq_epi8_mask(r0, DIGIT_E), sumE, NEG);
+        sumF = _mm512_mask_sub_epi8(sumF, _mm512_cmpeq_epi8_mask(r0, DIGIT_F), sumF, NEG);
+        raw_digits++;
+    }while (--blocks);
+
+    sum0 = reduce_u8_to_u64_AVX512(sum0);
+    sum1 = reduce_u8_to_u64_AVX512(sum1);
+    sum2 = reduce_u8_to_u64_AVX512(sum2);
+    sum3 = reduce_u8_to_u64_AVX512(sum3);
+    sum4 = reduce_u8_to_u64_AVX512(sum4);
+    sum5 = reduce_u8_to_u64_AVX512(sum5);
+    sum6 = reduce_u8_to_u64_AVX512(sum6);
+    sum7 = reduce_u8_to_u64_AVX512(sum7);
+    SIMD::transpose_i64_8x8_AVX512(sum0, sum1, sum2, sum3, sum4, sum5, sum6, sum7);
+    sum8 = reduce_u8_to_u64_AVX512(sum8);
+    sum9 = reduce_u8_to_u64_AVX512(sum9);
+    sumA = reduce_u8_to_u64_AVX512(sumA);
+    sumB = reduce_u8_to_u64_AVX512(sumB);
+    sumC = reduce_u8_to_u64_AVX512(sumC);
+    sumD = reduce_u8_to_u64_AVX512(sumD);
+    sumE = reduce_u8_to_u64_AVX512(sumE);
+    sumF = reduce_u8_to_u64_AVX512(sumF);
+    SIMD::transpose_i64_8x8_AVX512(sum8, sum9, sumA, sumB, sumC, sumD, sumE, sumF);
+
+    sum0 = _mm512_add_epi64(sum0, sum1);
+    sum2 = _mm512_add_epi64(sum2, sum3);
+    sum4 = _mm512_add_epi64(sum4, sum5);
+    sum6 = _mm512_add_epi64(sum6, sum7);
+    sum8 = _mm512_add_epi64(sum8, sum9);
+    sumA = _mm512_add_epi64(sumA, sumB);
+    sumC = _mm512_add_epi64(sumC, sumD);
+    sumE = _mm512_add_epi64(sumE, sumF);
+
+    sum0 = _mm512_add_epi64(sum0, sum2);
+    sum4 = _mm512_add_epi64(sum4, sum6);
+    sum8 = _mm512_add_epi64(sum8, sumA);
+    sumC = _mm512_add_epi64(sumC, sumE);
+
+    sum0 = _mm512_add_epi64(sum0, sum4);
+    sum8 = _mm512_add_epi64(sum8, sumC);
+
+    sum1 = _mm512_loadu_si512(digits + 0);
+    sum9 = _mm512_loadu_si512(digits + 8);
+    sum0 = _mm512_add_epi64(sum0, sum1);
+    sum8 = _mm512_add_epi64(sum8, sum9);
+    _mm512_storeu_si512(digits + 0, sum0);
+    _mm512_storeu_si512(digits + 8, sum8);
 }
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////

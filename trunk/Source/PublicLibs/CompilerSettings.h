@@ -1,8 +1,8 @@
 /* CompilerSettings.h
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 01/15/2015
- * Last Modified    : 01/15/2015
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 01/15/2015
+ *  Last Modified   : 01/15/2015
  * 
  */
 

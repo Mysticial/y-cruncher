@@ -1,8 +1,8 @@
 /* x86_AVX.h
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 09/03/2014
- * Last Modified    : 09/03/2014
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 09/03/2014
+ *  Last Modified   : 09/03/2014
  * 
  */
 
@@ -22,7 +22,7 @@ namespace ymp{
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-//  COMPILER-BUG-GCC: Missing AVX2 intrinsics
+//  COMPILER-BUG-GCC: Missing AVX2 intrinsics (https://gcc.gnu.org/bugzilla/show_bug.cgi?id=91341)
 #ifdef __GNUC__
 YM_FORCE_INLINE __m256 _mm256_loadu2_m128(const float* H, const float* L){
     __m256 x = _mm256_castps128_ps256(_mm_loadu_ps(L));
@@ -55,6 +55,14 @@ YM_FORCE_INLINE __m128i _mm_mulhi_epu32(__m128i a, __m128i b){
 
     L = _mm_shuffle_epi32(L, 177);
     return _mm_blend_epi16(L, H, 0xcc);
+}
+YM_FORCE_INLINE double _mm256_reduce_add_pd(__m256d y){
+    __m128d x = _mm_add_pd(
+        _mm256_castpd256_pd128(y),
+        _mm256_extractf128_pd(y, 1)
+    );
+    x = _mm_add_pd(x, _mm_unpackhi_pd(x, x));
+    return _mm_cvtsd_f64(x);
 }
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////

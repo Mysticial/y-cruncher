@@ -1,8 +1,8 @@
 /* SmartPointerA.h
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 09/06/2016
- * Last Modified    : 05/08/2017
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 09/06/2016
+ *  Last Modified   : 05/08/2017
  * 
  *      A lightweight smart pointer with support for alignment.
  * 
@@ -30,14 +30,14 @@ public:
     ~SmartPointerA();
 
     template <typename Child>
-    SmartPointerA(SmartPointerA<Child>&& x)
+    SmartPointerA(SmartPointerA<Child>&& x) noexcept
         : m_ptr(x.m_ptr)
     {
         x.m_ptr = nullptr;
     }
 
     template <typename Child>
-    void operator=(SmartPointerA<Child>&& x){
+    void operator=(SmartPointerA<Child>&& x) noexcept{
         clear();
         m_ptr = x.m_ptr;
         x.m_ptr = nullptr;
@@ -51,14 +51,14 @@ public:
     //  Construction
 
     //  Construct pointer with no object.
-    SmartPointerA() : m_ptr(nullptr) {}
+    SmartPointerA() noexcept : m_ptr(nullptr) {}
 
     //  Construct pointer with object by emplacement.
     template <class... Args>
     SmartPointerA(SmartPointerToken, Args&&... args);
 
     //  Clear Pointer
-    void clear();
+    void clear() noexcept;
 
     //  Basic reset.
     template <class... Args>

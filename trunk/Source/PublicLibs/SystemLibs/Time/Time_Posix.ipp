@@ -1,8 +1,8 @@
 /* Time_Linux.ipp
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 09/17/2014
- * Last Modified    : 03/07/2016
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 09/17/2014
+ *  Last Modified   : 03/07/2016
  * 
  */
 
@@ -29,11 +29,11 @@ void CompileOptions(){
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-YM_NO_INLINE WallClock WallClock::Now(){
+YM_NO_INLINE WallClock WallClock::now(){
     WallClock out;
     if (gettimeofday(&out.m_time, NULL)){
-        Console::Warning("Unable to access gettimeofday().");
-        Console::Quit(1);
+        Console::warning("Unable to access gettimeofday().");
+        Console::quit_program(1);
     }
     return out;
 }
@@ -52,7 +52,7 @@ double WallClock::operator-(const WallClock& x) const{
 ////////////////////////////////////////////////////////////////////////////////
 PerformanceTimeStamp PerformanceTimeStamp::now(){
     PerformanceTimeStamp out;
-    out.wall_clock = WallClock::Now();
+    out.wall_clock = WallClock::now();
 
     static double ratio = 1. / sysconf(_SC_CLK_TCK);
 

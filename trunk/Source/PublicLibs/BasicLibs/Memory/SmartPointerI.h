@@ -1,8 +1,8 @@
 /* SmartPointerI.h
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 05/28/2017
- * Last Modified    : 05/28/2017
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 05/28/2017
+ *  Last Modified   : 05/28/2017
  * 
  *      A lightweight smart pointer for incomplete types.
  * 
@@ -35,12 +35,12 @@ public:
 
     ~SmartPointerI();
 
-    SmartPointerI(SmartPointerI&& x)
+    SmartPointerI(SmartPointerI&& x) noexcept
         : m_ptr(x.m_ptr)
     {
         x.m_ptr = nullptr;
     }
-    void operator=(SmartPointerI&& x){
+    void operator=(SmartPointerI&& x) noexcept{
         clear();
         m_ptr = x.m_ptr;
         x.m_ptr = nullptr;
@@ -53,7 +53,7 @@ public:
 public:
     //  Construction
 
-    SmartPointerI()
+    SmartPointerI() noexcept
         : m_ptr(nullptr)
     {}
 
@@ -67,12 +67,12 @@ public:
         ptr.m_ptr = nullptr;
     }
 
-    void clear();
+    void clear() noexcept;
 
     template <class... Args>
     void reset(Args&&... args);
 
-    Type* release(){
+    Type* release() noexcept{
         Type* ptr = m_ptr;
         m_ptr = nullptr;
         return ptr;

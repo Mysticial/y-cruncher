@@ -1,8 +1,8 @@
 /* AdjacentLanePermute_x86_512.h
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 08/30/2015
- * Last Modified    : 06/22/2019
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 08/30/2015
+ *  Last Modified   : 06/22/2019
  * 
  */
 
@@ -104,6 +104,9 @@ YM_FORCE_INLINE __m512i mm512_permuteaj64_11(__m512i a, __m512i b){
 YM_FORCE_INLINE __m512i mm512_permuteaj64_01(__m512i a, __m512i b){
     return _mm512_mask_blend_epi64(0xaa, a, b);
 }
+YM_FORCE_INLINE __m512i mm512_permuteaj64_10(__m512i a, __m512i b){
+    return _mm512_castpd_si512(_mm512_shuffle_pd(_mm512_castsi512_pd(a), _mm512_castsi512_pd(b), 85));
+}
 ////////////////////////////////////////////////////////////////////////////////
 YM_FORCE_INLINE __m512i mm512_permuteaj128_00(__m512i a, __m512i b){
     return _mm512_mask_permutex_epi64(a, 0xcc, b, 78);
@@ -113,6 +116,9 @@ YM_FORCE_INLINE __m512i mm512_permuteaj128_11(__m512i a, __m512i b){
 }
 YM_FORCE_INLINE __m512i mm512_permuteaj128_01(__m512i a, __m512i b){
     return _mm512_mask_blend_epi64(0xcc, a, b);
+}
+YM_FORCE_INLINE __m512i mm512_permuteaj128_10(__m512i a, __m512i b){
+    return _mm512_permutex2var_epi64(a, _mm512_setr_epi64(  2,  3,  8,  9,  6,  7, 12, 13), b);
 }
 ////////////////////////////////////////////////////////////////////////////////
 YM_FORCE_INLINE __m512i mm512_permuteaj256_00(__m512i a, __m512i b){

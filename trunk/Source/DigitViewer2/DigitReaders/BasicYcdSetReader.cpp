@@ -1,8 +1,8 @@
 /* BasicYcdSetReader.h
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 01/31/2018
- * Last Modified    : 02/01/2018
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 01/31/2018
+ *  Last Modified   : 02/01/2018
  * 
  */
 
@@ -26,8 +26,9 @@ namespace DigitViewer2{
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-BasicYcdSetReader::BasicYcdSetReader(const std::string& path)
+BasicYcdSetReader::BasicYcdSetReader(const std::string& path, bool raw_io)
     : m_max_id_length(0)
+    , m_raw_io(raw_io)
 {
     //  Check the file name
     if (path.size() < 4){
@@ -70,7 +71,7 @@ BasicYcdSetReader::BasicYcdSetReader(const std::string& path)
 
 
     //  Open and parse the file header.
-    std::unique_ptr<BasicYcdFileReader> file(new BasicYcdFileReader(path));
+    std::unique_ptr<BasicYcdFileReader> file(new BasicYcdFileReader(path, m_raw_io));
 
     uiL_t id = file->file_id();
     m_radix           = file->radix();
@@ -117,7 +118,7 @@ BasicYcdFileReader& BasicYcdSetReader::load_file(const std::string& path, uiL_t 
     const BasicYcdFileReader& ref_file = *m_files.begin()->second;
 
     //  Open the file.
-    std::unique_ptr<BasicYcdFileReader> new_file(new BasicYcdFileReader(path));
+    std::unique_ptr<BasicYcdFileReader> new_file(new BasicYcdFileReader(path, m_raw_io));
 
     //  Cross check all the metadata.
     if (new_file->file_version() != ref_file.file_version()){
@@ -232,11 +233,11 @@ bool BasicYcdSetReader::range_is_available(uiL_t offset, uiL_t digits){
             get_file(file);
         }catch (InconsistentMetaData&){
             std::string path = m_name + std::to_string(file) + ".ycd";
-            Console::Warning("Inconsistent Metadata: \"" + path + "\"");
+            Console::warning("Inconsistent Metadata: \"" + path + "\"");
             bad = true;
         }catch (FileIO::FileException& e){
             if (!bad){
-                Console::Warning("The following needed files are missing or inaccessible:");
+                Console::warning("The following needed files are missing or inaccessible:");
             }
             std::string path = m_name + std::to_string(file) + ".ycd";
             Console::println(path);
@@ -343,7 +344,7 @@ std::vector<BasicYcdSetReader::Command> BasicYcdSetReader::make_commands(
                 throw InvalidParametersException("This digit stream does not have enough digits.");
             }
             if (!bad){
-                Console::Warning("The following needed files are missing or inaccessible:");
+                Console::warning("The following needed files are missing or inaccessible:");
             }
             std::string path = m_name + std::to_string(file) + ".ycd";
             Console::println(path);

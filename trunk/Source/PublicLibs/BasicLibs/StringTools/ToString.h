@@ -1,8 +1,8 @@
 /* ToString.h - Conversions to Strings
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 07/07/2013
- * Last Modified    : 08/24/2014
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 07/07/2013
+ *  Last Modified   : 08/24/2014
  * 
  */
 
@@ -24,10 +24,11 @@ namespace StringTools{
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 enum NumberFormat{
-    NORMAL = 0,
-    COMMAS = 1,
-    BYTES = 2,
-    BYTES_EXPANDED = 3
+    NORMAL,
+    COMMAS,
+    QUOTES,
+    BYTES,
+    BYTES_EXPANDED
 };
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -40,6 +41,10 @@ YM_NO_INLINE    std::string tostrln     (uiL_t x, NumberFormat format = NORMAL);
 YM_NO_INLINE    std::string tostrln     (siL_t x, NumberFormat format = NORMAL);
 static          std::string tostrln     (u32_t x, NumberFormat format = NORMAL){ return tostrln((uiL_t)x, format); }
 static          std::string tostrln     (s32_t x, NumberFormat format = NORMAL){ return tostrln((siL_t)x, format); }
+YM_NO_INLINE    uiL_t fromstr_uiL       (const char*& str);
+YM_NO_INLINE    siL_t fromstr_siL       (const char*& str);
+YM_NO_INLINE    uiL_t fromstr_uiL_commas(const char*& str);
+YM_NO_INLINE    siL_t fromstr_siL_commas(const char*& str);
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 //  Float

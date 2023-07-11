@@ -1,8 +1,8 @@
 /* i64ToHex_LittleEndian.h
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 02/10/2018
- * Last Modified    : 02/10/2018
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 02/10/2018
+ *  Last Modified   : 02/10/2018
  * 
  *      Not sure if these fancy implementations are actually better than the
  *  scalar approach. They're not that important anyway.

@@ -1,8 +1,8 @@
 /* BasicYcdSetWriter.cpp
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 02/06/2018
- * Last Modified    : 03/28/2018
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 02/06/2018
+ *  Last Modified   : 03/28/2018
  * 
  */
 
@@ -32,12 +32,14 @@ BasicYcdSetWriter::BasicYcdSetWriter(
     const std::string& name,
     const std::string& first_digits,
     char radix,
-    ufL_t digits_per_file, uiL_t stream_end
+    ufL_t digits_per_file, uiL_t stream_end,
+    bool raw_io
 )
     : m_path(path), m_name(name)
     , m_first_digits(first_digits)
     , m_digits_per_file(digits_per_file)
     , m_stream_end(stream_end)
+    , m_raw_io(raw_io)
 {
     m_radix = radix;
     switch (m_radix){
@@ -110,7 +112,7 @@ BasicYcdFileWriter& BasicYcdSetWriter::get_file(uiL_t id){
             m_path + m_name + " - " + std::to_string(id),
             m_first_digits, m_radix,
             m_digits_per_file, stream_end,
-            id
+            id, m_raw_io
         )
     );
     return ret.first->second;
@@ -130,7 +132,7 @@ std::unique_ptr<BasicDigitReader> BasicYcdSetWriter::close_and_get_basic_reader(
     }
     std::string path = m_files.begin()->second.path();
     m_files.clear();
-    return std::make_unique<BasicYcdSetReader>(path);
+    return std::make_unique<BasicYcdSetReader>(path, m_raw_io);
 }
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////

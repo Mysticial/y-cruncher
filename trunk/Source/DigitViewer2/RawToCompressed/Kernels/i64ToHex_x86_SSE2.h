@@ -1,8 +1,8 @@
 /* i64ToHex_x86_SSE2.h
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 02/10/2018
- * Last Modified    : 02/10/2018
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 02/10/2018
+ *  Last Modified   : 02/10/2018
  * 
  */
 

@@ -1,8 +1,8 @@
 /* ConsoleIO_Posix.ipp
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 08/26/2014
- * Last Modified    : 08/26/2014
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 08/26/2014
+ *  Last Modified   : 08/26/2014
  * 
  *      These print functions try to be agnostic to the stream orientation.
  *  That is, they will detect the orientation of stdin and stdout and use the
@@ -24,6 +24,7 @@
 #include <iostream>
 #include "PublicLibs/BasicLibs/StringTools/ToString.h"
 #include "PublicLibs/BasicLibs/StringTools/Unicode.h"
+#include "PublicLibs/ConsoleIO/BasicIO.h"
 #include "Label.h"
 namespace ymp{
 namespace Console{
@@ -31,7 +32,7 @@ namespace Console{
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-YM_NO_INLINE void CompileOptions(){
+YM_NO_INLINE void compile_options(){
     Console::println_labelm("Console IO", "Color Codes", 'G');
 }
 ////////////////////////////////////////////////////////////////////////////////
@@ -45,7 +46,8 @@ uiL_t sequence_number(){
 }
 ////////////////////////////////////////////////////////////////////////////////
 YM_NO_INLINE upL_t print(const std::string& str, char color){
-    SetColor(color);
+    ConsoleLockScope lock;
+    set_color(color);
     if (fwide(stdout, 0) <= 0){
         std::cout << str;
     }else{
@@ -56,7 +58,8 @@ YM_NO_INLINE upL_t print(const std::string& str, char color){
     return str.size();
 }
 YM_NO_INLINE upL_t print(const std::wstring& str, char color){
-    SetColor(color);
+    ConsoleLockScope lock;
+    set_color(color);
     if (fwide(stdout, 0) <= 0){
         std::cout << StringTools::wstr_to_utf8(str);
     }else{
@@ -68,24 +71,26 @@ YM_NO_INLINE upL_t print(const std::wstring& str, char color){
 }
 ////////////////////////////////////////////////////////////////////////////////
 YM_NO_INLINE std::string scan_utf8(char color){
+    ConsoleLockScope lock;
     if (fwide(stdin, 0) > 0){
         return StringTools::wstr_to_utf8(scan_wstr(color));
     }
 
-    SetColor(color);
+    set_color(color);
     std::string out;
     std::getline(std::cin, out);
     if (color != ' '){
-        SetColor('w');
+        set_color('w');
     }
     return out;
 }
 YM_NO_INLINE std::wstring scan_wstr(char color){
+    ConsoleLockScope lock;
     if (fwide(stdin, 0) <= 0){
         return StringTools::utf8_to_wstr(scan_utf8(color));
     }
 
-    SetColor(color);
+    set_color(color);
     std::wstring out;
     wchar_t ch;
     while (true){
@@ -95,11 +100,12 @@ YM_NO_INLINE std::wstring scan_wstr(char color){
         out.push_back(ch);
     }
     if (color != ' '){
-        SetColor('w');
+        set_color('w');
     }
     return out;
 }
-YM_NO_INLINE void Pause(char color){
+YM_NO_INLINE void pause(char color){
+    ConsoleLockScope lock;
     print("Press ENTER to continue . . .", color);
     scan_utf8();
 }
@@ -108,53 +114,55 @@ YM_NO_INLINE void Pause(char color){
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 //  Console Colors
-YM_NO_INLINE void SetColor(char color){
-    if (!EnableColors || color == ' ')
+YM_NO_INLINE void set_color(char color){
+    ConsoleLockScope lock;
+    if (!enable_colors || color == ' '){
         return;
+    }
     const char* color_string;
     switch (color){
-        case 'R':
-            color_string = "\033[01;31m";
-            break;
-        case 'r':
-            color_string = "\033[22;31m";
-            break;
-        case 'Y':
-            color_string = "\033[01;33m";
-            break;
-        case 'y':
-            color_string = "\033[22;33m";
-            break;
-        case 'G':
-            color_string = "\033[01;32m";
-            break;
-        case 'g':
-            color_string = "\033[22;32m";
-            break;
-        case 'B':
-            color_string = "\033[01;34m";
-            break;
-        case 'b':
-            color_string = "\033[22;34m";
-            break;
-        case 'T':
-            color_string = "\033[01;36m";
-            break;
-        case 't':
-            color_string = "\033[22;36m";
-            break;
-        case 'P':
-            color_string = "\033[01;35m";
-            break;
-        case 'p':
-            color_string = "\033[22;35m";
-            break;
-        default:
-            color_string = "\033[01;37m";
+    case 'R':
+        color_string = "\033[01;31m";
+        break;
+    case 'r':
+        color_string = "\033[22;31m";
+        break;
+    case 'Y':
+        color_string = "\033[01;33m";
+        break;
+    case 'y':
+        color_string = "\033[22;33m";
+        break;
+    case 'G':
+        color_string = "\033[01;32m";
+        break;
+    case 'g':
+        color_string = "\033[22;32m";
+        break;
+    case 'B':
+        color_string = "\033[01;34m";
+        break;
+    case 'b':
+        color_string = "\033[22;34m";
+        break;
+    case 'T':
+        color_string = "\033[01;36m";
+        break;
+    case 't':
+        color_string = "\033[22;36m";
+        break;
+    case 'P':
+        color_string = "\033[01;35m";
+        break;
+    case 'p':
+        color_string = "\033[22;35m";
+        break;
+    default:
+        color_string = "\033[01;37m";
     }
     print(color_string);
 }
-YM_NO_INLINE void SetColorDefault(){
+YM_NO_INLINE void set_color_default(){
     print("\033[39;49m");
 }
 ////////////////////////////////////////////////////////////////////////////////
@@ -162,7 +170,7 @@ YM_NO_INLINE void SetColorDefault(){
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 //  Console Window
-YM_NO_INLINE bool SetConsoleWindowSize(int width, int height){
+YM_NO_INLINE bool set_console_window_size(int width, int height){
     //  TODO
     return false;
 }

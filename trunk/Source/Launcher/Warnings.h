@@ -21,6 +21,11 @@ using namespace ymp;
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
+extern bool pause_on_warning;
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 void warn_32bit_on_x64(const cpu_x86& features){
     if (hardware_2004_x64_SSE3(features) && !features.OS_x64){
         Console::println("", 'R');
@@ -31,8 +36,10 @@ void warn_32bit_on_x64(const cpu_x86& features){
         Console::println("To achieve maximum performance, you must run a 64-bit OS.");
         Console::println("The 64-bit version of this program can be more than 2x faster.");
         Console::println();
-        Console::SetColor('w');
-        Console::Pause();
+        Console::set_color('w');
+        if (pause_on_warning){
+            Console::pause();
+        }
         Console::println("\n");
     }
 }
@@ -50,8 +57,10 @@ void warn_AVX_OS(const cpu_x86& features){
         Console::println();
         Console::println("To achieve maximum performance, AVX must be enabled in the OS.");
         Console::println();
-        Console::SetColor('w');
-        Console::Pause();
+        Console::set_color('w');
+        if (pause_on_warning){
+            Console::pause();
+        }
         Console::println("\n");
     }
 }
@@ -70,26 +79,31 @@ void warn_AVX512_OS(const cpu_x86& features){
         Console::println();
         Console::println("To achieve maximum performance, AVX512 must be enabled in the OS.");
         Console::println();
-        Console::SetColor('w');
-        Console::Pause();
+        Console::set_color('w');
+        if (pause_on_warning){
+            Console::pause();
+        }
         Console::println("\n");
     }
 #endif
 }
 void warn_noAVX512(const cpu_x86& features){
+#if 1
 #ifdef YCR_ENABLE_2017_x64_Skylake
     if (can_run_2013_x64_Haswell(features) &&
-        features.HW_ADX &&
-        features.HW_MPX &&
+        features.HW_SERIALIZE &&
         !features.HW_AVX512_F
     ){
         Console::println("", 'Y');
-        Console::println("Well that's a shame... A Skylake processor without AVX512? :(");
+        Console::println("Hahahaha, your *modern* Intel chip doesn't have AVX512. Too bad...");
         Console::println();
-        Console::SetColor('w');
-//        Console::Pause();
+        Console::set_color('w');
+        if (pause_on_warning){
+            Console::pause();
+        }
         Console::println("\n");
     }
+#endif
 #endif
 }
 void warn_KnightsLanding(const cpu_x86& features){
@@ -102,8 +116,10 @@ void warn_KnightsLanding(const cpu_x86& features){
         Console::println("To use AVX512 on Knights Landing, please use y-cruncher v0.7.7.");
         Console::println("Alternatively, please switch to Skylake-based AVX512 hardware.");
         Console::println();
-        Console::SetColor('w');
-        Console::Pause();
+        Console::set_color('w');
+        if (pause_on_warning){
+            Console::pause();
+        }
         Console::println("\n");
     }
 #endif

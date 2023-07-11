@@ -45,12 +45,12 @@ void launch(const char* name){
 
     Console::println("Launching y-cruncher...", 'Y');
     Console::println("================================================================\n", 'g');
-    Console::SetColor('w');
+    Console::set_color('w');
 
     int ret = system(build_command(path).c_str());
-    Console::SetColorDefault();
+    Console::set_color_default();
     if (!Environment::RunFromConsole()){
-        Console::Pause();
+        Console::pause();
     }
     exit(ret);
 }

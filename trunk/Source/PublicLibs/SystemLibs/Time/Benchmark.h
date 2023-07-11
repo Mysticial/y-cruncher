@@ -1,8 +1,8 @@
 /* Benchmark.h
  * 
- * Author           : Alexander J. Yee
- * Date Created     : 09/16/2014
- * Last Modified    : 09/16/2014
+ *  Author          : Alexander J. Yee
+ *  Date Created    : 09/16/2014
+ *  Last Modified   : 09/16/2014
  * 
  *      A helper class for performing iteration-based benchmarks.
  * 
@@ -38,14 +38,14 @@ public:
         : m_units(units)
         , m_iterations(0)
         , m_duration(seconds)
-        , m_start(WallClock::Now())
+        , m_start(WallClock::now())
         , m_timer(FastWallClock::now())
     {}
     IterationBenchmark(double seconds = 4.0)
         : m_units(nullptr)
         , m_iterations(0)
         , m_duration(seconds)
-        , m_start(WallClock::Now())
+        , m_start(WallClock::now())
         , m_timer(FastWallClock::now())
     {}
     ~IterationBenchmark(){
@@ -67,16 +67,16 @@ public:
 
 public:
     double seconds_elapsed() const{
-        return m_start.SecondsElapsed();
+        return m_start.seconds_elapsed();
     }
     uiL_t iterations() const{
         return m_iterations;
     }
     double latency() const{
-        return m_start.SecondsElapsed() / m_iterations;
+        return m_start.seconds_elapsed() / m_iterations;
     }
     double throughput() const{
-        return m_iterations / m_start.SecondsElapsed();
+        return m_iterations / m_start.seconds_elapsed();
     }
 };
 ////////////////////////////////////////////////////////////////////////////////
