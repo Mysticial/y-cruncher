@@ -250,6 +250,7 @@
       <BufferSecurityCheck>false</BufferSecurityCheck>
       <PreprocessorDefinitions>NOMINMAX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AssemblerOutput>AssemblyAndSourceCode</AssemblerOutput>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -264,6 +265,7 @@
       <BufferSecurityCheck>false</BufferSecurityCheck>
       <PreprocessorDefinitions>NOMINMAX;X64_04_SSE3;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AssemblerOutput>AssemblyAndSourceCode</AssemblerOutput>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -280,6 +282,7 @@
       <PreprocessorDefinitions>NOMINMAX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <AssemblerOutput>AssemblyAndSourceCode</AssemblerOutput>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -300,6 +303,7 @@
       <PreprocessorDefinitions>NOMINMAX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <AssemblerOutput>AssemblyAndSourceCode</AssemblerOutput>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -320,6 +324,7 @@
       <PreprocessorDefinitions>NOMINMAX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <AssemblerOutput>AssemblyAndSourceCode</AssemblerOutput>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -340,6 +345,7 @@
       <PreprocessorDefinitions>NOMINMAX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <AssemblerOutput>AssemblyAndSourceCode</AssemblerOutput>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -360,6 +366,7 @@
       <PreprocessorDefinitions>NOMINMAX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <AssemblerOutput>AssemblyAndSourceCode</AssemblerOutput>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -381,6 +388,7 @@
       <EnableEnhancedInstructionSet>NoExtensions</EnableEnhancedInstructionSet>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <AssemblerOutput>AssemblyAndSourceCode</AssemblerOutput>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -401,6 +409,7 @@
       <PreprocessorDefinitions>NOMINMAX;X64_04_SSE3;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <AssemblerOutput>AssemblyAndSourceCode</AssemblerOutput>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -421,6 +430,7 @@
       <PreprocessorDefinitions>NOMINMAX;X64_04_SSE3;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <AssemblerOutput>AssemblyAndSourceCode</AssemblerOutput>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -441,6 +451,7 @@
       <PreprocessorDefinitions>NOMINMAX;X64_07_Penryn;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <AssemblerOutput>AssemblyAndSourceCode</AssemblerOutput>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -462,6 +473,7 @@
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <EnableEnhancedInstructionSet>AdvancedVectorExtensions2</EnableEnhancedInstructionSet>
       <AssemblerOutput>AssemblyAndSourceCode</AssemblerOutput>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -488,6 +500,7 @@
       <AdditionalOptions>/Qfreestanding /Qwd11074 /Qwd11075 /Qwd15335 %(AdditionalOptions)</AdditionalOptions>
       <AssemblerOutput>AssemblyAndSourceCode</AssemblerOutput>
       <InterproceduralOptimization>SingleFile</InterproceduralOptimization>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -508,6 +521,7 @@
       <PreprocessorDefinitions>NOMINMAX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <AssemblerOutput>AssemblyAndSourceCode</AssemblerOutput>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -532,7 +546,6 @@
     <None Include="..\..\Source\DigitViewer2\RawToAscii\Kernels\RawToAscii_x86_SSE2.ipp" />
     <None Include="..\..\Source\DigitViewer2\RawToCompressed\Kernels\i64ToRaw_LittleEndian.ipp" />
     <None Include="..\..\Source\DigitViewer2\RawToCompressed\Kernels\i64ToRaw_x64_AVX2.ipp" />
-    <None Include="..\..\Source\DigitViewer2\RawToCompressed\Kernels\i64ToRaw_x64_AVX512BW.ipp" />
     <None Include="..\..\Source\DigitViewer2\RawToCompressed\Kernels\i64ToRaw_x64_SSE41.ipp" />
     <None Include="..\..\Source\DigitViewer2\RawToCompressed\Kernels\i64ToRaw_x86_SSE2.ipp" />
     <None Include="..\..\Source\DigitViewer2\WordToRaw\Kernels\WordToRaw_LittleEndian.ipp" />
@@ -590,6 +603,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='00-x86|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\..\Source\DigitViewer2\WordToRaw\WordToRaw.cpp" />
+    <ClCompile Include="..\..\Source\PublicLibs\BasicLibs\Concurrency\BasicParallelizer.cpp" />
     <ClCompile Include="..\..\Source\PublicLibs\BasicLibs\Concurrency\ExceptionHolder.cpp" />
     <ClCompile Include="..\..\Source\PublicLibs\BasicLibs\Memory\AlignedMalloc.cpp" />
     <ClCompile Include="..\..\Source\PublicLibs\BasicLibs\SMC_PublicBasicLibs.cpp">
@@ -716,13 +730,14 @@
     <ClInclude Include="..\..\Source\DigitViewer2\RawToCompressed\Kernels\i64ToDec_Default.h" />
     <ClInclude Include="..\..\Source\DigitViewer2\RawToCompressed\Kernels\i64ToDec_LittleEndian.h" />
     <ClInclude Include="..\..\Source\DigitViewer2\RawToCompressed\Kernels\i64ToDec_x64_AVX2.h" />
-    <ClInclude Include="..\..\Source\DigitViewer2\RawToCompressed\Kernels\i64ToDec_x64_AVX512BW.h" />
+    <ClInclude Include="..\..\Source\DigitViewer2\RawToCompressed\Kernels\i64ToDec_x64_AVX512-BW.h" />
     <ClInclude Include="..\..\Source\DigitViewer2\RawToCompressed\Kernels\i64ToDec_x64_SSE41.h" />
     <ClInclude Include="..\..\Source\DigitViewer2\RawToCompressed\Kernels\i64ToHex_LittleEndian.h" />
     <ClInclude Include="..\..\Source\DigitViewer2\RawToCompressed\Kernels\i64ToHex_x64_AVX2.h" />
-    <ClInclude Include="..\..\Source\DigitViewer2\RawToCompressed\Kernels\i64ToHex_x64_AVX512BW.h" />
+    <ClInclude Include="..\..\Source\DigitViewer2\RawToCompressed\Kernels\i64ToHex_x64_AVX512-BW.h" />
     <ClInclude Include="..\..\Source\DigitViewer2\RawToCompressed\Kernels\i64ToHex_x64_SSE41.h" />
     <ClInclude Include="..\..\Source\DigitViewer2\RawToCompressed\Kernels\i64ToHex_x86_SSE2.h" />
+    <ClInclude Include="..\..\Source\DigitViewer2\RawToCompressed\Kernels\i64ToRaw_x64_AVX512-BW.ipp" />
     <ClInclude Include="..\..\Source\DigitViewer2\RawToCompressed\RawToCompressed.h" />
     <ClInclude Include="..\..\Source\DigitViewer2\RawToDecKernels\Kernels_dec_to_i64_x64_AVX2.h" />
     <ClInclude Include="..\..\Source\DigitViewer2\RawToDecKernels\Kernels_dec_to_i64_x64_AVX512BW.h" />
@@ -735,6 +750,7 @@
     <ClInclude Include="..\..\Source\DigitViewer2\WordToRaw\Kernels\WordToRaw_x64_AVX512BW.h" />
     <ClInclude Include="..\..\Source\DigitViewer2\WordToRaw\Kernels\WordToRaw_x64_SSE41.h" />
     <ClInclude Include="..\..\Source\DigitViewer2\WordToRaw\WordToRaw.h" />
+    <ClInclude Include="..\..\Source\PublicLibs\ArchSpecificLibs\LoadStoreTypes.h" />
     <ClInclude Include="..\..\Source\PublicLibs\ArchSpecificLibs\Shuffle\x86_128\Unpack_x86_SSE.h" />
     <ClInclude Include="..\..\Source\PublicLibs\ArchSpecificLibs\Shuffle\x86_128\Unpack_x86_SSE2.h" />
     <ClInclude Include="..\..\Source\PublicLibs\ArchSpecificLibs\Shuffle\x86_256\Transpose_64x4x4_x86_AVX2.h" />
@@ -749,10 +765,15 @@
     <ClInclude Include="..\..\Source\PublicLibs\BasicLibs\Alignment\AlignmentTools.h" />
     <ClInclude Include="..\..\Source\PublicLibs\BasicLibs\Alignment\DefaultAlignment.h" />
     <ClInclude Include="..\..\Source\PublicLibs\BasicLibs\CommandLine.h" />
+    <ClInclude Include="..\..\Source\PublicLibs\BasicLibs\Concurrency\AsyncThrottler.h" />
     <ClInclude Include="..\..\Source\PublicLibs\BasicLibs\Concurrency\BasicAction.h" />
     <ClInclude Include="..\..\Source\PublicLibs\BasicLibs\Concurrency\BasicParallelizer.h" />
     <ClInclude Include="..\..\Source\PublicLibs\BasicLibs\Concurrency\BlockSplitting.h" />
     <ClInclude Include="..\..\Source\PublicLibs\BasicLibs\Concurrency\ExceptionHolder.h" />
+    <ClInclude Include="..\..\Source\PublicLibs\BasicLibs\Concurrency\MemoryFence.h" />
+    <ClInclude Include="..\..\Source\PublicLibs\BasicLibs\Concurrency\SpinLock.h" />
+    <ClInclude Include="..\..\Source\PublicLibs\BasicLibs\Concurrency\SpinPause.h" />
+    <ClInclude Include="..\..\Source\PublicLibs\BasicLibs\Containers\InsertOrderMap.h" />
     <ClInclude Include="..\..\Source\PublicLibs\BasicLibs\Memory\AlignedMalloc.h" />
     <ClInclude Include="..\..\Source\PublicLibs\BasicLibs\Memory\SmartBuffer.h" />
     <ClInclude Include="..\..\Source\PublicLibs\BasicLibs\Memory\SmartPointerA.h" />

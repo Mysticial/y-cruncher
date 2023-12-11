@@ -133,6 +133,9 @@
     <Filter Include="Source Files\DigitViewer2\DigitWriters\BasicYcdWriter">
       <UniqueIdentifier>{8f42a79a-6dbf-47a3-b6fd-2b06f80abc92}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\PublicLibs\BasicLibs\Containers">
+      <UniqueIdentifier>{852352a0-8938-4ec0-a7b1-575f8254bf33}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Source\DigitViewer2\makefile">
@@ -184,9 +187,6 @@
       <Filter>Source Files\DigitViewer2\RawToCompressed\Kernels</Filter>
     </None>
     <None Include="..\..\Source\DigitViewer2\RawToCompressed\Kernels\i64ToRaw_x64_AVX2.ipp">
-      <Filter>Source Files\DigitViewer2\RawToCompressed\Kernels</Filter>
-    </None>
-    <None Include="..\..\Source\DigitViewer2\RawToCompressed\Kernels\i64ToRaw_x64_AVX512BW.ipp">
       <Filter>Source Files\DigitViewer2\RawToCompressed\Kernels</Filter>
     </None>
     <None Include="..\..\Source\DigitViewer2\RawToCompressed\Kernels\i64ToRaw_x64_SSE41.ipp">
@@ -410,6 +410,9 @@
     <ClCompile Include="..\..\Source\PublicLibs\BasicLibs\Concurrency\ExceptionHolder.cpp">
       <Filter>Source Files\PublicLibs\BasicLibs\Concurrency</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Source\PublicLibs\BasicLibs\Concurrency\BasicParallelizer.cpp">
+      <Filter>Source Files\PublicLibs\BasicLibs\Concurrency</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Source\DigitViewer2\DigitCount\DigitCount.h">
@@ -475,9 +478,6 @@
     <ClInclude Include="..\..\Source\DigitViewer2\RawToCompressed\Kernels\i64ToHex_x64_AVX2.h">
       <Filter>Source Files\DigitViewer2\RawToCompressed\Kernels</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\DigitViewer2\RawToCompressed\Kernels\i64ToHex_x64_AVX512BW.h">
-      <Filter>Source Files\DigitViewer2\RawToCompressed\Kernels</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Source\DigitViewer2\RawToCompressed\Kernels\i64ToHex_x64_SSE41.h">
       <Filter>Source Files\DigitViewer2\RawToCompressed\Kernels</Filter>
     </ClInclude>
@@ -491,9 +491,6 @@
       <Filter>Source Files\DigitViewer2\RawToCompressed\Kernels</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\DigitViewer2\RawToCompressed\Kernels\i64ToDec_x64_AVX2.h">
-      <Filter>Source Files\DigitViewer2\RawToCompressed\Kernels</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\DigitViewer2\RawToCompressed\Kernels\i64ToDec_x64_AVX512BW.h">
       <Filter>Source Files\DigitViewer2\RawToCompressed\Kernels</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\DigitViewer2\RawToDecKernels\Kernels_dec_to_i64_x64_SSE41.h">
@@ -640,12 +637,6 @@
     <ClInclude Include="..\..\Source\PublicLibs\BasicLibs\Alignment\DefaultAlignment.h">
       <Filter>Source Files\PublicLibs\BasicLibs\Alignment</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\PublicLibs\BasicLibs\Concurrency\BlockSplitting.h">
-      <Filter>Source Files\PublicLibs\BasicLibs\Concurrency</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\PublicLibs\BasicLibs\Concurrency\BasicParallelizer.h">
-      <Filter>Source Files\PublicLibs\BasicLibs\Concurrency</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Source\PublicLibs\BasicLibs\Memory\SmartBuffer.h">
       <Filter>Source Files\PublicLibs\BasicLibs\Memory</Filter>
     </ClInclude>
@@ -778,11 +769,44 @@
     <ClInclude Include="..\..\Source\DigitViewer2\DigitWriters\BasicDigitWriter.h">
       <Filter>Source Files\DigitViewer2\DigitWriters</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\PublicLibs\BasicLibs\Concurrency\BasicAction.h">
+    <ClInclude Include="..\..\Source\DigitViewer2\RawToCompressed\Kernels\i64ToDec_x64_AVX512-BW.h">
+      <Filter>Source Files\DigitViewer2\RawToCompressed\Kernels</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\DigitViewer2\RawToCompressed\Kernels\i64ToHex_x64_AVX512-BW.h">
+      <Filter>Source Files\DigitViewer2\RawToCompressed\Kernels</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\DigitViewer2\RawToCompressed\Kernels\i64ToRaw_x64_AVX512-BW.ipp">
+      <Filter>Source Files\DigitViewer2\RawToCompressed\Kernels</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\ArchSpecificLibs\LoadStoreTypes.h">
+      <Filter>Source Files\PublicLibs\ArchSpecificLibs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\BasicLibs\Concurrency\BasicParallelizer.h">
+      <Filter>Source Files\PublicLibs\BasicLibs\Concurrency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\BasicLibs\Concurrency\BlockSplitting.h">
       <Filter>Source Files\PublicLibs\BasicLibs\Concurrency</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\PublicLibs\BasicLibs\Concurrency\ExceptionHolder.h">
       <Filter>Source Files\PublicLibs\BasicLibs\Concurrency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\BasicLibs\Concurrency\MemoryFence.h">
+      <Filter>Source Files\PublicLibs\BasicLibs\Concurrency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\BasicLibs\Concurrency\SpinLock.h">
+      <Filter>Source Files\PublicLibs\BasicLibs\Concurrency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\BasicLibs\Concurrency\SpinPause.h">
+      <Filter>Source Files\PublicLibs\BasicLibs\Concurrency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\BasicLibs\Concurrency\AsyncThrottler.h">
+      <Filter>Source Files\PublicLibs\BasicLibs\Concurrency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\BasicLibs\Concurrency\BasicAction.h">
+      <Filter>Source Files\PublicLibs\BasicLibs\Concurrency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\BasicLibs\Containers\InsertOrderMap.h">
+      <Filter>Source Files\PublicLibs\BasicLibs\Containers</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
