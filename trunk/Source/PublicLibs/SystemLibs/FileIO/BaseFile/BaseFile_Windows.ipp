@@ -55,7 +55,7 @@ bool BaseFile::create(std::string path, ufL_t bytes){
         0,
         NULL,
         OPEN_ALWAYS,
-        FILE_FLAG_WRITE_THROUGH,
+        0,  //  FILE_FLAG_WRITE_THROUGH,
         NULL
     );
     if (m_filehandle == INVALID_HANDLE_VALUE){
@@ -131,7 +131,7 @@ void BaseFile::rename(std::string path){
         }
     }
 
-    if (!open(std::move(path))){
+    if (!open(path)){
         throw FileException(
             "RawFile::rename()",
             std::move(path),
@@ -152,7 +152,7 @@ upL_t BaseFile::read(void* T, upL_t bytes){
 
     DWORD bytes_read;
     while (bytes > BLOCK_SIZE){
-        int ret = !ReadFile(m_filehandle, T, (DWORD)BLOCK_SIZE, &bytes_read, nullptr);
+        bool ret = !ReadFile(m_filehandle, T, (DWORD)BLOCK_SIZE, &bytes_read, nullptr);
         if (ret || bytes_read != BLOCK_SIZE){
             total_read += bytes_read;
             return total_read;
@@ -171,7 +171,7 @@ upL_t BaseFile::write(const void* T, upL_t bytes){
 
     DWORD bytes_written;
     while (bytes > BLOCK_SIZE){
-        int ret = !WriteFile(m_filehandle, T, (DWORD)BLOCK_SIZE, &bytes_written, nullptr);
+        bool ret = !WriteFile(m_filehandle, T, (DWORD)BLOCK_SIZE, &bytes_written, nullptr);
         if (ret || bytes_written != BLOCK_SIZE){
             total_written += bytes_written;
             return total_written;

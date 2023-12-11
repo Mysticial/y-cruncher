@@ -131,6 +131,9 @@ YM_FORCE_INLINE __m512i mm512_permuteaj256_11(__m512i a, __m512i b){
 YM_FORCE_INLINE __m512i mm512_permuteaj256_01(__m512i a, __m512i b){
     return _mm512_mask_blend_epi64(0xf0, a, b);
 }
+YM_FORCE_INLINE __m512i mm512_permuteaj256_10(__m512i a, __m512i b){
+    return _mm512_shuffle_i64x2(a, b, 78);
+}
 ////////////////////////////////////////////////////////////////////////////////
 YM_FORCE_INLINE __m512i mm512_splitload_si512(const void* L, const void* H){
     __m512i x = _mm512_castsi256_si512(_mm256_loadu_si256((const __m256i*)L));

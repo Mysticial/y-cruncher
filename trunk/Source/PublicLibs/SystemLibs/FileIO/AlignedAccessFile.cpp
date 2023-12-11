@@ -11,11 +11,31 @@
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 //  Dependencies
-#include "PublicLibs/Exceptions/InvalidParametersException.h"
+#include "PublicLibs/Exceptions/InvalidParametersThrower.h"
 #include "PublicLibs/BasicLibs/Alignment/AlignmentTools.h"
 #include "AlignedAccessFile.h"
 namespace ymp{
 namespace FileIO{
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+AlignedAccessFile::AlignedAccessFile(AlignedAccessFile&& x) noexcept
+    : m_alignment_k(x.m_alignment_k)
+    , m_path(std::move(x.m_path))
+{
+    x.m_alignment_k = 0;
+    x.m_path.clear();
+}
+void AlignedAccessFile::operator=(AlignedAccessFile&& x) noexcept{
+    if (this == &x){
+        return;
+    }
+    m_alignment_k = x.m_alignment_k;
+    m_path = std::move(x.m_path);
+    x.m_alignment_k = 0;
+    x.m_path.clear();
+}
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -30,13 +50,13 @@ AlignedAccessFile::AlignedAccessFile(ukL_t alignment_k, std::string path)
 ////////////////////////////////////////////////////////////////////////////////
 void AlignedAccessFile::check_alignment(const void* data, ufL_t offset, upL_t bytes){
     if (Alignment::ptr_past_aligned_k(m_alignment_k, data) != 0){
-        throw InvalidParametersException("AlignedAccessFile::check_alignment()", "Buffer is misaligned.");
+        throw_InvalidParametersException("AlignedAccessFile::check_alignment()", "Buffer is misaligned.");
     }
     if (Alignment::int_past_aligned_k(m_alignment_k, offset) != 0){
-        throw InvalidParametersException("AlignedAccessFile::check_alignment()", "Offset is misaligned.");
+        throw_InvalidParametersException("AlignedAccessFile::check_alignment()", "Offset is misaligned.");
     }
     if (Alignment::int_past_aligned_k(m_alignment_k, bytes) != 0){
-        throw InvalidParametersException("AlignedAccessFile::check_alignment()", "Length is misaligned.");
+        throw_InvalidParametersException("AlignedAccessFile::check_alignment()", "Length is misaligned.");
     }
 }
 ////////////////////////////////////////////////////////////////////////////////

@@ -28,10 +28,8 @@
 #include "Kernels/i64ToRaw_x64_SSE41.ipp"
 #elif defined YMP_Arch_2004_x86_SSE3 || defined YMP_Arch_2004_x64
 #include "Kernels/i64ToRaw_x86_SSE2.ipp"
-#elif defined YMP_Arch_2000_x86
-#include "Kernels/i64ToRaw_LittleEndian.ipp"
 #else
-#error "No generic implementation available."
+#include "Kernels/i64ToRaw_LittleEndian.ipp"
 #endif
 ////////////////////////////////////////////////////////////////////////////////
 namespace DigitViewer2{

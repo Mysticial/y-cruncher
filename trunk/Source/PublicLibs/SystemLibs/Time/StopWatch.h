@@ -2,7 +2,7 @@
  * 
  *  Author          : Alexander J. Yee
  *  Date Created    : 02/12/2015
- *  Last Modified   : 03/07/2016
+ *  Last Modified   : 11/05/2023
  * 
  *      A stopwatch that tracks both wall time and CPU time. This is used for
  *  generating CPU utilization and efficiency profiles.
@@ -21,6 +21,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 //  Dependencies
 #include <string>
+#include "PublicLibs/BasicLibs/ConfigTree/ConfigObject.h"
 #include "Time.h"
 namespace ymp{
 namespace Time{
@@ -34,11 +35,11 @@ class StopWatch{
     bool m_is_running;
 
 public:
-    StopWatch(){ Reset(); }
+    StopWatch(){ reset(); }
 
-    void Reset();
-    void Start();
-    void Stop();
+    void reset();
+    void start();
+    void stop();
 
 public:
     double get_wall_time() const;
@@ -51,6 +52,9 @@ public:
     //  Serialization
     void Serialize(std::string& stream) const;
     void Deserialize(const char*& stream);
+
+    void load_config(const ConfigObject& config);
+    ConfigObject now_to_config() const;
 };
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////

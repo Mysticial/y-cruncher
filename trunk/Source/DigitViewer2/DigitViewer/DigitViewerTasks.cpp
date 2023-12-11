@@ -215,11 +215,11 @@ void compute_stats(BasicDigitReader& reader){
     process_start(reader, start, digits);
 
     //  Use all cores.
-    upL_t tds = Environment::GetLogicalProcessors();
+    upL_t tds = Environment::get_logical_processors();
     BasicParallelizer& parallelizer = get_parallelizer();
 
     //  Don't use more than 1/4 of the remaining available memory.
-    upL_t mem_limit = Environment::GetFreePhysicalMemory() / 4;
+    upL_t mem_limit = Environment::get_free_physical_memory() / 4;
 
     const upL_t BLOCK_SIZE = 1000000000;
 
@@ -265,11 +265,11 @@ void process_write(
     process_start(reader, read_offset, digits);
 
     //  Use all cores.
-    upL_t tds = Environment::GetLogicalProcessors();
+    upL_t tds = Environment::get_logical_processors();
     BasicParallelizer& parallelizer = get_parallelizer();
 
     //  Don't use more than 1/4 of the remaining available memory.
-    upL_t mem_limit = Environment::GetFreePhysicalMemory() / 4;
+    upL_t mem_limit = Environment::get_free_physical_memory() / 4;
 
     const upL_t BLOCK_SIZE = 1000000000;
 

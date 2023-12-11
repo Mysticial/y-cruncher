@@ -28,14 +28,14 @@ class DllSafeStream{
 public:
     //  Rule of 5
     ~DllSafeStream(){ clear(); }
-    DllSafeStream(DllSafeStream&& x)
+    DllSafeStream(DllSafeStream&& x) noexcept
         : m_bytes(x.m_bytes)
         , m_ptr(x.m_ptr)
         , m_deleter(x.m_deleter)
     {
         x.m_ptr = nullptr;
     }
-    void operator=(DllSafeStream&& x){
+    void operator=(DllSafeStream&& x) noexcept{
         clear();
         m_bytes = x.m_bytes;
         m_ptr = x.m_ptr;

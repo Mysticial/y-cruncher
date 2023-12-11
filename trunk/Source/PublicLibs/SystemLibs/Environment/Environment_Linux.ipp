@@ -113,10 +113,10 @@ bool RunFromConsole(){
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-upL_t GetLogicalProcessors(){
+upL_t get_logical_processors(){
     return sysconf(_SC_NPROCESSORS_ONLN);
 }
-upL_t GetFreePhysicalMemory(){
+upL_t get_free_physical_memory(){
     uiL_t bytes = 0;
 
 #if 1
@@ -159,27 +159,30 @@ upL_t GetFreePhysicalMemory(){
     bytes = std::min(bytes, (uiL_t)MAX_MEMORY);
     return static_cast<upL_t>(bytes);
 }
-uiL_t GetTotalPhysicalMemory(){
+uiL_t get_total_physical_memory(){
     return (uiL_t)sysconf(_SC_PHYS_PAGES) * sysconf(_SC_PAGE_SIZE);
 }
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 void x86_cpuid(u32_t eabcdx[4], u32_t eax, u32_t ecx){
     __cpuid_count(eax, ecx, eabcdx[0], eabcdx[1], eabcdx[2], eabcdx[3]);
 }
-u64_t x86_rdtsc(){
+u64_t cpu_timestamp(){
     unsigned int lo, hi;
     __asm__ volatile ("rdtsc" : "=a" (lo), "=d" (hi));
     return ((u64_t)hi << 32) | lo;
 }
-u64_t x86_measure_rdtsc_ticks_per_sec(){
+u64_t measure_cpu_timestamp_frequency(){
 //    Time::WallClock w_start = Time::WallClock::now();
     auto w_start = std::chrono::system_clock::now();
-    u64_t r_start = x86_rdtsc();
+    u64_t r_start = cpu_timestamp();
     while (std::chrono::system_clock::now() - w_start < std::chrono::microseconds(62500));
     auto w_end = std::chrono::system_clock::now();
 //    while (w_start.seconds_elapsed() < 0.0625);
 //    Time::WallClock w_end = Time::WallClock::now();
-    u64_t r_end = x86_rdtsc();
+    u64_t r_end = cpu_timestamp();
 
     auto elapsed = std::chrono::duration_cast<std::chrono::microseconds>(w_end - w_start);
     double seconds = (double)elapsed.count() / 1000000.;

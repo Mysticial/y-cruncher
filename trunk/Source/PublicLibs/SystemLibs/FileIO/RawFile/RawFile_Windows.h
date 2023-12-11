@@ -2,7 +2,7 @@
  * 
  *  Author          : Alexander J. Yee
  *  Date Created    : 07/20/2011
- *  Last Modified   : 03/24/2018
+ *  Last Modified   : 10/15/2023
  * 
  */
 
@@ -14,6 +14,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 //  Dependencies
+#include "PublicLibs/BasicLibs/Concurrency/AsyncThrottler.h"
 #include "PublicLibs/SystemLibs/FileIO/AlignedAccessFile.h"
 namespace ymp{
 namespace FileIO{
@@ -31,30 +32,42 @@ enum Mode{
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 class RawFile : public AlignedAccessFile{
+    static const upL_t MAX_INFLIGHT = 32;
     static const upL_t MAX_IO_BYTES = (upL_t)1 << 30;
     static const upL_t CHECK_MEM_THRESHOLD = (upL_t)64 << 20;
 
 public:
     virtual ~RawFile() override;
 
+    RawFile(RawFile&& x) noexcept;
+    void operator=(RawFile&& x) noexcept;
+
     RawFile(const RawFile& x) = delete;
     void operator=(const RawFile& x) = delete;
 
 public:
-    RawFile(      //  Create or open file.
+    //  Empty Handle
+    RawFile();
+
+    //  Create or open file.
+    RawFile(
         ukL_t alignment_k,
         std::string path, Mode mode,
         bool persistent = true,
         bool raw_io = true
     );
-    RawFile(      //  Create a file with a specific size.
+
+    //  Create a file with a specific size.
+    RawFile(
         ukL_t alignment_k,
         ufL_t bytes, std::string path,
-        bool persistent = false,
-        bool raw_io = true
+        bool persistent,
+        bool raw_io,
+        bool read_protect
     );
 
-    operator bool() const;
+public:
+    operator bool() const;  //  Returns true if file is open and valid.
     const std::string& path() const{ return m_path; }
     bool persistent() const{ return m_persistent; }
     bool raw_io() const{ return m_raw_io; }
@@ -66,25 +79,36 @@ public:
 
 public:
     //  All parameters must be aligned to "2^m_alignment_k".
+    // 
     //  If "throw_on_partial" is true, it will throw an exception if it is
     //  unable to read/write the full requested bytes. For reads, this may imply
     //  reaching the end of the file. For stores, this almost always implies a
     //  more serious error such as disk-is-full or a hardware failure.
-    upL_t load (      void* data, ufL_t offset, upL_t bytes, bool throw_on_partial);
-    upL_t store(const void* data, ufL_t offset, upL_t bytes, bool throw_on_partial);
-    virtual void load (      void* data, ufL_t offset, upL_t bytes, void* P, upL_t PL) override;
-    virtual void store(const void* data, ufL_t offset, upL_t bytes, void* P, upL_t PL) override;
+    //
+    //  These are all thread-safe with each other provided they do not overlap
+    //  in memory or the file regions. However, these are not thread-safe with
+    //  everything else in this class (such as "close", "rename", etc...)
+    //
+    //  Not only are these thread-safe, there may be performance gain to
+    //  parallelizing I/O accesses.
+
+    virtual upL_t load (      void* data, ufL_t offset, upL_t bytes, bool throw_on_partial) override;
+    virtual upL_t store(const void* data, ufL_t offset, upL_t bytes, bool throw_on_partial) override;
 
 private:
     void open(Mode mode);
     void set_size(ufL_t bytes);
     upL_t pick_buffer_size(upL_t bytes) const;
 
+    u32_t internal_read(void* event_handle, void* data, ufL_t offset, u32_t bytes);
+    u32_t internal_write(void* event_handle, const void* data, ufL_t offset, u32_t bytes);
+
 private:
     void* m_filehandle;
     std::wstring m_wpath;
-    bool m_persistent;
-    bool m_raw_io;
+    bool m_persistent = true;
+    bool m_raw_io = true;
+    AsyncThrottler m_throttler;
 };
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////

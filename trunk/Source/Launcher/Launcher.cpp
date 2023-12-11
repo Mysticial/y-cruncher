@@ -59,10 +59,15 @@ void handle_height(CommandLine::Parameters& cmds){
     int height = static_cast<int>(StringTools::parse_sL_text(value));
     Console::set_console_window_size(80, height);
 }
+void handles_skip_warnings(CommandLine::Parameters& cmds){
+    cmds.advance();
+    pause_on_warning = false;
+}
 CommandLine::ActionMap GLOBAL_COMMANDS{
     {"pause", handle_pause},
     {"colors", handle_colors},
     {"height", handle_height},
+    {"skip-warnings", handles_skip_warnings},
 };
 void process_startup_commands(CommandLine::Parameters& cmds){
     while (cmds.has_more() && cmds.match_execute(GLOBAL_COMMANDS, false));

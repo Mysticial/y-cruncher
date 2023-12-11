@@ -45,7 +45,11 @@ void dispatch_AMD(const cpu_x86& features){
         dispatch_2017_x64_Zen1(features);
     }
 #endif
+#ifdef YCR_ENABLE_2012_x64_Piledriver
+    dispatch_2012_x64_Piledriver(features);
+#else
     dispatch_2011_x64_Bulldozer(features);
+#endif
     dispatch_2011_x64_SandyBridge(features);
     warn_AVX_OS(features);
 

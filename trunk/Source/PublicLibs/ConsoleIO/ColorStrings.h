@@ -25,6 +25,10 @@ struct ColorString{
     ColorString()
         : color(' ')
     {}
+    ColorString(const char* t)
+        : color(' ')
+        , text(t)
+    {}
     ColorString(std::string t)
         : color(' ')
         , text(std::move(t))

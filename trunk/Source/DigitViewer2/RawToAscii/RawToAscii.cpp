@@ -25,7 +25,7 @@
 #include "Kernels/RawToAscii_x64_AVX2.ipp"
 #elif defined YMP_Arch_2004_x86_SSE3 || defined YMP_Arch_2004_x64
 #include "Kernels/RawToAscii_x86_SSE2.ipp"
-#elif defined YMP_Arch_2000_x86
+#elif 1
 #include "Kernels/RawToAscii_Default32.ipp"
 #else
 #include "Kernels/RawToAscii_Default.ipp"

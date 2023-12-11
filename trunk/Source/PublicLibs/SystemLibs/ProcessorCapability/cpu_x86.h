@@ -59,6 +59,7 @@ struct cpu_x86{
     bool HW_AES;        //  Westmere (2010) + Bulldozer (2011)
     bool HW_SHA;        //  Zen1 (2017) + Ice Lake (2019)
     bool HW_GFNI;       //  Ice Lake (2019) + Zen4 (2022)
+    bool HW_SM3;        //  Arrow Lake (2024?)
 
     //  SIMD: 256-bit
     bool HW_AVX;            //  Sandy Bridge (2011) + Bulldozer (2011)
@@ -67,11 +68,15 @@ struct cpu_x86{
     bool HW_FMA3;           //  Piledriver (2012) + Haswell (2013)
     bool HW_AVX2;           //  Haswell (2013) + Excavator (2015)
     bool HW_VAES;           //  Ice Lake (2019) + Zen3 (2020)
+    bool HW_VPCLMULQDQ;     //  Ice Lake (2019) + Zen4 (2022)
     bool HW_AVX_GFNI;       //  Ice Lake (2019) + Zen4 (2022)
     bool HW_AVX_VNNI;       //  Alder Lake (2021)
     bool HW_AVX_VNNI_INT8;  //  Sierra Forest (2024?)
     bool HW_AVX_IFMA;       //  Sierra Forest (2024?)
     bool HW_AVX_NE_CONVERT; //  Sierra Forest (2024?)
+    bool HW_AVX_VNNI_INT16; //  Arrow Lake (2024?)
+    bool HW_SHA512;         //  Arrow Lake (2024?)
+    bool HW_SM4;            //  Arrow Lake (2024?)
 
     //  SIMD: 512-bit
     bool HW_AVX512_F;               //  Knights Landing (2016) + Zen4 (2022)
@@ -87,21 +92,28 @@ struct cpu_x86{
     bool HW_AVX512_IFMA;            //  Cannon Lake (2018) + Zen4 (2022)
     bool HW_AVX512_VBMI;            //  ...
     bool HW_AVX512_VNNI;            //  Cascade Lake (2019) + Zen4 (2022)
-    bool HW_AVX512_VPCLMULQDQ;      //  Ice Lake (2019) + Zen4 (2022)
+    bool HW_AVX512_GFNI;            //  Ice Lake (2019) + Zen4 (2022)
     bool HW_AVX512_VAES;            //  ...
-    bool HW_AVX512_GFNI;            //  ...
+    bool HW_AVX512_VPCLMULQDQ;      //  ...
     bool HW_AVX512_VBMI2;           //  ...
     bool HW_AVX512_BITALG;          //  ...
     bool HW_AVX512_BF16;            //  Cooper Lake (2020) + Zen4 (2022)
     bool HW_AVX512_VP2INTERSECT;    //  Tiger Lake (2020) - dead
     bool HW_AVX512_FP16;            //  Sapphire Rapids (2023)
 
+    //  APX/AVX10
+    bool HW_APX_F;          //  ???
+    uint8_t HW_AVX10;       //  Granite Rapids (2024?)
+    bool HW_AVX10v128;      //  ...
+    bool HW_AVX10_256;      //  ...
+    bool HW_AVX10_512;      //  ...
+
     //  AMX
     bool HW_AMX_TILE;       //  Sapphire Rapids (2023)
     bool HW_AMX_INT8;       //  ...
     bool HW_AMX_BF16;       //  ...
     bool HW_AMX_FP16;       //  Granite Rapids (2024?)
-    bool HW_AMX_COMPLEX;
+    bool HW_AMX_COMPLEX;    //  ...
 
 public:
     cpu_x86();

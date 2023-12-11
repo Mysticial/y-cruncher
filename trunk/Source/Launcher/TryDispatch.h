@@ -60,6 +60,11 @@ void dispatch_2011_x64_Bulldozer(const cpu_x86& features){
         launch(BINARY_NAME_2011_x64_Bulldozer);
     }
 }
+void dispatch_2012_x64_Piledriver(const cpu_x86& features){
+    if (can_run_2012_x64_Piledriver(features)){
+        launch(BINARY_NAME_2012_x64_Piledriver);
+    }
+}
 void dispatch_2013_x64_Haswell(const cpu_x86& features){
     if (can_run_2013_x64_Haswell(features)){
         launch(BINARY_NAME_2013_x64_Haswell);

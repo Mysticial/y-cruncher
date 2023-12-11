@@ -31,15 +31,16 @@
 #define     YCG_PROGRAM_SUFFIX      " (lib)"
 
 //  Binaries
-#define     YCR_ENABLE_2000_x86
-#define     YCR_ENABLE_2007_x64_Penryn
+//#define     YCR_ENABLE_2000_x86
+//#define     YCR_ENABLE_2007_x64_Penryn
 #define     YCR_ENABLE_2008_x64_Nehalem
 #define     YCR_ENABLE_2014_x64_Broadwell
 //#define     YCR_ENABLE_2016_x64_KnightsLanding
 #define     YCR_ENABLE_2017_x64_Zen1
 #define     YCR_ENABLE_2017_x64_Skylake
-//#define     YCR_ENABLE_2018_x64_CannonLake
-//#define     YCR_ENABLE_2019_x64_Zen2
+#define     YCR_ENABLE_2019_x64_Zen2
+#define     YCR_ENABLE_2020_x64_Zen3
+//#define     YCR_ENABLE_2022_x64_Zen4
 
 #endif
 ////////////////////////////////////////////////////////////////////////////////
@@ -56,9 +57,11 @@
 #define     YCG_PROGRAM_SUFFIX      ""
 
 //  Binaries
-#define     YCR_ENABLE_2000_x86
+//#define     YCR_ENABLE_2000_x86
 //#define     YCR_ENABLE_2007_x64_Penryn
 #define     YCR_ENABLE_2008_x64_Nehalem
+//#define     YCR_ENABLE_2011_x64_Bulldozer
+#define     YCR_ENABLE_2012_x64_Piledriver
 #define     YCR_ENABLE_2014_x64_Broadwell
 //#define     YCR_ENABLE_2016_x64_KnightsLanding
 #define     YCR_ENABLE_2017_x64_Zen1
@@ -80,9 +83,11 @@
 #define     YCG_PROGRAM_SUFFIX      " (PB)"
 
 //  Binaries
-#define     YCR_ENABLE_2000_x86
-#define     YCR_ENABLE_2007_x64_Penryn
+//#define     YCR_ENABLE_2000_x86
+//#define     YCR_ENABLE_2007_x64_Penryn
 #define     YCR_ENABLE_2008_x64_Nehalem
+//#define     YCR_ENABLE_2011_x64_Bulldozer
+#define     YCR_ENABLE_2012_x64_Piledriver
 #define     YCR_ENABLE_2014_x64_Broadwell
 //#define     YCR_ENABLE_2016_x64_KnightsLanding
 #define     YCR_ENABLE_2017_x64_Zen1
@@ -105,16 +110,19 @@
 
 //  Binaries
 #define     YCR_ENABLE_2000_x86
-#define     YCR_ENABLE_2007_x64_Penryn
+//#define     YCR_ENABLE_2007_x64_Penryn
 #define     YCR_ENABLE_2008_x64_Nehalem
+//#define     YCR_ENABLE_2011_x64_Bulldozer
+#define     YCR_ENABLE_2012_x64_Piledriver
 #define     YCR_ENABLE_2014_x64_Broadwell
-#define     YCR_ENABLE_2016_x64_KnightsLanding
+//#define     YCR_ENABLE_2016_x64_KnightsLanding
 #define     YCR_ENABLE_2017_x64_Zen1
 #define     YCR_ENABLE_2017_x64_Skylake
 #define     YCR_ENABLE_2018_x64_CannonLake
 #define     YCR_ENABLE_2019_x64_Zen2
 #define     YCR_ENABLE_2020_x64_Zen3
 #define     YCR_ENABLE_2022_x64_Zen4
+#define     YCR_ENABLE_20XX_x64_AVX10_2_256
 
 #endif
 ////////////////////////////////////////////////////////////////////////////////

@@ -25,6 +25,7 @@ namespace ymp{
 class ExceptionHolder{
     ExceptionHolder(const ExceptionHolder&) = delete;
     void operator=(const ExceptionHolder&) = delete;
+
 public:
     YM_FORCE_INLINE ExceptionHolder()
         : m_pending_exception(nullptr)
@@ -37,6 +38,11 @@ public:
         if (pending_exception){
             free(pending_exception);
         }
+    }
+
+public:
+    YM_FORCE_INLINE bool has_exception() const{
+        return m_pending_exception.load(std::memory_order_relaxed) != nullptr;
     }
     YM_FORCE_INLINE void rethrow_stored_exceptions(){
         m_exceptions_handled = true;

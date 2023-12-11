@@ -142,14 +142,14 @@ public:
         }
     }
 
-    YM_FORCE_INLINE BasicArray(BasicArray&& x)
+    YM_FORCE_INLINE BasicArray(BasicArray&& x) noexcept
         : m_ptr(x.m_ptr)
         , m_allocator(x.m_allocator)
     {
         x.m_ptr = nullptr;
         x.m_allocator = nullptr;
     }
-    YM_FORCE_INLINE void operator=(BasicArray&& x){
+    YM_FORCE_INLINE void operator=(BasicArray&& x) noexcept{
         if (m_ptr != nullptr){
             m_allocator->free(m_ptr);
         }

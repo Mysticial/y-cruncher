@@ -33,7 +33,7 @@ public:
     //  Rule of 5
     dll_uptr(const dll_uptr&) = delete;
     void operator=(const dll_uptr&) = delete;
-    dll_uptr(dll_uptr&& x)
+    dll_uptr(dll_uptr&& x) noexcept
         : m_ptr(x.m_ptr)
         , m_deleter(x.m_deleter)
     {

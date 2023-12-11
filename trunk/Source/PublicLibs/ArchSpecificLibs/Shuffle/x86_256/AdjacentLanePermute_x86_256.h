@@ -88,6 +88,9 @@ YM_FORCE_INLINE __m256i mm256_permuteaj64_11(__m256i a, __m256i b){
 YM_FORCE_INLINE __m256i mm256_permuteaj64_01(__m256i a, __m256i b){
     return _mm256_blend_epi32(a, b, 0xcc);
 }
+YM_FORCE_INLINE __m256i mm256_permuteaj64_10(__m256i a, __m256i b){
+    return _mm256_castpd_si256(_mm256_shuffle_pd(_mm256_castsi256_pd(a), _mm256_castsi256_pd(b), 5));
+}
 ////////////////////////////////////////////////////////////////////////////////
 YM_FORCE_INLINE __m256i mm256_permuteaj128_00(__m256i a, __m256i b){
     return _mm256_permute2x128_si256(a, b, 32);

@@ -2,7 +2,7 @@
  * 
  *  Author          : Alexander J. Yee
  *  Date Created    : 02/13/2015
- *  Last Modified   : 02/13/2015
+ *  Last Modified   : 11/15/2023
  * 
  */
 
@@ -29,6 +29,7 @@ const char BINARY_NAME_2007_x64_Penryn[]            = "07-PNR ~ Nagisa";
 const char BINARY_NAME_2008_x64_Nehalem[]           = "08-NHM ~ Ushio";
 const char BINARY_NAME_2011_x64_SandyBridge[]       = "11-SNB ~ Hina";
 const char BINARY_NAME_2011_x64_Bulldozer[]         = "11-BD1 ~ Miyu";
+const char BINARY_NAME_2012_x64_Piledriver[]        = "12-BD2 ~ Miyu";
 const char BINARY_NAME_2013_x64_Haswell[]           = "13-HSW ~ Airi";
 const char BINARY_NAME_2014_x64_Broadwell[]         = "14-BDW ~ Kurumi";
 const char BINARY_NAME_2016_x64_KnightsLanding[]    = "16-KNL";
@@ -40,6 +41,7 @@ const char BINARY_NAME_2019_x64_Zen2[]              = "19-ZN2 ~ Kagari";
 const char BINARY_NAME_2020_x64_Zen3[]              = "20-ZN3 ~ Yuzuki";
 //const char BINARY_NAME_2021_x64_IceLake[]           = "21-ICX ~ Miyuki";
 const char BINARY_NAME_2022_x64_Zen4[]              = "22-ZN4 ~ Kizuna";
+const char BINARY_NAME_20xx_x64_AVX10_2_256[]       = "XX-AVX10.2-256";
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -55,6 +57,7 @@ const std::vector<const char*> BINARY_NAME_LIST{
     BINARY_NAME_2008_x64_Nehalem,
     BINARY_NAME_2011_x64_SandyBridge,
     BINARY_NAME_2011_x64_Bulldozer,
+    BINARY_NAME_2012_x64_Piledriver,
     BINARY_NAME_2013_x64_Haswell,
     BINARY_NAME_2014_x64_Broadwell,
     BINARY_NAME_2016_x64_KnightsLanding,

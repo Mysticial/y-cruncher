@@ -30,13 +30,13 @@ public:
     BaseFile(const BaseFile&) = delete;
     void operator=(const BaseFile&) = delete;
 
-    BaseFile(BaseFile&& x)
+    BaseFile(BaseFile&& x) noexcept
         : m_path(std::move(x.m_path))
         , m_filehandle(std::move(x.m_filehandle))
     {
         x.m_path.clear();
     }
-    void operator=(BaseFile&& x){
+    void operator=(BaseFile&& x) noexcept{
         m_path = std::move(x.m_path);
         m_filehandle = std::move(x.m_filehandle);
         x.m_path.clear();

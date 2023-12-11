@@ -23,18 +23,18 @@ namespace Time{
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-void StopWatch::Reset(){
+void StopWatch::reset(){
     m_total.reset();
     m_is_running = false;
 }
-void StopWatch::Start(){
+void StopWatch::start(){
     if (m_is_running){
         return;
     }
     m_last = PerformanceTimeStamp::now();
     m_is_running = true;
 }
-void StopWatch::Stop(){
+void StopWatch::stop(){
     if (!m_is_running){
         return;
     }
@@ -61,7 +61,7 @@ void StopWatch::print() const{
     PerformanceTimeDuration stats = get_current();
     double user_utilization   = 100 * stats.user_time / stats.wall_time;
     double kernel_utilization = 100 * stats.kernel_time / stats.wall_time;
-    double cpu_ratio = 1. / Environment::GetLogicalProcessors();
+    double cpu_ratio = 1. / Environment::get_logical_processors();
 
     if (stats.user_time <= 0){
         Console::print("CPU Utilization:        ", 'w');
@@ -102,7 +102,7 @@ std::string StopWatch::to_string() const{
     PerformanceTimeDuration stats = get_current();
     double user_utilization   = 100 * stats.user_time / stats.wall_time;
     double kernel_utilization = 100 * stats.kernel_time / stats.wall_time;
-    double cpu_ratio = 1. / Environment::GetLogicalProcessors();
+    double cpu_ratio = 1. / Environment::get_logical_processors();
 
     std::string stream;
 
@@ -145,6 +145,33 @@ void StopWatch::Deserialize(const char*& stream){
     m_total.wall_time = Serialization::parse_float(stream);
     m_total.user_time = Serialization::parse_float(stream);
     m_total.kernel_time = Serialization::parse_float(stream);
+}
+void StopWatch::load_config(const ConfigObject& config){
+    union{
+        double f;
+        u64_t i;
+    };
+    i = config.get_integer("total.wall_time");
+    m_total.wall_time = f;
+    i = config.get_integer("total.user_time");
+    m_total.user_time = f;
+    i = config.get_integer("total.kernel_time");
+    m_total.kernel_time = f;
+}
+ConfigObject StopWatch::now_to_config() const{
+    ConfigObject ret;
+    PerformanceTimeDuration stats = get_current();
+    union{
+        double f;
+        u64_t i;
+    };
+    f = stats.wall_time;
+    ret.add_integer("total.wall_time", i);
+    f = stats.user_time;
+    ret.add_integer("total.user_time", i);
+    f = stats.kernel_time;
+    ret.add_integer("total.kernel_time", i);
+    return ret;
 }
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////

@@ -30,14 +30,16 @@ namespace ymp{
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-void print_bool(int x){
+void print_bool(int x, bool newline = true){
     if (x){
         Console::print("Yes", 'G');
     }else{
         Console::print("No", 'R');
     }
     Console::set_color('w');
-    Console::println();
+    if (newline){
+        Console::println();
+    }
 }
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -163,13 +165,14 @@ void cpu_x86::detect_host(){
 
         HW_AVX512_VBMI2         = (info[2] & ((int)1 <<  6)) != 0;
         HW_VAES                 = (info[2] & ((int)1 <<  9)) != 0;
+        HW_VPCLMULQDQ           = (info[2] & ((int)1 << 10)) != 0;
         HW_GFNI                 = (info[2] & ((int)1 <<  8)) != 0;
-        HW_AVX512_VPCLMULQDQ    = (info[2] & ((int)1 << 10)) != 0;
         HW_AVX512_BITALG        = (info[2] & ((int)1 << 12)) != 0;
 
-        HW_AVX_GFNI             = HW_GFNI && HW_AVX;
-        HW_AVX512_VAES          = HW_VAES && HW_AVX512_F;
-        HW_AVX512_GFNI          = HW_GFNI && HW_AVX512_F;
+        HW_AVX_GFNI             = HW_AVX && HW_GFNI;
+        HW_AVX512_GFNI          = HW_AVX512_F && HW_GFNI;
+        HW_AVX512_VAES          = HW_AVX512_F && HW_VAES;
+        HW_AVX512_VPCLMULQDQ    = HW_AVX512_F && HW_VPCLMULQDQ;
 
         HW_AVX512_VP2INTERSECT  = (info[3] & ((int)1 <<  8)) != 0;
         HW_AVX512_FP16          = (info[3] & ((int)1 << 23)) != 0;
@@ -183,10 +186,15 @@ void cpu_x86::detect_host(){
         HW_AVX512_BF16      = (info[0] & ((int)1 <<  5)) != 0;
         HW_AVX_IFMA         = (info[0] & ((int)1 << 23)) != 0;
         HW_AMX_FP16         = (info[0] & ((int)1 << 21)) != 0;
-        HW_AVX_VNNI_INT8    = (info[2] & ((int)1 <<  4)) != 0;
-        HW_AVX_NE_CONVERT   = (info[2] & ((int)1 <<  5)) != 0;
-        HW_AMX_COMPLEX      = (info[2] & ((int)1 <<  8)) != 0;
-
+        HW_AVX_VNNI_INT8    = (info[3] & ((int)1 <<  4)) != 0;
+        HW_AVX_NE_CONVERT   = (info[3] & ((int)1 <<  5)) != 0;
+        HW_AMX_COMPLEX      = (info[3] & ((int)1 <<  8)) != 0;
+        HW_AVX_VNNI_INT16   = (info[3] & ((int)1 << 10)) != 0;
+        HW_SHA512           = (info[0] & ((int)1 <<  0)) != 0;
+        HW_SM3              = (info[0] & ((int)1 <<  1)) != 0;
+        HW_SM4              = (info[0] & ((int)1 <<  2)) != 0;
+        HW_APX_F            = (info[3] & ((int)1 << 21)) != 0;
+        HW_AVX10            = (info[3] & ((int)1 << 19)) != 0 ? 1 : 0;
     }
     if (nExIds >= 0x80000001){
         cpuid(info, 0x80000001, 0);
@@ -196,6 +204,13 @@ void cpu_x86::detect_host(){
         HW_PREFETCHW    = (info[2] & ((int)1 <<  8)) != 0;
         HW_XOP          = (info[2] & ((int)1 << 11)) != 0;
         HW_FMA4         = (info[2] & ((int)1 << 16)) != 0;
+    }
+    if (HW_AVX10){
+        cpuid(info, 0x00000024, 0);
+        HW_AVX10        =   info[1] & 0xff;
+        HW_AVX10v128    =   (info[1] & ((int)1 << 16)) != 0;
+        HW_AVX10_256    =   (info[1] & ((int)1 << 17)) != 0;
+        HW_AVX10_512    =   (info[1] & ((int)1 << 18)) != 0;
     }
 }
 void cpu_x86::print() const{
@@ -243,6 +258,7 @@ void cpu_x86::print() const{
     Console::print("    AES         = "); print_bool(HW_AES);
     Console::print("    SHA         = "); print_bool(HW_SHA);
     Console::print("    GFNI        = "); print_bool(HW_GFNI);
+    Console::print("    SM3         = "); print_bool(HW_SM3);
     Console::println();
 
     Console::println("SIMD: 256-bit");
@@ -252,11 +268,15 @@ void cpu_x86::print() const{
     Console::print("  * FMA3            = "); print_bool(HW_FMA3);
     Console::print("  * AVX2            = "); print_bool(HW_AVX2);
     Console::print("    VAES            = "); print_bool(HW_VAES);
+    Console::print("    VPCLMULQDQ      = "); print_bool(HW_VPCLMULQDQ);
     Console::print("  * AVX-GFNI        = "); print_bool(HW_AVX_GFNI);
     Console::print("    AVX-VNNI        = "); print_bool(HW_AVX_VNNI);
     Console::print("    AVX-VNNI_INT8   = "); print_bool(HW_AVX_VNNI_INT8);
     Console::print("    AVX-IFMA        = "); print_bool(HW_AVX_IFMA);
     Console::print("    AVX-NE-CONVERT  = "); print_bool(HW_AVX_NE_CONVERT);
+    Console::print("    AVX-VNNI_INT16  = "); print_bool(HW_AVX_VNNI_INT16);
+    Console::print("    SHA512          = "); print_bool(HW_SHA512);
+    Console::print("    SM4             = "); print_bool(HW_SM4);
     Console::println();
 
     Console::println("SIMD: 512-bit");
@@ -281,6 +301,15 @@ void cpu_x86::print() const{
     Console::print("    AVX512-BF16             = "); print_bool(HW_AVX512_BF16);
     Console::print("    AVX512-VP2INTERSECT     = "); print_bool(HW_AVX512_VP2INTERSECT);
     Console::print("    AVX512-FP16             = "); print_bool(HW_AVX512_FP16);
+    Console::println();
+
+    Console::println("APX + AVX10:");
+    Console::print("    APX-F           = "); print_bool(HW_APX_F);
+    Console::print("    AVX10           = "); print_bool(HW_AVX10, false);
+    if (HW_AVX10){ Console::print(" (v" + std::to_string(HW_AVX10) + ")"); } Console::println();
+    Console::print("    AVX10/128       = "); print_bool(HW_AVX10v128);
+    Console::print("    AVX10/256       = "); print_bool(HW_AVX10_256);
+    Console::print("    AVX10/512       = "); print_bool(HW_AVX10_512);
     Console::println();
 
     Console::println("AMX:");

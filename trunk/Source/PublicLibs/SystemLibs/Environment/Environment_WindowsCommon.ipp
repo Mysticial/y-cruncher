@@ -11,10 +11,14 @@
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 //  Dependencies
+#include <string>
+#include <vector>
+#include <chrono>
 #include <algorithm>
 #include <Windows.h>
 #include "PublicLibs/BasicLibs/StringTools/Unicode.h"
 #include "PublicLibs/ConsoleIO/BasicIO.h"
+#include "PublicLibs/SystemLibs/ProcessorCapability/ProcessorCapability.h"
 #include "Environment.h"
 namespace ymp{
 namespace Environment{
@@ -117,7 +121,7 @@ bool RunFromConsole(){
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-upL_t GetFreePhysicalMemory(){
+upL_t get_free_physical_memory(){
     uiL_t bytes;
 
     MEMORYSTATUSEX data;
@@ -131,7 +135,7 @@ upL_t GetFreePhysicalMemory(){
     bytes = std::min(bytes, (uiL_t)MAX_MEMORY);
     return static_cast<upL_t>(bytes);
 }
-uiL_t GetTotalPhysicalMemory(){
+uiL_t get_total_physical_memory(){
     MEMORYSTATUSEX data;
     data.dwLength = sizeof(data);
     if (GlobalMemoryStatusEx(&data)){
@@ -142,6 +146,9 @@ uiL_t GetTotalPhysicalMemory(){
 }
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+#ifdef YMP_Arch_2000_x86
 void x86_cpuid(u32_t eabcdx[4], u32_t eax, u32_t ecx){
     int out[4];
     __cpuidex(out, eax, ecx);
@@ -150,10 +157,10 @@ void x86_cpuid(u32_t eabcdx[4], u32_t eax, u32_t ecx){
     eabcdx[2] = out[2];
     eabcdx[3] = out[3];
 }
-u64_t x86_rdtsc(){
+u64_t cpu_timestamp(){
     return __rdtsc();
 }
-u64_t x86_measure_rdtsc_ticks_per_sec(){
+u64_t measure_cpu_timestamp_frequency(){
     HANDLE thread = GetCurrentThread();
 
     GROUP_AFFINITY before_affinity;
@@ -211,6 +218,14 @@ u64_t x86_measure_rdtsc_ticks_per_sec(){
 
     return (u64_t)(cycle_dif / timer_dif * frequency.QuadPart);
 }
+#else
+u64_t cpu_timestamp(){
+    return 0;
+}
+u64_t measure_cpu_timestamp_frequency(){
+    return 0;
+}
+#endif
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////

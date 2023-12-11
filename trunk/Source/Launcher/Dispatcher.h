@@ -54,6 +54,12 @@ bool hardware_2011_x64_Bulldozer(const cpu_x86& features){
 //        && features.HW_XOP
         && features.HW_FMA4;
 }
+bool hardware_2012_x64_Piledriver(const cpu_x86& features){
+    return hardware_2011_x64_SandyBridge(features)
+        && features.HW_ABM
+//        && features.HW_XOP
+        && features.HW_FMA3;
+}
 bool hardware_2013_x64_Haswell(const cpu_x86& features){
     return hardware_2011_x64_SandyBridge(features)
         && features.HW_ABM
@@ -135,6 +141,11 @@ bool can_run_2011_x64_SandyBridge(const cpu_x86& features){
 }
 bool can_run_2011_x64_Bulldozer(const cpu_x86& features){
     return hardware_2011_x64_Bulldozer(features)
+        && features.OS_x64
+        && features.OS_AVX;
+}
+bool can_run_2012_x64_Piledriver(const cpu_x86& features){
+    return hardware_2012_x64_Piledriver(features)
         && features.OS_x64
         && features.OS_AVX;
 }

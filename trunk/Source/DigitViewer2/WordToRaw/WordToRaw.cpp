@@ -20,10 +20,8 @@
 #include "Kernels/WordToRaw_x64_AVX2.ipp"
 #elif defined YMP_Arch_2007_x64_Penryn
 #include "Kernels/WordToRaw_x64_SSE41.ipp"
-#elif defined YMP_Arch_2000_x86
-#include "Kernels/WordToRaw_LittleEndian.ipp"
 #else
-#error "No generic implementation available."
+#include "Kernels/WordToRaw_LittleEndian.ipp"
 #endif
 ////////////////////////////////////////////////////////////////////////////////
 namespace DigitViewer2{

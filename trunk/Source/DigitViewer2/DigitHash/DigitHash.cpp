@@ -11,6 +11,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 //  Dependencies
+#include "PublicLibs/Types.h"
 #include "PublicLibs/SystemLibs/ProcessorCapability/ProcessorCapability.h"
 #include "DigitHash.h"
 ////////////////////////////////////////////////////////////////////////////////
@@ -19,12 +20,10 @@
 #include "Kernels/DigitHash_x64_AVX512-BW.ipp"
 #elif defined YMP_Arch_2013_x64_Haswell
 #include "Kernels/DigitHash_x64_AVX2.ipp"
-#elif defined YMP_Arch_2004_x64
+#elif YMP_PTR_MAG >= 6
 #include "Kernels/DigitHash_LittleEndian64.ipp"
-#elif defined YMP_Arch_2000_x86
-#include "Kernels/DigitHash_LittleEndian32.ipp"
 #else
-#error "No generic implementation available."
+#include "Kernels/DigitHash_LittleEndian32.ipp"
 #endif
 ////////////////////////////////////////////////////////////////////////////////
 namespace DigitViewer2{

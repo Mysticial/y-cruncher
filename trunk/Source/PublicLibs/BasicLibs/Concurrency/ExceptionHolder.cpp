@@ -27,6 +27,7 @@ void ExceptionHolder::throw_not_handled(){
         return;
     }
     Console::warning("Exceptions not handled!");
+//    std::terminate();
     Console::quit_program(1);
 //    ymo_error("Exceptions not handled!");
 }
@@ -38,6 +39,7 @@ void ExceptionHolder::store_current_exception(){
     try{
         set_exception(new std::exception_ptr(std::move(ptr)));
     }catch (...){
+        Console::warning("Unable to store exception.");
         std::terminate();
     }
 }

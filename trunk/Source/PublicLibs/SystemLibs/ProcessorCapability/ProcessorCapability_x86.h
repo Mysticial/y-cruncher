@@ -14,6 +14,10 @@
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 #if 0
+#elif defined X64_XX_AVX10_2_512
+#define YMP_Arch_20XX_x64_AVX10_2_512
+#elif defined X64_XX_AVX10v2_256
+#define YMP_Arch_20XX_x64_AVX10_2_256
 #elif defined X64_22_Zen4
 #define YMP_Arch_2019_x64_IceLake
 #elif defined X64_20_Zen3
@@ -32,6 +36,8 @@
 #define YMP_Arch_2014_x64_Broadwell
 #elif defined X64_13_Haswell
 #define YMP_Arch_2013_x64_Haswell
+#elif defined X64_12_Piledriver
+#define YMP_Arch_2012_x64_Piledriver
 #elif defined X64_11_Bulldozer
 #define YMP_Arch_2011_x64_Bulldozer
 #elif defined X64_11_SandyBridge
@@ -49,6 +55,14 @@
 #endif
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
+#ifdef YMP_Arch_20XX_x64_AVX10_2_512
+#define YMP_Arch_2019_x64_IceLake
+#endif
+
+#ifdef YMP_Arch_20XX_x64_AVX10_2_256
+#define YMP_Arch_2014_x64_Broadwell
+#endif
+
 #ifdef YMP_Arch_2019_x64_IceLake
 #define YMP_Arch_2018_x64_CannonLake
 #endif
@@ -70,6 +84,10 @@
 #endif
 
 #ifdef YMP_Arch_2013_x64_Haswell
+#define YMP_Arch_2011_x64_SandyBridge
+#endif
+
+#ifdef YMP_Arch_2012_x64_Piledriver
 #define YMP_Arch_2011_x64_SandyBridge
 #endif
 
@@ -103,7 +121,7 @@
 #define YMP_Arch_2000_x86
 #endif
 
-#define YMP_Arch_2000_x86
+//#define YMP_Arch_2000_x86
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////

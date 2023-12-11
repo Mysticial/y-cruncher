@@ -2,7 +2,7 @@
  * 
  *  Author          : Alexander J. Yee
  *  Date Created    : 07/31/2011
- *  Last Modified   : 03/24/2018
+ *  Last Modified   : 10/15/2023
  * 
  *      Please read the comments for "RawFile_Windows.ipp" before you
  *  continue reading here.
@@ -66,10 +66,11 @@
 #include <fcntl.h>
 #include "PublicLibs/ConsoleIO/BasicIO.h"
 #include "PublicLibs/ConsoleIO/Label.h"
-#include "PublicLibs/BasicLibs/StringTools/ToString.h"
 #include "PublicLibs/Exceptions/InvalidParametersException.h"
 #include "PublicLibs/Exceptions/SystemException.h"
+#include "PublicLibs/BasicLibs/StringTools/ToString.h"
 #include "PublicLibs/BasicLibs/Alignment/AlignmentTools.h"
+#include "PublicLibs/BasicLibs/Concurrency/MemoryFence.h"
 #include "PublicLibs/SystemLibs/FileIO/FileException.h"
 #include "RawFile.h"
 namespace ymp{
@@ -163,14 +164,41 @@ void handle_error(int errorcode, const char* function, std::string path, std::st
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 //  Rule of 5
-RawFile::~RawFile(){
+RawFile::~RawFile() noexcept{
     close(m_persistent);
+}
+RawFile::RawFile(RawFile&& x) noexcept
+    : AlignedAccessFile(std::move(x))
+    , m_filehandle(x.m_filehandle)
+    , m_persistent(x.m_persistent)
+    , m_raw_io(x.m_raw_io)
+    , m_throttler(MAX_INFLIGHT)
+{
+    x.m_filehandle = -1;
+}
+void RawFile::operator=(RawFile&& x) noexcept{
+    if (this == &x){
+        return;
+    }
+
+    close(m_persistent);
+
+    AlignedAccessFile::operator=(std::move(x));
+    m_filehandle = x.m_filehandle;
+    m_persistent = x.m_persistent;
+    m_raw_io = x.m_raw_io;
+
+    x.m_filehandle = -1;
 }
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 //  Constructors
+RawFile::RawFile()
+    : m_filehandle(-1)
+    , m_throttler(MAX_INFLIGHT)
+{}
 void RawFile::open(Mode mode){
     switch (mode){
     case CREATE:
@@ -270,17 +298,19 @@ RawFile::RawFile(
     : AlignedAccessFile(alignment_k, std::move(path))
     , m_persistent(persistent)
     , m_raw_io(raw_io)
+    , m_throttler(MAX_INFLIGHT)
 {
     open(mode);
 }
 RawFile::RawFile(
     ukL_t alignment_k,
     ufL_t bytes, std::string path,
-    bool persistent, bool raw_io
+    bool persistent, bool raw_io, bool read_protect
 )
     : AlignedAccessFile(alignment_k, std::move(path))
     , m_persistent(persistent)
     , m_raw_io(raw_io)
+    , m_throttler(MAX_INFLIGHT)
 {
     do{
         m_filehandle = ::open(
@@ -468,18 +498,21 @@ upL_t RawFile::load(void* data, ufL_t offset, upL_t bytes, bool throw_on_partial
         return 0;
     }
 
+#if 0
     //  Set File Pointer
     if (lseek64(m_filehandle, offset, SEEK_SET) == -1){
         int errorcode = errno;
         handle_error(errorcode, "RawFile::load()", m_path, "lseek64() failed.");
     }
+#endif
 
     //  Read
     upL_t processed = 0;
     while (bytes > 0){
         upL_t current = std::min(bytes, MAX_IO_BYTES);
 
-        spL_t IO_bytes = read(m_filehandle, data, current);
+//        spL_t IO_bytes = read(m_filehandle, data, current);
+        spL_t IO_bytes = pread(m_filehandle, data, current, offset);
         if (IO_bytes == -1){
             int errorcode = errno;
             handle_error(errorcode, "RawFile::load()", m_path, "read() failed.");
@@ -497,6 +530,7 @@ upL_t RawFile::load(void* data, ufL_t offset, upL_t bytes, bool throw_on_partial
             break;
         }
 
+        offset += current;
         data = (char*)data + current;
         bytes -= current;
     }
@@ -512,18 +546,23 @@ upL_t RawFile::store(const void* data, ufL_t offset, upL_t bytes, bool throw_on_
         return 0;
     }
 
+#if 0
     //  Set File Pointer
     if (lseek64(m_filehandle, offset, SEEK_SET) == -1){
         int errorcode = errno;
         handle_error(errorcode, "RawFile::store()", m_path, "lseek64() failed.");
     }
+#endif
+
+    Intrinsics::sfence_store_release();
 
     //  Write
     upL_t processed = 0;
     while (bytes > 0){
         upL_t current = std::min(bytes, MAX_IO_BYTES);
 
-        spL_t IO_bytes = write(m_filehandle, data, current);
+//        spL_t IO_bytes = write(m_filehandle, data, current);
+        spL_t IO_bytes = pwrite(m_filehandle, data, current, offset);
         if (IO_bytes == -1){
             int errorcode = errno;
             handle_error(errorcode, "RawFile::store()", m_path, "write() failed.");
@@ -541,17 +580,12 @@ upL_t RawFile::store(const void* data, ufL_t offset, upL_t bytes, bool throw_on_
             break;
         }
 
+        offset += current;
         data = (char*)data + current;
         bytes -= current;
     }
 
     return processed;
-}
-void RawFile::load(void* data, ufL_t offset, upL_t bytes, void* P, upL_t PL){
-    load(data, offset, bytes, true);
-}
-void RawFile::store(const void* data, ufL_t offset, upL_t bytes, void* P, upL_t PL){
-    store(data, offset, bytes, true);
 }
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////

@@ -40,15 +40,15 @@ bool RunFromConsole();
 const upL_t MAX_MEMORY = (((upL_t)0 - 1) / 16) * 7;
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-upL_t       GetLogicalProcessors    ();
-upL_t       GetFreePhysicalMemory   ();
-uiL_t       GetTotalPhysicalMemory  ();
+upL_t       get_logical_processors      ();
+upL_t       get_free_physical_memory    ();
+uiL_t       get_total_physical_memory   ();
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-inline upL_t SuggestUseAllMemory(){
+inline upL_t suggest_use_all_memory(){
     //  Anything that wants to use all available memory should call this.
     //  15/16 should leave behind a reasonable amount for the OS.
-    return GetFreePhysicalMemory() / 16 * 15;
+    return get_free_physical_memory() / 16 * 15;
 }
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -56,10 +56,10 @@ inline upL_t SuggestUseAllMemory(){
 ////////////////////////////////////////////////////////////////////////////////
 //  x86 Specific
 void x86_cpuid(u32_t eabcdx[4], u32_t eax, u32_t ecx = 0);
-u64_t x86_rdtsc();
-u64_t x86_measure_rdtsc_ticks_per_sec();
-inline u64_t x86_rdtsc_ticks_per_sec(){
-    static uiL_t cached = x86_measure_rdtsc_ticks_per_sec();
+u64_t cpu_timestamp();
+u64_t measure_cpu_timestamp_frequency();
+inline u64_t cpu_timestamp_frequency(){
+    static uiL_t cached = measure_cpu_timestamp_frequency();
     return cached;
 }
 ////////////////////////////////////////////////////////////////////////////////

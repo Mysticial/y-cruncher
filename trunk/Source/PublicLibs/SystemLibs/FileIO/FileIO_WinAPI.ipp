@@ -156,7 +156,7 @@ bool DirectoryIsWritable(const std::string& directory){
         0,
         NULL,
         OPEN_ALWAYS,
-        FILE_FLAG_WRITE_THROUGH,
+        0,  //  FILE_FLAG_WRITE_THROUGH,
 //        NULL,
         NULL
     );

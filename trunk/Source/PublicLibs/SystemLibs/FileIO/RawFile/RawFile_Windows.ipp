@@ -2,7 +2,7 @@
  * 
  *  Author          : Alexander J. Yee
  *  Date Created    : 07/20/2011
- *  Last Modified   : 03/24/2018
+ *  Last Modified   : 10/15/2023
  * 
  *      There are two key components to achieving zero-overhead disk access on
  *  Windows: FILE_FLAG_NO_BUFFERING and SetFileValidData().
@@ -47,11 +47,15 @@
 //  Dependencies
 #include <algorithm>
 #include <Windows.h>
+#include <Aclapi.h>
 #include "PublicLibs/ConsoleIO/BasicIO.h"
 #include "PublicLibs/ConsoleIO/Label.h"
 #include "PublicLibs/Exceptions/InvalidParametersException.h"
 #include "PublicLibs/BasicLibs/StringTools/Unicode.h"
 #include "PublicLibs/BasicLibs/Alignment/AlignmentTools.h"
+#include "PublicLibs/BasicLibs/Concurrency/MemoryFence.h"
+#include "PublicLibs/BasicLibs/Concurrency/SpinPause.h"
+//#include "PublicLibs/SystemLibs/Time/Time.h"
 #include "PublicLibs/SystemLibs/Environment/Environment.h"
 #include "PublicLibs/SystemLibs/FileIO/FileException.h"
 #include "RawFile.h"
@@ -114,10 +118,109 @@ void handle_error(DWORD errorcode, const char* function, std::string path, std::
             msg += "Invalid parameter. This can happen if the sector alignment is too small.";
             break;
         default:
-            msg += "Unknown Error, See:\nhttp://msdn.microsoft.com/en-us/library/ms681381(VS.85).aspx";
+            msg += "Unknown Error " + std::to_string(errorcode) + ", See:\nhttp://msdn.microsoft.com/en-us/library/ms681381(VS.85).aspx";
     }
     throw FileException(errorcode, function, std::move(path), std::move(msg));
 }
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+//  Windows-Specific
+class SecurityAttributes{
+public:
+    SecurityAttributes(const SecurityAttributes&) = delete;
+    void operator=(const SecurityAttributes&) = delete;
+
+    SecurityAttributes(){
+        memset(m_ea, 0, sizeof(m_ea));
+        try{
+            SID_IDENTIFIER_AUTHORITY SIDAuthWorld = SECURITY_WORLD_SID_AUTHORITY;
+            if (!AllocateAndInitializeSid(
+                &SIDAuthWorld, 1,
+                SECURITY_WORLD_RID,
+                0, 0, 0, 0, 0, 0, 0,
+                &m_everyone_sid
+            )){
+                DWORD errorcode = GetLastError();
+                handle_error(errorcode, "SecurityAttributes()", "", "AllocateAndInitializeSid() failed.");
+            }
+            m_ea[0].grfAccessPermissions = DELETE;
+            m_ea[0].grfAccessMode = SET_ACCESS;
+            m_ea[0].grfInheritance = NO_INHERITANCE;
+            m_ea[0].Trustee.TrusteeForm = TRUSTEE_IS_SID;
+            m_ea[0].Trustee.TrusteeType = TRUSTEE_IS_WELL_KNOWN_GROUP;
+            m_ea[0].Trustee.ptstrName = (LPTSTR)m_everyone_sid;
+
+            SID_IDENTIFIER_AUTHORITY SIDAuthNT = SECURITY_NT_AUTHORITY;
+            if (!AllocateAndInitializeSid(
+                &SIDAuthNT, 2,
+                SECURITY_BUILTIN_DOMAIN_RID,
+                DOMAIN_ALIAS_RID_ADMINS,
+                0, 0, 0, 0, 0, 0,
+                &m_admin_sid
+            )){
+                DWORD errorcode = GetLastError();
+                handle_error(errorcode, "SecurityAttributes()", "", "AllocateAndInitializeSid() failed.");
+            }
+            m_ea[1].grfAccessPermissions = GENERIC_ALL;
+            m_ea[1].grfAccessMode = SET_ACCESS;
+            m_ea[1].grfInheritance = NO_INHERITANCE;
+            m_ea[1].Trustee.TrusteeForm = TRUSTEE_IS_SID;
+            m_ea[1].Trustee.TrusteeType = TRUSTEE_IS_GROUP;
+            m_ea[1].Trustee.ptstrName = (LPTSTR)m_admin_sid;
+
+            DWORD rc = SetEntriesInAcl(2, m_ea, NULL, &m_pacl);
+            if (rc != ERROR_SUCCESS){
+                DWORD errorcode = GetLastError();
+                handle_error(errorcode, "SecurityAttributes()", "", "SetEntriesInAcl() failed.");
+            }
+
+            if (!InitializeSecurityDescriptor(&m_security_descriptor, SECURITY_DESCRIPTOR_REVISION)){
+                DWORD errorcode = GetLastError();
+                handle_error(errorcode, "SecurityAttributes()", "", "InitializeSecurityDescriptor() failed.");
+            }
+
+            m_security_attributes.nLength = sizeof(m_security_descriptor);
+            m_security_attributes.lpSecurityDescriptor = &m_security_descriptor;
+            m_security_attributes.bInheritHandle = false;
+
+            if (!SetSecurityDescriptorDacl(&m_security_descriptor, true, m_pacl, false)){
+                DWORD errorcode = GetLastError();
+                handle_error(errorcode, "SecurityAttributes()", "", "SetSecurityDescriptorDacl() failed.");
+            }
+
+        }catch (...){
+            if (m_pacl != nullptr){
+                LocalFree(m_pacl);
+            }
+            if (m_admin_sid != nullptr){
+                FreeSid(m_admin_sid);
+            }
+            if (m_admin_sid != nullptr){
+                FreeSid(m_everyone_sid);
+            }
+            throw;
+        }
+    }
+
+    static SECURITY_ATTRIBUTES* instance(){
+#if 1
+        static SecurityAttributes attributes;
+        return &attributes.m_security_attributes;
+#else
+        return nullptr;
+#endif
+    }
+
+private:
+    PSID m_everyone_sid = nullptr;
+    PSID m_admin_sid = nullptr;
+    PACL m_pacl = nullptr;
+    EXPLICIT_ACCESS m_ea[2];
+    SECURITY_DESCRIPTOR m_security_descriptor;
+    SECURITY_ATTRIBUTES m_security_attributes;
+};
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -126,11 +229,42 @@ void handle_error(DWORD errorcode, const char* function, std::string path, std::
 RawFile::~RawFile(){
     close(m_persistent);
 }
+RawFile::RawFile(RawFile&& x) noexcept
+    : AlignedAccessFile(std::move(x))
+    , m_filehandle(x.m_filehandle)
+    , m_wpath(std::move(x.m_wpath))
+    , m_persistent(x.m_persistent)
+    , m_raw_io(x.m_raw_io)
+    , m_throttler(MAX_INFLIGHT)
+{
+    x.m_filehandle = INVALID_HANDLE_VALUE;
+    x.m_wpath.clear();
+}
+void RawFile::operator=(RawFile&& x) noexcept{
+    if (this == &x){
+        return;
+    }
+
+    close(m_persistent);
+
+    AlignedAccessFile::operator=(std::move(x));
+    m_filehandle = x.m_filehandle;
+    m_wpath = std::move(x.m_wpath);
+    m_persistent = x.m_persistent;
+    m_raw_io = x.m_raw_io;
+
+    x.m_filehandle = INVALID_HANDLE_VALUE;
+    x.m_wpath.clear();
+}
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 //  Constructors
+RawFile::RawFile()
+    : m_filehandle(INVALID_HANDLE_VALUE)
+    , m_throttler(MAX_INFLIGHT)
+{}
 void RawFile::open(Mode mode){
     switch (mode){
     case CREATE:
@@ -140,7 +274,7 @@ void RawFile::open(Mode mode){
             0,
             nullptr,
             OPEN_ALWAYS,
-            m_raw_io ? FILE_FLAG_NO_BUFFERING : FILE_FLAG_WRITE_THROUGH,
+            FILE_FLAG_OVERLAPPED | (m_raw_io ? FILE_FLAG_NO_BUFFERING : 0),
             nullptr
         );
         if (m_filehandle == INVALID_HANDLE_VALUE){
@@ -163,7 +297,7 @@ void RawFile::open(Mode mode){
             FILE_SHARE_READ,
             nullptr,
             OPEN_EXISTING,
-            m_raw_io ? FILE_FLAG_NO_BUFFERING : 0,
+            FILE_FLAG_OVERLAPPED | (m_raw_io ? FILE_FLAG_NO_BUFFERING : 0),
             nullptr
         );
         if (m_filehandle == INVALID_HANDLE_VALUE){
@@ -179,7 +313,7 @@ void RawFile::open(Mode mode){
             0,
             nullptr,
             OPEN_EXISTING,
-            m_raw_io ? FILE_FLAG_NO_BUFFERING : FILE_FLAG_WRITE_THROUGH,
+            FILE_FLAG_OVERLAPPED | (m_raw_io ? FILE_FLAG_NO_BUFFERING : 0),
             nullptr
         );
         if (m_filehandle == INVALID_HANDLE_VALUE){
@@ -199,26 +333,28 @@ RawFile::RawFile(
     , m_wpath(StringTools::utf8_to_wstr(m_path))
     , m_persistent(persistent)
     , m_raw_io(raw_io)
+    , m_throttler(MAX_INFLIGHT)
 {
     open(mode);
 }
 RawFile::RawFile(
     ukL_t alignment_k,
     ufL_t bytes, std::string path,
-    bool persistent, bool raw_io
+    bool persistent, bool raw_io, bool read_protect
 )
     : AlignedAccessFile(alignment_k, std::move(path))
     , m_wpath(StringTools::utf8_to_wstr(m_path))
     , m_persistent(persistent)
     , m_raw_io(raw_io)
+    , m_throttler(MAX_INFLIGHT)
 {
     m_filehandle = CreateFileW(
         m_wpath.c_str(),
         GENERIC_READ | GENERIC_WRITE,
         0,
-        nullptr,
+        read_protect ? SecurityAttributes::instance() : nullptr,
         OPEN_ALWAYS,
-        raw_io ? FILE_FLAG_NO_BUFFERING : FILE_FLAG_WRITE_THROUGH,
+        raw_io ? FILE_FLAG_NO_BUFFERING : 0,    //  FILE_FLAG_WRITE_THROUGH,
         nullptr
     );
     if (m_filehandle == INVALID_HANDLE_VALUE){
@@ -306,7 +442,7 @@ void RawFile::close_and_set_size(ufL_t bytes){
         FILE_SHARE_READ,
         nullptr,
         OPEN_EXISTING,
-        FILE_FLAG_WRITE_THROUGH,
+        0,  //  FILE_FLAG_WRITE_THROUGH,
         nullptr
     );
     if (handle == INVALID_HANDLE_VALUE){
@@ -348,6 +484,7 @@ void RawFile::rename(std::string path, bool readonly){
     std::wstring new_wpath = StringTools::utf8_to_wstr(path);
     close(true);
 
+#if 1
     //  Rename it
     if (_wrename(old_wpath.c_str(), new_wpath.c_str())){
         //  Check error
@@ -386,6 +523,10 @@ void RawFile::rename(std::string path, bool readonly){
 
     m_path = std::move(path);
     m_wpath = std::move(new_wpath);
+#else
+    m_path = std::move(old_path);
+    m_wpath = std::move(old_wpath);
+#endif
     open(readonly ? OPEN_READONLY : OPEN_READWRITE);
 }
 void RawFile::set_size(ufL_t bytes){
@@ -409,7 +550,7 @@ upL_t RawFile::pick_buffer_size(upL_t bytes) const{
     if (bytes <= CHECK_MEM_THRESHOLD){
         return bytes;
     }
-    upL_t buffer = Environment::GetFreePhysicalMemory();
+    upL_t buffer = Environment::get_free_physical_memory();
     buffer = Alignment::align_int_down_k(m_alignment_k, buffer / 2);
     buffer = std::max(buffer, CHECK_MEM_THRESHOLD);
     buffer = std::min(buffer, bytes);
@@ -421,37 +562,161 @@ upL_t RawFile::pick_buffer_size(upL_t bytes) const{
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 //  Read/Write
+class WindowsEvent{
+public:
+    ~WindowsEvent(){
+        CloseHandle(m_event);
+        m_event = nullptr;
+    }
+    WindowsEvent(const WindowsEvent& x) = delete;
+    void operator=(const WindowsEvent& x) = delete;
+
+    operator HANDLE(){
+        return m_event;
+    }
+
+public:
+    WindowsEvent()
+        : m_event(CreateEvent(nullptr, true, false, nullptr))
+    {
+        if (m_event == nullptr){
+            DWORD errorcode = GetLastError();
+            handle_error(errorcode, "RawFile::internal_read()", "", "CreateEvent() failed.");
+        }
+    }
+
+private:
+    HANDLE m_event;
+};
+u32_t RawFile::internal_read(void* event_handle, void* data, ufL_t offset, u32_t bytes){
+//    cout << "internal_read(): " << offset << ", bytes = " << bytes << endl;
+
+    DWORD IO_bytes = 0;
+
+    m_throttler.run([=, &IO_bytes]{
+        OVERLAPPED overlapped;
+        ZeroMemory(&overlapped, sizeof(overlapped));
+        overlapped.Offset = (DWORD)offset;
+        overlapped.OffsetHigh = (DWORD)(offset >> 32);
+        overlapped.hEvent = event_handle;
+
+        if (!ResetEvent(event_handle)){
+            DWORD errorcode = GetLastError();
+            handle_error(errorcode, "RawFile::internal_write()", m_path, "ResetEvent() failed.");
+        }
+
+        if (!ReadFile(m_filehandle, data, bytes, nullptr, &overlapped)){
+            DWORD errorcode = GetLastError();
+            switch (errorcode){
+            case ERROR_HANDLE_EOF:
+                return true;
+            case ERROR_IO_PENDING:
+                break;
+            case ERROR_INVALID_USER_BUFFER:
+            case ERROR_NOT_ENOUGH_MEMORY:
+                return false;
+            default:
+                handle_error(errorcode, "RawFile::internal_read()", m_path, "ReadFile() failed.");
+            }
+        }
+
+        while (true){
+//            cout << "starting: GetOverlappedResult()" << endl;
+            if (GetOverlappedResult(m_filehandle, &overlapped, &IO_bytes, true)){
+                break;
+            }
+            DWORD errorcode = GetLastError();
+            if (errorcode == ERROR_HANDLE_EOF){
+                return true;
+            }
+            if (errorcode == ERROR_IO_PENDING){
+                Console::warning("Read - GetOverlappedResult(): Not ready");
+                Intrinsics::spin_pause();
+                continue;
+            }
+            handle_error(errorcode, "RawFile::internal_read()", m_path, "GetOverlappedResult() failed.");
+            break;
+        }
+
+        return true;
+    });
+
+    return IO_bytes;
+}
+u32_t RawFile::internal_write(void* event_handle, const void* data, ufL_t offset, u32_t bytes){
+//    cout << "internal_write(): " << offset << endl;
+
+    DWORD IO_bytes = 0;
+
+    m_throttler.run([=, &IO_bytes]{
+        OVERLAPPED overlapped;
+        ZeroMemory(&overlapped, sizeof(overlapped));
+        overlapped.Offset = (DWORD)offset;
+        overlapped.OffsetHigh = (DWORD)(offset >> 32);
+        overlapped.hEvent = event_handle;
+
+        if (!ResetEvent(event_handle)){
+            DWORD errorcode = GetLastError();
+            handle_error(errorcode, "RawFile::internal_write()", m_path, "ResetEvent() failed.");
+        }
+
+        if (!WriteFile(m_filehandle, data, bytes, nullptr, &overlapped)){
+            DWORD errorcode = GetLastError();
+            switch (errorcode){
+            case ERROR_IO_PENDING:
+                break;
+            case ERROR_INVALID_USER_BUFFER:
+            case ERROR_NOT_ENOUGH_MEMORY:
+                return false;
+            default:
+                handle_error(errorcode, "RawFile::internal_write()", m_path, "WriteFile() failed.");
+            }
+        }
+
+        while (true){
+            if (GetOverlappedResult(m_filehandle, &overlapped, &IO_bytes, true)){
+                break;
+            }
+            DWORD errorcode = GetLastError();
+            if (errorcode == ERROR_IO_PENDING){
+                Console::warning("Write - GetOverlappedResult(): Not ready");
+                Intrinsics::spin_pause();
+                continue;
+            }
+            handle_error(errorcode, "RawFile::internal_write()", m_path, "GetOverlappedResult() failed.");
+            break;
+        }
+
+        return true;
+    });
+
+    return IO_bytes;
+}
 upL_t RawFile::load(void* data, ufL_t offset, upL_t bytes, bool throw_on_partial){
+//    cout << "loading: " << bytes << endl;
+//    auto start = Time::WallClock::now();
+
     if (m_filehandle == INVALID_HANDLE_VALUE){
         throw InvalidParametersException("RawFile::load()", "File isn't open.");
     }
+
     check_alignment(data, offset, bytes);
     if (bytes == 0){
         return 0;
     }
 
-    //  Set File Pointer
-    LARGE_INTEGER t;
-    t.QuadPart = (LONGLONG)offset;
-    if (!SetFilePointerEx(m_filehandle, t, nullptr, FILE_BEGIN)){
-        DWORD errorcode = GetLastError();
-        handle_error(errorcode, "RawFile::load()", m_path, "SetFilePointerEx() failed.");
-    }
-
     upL_t block_size = pick_buffer_size(bytes);
+    WindowsEvent event_handle;
 
     //  Read
     upL_t processed = 0;
     while (bytes > 0){
         upL_t current = std::min(bytes, block_size);
 
-        DWORD IO_bytes;
-        bool ret = !ReadFile(m_filehandle, data, (DWORD)current, &IO_bytes, nullptr);
-        if (ret){
-            DWORD errorcode = GetLastError();
-            handle_error(errorcode, "RawFile::load()", m_path, "ReadFile() failed.");
-        }
+//        auto time0 = Time::WallClock::now();
+//        cout << "offset = " << offset << endl;
 
+        DWORD IO_bytes = internal_read(event_handle, data, offset, (DWORD)current);
         processed += IO_bytes;
         if (IO_bytes != current){
             if (throw_on_partial){
@@ -465,42 +730,39 @@ upL_t RawFile::load(void* data, ufL_t offset, upL_t bytes, bool throw_on_partial
             break;
         }
 
+        offset += current;
         data = (char*)data + current;
         bytes -= current;
     }
 
+//    auto end = Time::WallClock::now();
+//    cout << "total call time = " << end - start << endl;
+
     return processed;
 }
 upL_t RawFile::store(const void* data, ufL_t offset, upL_t bytes, bool throw_on_partial){
+//    cout << "storing: " << bytes << endl;
+
     if (m_filehandle == INVALID_HANDLE_VALUE){
         throw InvalidParametersException("RawFile::store()", "File isn't open.");
     }
+
     check_alignment(data, offset, bytes);
     if (bytes == 0){
         return 0;
     }
 
-    //  Set File Pointer
-    LARGE_INTEGER t;
-    t.QuadPart = (LONGLONG)offset;
-    if (!SetFilePointerEx(m_filehandle, t, nullptr, FILE_BEGIN)){
-        DWORD errorcode = GetLastError();
-        handle_error(errorcode, "RawFile::store()", m_path, "SetFilePointerEx() failed.");
-    }
-
     upL_t block_size = pick_buffer_size(bytes);
+    WindowsEvent event_handle;
+
+    Intrinsics::sfence_store_release();
 
     //  Write
     upL_t processed = 0;
     while (bytes > 0){
         upL_t current = std::min(bytes, block_size);
 
-        DWORD IO_bytes;
-        bool ret = !WriteFile(m_filehandle, data, (DWORD)current, &IO_bytes, nullptr);
-        if (ret){
-            DWORD errorcode = GetLastError();
-            handle_error(errorcode, "RawFile::store()", m_path, "WriteFile() failed.");
-        }
+        DWORD IO_bytes = internal_write(event_handle, data, offset, (DWORD)current);
 
         processed += IO_bytes;
         if (IO_bytes != current){
@@ -515,17 +777,12 @@ upL_t RawFile::store(const void* data, ufL_t offset, upL_t bytes, bool throw_on_
             break;
         }
 
+        offset += current;
         data = (char*)data + current;
         bytes -= current;
     }
 
     return processed;
-}
-void RawFile::load(void* data, ufL_t offset, upL_t bytes, void* P, upL_t PL){
-    load(data, offset, bytes, true);
-}
-void RawFile::store(const void* data, ufL_t offset, upL_t bytes, void* P, upL_t PL){
-    store(data, offset, bytes, true);
 }
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
