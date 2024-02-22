@@ -40,6 +40,8 @@ class BasicYcdFileReader : public BasicDigitReader{
 public:
     BasicYcdFileReader(std::string path, bool raw_io);
 
+    virtual std::string path() const override{ return m_file.path(); }
+
     virtual std::string first_digits            () override{ return m_first_digits; }
     virtual uiL_t       stream_end              () const override{ return m_stream_end; }
     virtual bool        range_is_available      (uiL_t offset, uiL_t digits) override;

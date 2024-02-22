@@ -39,6 +39,11 @@ public:
     {}
 
     void clear();
+    void erase(const std::string& key){ m_map.erase(key); }
+
+    void set_description(std::string description){
+        m_description = std::move(description);
+    }
 
     //  Add node to object using specified key.
     void            add_bool    (const std::string& key, bool value,                    std::string comment = "");
@@ -83,8 +88,11 @@ public:
     bool                get_bool    (const std::string& key) const;
     siL_t               get_integer (const std::string& key) const;
     const std::string&  get_string  (const std::string& key) const;
+    std::string&        get_string  (const std::string& key);
     const ConfigArray&  get_array   (const std::string& key) const;
+    ConfigArray&        get_array   (const std::string& key);
     const ConfigObject& get_object  (const std::string& key) const;
+    ConfigObject&       get_object  (const std::string& key);
 
     //  Use default if key is missing.
     bool                get_bool    (const std::string& key, bool default_value) const;
@@ -97,6 +105,8 @@ public:
     friend bool operator==(const ConfigObject& a, const ConfigObject& b);
     std::string to_acfg_string(upL_t depth = 0, bool comments = true) const;
     std::string to_json_string(bool trailing_comma, upL_t depth = 0) const;
+
+    upL_t depth() const;
 
 private:
     void sanitize_key(const std::string& key) const;

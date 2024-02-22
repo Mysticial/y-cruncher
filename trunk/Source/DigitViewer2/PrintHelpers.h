@@ -2,7 +2,7 @@
  * 
  *  Author          : Alexander J. Yee
  *  Date Created    : 01/15/2015
- *  Last Modified   : 01/15/2015
+ *  Last Modified   : 02/09/2024
  * 
  */
 
@@ -14,6 +14,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 //  Dependencies
+#include <string>
 #include "PublicLibs/Types.h"
 namespace DigitViewer2{
     using namespace ymp;
@@ -22,8 +23,9 @@ namespace DigitViewer2{
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 void clear_line();
-void display_char(char digit, upL_t *b, upL_t *r, uiL_t *c);
-void display_fancy(uiL_t pos, const char *str, upL_t digits);
+void display_char(char digit, uiL_t& c, upL_t& b, upL_t& r);
+void display_fancy(uiL_t pos, const char* str, upL_t digits);
+std::string to_string_formatted(uiL_t pos, const char* str, upL_t digits);
 uiL_t prompt_digits(const std::string& label = "Digits: ", uiL_t min = 0, uiL_t max = (uiL_t)0 - 1);
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////

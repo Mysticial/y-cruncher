@@ -18,6 +18,8 @@
 #define YMP_Arch_20XX_x64_AVX10_2_512
 #elif defined X64_XX_AVX10v2_256
 #define YMP_Arch_20XX_x64_AVX10_2_256
+#elif defined X64_24_Zen5
+#define YMP_Arch_2019_x64_IceLake
 #elif defined X64_22_Zen4
 #define YMP_Arch_2019_x64_IceLake
 #elif defined X64_20_Zen3
@@ -51,7 +53,7 @@
 #elif defined X86_04_SSE3
 #define YMP_Arch_2004_x86_SSE3
 #elif defined X86_00
-//#define YMP_Arch_Default
+#define YMP_Arch_2000_x86
 #endif
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////

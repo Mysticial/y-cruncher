@@ -304,6 +304,20 @@ std::string ConfigValue::to_json_string(bool trailing_comma, upL_t depth) const{
     }
     return ret;
 }
+upL_t ConfigValue::depth() const{
+    switch (m_type){
+    case ConfigValueType::EMPTY:
+    case ConfigValueType::BOOLEAN:
+    case ConfigValueType::INTEGER:
+    case ConfigValueType::STRING:
+        return 1;
+    case ConfigValueType::ARRAY:
+        return u.m_array->depth() + 1;
+    case ConfigValueType::OBJECT:
+        return u.m_object->depth() + 1;
+    }
+    return 1;
+}
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////

@@ -15,6 +15,8 @@
 ////////////////////////////////////////////////////////////////////////////////
 //  Dependencies
 #include "PublicLibs/BasicLibs/LinearHeapBuffer.h"
+#include "PublicLibs/BasicLibs/ConfigTree/ConfigArray.h"
+#include "PublicLibs/BasicLibs/ConfigTree/ConfigObject.h"
 #include "PublicLibs/BasicLibs/Concurrency/BasicParallelizer.h"
 #include "DigitViewer2/Globals.h"
 #include "DigitViewer2/DigitCount/DigitCount.h"
@@ -33,6 +35,9 @@ public:
         , m_hash(hash)
     {}
 
+    char radix() const{
+        return m_radix;
+    }
     const DigitCounts& counts() const{
         return m_counts;
     }
@@ -71,6 +76,32 @@ public:
     }
 
 
+public:
+    //  Serialization
+    void load_config(const ConfigObject& config){
+        m_radix = (char)config.get_integer("Radix");
+        {
+            const ConfigArray& array = config.get_array("Digits");
+            for (char c = 0; c < m_radix; c++){
+                m_counts[c] = array[c].to_integer_throw();
+            }
+        }
+        m_hash = (uiL_t)config.get_integer("Hash");
+    }
+    ConfigObject to_config() const{
+        ConfigObject ret;
+        ret.add_integer("Radix", m_radix);
+        {
+            ConfigArray& array = ret.add_array("Digits");
+            for (char c = 0; c < m_radix; c++){
+                array += m_counts[c];
+            }
+        }
+        ret.add_integer("Hash", m_hash.value());
+        return ret;
+    }
+
+
 private:
     char m_radix;
     DigitCounts m_counts;
@@ -86,6 +117,8 @@ public:
 
 public:
     virtual ~BasicDigitReader() = default;
+
+    virtual std::string path() const = 0;
 
     char radix() const{ return m_radix; }
     virtual std::string first_digits() = 0;

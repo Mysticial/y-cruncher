@@ -64,7 +64,7 @@ template <typename type> using r_rref = type &&__restrict;
 //#pragma warning(disable:4373)   //  Restrict ptr/ref difference in override
 #pragma warning(disable:4456)   //  Variable Shadowing
 //#pragma warning(disable:4457)   //  Variable Hides Parameter
-//#pragma warning(disable:4458)   //  Member Hiding
+#pragma warning(disable:4458)   //  Member Hiding
 //#pragma warning(disable:4459)   //  Parameter Hides Global
 #pragma warning(disable:4505)   //  Unused Static Function
 #pragma warning(disable:4661)   //  No Definition for Template Instantiation
@@ -84,7 +84,7 @@ template <typename type> using r_rref = type &&__restrict;
 #pragma warning disable 411     //  No default constructor
 #pragma warning disable 532     //  No Definition for Template Instantiation
 //#pragma warning disable 1125    //  Virtual function hiding
-//#pragma warning disable 3280    //  Member hiding
+#pragma warning disable 3280    //  Member hiding
 #pragma warning disable 2553    //  wmain()
 #endif
 #ifdef __INTEL_LLVM_COMPILER

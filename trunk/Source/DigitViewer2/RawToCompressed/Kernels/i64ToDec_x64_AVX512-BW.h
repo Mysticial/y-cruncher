@@ -35,6 +35,9 @@ YM_FORCE_INLINE bool dec_to_i64_u8_x64_AVX512BW(__m512i* T, const char* raw, upL
     do{
         __m512i a0, b0, c0;
 
+        //  This gather is slow following the Intel Downfall vulnerability.
+        //  However, the efficient fix requires VBMI. So we will only bother
+        //  removing this gather for Cannon Lake+ and leave Skylake as is.
         c0 = _mm512_i64gather_epi64(GATHER, raw +  0, 1);
 #if 0
         b0 = _mm512_i64gather_epi64(GATHER, raw +  3, 1);

@@ -20,7 +20,9 @@ namespace ymp{
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-ConfigObject::ConfigObject(const ConfigObject& x){
+ConfigObject::ConfigObject(const ConfigObject& x)
+    : m_description(x.m_description)
+{
     for (const auto& item : x.m_map){
         add_value(item.first, item.second.value.clone(), item.second.comment);
     }
@@ -210,10 +212,19 @@ siL_t ConfigObject::get_integer(const std::string& key) const{
 const std::string& ConfigObject::get_string(const std::string& key) const{
     return operator[](key).to_string_throw();
 }
+std::string& ConfigObject::get_string(const std::string& key){
+    return operator[](key).to_string_throw();
+}
 const ConfigArray& ConfigObject::get_array(const std::string& key) const{
     return operator[](key).to_array_throw();
 }
+ConfigArray& ConfigObject::get_array(const std::string& key){
+    return operator[](key).to_array_throw();
+}
 const ConfigObject& ConfigObject::get_object(const std::string& key) const{
+    return operator[](key).to_object_throw();
+}
+ConfigObject& ConfigObject::get_object(const std::string& key){
     return operator[](key).to_object_throw();
 }
 bool ConfigObject::get_bool(const std::string& key, bool default_value) const{
@@ -323,6 +334,13 @@ std::string ConfigObject::to_json_string(bool trailing_comma, upL_t depth) const
     ret += indent(depth);
     ret += trailing_comma ? "},\r\n" : "}\r\n";
     return ret;
+}
+upL_t ConfigObject::depth() const{
+    upL_t ret = 0;
+    for (const auto& item : *this){
+        ret = std::max(ret, item.second.value.depth());
+    }
+    return ret + 1;
 }
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////

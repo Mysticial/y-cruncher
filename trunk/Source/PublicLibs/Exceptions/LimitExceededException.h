@@ -29,10 +29,16 @@ class LimitExceededException : public StringException{
 public:
     LimitExceededException(uiL_t attempted);
     LimitExceededException(const char* function, uiL_t limit, uiL_t attempted);
+    LimitExceededException(const char* function, std::string limit, std::string attempted);
     LimitExceededException(
         const char* function,
         std::string message,
         uiL_t limit, uiL_t attempted
+    );
+    LimitExceededException(
+        const char* function,
+        std::string message,
+        std::string limit, std::string attempted
     );
 
     virtual void print() const override;
@@ -45,6 +51,8 @@ public:
 private:
     uiL_t m_limit;
     uiL_t m_attempted;
+    std::string m_str_limit;
+    std::string m_str_attempted;
 };
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////

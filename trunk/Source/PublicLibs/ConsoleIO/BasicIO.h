@@ -57,6 +57,7 @@ YM_NO_INLINE    void    warning     (std::string str, bool sticky = false);
 ////////////////////////////////////////////////////////////////////////////////
 extern bool pause_on_error; //  Temporary hack. TODO: Get rid of this entirely.
 [[noreturn]] YM_NO_INLINE void quit_program (int code);
+[[noreturn]] YM_NO_INLINE void critical_error(const char* function, std::string message);
 ////////////////////////////////////////////////////////////////////////////////
 class ConsoleLockScope{
 public:

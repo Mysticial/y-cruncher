@@ -151,7 +151,7 @@ public:
             Console::print_marginl(23, "Hash(start - current)");
         }
         std::string label = "Hash(" + std::to_string(m_start + 1) + " - current)  ";
-        m_width = std::max((upL_t)21, label.size());
+        m_width = std::max<upL_t>(21, label.size());
         Console::print_marginl(m_width, label);
         Console::print("Digit Counts (" + std::to_string(m_start + 1) + " - current)");
         Console::println("");

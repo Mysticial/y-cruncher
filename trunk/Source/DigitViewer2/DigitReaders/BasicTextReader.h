@@ -40,6 +40,8 @@ public:
 
     BasicTextReader(std::string path, char radix = 0, bool raw_io = true);
 
+    virtual std::string path() const override{ return m_file.path(); }
+
     virtual std::string first_digits            () override;
     virtual uiL_t       stream_end              () const override{ return m_total_digits; }
     virtual bool        range_is_available      (uiL_t offset, uiL_t digits) override;

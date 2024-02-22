@@ -201,6 +201,8 @@ class BasicYcdSetReader : public BasicDigitReader{
 public:
     BasicYcdSetReader(const std::string& path, bool raw_io = true);
 
+    virtual std::string path() const override{ return m_files.begin()->second->path(); }
+
     void print_paths() const;
 
     //  Add a new search path for which this reader will search in an attempt

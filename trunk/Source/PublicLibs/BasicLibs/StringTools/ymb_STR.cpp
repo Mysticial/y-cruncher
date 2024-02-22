@@ -17,6 +17,7 @@
 #include <Windows.h>
 #endif
 #include "PublicLibs/ConsoleIO/Label.h"
+#include "ConvertInteger.h"
 #include "ymb_STR.h"
 namespace ymp{
 namespace StringTools{
@@ -26,26 +27,16 @@ namespace StringTools{
 ////////////////////////////////////////////////////////////////////////////////
 //  String -> Integer
 uiL_t parse_uL(const char* str){
-    uiL_t x = 0;
-    char ch = *str++;
-    while (ch >= '0' && ch <= '9'){
-        x *= 10;
-        x += ch - '0';
-        ch = *str++;
-    }
-    return x;
+    return parse_ui<uiL_t>(str);
 }
 uiL_t parse_uL(const std::string& str){
     return parse_uL(str.c_str());
 }
+uiL_t parse_sL(const char* str){
+    return parse_si<siL_t>(str);
+}
 uiL_t parse_sL(const std::string& str){
-    if (str.empty()){
-        return 0;
-    }
-    if (str[0] == '-'){
-        return -(siL_t)parse_uL(str.c_str() + 1);
-    }
-    return parse_uL(str);
+    return parse_sL(str.c_str());
 }
 uiL_t parse_uL_text(const char* str){
     uiL_t x = 0;

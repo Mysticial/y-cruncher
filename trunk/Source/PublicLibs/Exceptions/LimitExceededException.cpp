@@ -48,6 +48,11 @@ YM_NO_INLINE LimitExceededException::LimitExceededException(const char* function
     std::terminate();
 #endif
 }
+YM_NO_INLINE LimitExceededException::LimitExceededException(const char* function, std::string limit, std::string attempted)
+    : StringException(function, "")
+    , m_str_limit(std::move(limit))
+    , m_str_attempted(std::move(attempted))
+{}
 YM_NO_INLINE LimitExceededException::LimitExceededException(
     const char* function,
     std::string message,
@@ -56,6 +61,19 @@ YM_NO_INLINE LimitExceededException::LimitExceededException(
     : StringException(function, message)
     , m_limit(limit)
     , m_attempted(attempted)
+{
+#ifdef YMP_FATAL_ON_EXCEPTION
+    std::terminate();
+#endif
+}
+YM_NO_INLINE LimitExceededException::LimitExceededException(
+    const char* function,
+    std::string message,
+    std::string limit, std::string attempted
+)
+    : StringException(function, message)
+    , m_str_limit(std::move(limit))
+    , m_str_attempted(std::move(attempted))
 {
 #ifdef YMP_FATAL_ON_EXCEPTION
     std::terminate();
@@ -79,12 +97,17 @@ void LimitExceededException::print() const{
         Console::println(m_message);
     }
     Console::println();
-    if (m_limit == 0){
-        Console::println("    Limit: Unknown");
+    if (m_str_limit.empty() && m_str_attempted.empty()){
+        if (m_limit == 0){
+            Console::println("    Limit: Unknown");
+        }else{
+            Console::println_labelm_commas("    Limit: ", m_limit);
+        }
+        Console::println_labelm_commas("    Attempted: ", m_attempted);
     }else{
-        Console::println_labelm_commas("    Limit: ", m_limit);
+        Console::println_labelm("    Limit: ", m_str_limit);
+        Console::println_labelm("    Attempted: ", m_str_attempted);
     }
-    Console::println_labelm_commas("    Attempted: ", m_attempted);
     Console::println("\n");
     Console::set_color('w');
 }

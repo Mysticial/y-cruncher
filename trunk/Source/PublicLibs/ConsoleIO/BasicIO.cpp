@@ -71,6 +71,19 @@ bool pause_on_error = true;
     }
     exit(code);
 }
+[[noreturn]] void critical_error(const char* function, std::string message){
+    ConsoleLockScope lock;
+    println("\n\nCritical Error! Program cannot continue.\n", 'R');
+    println();
+    println("Location: " + std::string(function));
+    println();
+    println(std::move(message));
+    println();
+    println("If your hardware is stable, please report this to the developer.");
+    println();
+    pause();
+    exit(1);
+}
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -194,6 +207,7 @@ YM_NO_INLINE siL_t scan_siL_suffix(char color){
     case 'm': return x * 1000000;           //  Million
     case 'b': return x * 1000000000;        //  Billion
     case 't': return x * 1000000000000;     //  Trillion
+    case 'q': return x * 1000000000000000;  //  Quadrillion
     };
     return x;
 }

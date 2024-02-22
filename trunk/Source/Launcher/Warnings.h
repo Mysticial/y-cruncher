@@ -99,7 +99,7 @@ void warn_noAVX512(const cpu_x86& features){
         Console::println();
         Console::set_color('w');
         if (pause_on_warning){
-            Console::pause();
+//            Console::pause();
         }
         Console::println("\n");
     }

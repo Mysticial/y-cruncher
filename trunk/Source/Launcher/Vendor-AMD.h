@@ -23,6 +23,11 @@
 ////////////////////////////////////////////////////////////////////////////////
 void dispatch_AMD(const cpu_x86& features){
     //  AVX512
+#ifdef YCR_ENABLE_2024_x64_Zen5
+    if (features.HW_AVX512_VP2INTERSECT){
+        dispatch_2024_x64_Zen5(features);
+    }
+#endif
 #ifdef YCR_ENABLE_2022_x64_Zen4
     dispatch_2022_x64_Zen4(features);
 #endif

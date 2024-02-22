@@ -124,6 +124,8 @@ public:
     //  Convert object tree to JSON string.
     std::string to_json_string(bool trailing_comma, upL_t depth = 0) const;
 
+    upL_t depth() const;
+
 private:
     ConfigValueType m_type = ConfigValueType::EMPTY;
     union{

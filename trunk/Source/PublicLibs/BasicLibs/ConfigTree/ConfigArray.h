@@ -24,6 +24,8 @@ namespace ymp{
 class ConfigArray{
 public:
     ConfigArray(ConfigArray&&) = default;
+private:
+    //  Private to avoid accidental copying.
     ConfigArray(const ConfigArray& x);
 
 public:
@@ -64,7 +66,10 @@ public:
 
     std::vector<siL_t> get_integers(std::string label = "") const;
 
+    upL_t depth() const;
+
 private:
+    friend class ConfigValue;
     std::vector<ConfigValue> m_value;
 };
 ////////////////////////////////////////////////////////////////////////////////

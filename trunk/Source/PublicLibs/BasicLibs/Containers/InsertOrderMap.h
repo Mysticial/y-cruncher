@@ -29,7 +29,39 @@ class InsertOrderMap{
     using ListType = std::list<std::pair<const Key&, Value&>>;
 public:
     using iterator = typename ListType::iterator;
-    using const_iterator = typename ListType::const_iterator;
+//    using const_iterator = typename ListType::const_iterator;
+
+    //  Need to fake our own const_iterator because the default one exposes
+    //  iter->second as non-const.
+    class const_iterator{
+    public:
+        const_iterator(typename ListType::const_iterator iter)
+            : m_iter(iter)
+        {}
+
+        friend bool operator==(const const_iterator& x, const const_iterator& y){ return x.m_iter == y.m_iter; }
+        friend bool operator!=(const const_iterator& x, const const_iterator& y){ return x.m_iter != y.m_iter; }
+
+        const_iterator operator++(){ return ++m_iter; }
+        const_iterator operator--(){ return --m_iter; }
+        const_iterator operator++(int){ return m_iter++; }
+        const_iterator operator--(int){ return m_iter--; }
+
+    private:
+        struct MetaValue{
+            const std::pair<const Key&, const Value&>* operator->() const{ return &m_value; }
+            template <class... Args>
+            MetaValue(Args&&... args) : m_value(std::forward<Args>(args)...) {}
+            std::pair<const Key&, const Value&> m_value;
+        };
+
+    public:
+        std::pair<const Key&, const Value&> operator*() const{ return *m_iter; }
+        MetaValue operator->() const{ return MetaValue(*m_iter); }
+
+    private:
+        typename ListType::const_iterator m_iter;
+    };
 
 
 public:
@@ -56,7 +88,7 @@ public:
         if (iter == m_map.end()){
             return m_list.end();
         }
-        return iter->second.iter;
+        return const_iterator(iter->second.iter);
     }
     template <class... Args>
     iterator find(Args&&... args){

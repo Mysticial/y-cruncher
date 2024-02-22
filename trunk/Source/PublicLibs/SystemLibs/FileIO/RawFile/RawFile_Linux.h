@@ -66,7 +66,7 @@ public:
     );
 
 public:
-    operator bool() const;  //  Returns true if file is open and valid.
+    explicit operator bool() const;     //  Returns true if file is open and valid.
     const std::string& path() const{ return m_path; }
     bool persistent() const{ return m_persistent; }
     bool raw_io() const{ return m_raw_io; }

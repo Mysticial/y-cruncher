@@ -224,10 +224,7 @@ bool parse_acfg_boolean(const char*& str, upL_t& line){
     throw_error(line, "Expected \"true\" or \"false\".");
 }
 siL_t parse_acfg_integer(const char*& str, upL_t& line){
-    constexpr s64_t MUL10_MIN = std::numeric_limits<s64_t>::min() / 10;
-    constexpr s64_t MUL10_MAX = std::numeric_limits<s64_t>::max() / 10;
-
-    siL_t x = 0;
+    uiL_t x = 0;
     bool negative = false;
     if (*str == '-'){
         negative = true;
@@ -236,13 +233,13 @@ siL_t parse_acfg_integer(const char*& str, upL_t& line){
     while (true){
         char ch = *str;
         if ('0' <= ch && ch <= '9'){
-            s64_t add = ch - '0';
-            if (x < MUL10_MIN || x > MUL10_MAX){
+            u64_t add = ch - '0';
+            if (x > std::numeric_limits<u64_t>::max() / 10){
                 throw_error(line, "Integer literal is too large.");
             }else{
                 x *= 10;
             }
-            if (x > std::numeric_limits<s64_t>::max() - add){
+            if (x > std::numeric_limits<u64_t>::max() - add){
                 throw_error(line, "Integer literal is too large.");
             }else{
                 x += add;
@@ -264,7 +261,17 @@ siL_t parse_acfg_integer(const char*& str, upL_t& line){
         break;
     }
 
-    return negative ? -x : x;
+    if (negative){
+        if (x > (u64_t)0 - std::numeric_limits<s64_t>::min()){
+            throw_error(line, "Integer literal is too large.");
+        }
+        return (u64_t)0 - x;
+    }else{
+        if (x > (u64_t)std::numeric_limits<s64_t>::max()){
+            throw_error(line, "Integer literal is too large.");
+        }
+        return x;
+    }
 }
 std::string parse_acfg_string(const char*& str, upL_t& line){
     str++;  //  Skip leading quote.

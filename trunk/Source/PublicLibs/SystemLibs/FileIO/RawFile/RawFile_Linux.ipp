@@ -338,6 +338,10 @@ RawFile::RawFile(
         handle_error(errorcode, "RawFile()", m_path, "Unable to create file.");
     }while (false);
 
+    if (bytes == 0){
+        return;
+    }
+
     try{
         set_size(bytes);
 

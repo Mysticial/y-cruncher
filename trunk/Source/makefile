@@ -22,6 +22,10 @@ include Common.mk
 	mkdir -p $(OUTPUT_ROOT)/Binaries/
 	$(CC) ScratchLinux.cpp $^ $(CFLAGS_11SNB) -o $(OUTPUT_ROOT)/Binaries/$@
 
+12-BD2: $(addprefix $(OUTPUT_12BD2)/, $(SOURCES:.cpp=.o))
+	mkdir -p $(OUTPUT_ROOT)/Binaries/
+	$(CC) ScratchLinux.cpp $^ $(CFLAGS_12BD2) -o $(OUTPUT_ROOT)/Binaries/$@
+
 13-HSW: $(addprefix $(OUTPUT_13HSW)/, $(SOURCES:.cpp=.o))
 	mkdir -p $(OUTPUT_ROOT)/Binaries/
 	$(CC) ScratchLinux.cpp $^ $(CFLAGS_13HSW) -o $(OUTPUT_ROOT)/Binaries/$@
@@ -57,5 +61,9 @@ include Common.mk
 22-ZN4: $(addprefix $(OUTPUT_22ZN4)/, $(SOURCES:.cpp=.o))
 	mkdir -p $(OUTPUT_ROOT)/Binaries/
 	$(CC) ScratchLinux.cpp $^ $(CFLAGS_22ZN4) -o $(OUTPUT_ROOT)/Binaries/$@
+
+24-ZN5: $(addprefix $(OUTPUT_24ZN5)/, $(SOURCES:.cpp=.o))
+	mkdir -p $(OUTPUT_ROOT)/Binaries/
+	$(CC) ScratchLinux.cpp $^ $(CFLAGS_24ZN5) -o $(OUTPUT_ROOT)/Binaries/$@
 
 

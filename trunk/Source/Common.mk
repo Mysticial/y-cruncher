@@ -4,7 +4,7 @@ OUTPUT_ROOT := $(SOURCE_ROOT)/../Linux-y-cruncher
 CC=g++
 
 CFLAGS := -D YMP_BUILD_DEVELOPER
-CFLAGS += -I $(SOURCE_ROOT) -std=c++17 -fno-rtti -Wall -O2 -g -ggdb
+CFLAGS += -I $(SOURCE_ROOT) -std=c++17 -fno-rtti -Wall -O2 -ffp-contract=on -g -ggdb
 CFLAGS += -D YMP_STANDALONE -D YMP_ENABLE_LIBNUMA -D YMP_ENABLE_TBB
 CFLAGS += -lpthread -lnuma -fcilkplus -ltbb
 CFLAGS += -Wl,-rpath=.,-rpath=Binaries
@@ -16,7 +16,7 @@ dump:
 clean:
 	rm -r $(OUTPUT_ROOT)
 
-all: 05-A64 07-PNR 08-NHM 11-BD1 11-SNB 13-HSW 14-BDW 16-KNL 17-ZN1 17-SKX 18-CNL 19-ZN2 20-ZN3 22-ZN4
+all: 05-A64 07-PNR 08-NHM 11-BD1 11-SNB 12-BD2 13-HSW 14-BDW 16-KNL 17-ZN1 17-SKX 18-CNL 19-ZN2 20-ZN3 22-ZN4 24-ZN5
 
 .DEFAULT_GOAL := all
 
@@ -89,6 +89,20 @@ $(OUTPUT_11SNB)/%.o: $(SOURCE_ROOT)/%.cpp
 	 sed -e 's/^ *//' -e 's/$$/:/' >> $(@:.o=.d)
 	@rm -f $(@:.o=.d.tmp)
 11-SNB: $(addprefix $(OUTPUT_11SNB)/, $(SOURCES:.cpp=.o))
+
+
+CFLAGS_12BD2 := $(CFLAGS) -D X64_12_Piledriver     -march=sandybridge -mfma -mabm -mtune=bdver1
+OUTPUT_12BD2 := $(OUTPUT_ROOT)/12-BD2
+-include $(addprefix $(OUTPUT_12BD2)/, $(SOURCES:.cpp=.d))
+$(OUTPUT_12BD2)/%.o: $(SOURCE_ROOT)/%.cpp
+	mkdir -p $(shell dirname $@)
+	$(CC) $< $(CFLAGS_12BD2) -c  -o $@
+	$(CC) $< $(CFLAGS_12BD2) -MM -MT $@ > $(@:.o=.d)
+	@cp -f $(@:.o=.d) $(@:.o=.d.tmp)
+	@sed -e 's/.*://' -e 's/\\$$//' < $(@:.o=.d.tmp) | fmt -1 | \
+	 sed -e 's/^ *//' -e 's/$$/:/' >> $(@:.o=.d)
+	@rm -f $(@:.o=.d.tmp)
+12-BD2: $(addprefix $(OUTPUT_12BD2)/, $(SOURCES:.cpp=.o))
 
 
 CFLAGS_13HSW := $(CFLAGS) -D X64_13_Haswell        -march=haswell -mtune=haswell
@@ -215,6 +229,20 @@ $(OUTPUT_22ZN4)/%.o: $(SOURCE_ROOT)/%.cpp
 	 sed -e 's/^ *//' -e 's/$$/:/' >> $(@:.o=.d)
 	@rm -f $(@:.o=.d.tmp)
 22-ZN4: $(addprefix $(OUTPUT_22ZN4)/, $(SOURCES:.cpp=.o))
+
+
+CFLAGS_24ZN5 := $(CFLAGS) -D X64_24_Zen5           -march=icelake-client -mtune=znver3
+OUTPUT_24ZN5 := $(OUTPUT_ROOT)/24-ZN5
+-include $(addprefix $(OUTPUT_24ZN5)/, $(SOURCES:.cpp=.d))
+$(OUTPUT_24ZN5)/%.o: $(SOURCE_ROOT)/%.cpp
+	mkdir -p $(shell dirname $@)
+	$(CC) $< $(CFLAGS_24ZN5) -c  -o $@
+	$(CC) $< $(CFLAGS_24ZN5) -MM -MT $@ > $(@:.o=.d)
+	@cp -f $(@:.o=.d) $(@:.o=.d.tmp)
+	@sed -e 's/.*://' -e 's/\\$$//' < $(@:.o=.d.tmp) | fmt -1 | \
+	 sed -e 's/^ *//' -e 's/$$/:/' >> $(@:.o=.d)
+	@rm -f $(@:.o=.d.tmp)
+24-ZN5: $(addprefix $(OUTPUT_24ZN5)/, $(SOURCES:.cpp=.o))
 
 
 

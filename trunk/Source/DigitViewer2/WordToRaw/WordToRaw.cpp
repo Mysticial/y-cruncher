@@ -4,6 +4,16 @@
  *  Date Created    : 02/10/2018
  *  Last Modified   : 02/10/2018
  * 
+ * 
+ *  Zen4 R9 7950X @ stock
+ * 
+ *  word_to_dec(64-bit):
+ *      Default:        8.40445e+07     words/second
+ *      SSE4.1:         2.8698e+08      words/second
+ *      AVX2:           4.9582e+08      words/second
+ *      AVX512-BW:      5.96355e+08     words/second
+ *      AVX512-VBMI:    6.45295e+08     words/second
+ * 
  */
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -14,6 +24,8 @@
 #include "PublicLibs/SystemLibs/ProcessorCapability/ProcessorCapability.h"
 ////////////////////////////////////////////////////////////////////////////////
 #if 0
+#elif defined YMP_Arch_2018_x64_CannonLake
+#include "Kernels/WordToRaw_x64_AVX512-VBMI.ipp"
 #elif defined YMP_Arch_2017_x64_Skylake
 #include "Kernels/WordToRaw_x64_AVX512-BW.ipp"
 #elif defined YMP_Arch_2013_x64_Haswell
