@@ -808,5 +808,17 @@
     <ClInclude Include="..\..\Source\PublicLibs\BasicLibs\Containers\InsertOrderMap.h">
       <Filter>Source Files\PublicLibs\BasicLibs\Containers</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Source\DigitViewer2\WordToRaw\Kernels\WordToRaw_x64_AVX512-VBMI.h">
+      <Filter>Source Files\DigitViewer2\WordToRaw\Kernels</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\DigitViewer2\WordToRaw\Kernels\WordToRaw_x64_AVX512-VBMI.ipp">
+      <Filter>Source Files\DigitViewer2\WordToRaw\Kernels</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\DigitViewer2\RawToCompressed\Kernels\i64ToDec_x64_AVX512-VBMI.h">
+      <Filter>Source Files\DigitViewer2\RawToCompressed\Kernels</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\DigitViewer2\RawToCompressed\Kernels\i64ToRaw_x64_AVX512-VBMI.ipp">
+      <Filter>Source Files\DigitViewer2\RawToCompressed\Kernels</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -156,7 +156,7 @@ ConfigValue::ConfigValue(ConfigObject&& x)
     label += ".";
     throw ParseException(std::move(label));
 }
-bool ConfigValue::to_boolean_throw(std::string label) const{
+bool ConfigValue::to_boolean_throw(const std::string& label) const{
     if (m_type == ConfigValueType::BOOLEAN){
         return u.m_bool;
     }
@@ -168,49 +168,49 @@ bool ConfigValue::to_boolean_throw(std::string label) const{
             return false;
         }
     }
-    throw_type_mismatch(ConfigValueType::BOOLEAN, m_type, std::move(label));
+    throw_type_mismatch(ConfigValueType::BOOLEAN, m_type, label);
 }
-int64_t ConfigValue::to_integer_throw(std::string label) const{
+int64_t ConfigValue::to_integer_throw(const std::string& label) const{
     if (m_type == ConfigValueType::INTEGER){
         return u.m_integer;
     }
-    throw_type_mismatch(ConfigValueType::INTEGER, m_type, std::move(label));
+    throw_type_mismatch(ConfigValueType::INTEGER, m_type, label);
 }
-const std::string& ConfigValue::to_string_throw(std::string label) const{
+const std::string& ConfigValue::to_string_throw(const std::string& label) const{
     if (m_type == ConfigValueType::STRING){
         return *u.m_string;
     }
-    throw_type_mismatch(ConfigValueType::STRING, m_type, std::move(label));
+    throw_type_mismatch(ConfigValueType::STRING, m_type, label);
 }
-std::string& ConfigValue::to_string_throw(std::string label){
+std::string& ConfigValue::to_string_throw(const std::string& label){
     if (m_type == ConfigValueType::STRING){
         return *u.m_string;
     }
-    throw_type_mismatch(ConfigValueType::STRING, m_type, std::move(label));
+    throw_type_mismatch(ConfigValueType::STRING, m_type, label);
 }
-const ConfigArray& ConfigValue::to_array_throw(std::string label) const{
+const ConfigArray& ConfigValue::to_array_throw(const std::string& label) const{
     if (m_type == ConfigValueType::ARRAY){
         return *u.m_array;
     }
-    throw_type_mismatch(ConfigValueType::ARRAY, m_type, std::move(label));
+    throw_type_mismatch(ConfigValueType::ARRAY, m_type, label);
 }
-ConfigArray& ConfigValue::to_array_throw(std::string label){
+ConfigArray& ConfigValue::to_array_throw(const std::string& label){
     if (m_type == ConfigValueType::ARRAY){
         return *u.m_array;
     }
-    throw_type_mismatch(ConfigValueType::ARRAY, m_type, std::move(label));
+    throw_type_mismatch(ConfigValueType::ARRAY, m_type, label);
 }
-const ConfigObject& ConfigValue::to_object_throw(std::string label) const{
+const ConfigObject& ConfigValue::to_object_throw(const std::string& label) const{
     if (m_type == ConfigValueType::OBJECT){
         return *u.m_object;
     }
-    throw_type_mismatch(ConfigValueType::OBJECT, m_type, std::move(label));
+    throw_type_mismatch(ConfigValueType::OBJECT, m_type, label);
 }
-ConfigObject& ConfigValue::to_object_throw(std::string label){
+ConfigObject& ConfigValue::to_object_throw(const std::string& label){
     if (m_type == ConfigValueType::OBJECT){
         return *u.m_object;
     }
-    throw_type_mismatch(ConfigValueType::OBJECT, m_type, std::move(label));
+    throw_type_mismatch(ConfigValueType::OBJECT, m_type, label);
 }
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -298,7 +298,39 @@ std::string ConfigValue::to_acfg_string(upL_t depth, bool comments) const{
     return "";
 }
 std::string ConfigValue::to_json_string(bool trailing_comma, upL_t depth) const{
-    std::string ret = to_acfg_string(depth);
+    std::string ret;
+    switch (m_type){
+    case ConfigValueType::EMPTY:
+        ret = "null";
+        break;
+    case ConfigValueType::BOOLEAN:
+        ret = u.m_bool ? "true" : "false";
+        break;
+    case ConfigValueType::INTEGER:
+        ret = std::to_string(u.m_integer);
+        break;
+    case ConfigValueType::STRING:{
+        ret = "\"";
+        for (char ch : *u.m_string){
+            switch (ch){
+            case '\\':
+                ret += "\\\\";
+                break;
+            case '\"':
+                ret += "\\\"";
+                break;
+            default:
+                ret += ch;
+            }
+        }
+        ret += "\"";
+        break;
+    }
+    case ConfigValueType::ARRAY:
+        return u.m_array->to_json_string(trailing_comma, depth);
+    case ConfigValueType::OBJECT:
+        return u.m_object->to_json_string(trailing_comma, depth);
+    }
     if (trailing_comma){
         ret += ",";
     }

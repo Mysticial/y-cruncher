@@ -54,15 +54,13 @@ PerformanceTimeStamp PerformanceTimeStamp::now(){
     PerformanceTimeStamp out;
     out.wall_clock = WallClock::now();
 
-    static double ratio = 1. / sysconf(_SC_CLK_TCK);
-
     struct tms timers;
     if (times(&timers) == (clock_t)-1){
-        out.user_clock = 0;
-        out.kernel_clock = 0;
+        out.user_clock_ticks = 0;
+        out.kernel_clock_ticks = 0;
     }else{
-        out.user_clock   = timers.tms_utime * ratio;
-        out.kernel_clock = timers.tms_stime * ratio;
+        out.user_clock_ticks   = timers.tms_utime;
+        out.kernel_clock_ticks = timers.tms_stime;
     }
     return out;
 }
@@ -80,10 +78,12 @@ void PerformanceTimeDuration::operator+=(const PerformanceTimeDuration& duration
     kernel_time += duration.kernel_time;
 }
 PerformanceTimeDuration operator-(const PerformanceTimeStamp& end, const PerformanceTimeStamp& start){
+    static double RATIO = 1. / sysconf(_SC_CLK_TCK);
+
     PerformanceTimeDuration out;
     out.wall_time = end.wall_clock - start.wall_clock;
-    out.user_time = end.user_clock - start.user_clock;
-    out.kernel_time = end.kernel_clock - start.kernel_clock;
+    out.user_time = (end.user_clock_ticks - start.user_clock_ticks) * RATIO;
+    out.kernel_time = (end.kernel_clock_ticks - start.kernel_clock_ticks) * RATIO;
     return out;
 }
 ////////////////////////////////////////////////////////////////////////////////

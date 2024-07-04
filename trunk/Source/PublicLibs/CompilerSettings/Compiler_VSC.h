@@ -18,6 +18,10 @@ namespace ymp{
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 //  Disable Bad/Buggy Compilers
+#if (defined _MSC_VER) && (_MSC_VER < 1937)
+#error "MSVC++ 17.7 or later is required."
+//  https://developercommunity.visualstudio.com/t/AVX512-IFMA-instructions-get-miscompiled/10308181?q=avx512
+#endif
 #if (defined _MSC_VER) && (_MSC_VER < 1928)
 #error "MSVC++ 16.9 or later is required."
 //  https://developercommunity.visualstudio.com/content/problem/549433/mixing-integer-and-floating-point-sse-intrinsics-l.html
@@ -57,6 +61,15 @@ template <typename type> using r_rref = type &&__restrict;
 #endif
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
+//  Inline Assembly
+#if 0
+#elif __INTEL_COMPILER
+#define YMP_INLINEASM_ATT
+#elif __INTEL_LLVM_COMPILER
+#define YMP_INLINEASM_INTEL
+#endif
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 //  Warnings
 #pragma warning(disable:4100)   //  Unreferenced Formal Parameter
 #pragma warning(disable:4127)   //  Constant Expression
@@ -92,8 +105,9 @@ template <typename type> using r_rref = type &&__restrict;
 #pragma clang diagnostic ignored "-Wimplicitly-unsigned-literal"
 #pragma clang diagnostic ignored "-Wconstant-conversion"
 #pragma clang diagnostic ignored "-Woverloaded-virtual"
-#pragma clang diagnostic ignored "-Wundefined-var-template"
-#pragma clang diagnostic ignored "-Wmicrosoft-template"
+//#pragma clang diagnostic ignored "-Wundefined-var-template"
+//#pragma clang diagnostic ignored "-Wmicrosoft-template"
+#pragma clang diagnostic ignored "-Wdeprecated-this-capture"
 #endif
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////

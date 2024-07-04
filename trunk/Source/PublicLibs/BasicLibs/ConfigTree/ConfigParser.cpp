@@ -14,6 +14,7 @@
 #include <limits>
 #include "PublicLibs/Exceptions/InvalidParametersException.h"
 #include "PublicLibs/Exceptions/ParseException.h"
+#include "PublicLibs/BasicLibs/StringTools/Unicode.h"
 #include "PrivateLibs/BasicLibs/TextReader/TextReader.h"
 #include "ConfigArray.h"
 #include "ConfigObject.h"
@@ -153,6 +154,7 @@ std::string parse_indentifier(const char*& str, upL_t& line){
             str++;
         case ':':
         case '\"':
+        case ',':
             return token;
         case '\r':
             handle_newline(str, line);
@@ -171,7 +173,7 @@ std::string parse_indentifier(const char*& str, upL_t& line){
                 token += ch;
                 str++;
             }else{
-                throw_error(line, "Invalid character in identifier.");
+                throw_error(line, std::string("Invalid character in identifier: ") + ch);
             }
         }
     }
@@ -534,6 +536,28 @@ void append_extension(std::string& filename, const std::string& extension){
         filename += extension;
     }
 }
+std::string get_extension(const std::string& filename){
+    upL_t pos = filename.rfind('.');
+    if (pos == std::string::npos){
+        return "";
+    }
+    return filename.substr(pos + 1);
+}
+bool case_insensitive_equals(const std::string& x, const std::string& y){
+    std::u32string u32x = StringTools::utf8_to_utf32(x);
+    std::u32string u32y = StringTools::utf8_to_utf32(y);
+    if (u32x.size() != u32y.size()){
+        return false;
+    }
+    for (upL_t c = 0; c < u32x.size(); c++){
+        char32_t chx = std::tolower(u32x[c]);
+        char32_t chy = std::tolower(u32y[c]);
+        if (chx != chy){
+            return false;
+        }
+    }
+    return true;
+}
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ConfigValue parse_acfg_string(const char*& str){
@@ -563,6 +587,24 @@ ConfigValue parse_json_string(const std::string& str){
 ConfigValue parse_json_file(const std::string& filename){
     FileIO::TextReader reader(filename, true);
     return parse_json_string(reader.entire_file_to_utf8());
+}
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+ConfigValue parse_using_extension(const std::string& filename){
+    std::string extension = get_extension(filename);
+    if (extension.empty()){
+        return parse_acfg_file(filename + ".cfg");
+    }
+    if (case_insensitive_equals(extension, "cfg")){
+        return parse_acfg_file(filename);
+    }
+    if (case_insensitive_equals(extension, "json")){
+        return parse_json_file(filename);
+    }
+    throw InvalidParametersException(
+        "parse_using_extension()",
+        "Extension must be .cfg or .json."
+    );
 }
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////

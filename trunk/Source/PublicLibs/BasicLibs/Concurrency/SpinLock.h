@@ -27,10 +27,13 @@ public:
     YM_FORCE_INLINE SpinLock() : m_locked(false) {}
 
     YM_FORCE_INLINE void spin_acquire(){
+        //  Optimization: Assume unlocked
         bool state = false;
         if (m_locked.compare_exchange_weak(state, true)){
             return;
         }
+
+        //  Only if we fail do we enter the (slow) retry logic.
         do{
             Intrinsics::spin_pause();
             state = false;
@@ -39,10 +42,13 @@ public:
 
 #if 0
     YM_FORCE_INLINE void sleep_acquire(){
+        //  Optimization: Assume unlocked
         bool state = false;
         if (m_locked.compare_exchange_weak(state, true)){
             return;
         }
+
+        //  Only if we fail do we enter the (slow) retry logic.
         do{
             Intrinsics::sleep_pause();
             state = false;

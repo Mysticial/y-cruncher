@@ -48,13 +48,13 @@ template <typename T> using MethodMap = std::map<std::string, Method<T>>;
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 class CommandLineException : public std::exception{
-    const char* m_msg;
+    std::string m_msg;
 public:
-    CommandLineException(const char* msg)
-        : m_msg(msg)
+    CommandLineException(std::string msg)
+        : m_msg(std::move(msg))
     {}
     virtual const char* what() const noexcept{
-        return m_msg;
+        return m_msg.c_str();
     }
 };
 enum class OnFailAction{
@@ -93,19 +93,19 @@ public:
     bool has_more() const{
         return m_currentIndex < m_parameters.size();
     }
-    const string& CurrentParam() const{
+    const string& current_param() const{
         if (m_currentIndex >= m_parameters.size()){
             throw CommandLineException("Expected more parameters.");
         }
         return m_parameters[m_currentIndex];
     }
-    const string& CurrentKey() const{
+    const string& current_key() const{
         if (m_currentIndex >= m_parameters.size()){
             throw CommandLineException("Expected more parameters.");
         }
         return m_tokens[m_currentIndex].first;
     }
-    const string& CurrentValue() const{
+    const string& current_value() const{
         if (m_currentIndex >= m_parameters.size()){
             throw CommandLineException("Expected more parameters.");
         }
@@ -121,28 +121,28 @@ public:
 
 public:
     bool match_execute(const ActionMap& map, bool fatal_on_fail = true){
-        auto iter = map.find(CurrentKey());
+        auto iter = map.find(current_key());
         if (iter != map.end()){
             iter->second(*this);
             return true;
         }
         if (fatal_on_fail){
             Console::ConsoleLockScope lock;
-            Console::warning("Invalid Parameter: " + CurrentKey());
+            Console::warning("Invalid Parameter: " + current_key());
             Console::quit_program(1);
         }
         return false;
     }
     template <typename T>
     bool match_execute(const MethodMap<T>& map, T &obj, bool fatal_on_fail = true){
-        auto iter = map.find(CurrentKey());
+        auto iter = map.find(current_key());
         if (iter != map.end()){
             iter->second(obj, *this);
             return true;
         }
         if (fatal_on_fail){
             Console::ConsoleLockScope lock;
-            Console::warning("Invalid Parameter: " + CurrentKey());
+            Console::warning("Invalid Parameter: " + current_key());
             Console::quit_program(1);
         }
         return false;

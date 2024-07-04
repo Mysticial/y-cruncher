@@ -34,6 +34,7 @@ public:
     upL_t size() const{
         return m_value.size();
     }
+    void assert_size(upL_t size) const;
 
 public:
     void operator+=(siL_t value);
@@ -67,6 +68,9 @@ public:
     std::vector<siL_t> get_integers(std::string label = "") const;
 
     upL_t depth() const;
+
+private:
+    bool print_as_one_line() const;
 
 private:
     friend class ConfigValue;

@@ -208,7 +208,7 @@ void cpu_x86::detect_host(){
     if (HW_AVX10){
         cpuid(info, 0x00000024, 0);
         HW_AVX10        =   info[1] & 0xff;
-        HW_AVX10v128    =   (info[1] & ((int)1 << 16)) != 0;
+        HW_AVX10_128    =   (info[1] & ((int)1 << 16)) != 0;
         HW_AVX10_256    =   (info[1] & ((int)1 << 17)) != 0;
         HW_AVX10_512    =   (info[1] & ((int)1 << 18)) != 0;
     }
@@ -263,7 +263,7 @@ void cpu_x86::print() const{
 
     Console::println("SIMD: 256-bit");
     Console::print("  * AVX             = "); print_bool(HW_AVX);
-    Console::print("  * FMA4            = "); print_bool(HW_FMA4);
+    Console::print("    FMA4            = "); print_bool(HW_FMA4);
     Console::print("    XOP             = "); print_bool(HW_XOP);
     Console::print("  * FMA3            = "); print_bool(HW_FMA3);
     Console::print("  * AVX2            = "); print_bool(HW_AVX2);
@@ -307,7 +307,7 @@ void cpu_x86::print() const{
     Console::print("    APX-F           = "); print_bool(HW_APX_F);
     Console::print("    AVX10           = "); print_bool(HW_AVX10, false);
     if (HW_AVX10){ Console::print(" (v" + std::to_string(HW_AVX10) + ")"); } Console::println();
-    Console::print("    AVX10/128       = "); print_bool(HW_AVX10v128);
+    Console::print("    AVX10/128       = "); print_bool(HW_AVX10_128);
     Console::print("    AVX10/256       = "); print_bool(HW_AVX10_256);
     Console::print("    AVX10/512       = "); print_bool(HW_AVX10_512);
     Console::println();

@@ -27,6 +27,26 @@ void dispatch_AMD(const cpu_x86& features){
     if (features.HW_AVX512_VP2INTERSECT){
         dispatch_2024_x64_Zen5(features);
     }
+#else
+    if (features.HW_AVX512_VP2INTERSECT && can_run_2024_x64_Zen5(features)){
+        Console::println("", 'Y');
+        Console::println("Detected a Zen5 processor!");
+        Console::println();
+        Console::println("Optimizations are not yet available for this processor as they are pending");
+        Console::println("final hardware for proper tuning.");
+        Console::println();
+        Console::println("    https://twitter.com/Mysticial/status/1797478508157124717");
+        Console::println();
+        Console::println("As the release date for Zen5 approaches, please stay tuned for an update");
+        Console::println("to this release that will have Zen5 optimizations.");
+        Console::println();
+        Console::println("Falling back to the Zen4 binary...");
+        Console::println();
+        Console::set_color('w');
+        if (pause_on_warning){
+            Console::pause();
+        }
+    }
 #endif
 #ifdef YCR_ENABLE_2022_x64_Zen4
     dispatch_2022_x64_Zen4(features);

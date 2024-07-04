@@ -11,7 +11,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 //  Dependencies
-//#include "Settings.h"
 #include <time.h>
 #include <Windows.h>
 #include "PublicLibs/ConsoleIO/Label.h"
@@ -63,8 +62,10 @@ PerformanceTimeStamp PerformanceTimeStamp::now(){
         Console::quit_program(1);
     }
 
-    out.kernel_clock = (double)(c.dwLowDateTime | ((u64_t)c.dwHighDateTime << 32)) * 0.0000001;
-    out.user_clock   = (double)(d.dwLowDateTime | ((u64_t)d.dwHighDateTime << 32)) * 0.0000001;
+    out.kernel_clock_ticks = c.dwLowDateTime | ((u64_t)c.dwHighDateTime << 32);
+    out.user_clock_ticks   = d.dwLowDateTime | ((u64_t)d.dwHighDateTime << 32);
+
+//    cout << out.user_clock_ticks << endl;
 
     return out;
 }
@@ -84,8 +85,8 @@ void PerformanceTimeDuration::operator+=(const PerformanceTimeDuration& duration
 PerformanceTimeDuration operator-(const PerformanceTimeStamp& end, const PerformanceTimeStamp& start){
     PerformanceTimeDuration out;
     out.wall_time = end.wall_clock - start.wall_clock;
-    out.user_time = end.user_clock - start.user_clock;
-    out.kernel_time = end.kernel_clock - start.kernel_clock;
+    out.user_time = (end.user_clock_ticks - start.user_clock_ticks) * 0.0000001;
+    out.kernel_time = (end.kernel_clock_ticks - start.kernel_clock_ticks) * 0.0000001;
     return out;
 }
 ////////////////////////////////////////////////////////////////////////////////

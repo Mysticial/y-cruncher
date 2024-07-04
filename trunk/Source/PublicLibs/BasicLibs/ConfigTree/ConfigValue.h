@@ -95,14 +95,14 @@ public:
     bool is_object      () const{ return m_type == ConfigValueType::OBJECT; }
 
     //  Get the value. Throws if the type doesn't match.
-    bool                to_boolean_throw    (std::string label = "") const;
-    int64_t             to_integer_throw    (std::string label = "") const;
-    const std::string&  to_string_throw     (std::string label = "") const;
-          std::string&  to_string_throw     (std::string label = "");
-    const ConfigArray&  to_array_throw      (std::string label = "") const;
-          ConfigArray&  to_array_throw      (std::string label = "");
-    const ConfigObject& to_object_throw     (std::string label = "") const;
-          ConfigObject& to_object_throw     (std::string label = "");
+    bool                to_boolean_throw    (const std::string& label = "") const;
+    int64_t             to_integer_throw    (const std::string& label = "") const;
+    const std::string&  to_string_throw     (const std::string& label = "") const;
+          std::string&  to_string_throw     (const std::string& label = "");
+    const ConfigArray&  to_array_throw      (const std::string& label = "") const;
+          ConfigArray&  to_array_throw      (const std::string& label = "");
+    const ConfigObject& to_object_throw     (const std::string& label = "") const;
+          ConfigObject& to_object_throw     (const std::string& label = "");
 
     //  Get a pointer to the data for this value.
     //  If the type matches, returns the pointer.

@@ -16,7 +16,7 @@
 //  Dependencies
 #include "PublicLibs/CompilerSettings.h"
 #include "PublicLibs/Types.h"
-#include "PublicLibs/ArchSpecificLibs/Shuffle/x86_256/AdjacentLanePermute_x86_256.h"
+#include "PublicLibs/ArchSpecificLibs/AdjacentLanePermute/AdjacentLanePermute_256_x86_AVX2.h"
 #include "DigitViewer2/RawToDecKernels/Kernels_i64_to_dec_x64_AVX512-BW.h"
 namespace DigitViewer2{
 namespace WordToRaw{
@@ -94,10 +94,10 @@ YM_FORCE_INLINE void w64_to_dec_u8_x64_AVX512BW(char* raw, const __m512i* T, upL
         __m512i z0 = _mm512_unpacklo_epi64(b0, a0);
         __m512i z1 = _mm512_unpackhi_epi64(b0, a0);
 
-        SIMD::mm256_splitstore_si256(raw + 136, raw +  98, _mm512_castsi512_si256(z0));
-        SIMD::mm256_splitstore_si256(raw + 117, raw +  79, _mm512_castsi512_si256(z1));
-        SIMD::mm256_splitstore_si256(raw +  60, raw +  22, _mm512_extracti64x4_epi64(z0, 1));
-        SIMD::mm256_splitstore_si256(raw +  41, raw +   3, _mm512_extracti64x4_epi64(z1, 1));
+        SIMD::splitstore(_mm512_castsi512_si256(z0), raw + 136, raw +  98);
+        SIMD::splitstore(_mm512_castsi512_si256(z1), raw + 117, raw +  79);
+        SIMD::splitstore(_mm512_extracti64x4_epi64(z0, 1), raw +  60, raw +  22);
+        SIMD::splitstore(_mm512_extracti64x4_epi64(z1, 1), raw +  41, raw +   3);
 #endif
 
         T += 1;

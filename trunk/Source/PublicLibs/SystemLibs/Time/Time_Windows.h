@@ -14,6 +14,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 //  Dependencies
+#include "PublicLibs/Types.h"
 namespace ymp{
 namespace Time{
 ////////////////////////////////////////////////////////////////////////////////
@@ -35,8 +36,8 @@ public:
 struct PerformanceTimeDuration;
 struct PerformanceTimeStamp{
     WallClock wall_clock;
-    double user_clock;
-    double kernel_clock;
+    u64_t user_clock_ticks;
+    u64_t kernel_clock_ticks;
 
     static PerformanceTimeStamp now();
 };

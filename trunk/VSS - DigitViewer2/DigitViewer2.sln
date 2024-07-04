@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26730.12
+# Visual Studio Version 17
+VisualStudioVersion = 17.6.33717.318
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DigitViewer2", "DigitViewer2\DigitViewer2.vcxproj", "{78460907-F11F-45DF-A8B3-BCF1D8E54EC5}"
 EndProject
@@ -17,6 +17,8 @@ Global
 		13-Haswell|x86 = 13-Haswell|x86
 		17-Skylake|x64 = 17-Skylake|x64
 		17-Skylake|x86 = 17-Skylake|x86
+		18-CannonLake|x64 = 18-CannonLake|x64
+		18-CannonLake|x86 = 18-CannonLake|x86
 		Debug|x64 = Debug|x64
 		Debug|x86 = Debug|x86
 		Release|x64 = Release|x64
@@ -43,6 +45,10 @@ Global
 		{78460907-F11F-45DF-A8B3-BCF1D8E54EC5}.17-Skylake|x64.Build.0 = 17-Skylake|x64
 		{78460907-F11F-45DF-A8B3-BCF1D8E54EC5}.17-Skylake|x86.ActiveCfg = 17-Skylake|Win32
 		{78460907-F11F-45DF-A8B3-BCF1D8E54EC5}.17-Skylake|x86.Build.0 = 17-Skylake|Win32
+		{78460907-F11F-45DF-A8B3-BCF1D8E54EC5}.18-CannonLake|x64.ActiveCfg = 18-CannonLake|x64
+		{78460907-F11F-45DF-A8B3-BCF1D8E54EC5}.18-CannonLake|x64.Build.0 = 18-CannonLake|x64
+		{78460907-F11F-45DF-A8B3-BCF1D8E54EC5}.18-CannonLake|x86.ActiveCfg = 18-CannonLake|Win32
+		{78460907-F11F-45DF-A8B3-BCF1D8E54EC5}.18-CannonLake|x86.Build.0 = 18-CannonLake|Win32
 		{78460907-F11F-45DF-A8B3-BCF1D8E54EC5}.Debug|x64.ActiveCfg = Debug|x64
 		{78460907-F11F-45DF-A8B3-BCF1D8E54EC5}.Debug|x64.Build.0 = Debug|x64
 		{78460907-F11F-45DF-A8B3-BCF1D8E54EC5}.Debug|x86.ActiveCfg = Debug|Win32

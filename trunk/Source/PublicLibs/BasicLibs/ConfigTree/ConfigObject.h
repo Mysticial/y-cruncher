@@ -104,7 +104,7 @@ public:
 
     friend bool operator==(const ConfigObject& a, const ConfigObject& b);
     std::string to_acfg_string(upL_t depth = 0, bool comments = true) const;
-    std::string to_json_string(bool trailing_comma, upL_t depth = 0) const;
+    std::string to_json_string(bool trailing_comma = false, upL_t depth = 0) const;
 
     upL_t depth() const;
 

@@ -34,6 +34,9 @@
 static YM_FORCE_INLINE ymp::s64_t _mm_cvtsi128_si64(__m128i x){
     return (ymp::u32_t)_mm_cvtsi128_si32(x) | (ymp::s64_t)_mm_cvtsi128_si32(_mm_shuffle_epi32(x, 177)) << 32;
 }
+static YM_FORCE_INLINE __m128i _mm_cvtsi64_si128(ymp::s64_t x){
+    return _mm_loadl_epi64((const __m128i*)&x);
+}
 #endif
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////

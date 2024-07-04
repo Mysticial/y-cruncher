@@ -2,7 +2,7 @@
  * 
  *  Author          : Alexander J. Yee
  *  Date Created    : 04/12/2014
- *  Last Modified   : 04/12/2014
+ *  Last Modified   : 04/10/2024
  * 
  */
 
@@ -14,6 +14,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 //  Dependencies
+#include <stdint.h>
 #include <string>
 #include "PublicLibs/Types.h"
 namespace ymp{
@@ -98,13 +99,13 @@ struct cpu_x86{
     bool HW_AVX512_VBMI2;           //  ...
     bool HW_AVX512_BITALG;          //  ...
     bool HW_AVX512_BF16;            //  Cooper Lake (2020) + Zen4 (2022)
-    bool HW_AVX512_VP2INTERSECT;    //  Tiger Lake (2020) - dead
+    bool HW_AVX512_VP2INTERSECT;    //  Tiger Lake (2020) + Zen5 (2024) - dead
     bool HW_AVX512_FP16;            //  Sapphire Rapids (2023)
 
     //  APX/AVX10
     bool HW_APX_F;          //  ???
     uint8_t HW_AVX10;       //  Granite Rapids (2024?)
-    bool HW_AVX10v128;      //  ...
+    bool HW_AVX10_128;      //  ...
     bool HW_AVX10_256;      //  ...
     bool HW_AVX10_512;      //  ...
 

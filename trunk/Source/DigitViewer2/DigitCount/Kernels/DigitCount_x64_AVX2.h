@@ -16,7 +16,7 @@
 //  Dependencies
 #include <immintrin.h>
 #include "PublicLibs/CompilerSettings.h"
-#include "PublicLibs/ArchSpecificLibs/Shuffle/x86_256/Transpose_64x4x4_x86_AVX2.h"
+#include "PublicLibs/ArchSpecificLibs/Shuffle/Transpose_64x4x4_x86_AVX2.h"
 namespace DigitViewer2{
 namespace DigitCount{
 ////////////////////////////////////////////////////////////////////////////////
@@ -93,7 +93,7 @@ void accumulate_b32_AVX2_64x4(u64_t digits[4], const __m256i* raw_digits, upL_t 
     sum1 = reduce_u8_to_u64_AVX2(sum1);
     sum2 = reduce_u8_to_u64_AVX2(sum2);
     sum3 = reduce_u8_to_u64_AVX2(sum3);
-    SIMD::transpose_i64_4x4_AVX2(sum0, sum1, sum2, sum3);
+    SIMD::transpose_i64x4x4_x86_AVX2(sum0, sum1, sum2, sum3);
 
     sum0 = _mm256_add_epi64(sum0, sum1);
     sum2 = _mm256_add_epi64(sum2, sum3);

@@ -17,7 +17,7 @@
 #include <immintrin.h>
 #include "PublicLibs/CompilerSettings.h"
 #include "PublicLibs/ArchSpecificLibs/x86_AVX512.h"
-#include "PublicLibs/ArchSpecificLibs/Shuffle/x86_512/Transpose_64x8x8_x86_AVX512.h"
+#include "PublicLibs/ArchSpecificLibs/Shuffle/Transpose_64x8x8_x86_AVX512.h"
 namespace DigitViewer2{
 namespace DigitCount{
 ////////////////////////////////////////////////////////////////////////////////
@@ -91,7 +91,7 @@ YM_FORCE_INLINE void accumulate_b64_AVX512_64x10(u64_t digits[10], const __m512i
     sum8 = reduce_u8_to_u64_AVX512(sum8);
     sum9 = reduce_u8_to_u64_AVX512(sum9);
 
-    SIMD::transpose_i64_8x8_AVX512(sum0, sum1, sum2, sum3, sum4, sum5, sum6, sum7);
+    SIMD::transpose_i64x8x8_x86_AVX512(sum0, sum1, sum2, sum3, sum4, sum5, sum6, sum7);
 
     sum0 = _mm512_add_epi64(sum0, sum1);
     sum2 = _mm512_add_epi64(sum2, sum3);
@@ -155,7 +155,7 @@ void accumulate_b64_AVX512_64x8(u64_t digits[8], const __m512i* raw_digits, upL_
     sum5 = reduce_u8_to_u64_AVX512(sum5);
     sum6 = reduce_u8_to_u64_AVX512(sum6);
     sum7 = reduce_u8_to_u64_AVX512(sum7);
-    SIMD::transpose_i64_8x8_AVX512(sum0, sum1, sum2, sum3, sum4, sum5, sum6, sum7);
+    SIMD::transpose_i64x8x8_x86_AVX512(sum0, sum1, sum2, sum3, sum4, sum5, sum6, sum7);
 
     sum0 = _mm512_add_epi64(sum0, sum1);
     sum2 = _mm512_add_epi64(sum2, sum3);
@@ -238,7 +238,7 @@ YM_FORCE_INLINE void accumulate_b64_AVX512_64x16(u64_t digits[16], const __m512i
     sum5 = reduce_u8_to_u64_AVX512(sum5);
     sum6 = reduce_u8_to_u64_AVX512(sum6);
     sum7 = reduce_u8_to_u64_AVX512(sum7);
-    SIMD::transpose_i64_8x8_AVX512(sum0, sum1, sum2, sum3, sum4, sum5, sum6, sum7);
+    SIMD::transpose_i64x8x8_x86_AVX512(sum0, sum1, sum2, sum3, sum4, sum5, sum6, sum7);
     sum8 = reduce_u8_to_u64_AVX512(sum8);
     sum9 = reduce_u8_to_u64_AVX512(sum9);
     sumA = reduce_u8_to_u64_AVX512(sumA);
@@ -247,7 +247,7 @@ YM_FORCE_INLINE void accumulate_b64_AVX512_64x16(u64_t digits[16], const __m512i
     sumD = reduce_u8_to_u64_AVX512(sumD);
     sumE = reduce_u8_to_u64_AVX512(sumE);
     sumF = reduce_u8_to_u64_AVX512(sumF);
-    SIMD::transpose_i64_8x8_AVX512(sum8, sum9, sumA, sumB, sumC, sumD, sumE, sumF);
+    SIMD::transpose_i64x8x8_x86_AVX512(sum8, sum9, sumA, sumB, sumC, sumD, sumE, sumF);
 
     sum0 = _mm512_add_epi64(sum0, sum1);
     sum2 = _mm512_add_epi64(sum2, sum3);

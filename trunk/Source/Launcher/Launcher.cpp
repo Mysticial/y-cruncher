@@ -42,19 +42,19 @@ bool pause_on_warning = true;
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 void handle_pause(CommandLine::Parameters& cmds){
-    auto& value = cmds.CurrentValue();
+    auto& value = cmds.current_value();
     cmds.advance();
     int pause_on_exit = static_cast<int>(StringTools::parse_sL_text(value));
     pause_on_warning = pause_on_exit > -1;
     Console::pause_on_error = pause_on_exit > -2;
 }
 void handle_colors(CommandLine::Parameters& cmds){
-    auto& value = cmds.CurrentValue();
+    auto& value = cmds.current_value();
     cmds.advance();
     Console::enable_colors = StringTools::parse_sL_text(value) > 0;
 }
 void handle_height(CommandLine::Parameters& cmds){
-    auto& value = cmds.CurrentValue();
+    auto& value = cmds.current_value();
     cmds.advance();
     int height = static_cast<int>(StringTools::parse_sL_text(value));
     Console::set_console_window_size(80, height);

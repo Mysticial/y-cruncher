@@ -14,8 +14,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 //  Dependencies
-#include "PublicLibs/ArchSpecificLibs/Shuffle/x86_128/AdjacentLanePermute_x86_128.h"
-#include "PublicLibs/ArchSpecificLibs/Shuffle/x86_256/AdjacentLanePermute_x86_256.h"
+#include "PublicLibs/ArchSpecificLibs/AdjacentLanePermute/AdjacentLanePermute_256_x86_AVX2.h"
 #include "DigitViewer2/RawToDecKernels/Kernels_dec_to_i64_x64_AVX2.h"
 #include "DigitViewer2/RawToDecKernels/Kernels_i64_to_dec_x64_AVX2.h"
 namespace DigitViewer2{
@@ -34,27 +33,19 @@ YM_FORCE_INLINE bool dec_to_i64_u4_x64_AVX2(__m256i* T, const char* raw, upL_t b
     do{
         __m256i a0, b0, c0;
 
-        c0 = _mm256_setr_m128i(
-            SIMD::mm_splitload_si128(raw +  0, raw + 19),
-            SIMD::mm_splitload_si128(raw + 38, raw + 57)
-        );
-#if 0
-        b0 = _mm256_setr_m128i(
-            SIMD::mm_splitload_si128(raw +  3, raw + 22),
-            SIMD::mm_splitload_si128(raw + 41, raw + 60)
-        );
-        a0 = _mm256_setr_m128i(
-            SIMD::mm_splitload_si128(raw + 11, raw + 30),
-            SIMD::mm_splitload_si128(raw + 49, raw + 68)
-        );
-#else
+        {
+            __m128i x0, x1;
+            SIMD::splitload(x0, raw +  0, raw + 19);
+            SIMD::splitload(x1, raw + 38, raw + 57);
+            c0 = _mm256_setr_m128i(x0, x1);
+        }
+
         __m256i r0;
-        r0 = SIMD::mm256_splitload_si256(raw +  3, raw + 41);
-        a0 = SIMD::mm256_splitload_si256(raw + 22, raw + 60);
+        SIMD::splitload(r0, raw +  3, raw + 41);
+        SIMD::splitload(a0, raw + 22, raw + 60);
 
         b0 = _mm256_unpacklo_epi64(r0, a0);
         a0 = _mm256_unpackhi_epi64(r0, a0);
-#endif
 
         c0 = _mm256_and_si256(c0, _mm256_set1_epi64x(0x0000000000ffffff));
 
@@ -83,20 +74,13 @@ YM_FORCE_INLINE void i64_to_dec_u4_x64_AVX2(char* raw, const __m256i* T, upL_t b
         __m256i a0, b0, c0;
         RawToDec::i64_to_dec_x64_AVX2(_mm256_loadu_si256(T), a0, b0, c0);
 
-        SIMD::mm_splitstore_si128(raw +  0, raw + 19, _mm256_castsi256_si128(c0));
-        SIMD::mm_splitstore_si128(raw + 38, raw + 57, _mm256_extracti128_si256(c0, 1));
-#if 0
-        SIMD::mm_splitstore_si128(raw +  3, raw + 22, _mm256_castsi256_si128(b0));
-        SIMD::mm_splitstore_si128(raw + 41, raw + 60, _mm256_extracti128_si256(b0, 1));
+        SIMD::splitstore(_mm256_castsi256_si128(c0), raw +  0, raw + 19);
+        SIMD::splitstore(_mm256_extracti128_si256(c0, 1), raw + 38, raw + 57);
 
-        SIMD::mm_splitstore_si128(raw + 11, raw + 30, _mm256_castsi256_si128(a0));
-        SIMD::mm_splitstore_si128(raw + 49, raw + 68, _mm256_extracti128_si256(a0, 1));
-#else
         __m256i y0 = _mm256_unpacklo_epi64(b0, a0);
         __m256i y1 = _mm256_unpackhi_epi64(b0, a0);
-        SIMD::mm256_splitstore_si256(raw +  3, raw + 41, y0);
-        SIMD::mm256_splitstore_si256(raw + 22, raw + 60, y1);
-#endif
+        SIMD::splitstore(y0, raw +  3, raw + 41);
+        SIMD::splitstore(y1, raw + 22, raw + 60);
 
         raw += 76;
         T += 1;

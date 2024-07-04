@@ -16,6 +16,7 @@ CURRENT += ConsoleIO/Array.cpp
 
 CURRENT += Exceptions/SMC_Exceptions.cpp
 
+CURRENT += ArchSpecificLibs/LoadStoreTypes.cpp
 CURRENT += MathIntrinsics/ChecksumHash.cpp
 
 CURRENT += CompileOptions_PublicLibs.cpp

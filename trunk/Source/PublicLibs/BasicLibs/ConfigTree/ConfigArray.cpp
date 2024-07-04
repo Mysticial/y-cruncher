@@ -11,6 +11,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 //  Dependencies
+#include "PublicLibs/Exceptions/ParseException.h"
 #include "ConfigArray.h"
 namespace ymp{
 ////////////////////////////////////////////////////////////////////////////////
@@ -20,6 +21,11 @@ namespace ymp{
 ConfigArray::ConfigArray(const ConfigArray& x){
     for (const auto& item : x.m_value){
         m_value.emplace_back(item.clone());
+    }
+}
+void ConfigArray::assert_size(upL_t size) const{
+    if (m_value.size() != size){
+        throw ParseException("Expected array size to be exactly " + std::to_string(size) + " items.");
     }
 }
 void ConfigArray::operator+=(siL_t value){
@@ -39,25 +45,39 @@ bool operator==(const ConfigArray& a, const ConfigArray& b){
     }
     return true;
 }
+bool ConfigArray::print_as_one_line() const{
+    upL_t length = 0;
+    for (const auto& item : m_value){
+        switch (item.type()){
+        case ConfigValueType::EMPTY:
+            length += 0;
+            break;
+        case ConfigValueType::BOOLEAN:
+            length += 0;
+            break;
+        case ConfigValueType::INTEGER:
+            length += 0;
+            break;
+        case ConfigValueType::STRING:
+            length += item.to_string_throw().size();
+            break;
+        case ConfigValueType::ARRAY:
+        case ConfigValueType::OBJECT:
+            return false;
+        }
+        if (length > 100){
+            return false;
+        }
+    }
+    return true;
+}
 std::string ConfigArray::to_acfg_string(upL_t depth, bool comments) const{
     if (m_value.empty()){
         return "[]";
     }
 
-    bool one_line;
-    {
-        bool all_integer = true;
-        for (const auto& item : m_value){
-            if (!item.is_integer()){
-                all_integer = false;
-            }
-        }
-        bool one_string = m_value.size() == 1 && m_value[0].is_string();
-        one_line = all_integer || one_string;
-    }
-
     std::string ret;
-    if (one_line){
+    if (print_as_one_line()){
         ret += "[" + m_value[0].to_acfg_string();
         for (upL_t c = 1; c < m_value.size(); c++){
             ret += " ";
@@ -81,20 +101,8 @@ std::string ConfigArray::to_json_string(bool trailing_comma, upL_t depth) const{
         return trailing_comma ? "[]," : "[]";
     }
 
-    bool one_line;
-    {
-        bool all_integer = true;
-        for (const auto& item : m_value){
-            if (!item.is_integer()){
-                all_integer = false;
-            }
-        }
-        bool one_string = m_value.size() == 1 && m_value[0].is_string();
-        one_line = all_integer || one_string;
-    }
-
     std::string ret;
-    if (one_line){
+    if (print_as_one_line()){
         ret += "[" + m_value[0].to_json_string(false);
         for (upL_t c = 1; c < m_value.size(); c++){
             ret += ", ";
@@ -118,7 +126,7 @@ std::string ConfigArray::to_json_string(bool trailing_comma, upL_t depth) const{
 std::vector<siL_t> ConfigArray::get_integers(std::string label) const{
     std::vector<siL_t> ret;
     for (const auto& item : m_value){
-        ret.emplace_back(item.to_integer_throw(std::move(label)));
+        ret.emplace_back(item.to_integer_throw(label));
     }
     return ret;
 }

@@ -28,12 +28,16 @@ namespace ymp{
 class hash_t{
 public:
     static const u64_t PRIME = 0x1fffffffffffffffull;
+    enum ReduceType{
+        NO_REDUCE,
+    };
 
 public:
     YM_FORCE_INLINE hash_t() = default;
     YM_FORCE_INLINE hash_t(int x);
     YM_FORCE_INLINE hash_t(u32_t x);
     YM_FORCE_INLINE hash_t(u64_t x);
+    YM_FORCE_INLINE hash_t(ReduceType, u64_t x) : m_hash(x) {}
 
 public:
     YM_FORCE_INLINE u64_t value() const;
@@ -61,7 +65,6 @@ public:
     static hash_t word_power(siL_t pow);
 
 private:
-    YM_FORCE_INLINE hash_t(u64_t x, void*) : m_hash(x) {}
     static u64_t reduce(u64_t x);
     static s64_t reduce(s64_t x);
     static u64_t reduce(u64_t L, u64_t H);
@@ -74,6 +77,7 @@ private:
     friend hash_t bp_hash(hash_t hash_in, const u32_t* T, upL_t L);
     friend hash_t bp_hash(hash_t hash_in, const u64_t* T, upL_t L);
     friend hash_t bp_hash_radix(hash_t hash_in, u32_t radix, const u32_t* T, upL_t L);
+    friend hash_t bp_hash_radix(hash_t hash_in, u32_t radix, const s32_t* T, upL_t L);
     friend hash_t bp_hash_radix(hash_t hash_in, u64_t radix, const u64_t* T, upL_t L);
 };
 ////////////////////////////////////////////////////////////////////////////////

@@ -80,7 +80,7 @@ YM_NO_INLINE std::string scan_utf8(char color){
     std::string out;
     std::getline(std::cin, out);
     if (color != ' '){
-        set_color('w');
+        set_color_default();
     }
     return out;
 }
@@ -100,7 +100,7 @@ YM_NO_INLINE std::wstring scan_wstr(char color){
         out.push_back(ch);
     }
     if (color != ' '){
-        set_color('w');
+        set_color_default();
     }
     return out;
 }

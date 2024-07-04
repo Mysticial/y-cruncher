@@ -15,8 +15,8 @@
  */
 
 #pragma once
-#ifndef ymp_FastWallClock_H
-#define ymp_FastWallClock_H
+#ifndef ymp_Time_FastWallClock_H
+#define ymp_Time_FastWallClock_H
 
 #include "PublicLibs/SystemLibs/ProcessorCapability/ProcessorCapability.h"
 

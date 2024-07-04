@@ -13,6 +13,7 @@
 #include "ConsoleIO/Array.cpp"
 
 #include "Exceptions/SMC_Exceptions.cpp"
+#include "ArchSpecificLibs/LoadStoreTypes.cpp"
 #include "BasicLibs/SMC_PublicBasicLibs.cpp"
 #include "SystemLibs/SMC_PublicSystemLibs.cpp"
 

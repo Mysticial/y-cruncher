@@ -41,6 +41,14 @@
       <Configuration>17-Skylake</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
+    <ProjectConfiguration Include="18-CannonLake|Win32">
+      <Configuration>18-CannonLake</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="18-CannonLake|x64">
+      <Configuration>18-CannonLake</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
       <Platform>Win32</Platform>
@@ -106,6 +114,13 @@
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='18-CannonLake|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='00-x86|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
@@ -154,6 +169,13 @@
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='18-CannonLake|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='00-x86|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
@@ -184,6 +206,9 @@
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='17-Skylake|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='18-CannonLake|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='00-x86|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
@@ -203,6 +228,9 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='17-Skylake|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='18-CannonLake|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='00-x86|x64'" Label="PropertySheets">
@@ -226,6 +254,10 @@
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='17-Skylake|Win32'">
+    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='18-CannonLake|Win32'">
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
@@ -353,6 +385,27 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='17-Skylake|Win32'">
+    <ClCompile>
+      <WarningLevel>Level4</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>
+      </SDLCheck>
+      <AdditionalIncludeDirectories>$(SolutionDir)\..\Source</AdditionalIncludeDirectories>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <PreprocessorDefinitions>NOMINMAX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <AssemblerOutput>AssemblyAndSourceCode</AssemblerOutput>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='18-CannonLake|Win32'">
     <ClCompile>
       <WarningLevel>Level4</WarningLevel>
       <Optimization>MaxSpeed</Optimization>
@@ -507,6 +560,33 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
   </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='18-CannonLake|x64'">
+    <ClCompile>
+      <WarningLevel>Level4</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>
+      </SDLCheck>
+      <AdditionalIncludeDirectories>$(SolutionDir)\..\Source</AdditionalIncludeDirectories>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <PreprocessorDefinitions>NOMINMAX;X64_18_CannonLake;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <EnableEnhancedInstructionSet>
+      </EnableEnhancedInstructionSet>
+      <UseProcessorExtensions>CORE512</UseProcessorExtensions>
+      <Mtune>skylake</Mtune>
+      <AdditionalOptions>/Qfreestanding /Qwd11074 /Qwd11075 /Qwd15335 %(AdditionalOptions)</AdditionalOptions>
+      <AssemblerOutput>AssemblyAndSourceCode</AssemblerOutput>
+      <InterproceduralOptimization>SingleFile</InterproceduralOptimization>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='00-x86|x64'">
     <ClCompile>
       <WarningLevel>Level4</WarningLevel>
@@ -593,6 +673,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='07-Penryn|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='13-Haswell|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='17-Skylake|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='18-CannonLake|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='00-x86|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
@@ -600,6 +681,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='07-Penryn|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='13-Haswell|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='17-Skylake|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='18-CannonLake|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='00-x86|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\..\Source\DigitViewer2\WordToRaw\WordToRaw.cpp" />
@@ -613,6 +695,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='07-Penryn|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='13-Haswell|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='17-Skylake|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='18-CannonLake|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='00-x86|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
@@ -620,6 +703,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='07-Penryn|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='13-Haswell|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='17-Skylake|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='18-CannonLake|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='00-x86|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\..\Source\PublicLibs\BasicLibs\StringTools\ToString.cpp" />
@@ -644,6 +728,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='07-Penryn|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='13-Haswell|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='17-Skylake|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='18-CannonLake|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='00-x86|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
@@ -651,6 +736,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='07-Penryn|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='13-Haswell|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='17-Skylake|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='18-CannonLake|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='00-x86|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\..\Source\PublicLibs\Exceptions\StdException.cpp" />
@@ -664,6 +750,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='07-Penryn|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='13-Haswell|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='17-Skylake|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='18-CannonLake|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='00-x86|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
@@ -671,6 +758,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='07-Penryn|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='13-Haswell|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='17-Skylake|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='18-CannonLake|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='00-x86|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\..\Source\PublicLibs\SystemLibs\Concurrency\Parallelizers.cpp" />
@@ -688,6 +776,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='07-Penryn|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='13-Haswell|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='17-Skylake|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='18-CannonLake|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='00-x86|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
@@ -695,6 +784,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='07-Penryn|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='13-Haswell|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='17-Skylake|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='18-CannonLake|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='00-x86|x64'">true</ExcludedFromBuild>
     </ClCompile>
   </ItemGroup>
@@ -731,6 +821,7 @@
     <ClInclude Include="..\..\Source\DigitViewer2\RawToCompressed\Kernels\i64ToDec_LittleEndian.h" />
     <ClInclude Include="..\..\Source\DigitViewer2\RawToCompressed\Kernels\i64ToDec_x64_AVX2.h" />
     <ClInclude Include="..\..\Source\DigitViewer2\RawToCompressed\Kernels\i64ToDec_x64_AVX512-BW.h" />
+    <ClInclude Include="..\..\Source\DigitViewer2\RawToCompressed\Kernels\i64ToDec_x64_AVX512-VBMI.h" />
     <ClInclude Include="..\..\Source\DigitViewer2\RawToCompressed\Kernels\i64ToDec_x64_SSE41.h" />
     <ClInclude Include="..\..\Source\DigitViewer2\RawToCompressed\Kernels\i64ToHex_LittleEndian.h" />
     <ClInclude Include="..\..\Source\DigitViewer2\RawToCompressed\Kernels\i64ToHex_x64_AVX2.h" />
@@ -738,6 +829,7 @@
     <ClInclude Include="..\..\Source\DigitViewer2\RawToCompressed\Kernels\i64ToHex_x64_SSE41.h" />
     <ClInclude Include="..\..\Source\DigitViewer2\RawToCompressed\Kernels\i64ToHex_x86_SSE2.h" />
     <ClInclude Include="..\..\Source\DigitViewer2\RawToCompressed\Kernels\i64ToRaw_x64_AVX512-BW.ipp" />
+    <ClInclude Include="..\..\Source\DigitViewer2\RawToCompressed\Kernels\i64ToRaw_x64_AVX512-VBMI.ipp" />
     <ClInclude Include="..\..\Source\DigitViewer2\RawToCompressed\RawToCompressed.h" />
     <ClInclude Include="..\..\Source\DigitViewer2\RawToDecKernels\Kernels_dec_to_i64_x64_AVX2.h" />
     <ClInclude Include="..\..\Source\DigitViewer2\RawToDecKernels\Kernels_dec_to_i64_x64_AVX512BW.h" />
@@ -747,6 +839,8 @@
     <ClInclude Include="..\..\Source\DigitViewer2\RawToDecKernels\Kernels_i64_to_dec_x64_SSE41.h" />
     <ClInclude Include="..\..\Source\DigitViewer2\WordToRaw\Kernels\WordToRaw_LittleEndian.h" />
     <ClInclude Include="..\..\Source\DigitViewer2\WordToRaw\Kernels\WordToRaw_x64_AVX2.h" />
+    <ClInclude Include="..\..\Source\DigitViewer2\WordToRaw\Kernels\WordToRaw_x64_AVX512-VBMI.h" />
+    <ClInclude Include="..\..\Source\DigitViewer2\WordToRaw\Kernels\WordToRaw_x64_AVX512-VBMI.ipp" />
     <ClInclude Include="..\..\Source\DigitViewer2\WordToRaw\Kernels\WordToRaw_x64_AVX512BW.h" />
     <ClInclude Include="..\..\Source\DigitViewer2\WordToRaw\Kernels\WordToRaw_x64_SSE41.h" />
     <ClInclude Include="..\..\Source\DigitViewer2\WordToRaw\WordToRaw.h" />

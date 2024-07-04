@@ -52,10 +52,10 @@ template <> YM_NO_INLINE void print_af(const double* A, upL_t L, char color){
 
     L--;
     for (upL_t c = 0; c < L; c++){
-        print_float(A[c], 18);
+        print_float(A[c]);
         print(",");
     }
-    print_float(A[L], 18);
+    print_float(A[L]);
     print("}");
 }
 template <typename wtype> YM_NO_INLINE

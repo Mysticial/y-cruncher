@@ -49,12 +49,12 @@ void ConfigObject::sanitize_key(const std::string& key) const{
     if (key.empty()){
         throw InvalidParametersException("ConfigObject::sanitize_key()", "Key cannot be empty.");
     }
-    {
-        char ch = key[0];
-        if (!(('A' <= ch && ch <= 'Z') || ('a' <= ch && ch <= 'z'))){
-            throw InvalidParametersException("ConfigObject::sanitize_key()", "Key must start with a letter.");
-        }
-    }
+    //{
+    //    char ch = key[0];
+    //    if (!(('A' <= ch && ch <= 'Z') || ('a' <= ch && ch <= 'z'))){
+    //        throw InvalidParametersException("ConfigObject::sanitize_key()", "Key must start with a letter.");
+    //    }
+    //}
     for (char ch : key){
         if ('A' <= ch && ch <= 'Z'){
             continue;

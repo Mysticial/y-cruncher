@@ -58,11 +58,17 @@
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 #ifdef YMP_Arch_20XX_x64_AVX10_2_512
-#define YMP_Arch_2019_x64_IceLake
+#define YMP_Arch_2023_x64_SapphireRapids
 #endif
 
 #ifdef YMP_Arch_20XX_x64_AVX10_2_256
 #define YMP_Arch_2014_x64_Broadwell
+//#define YMP_Arch_2023_x64_CLDEMOTE
+#endif
+
+#ifdef YMP_Arch_2023_x64_SapphireRapids
+#define YMP_Arch_2019_x64_IceLake
+#define YMP_Arch_2023_x64_CLDEMOTE
 #endif
 
 #ifdef YMP_Arch_2019_x64_IceLake
@@ -75,10 +81,12 @@
 
 #ifdef YMP_Arch_2017_x64_Skylake
 #define YMP_Arch_2014_x64_Broadwell
+#define YMP_Arch_2016_x64_AVX512F
 #endif
 
 #ifdef YMP_Arch_2016_x64_KnightsLanding
 #define YMP_Arch_2014_x64_Broadwell
+#define YMP_Arch_2016_x64_AVX512F
 #endif
 
 #ifdef YMP_Arch_2014_x64_Broadwell

@@ -63,8 +63,32 @@ void internal_write_file(const std::string& str){
 
     HANDLE handle = GetStdHandle(STD_OUTPUT_HANDLE);
 
-    upL_t length = str.size();
-    const char* data = str.c_str();
+    std::string actual_print;
+
+    //  Process the string to remove any overwritten status lines.
+    static std::string buffer;
+    for (size_t c = 0; c < str.size(); c++){
+        char ch = str[c];
+        switch (ch){
+        case '\r':
+            if (str[c + 1] != '\n'){
+                buffer.clear();
+            }
+            break;
+
+        case '\n':
+            buffer += ch;
+            actual_print += buffer;
+            buffer.clear();
+            break;
+
+        default:
+            buffer += ch;
+        }
+    }
+
+    upL_t length = actual_print.size();
+    const char* data = actual_print.c_str();
 
     //  Split it up into blocks of no more than MAX_BLOCK characters.
     while (length > 0){
@@ -149,7 +173,7 @@ YM_NO_INLINE std::wstring scan_wstr(char color){
     }
 
     if (color != ' '){
-        set_color('w');
+        set_color_default();
     }
 
     return out;
