@@ -22,70 +22,24 @@
 #include <string.h>
 #include <atomic>
 #include <iostream>
+#include "PublicLibs/Exceptions/InvalidParametersException.h"
 #include "PublicLibs/BasicLibs/StringTools/ToString.h"
 #include "PublicLibs/BasicLibs/StringTools/Unicode.h"
 #include "PublicLibs/ConsoleIO/BasicIO.h"
 #include "Label.h"
+#include "OutputStream.h"
 namespace ymp{
 namespace Console{
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-YM_NO_INLINE void compile_options(){
-    Console::println_labelm("Console IO", "Color Codes", 'G');
-}
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
 //  Core I/O
-std::atomic<uiL_t> sequence(0);
-uiL_t sequence_number(){
-    return sequence.load(std::memory_order_acquire);
-}
-////////////////////////////////////////////////////////////////////////////////
-YM_NO_INLINE upL_t print(const std::string& str, char color){
+YM_NO_INLINE std::wstring internal_scan_wstr(char color){
     ConsoleLockScope lock;
-    set_color(color);
-    if (fwide(stdout, 0) <= 0){
-        std::cout << str;
-    }else{
-        std::wcout << StringTools::utf8_to_wstr(str);
-    }
-    fflush(stdout);
-    sequence++;
-    return str.size();
-}
-YM_NO_INLINE upL_t print(const std::wstring& str, char color){
-    ConsoleLockScope lock;
-    set_color(color);
-    if (fwide(stdout, 0) <= 0){
-        std::cout << StringTools::wstr_to_utf8(str);
-    }else{
-        std::wcout << str;
-    }
-    fflush(stdout);
-    sequence++;
-    return str.size();
-}
-////////////////////////////////////////////////////////////////////////////////
-YM_NO_INLINE std::string scan_utf8(char color){
-    ConsoleLockScope lock;
-    if (fwide(stdin, 0) > 0){
-        return StringTools::wstr_to_utf8(scan_wstr(color));
-    }
 
-    set_color(color);
-    std::string out;
-    std::getline(std::cin, out);
-    if (color != ' '){
-        set_color_default();
-    }
-    return out;
-}
-YM_NO_INLINE std::wstring scan_wstr(char color){
-    ConsoleLockScope lock;
+    flush();
+
     if (fwide(stdin, 0) <= 0){
         return StringTools::utf8_to_wstr(scan_utf8(color));
     }
@@ -95,14 +49,35 @@ YM_NO_INLINE std::wstring scan_wstr(char color){
     wchar_t ch;
     while (true){
         ch = fgetwc(stdin);
-        if (ch == '\n')
+        if (ch == '\n'){
             break;
+        }
         out.push_back(ch);
     }
     if (color != ' '){
         set_color_default();
     }
     return out;
+}
+YM_NO_INLINE std::string scan_utf8(char color){
+    ConsoleLockScope lock;
+
+    flush();
+
+    if (fwide(stdin, 0) > 0){
+        std::string ret = StringTools::wstr_to_utf8(internal_scan_wstr(color));
+        global_logger.log_input(ret);
+        return ret;
+    }
+
+    set_color(color);
+    std::string ret;
+    std::getline(std::cin, ret);
+    if (color != ' '){
+        set_color_default();
+    }
+    global_logger.log_input(ret);
+    return ret;
 }
 YM_NO_INLINE void pause(char color){
     ConsoleLockScope lock;
@@ -113,65 +88,9 @@ YM_NO_INLINE void pause(char color){
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-//  Console Colors
-YM_NO_INLINE void set_color(char color){
-    ConsoleLockScope lock;
-    if (!enable_colors || color == ' '){
-        return;
-    }
-    const char* color_string;
-    switch (color){
-    case 'R':
-        color_string = "\033[01;31m";
-        break;
-    case 'r':
-        color_string = "\033[22;31m";
-        break;
-    case 'Y':
-        color_string = "\033[01;33m";
-        break;
-    case 'y':
-        color_string = "\033[22;33m";
-        break;
-    case 'G':
-        color_string = "\033[01;32m";
-        break;
-    case 'g':
-        color_string = "\033[22;32m";
-        break;
-    case 'B':
-        color_string = "\033[01;34m";
-        break;
-    case 'b':
-        color_string = "\033[22;34m";
-        break;
-    case 'T':
-        color_string = "\033[01;36m";
-        break;
-    case 't':
-        color_string = "\033[22;36m";
-        break;
-    case 'P':
-        color_string = "\033[01;35m";
-        break;
-    case 'p':
-        color_string = "\033[22;35m";
-        break;
-    default:
-        color_string = "\033[01;37m";
-    }
-    print(color_string);
-}
-YM_NO_INLINE void set_color_default(){
-    print("\033[39;49m");
-}
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
 //  Console Window
 YM_NO_INLINE bool set_console_window_size(int width, int height){
-    //  TODO
+    //  TODO-Linux: Not sure if this is even possible on Linux.
     return false;
 }
 ////////////////////////////////////////////////////////////////////////////////

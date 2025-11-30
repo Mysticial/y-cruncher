@@ -28,11 +28,26 @@ void ConfigArray::assert_size(upL_t size) const{
         throw ParseException("Expected array size to be exactly " + std::to_string(size) + " items.");
     }
 }
+void ConfigArray::assert_min_size(upL_t size) const{
+    if (m_value.size() < size){
+        throw ParseException("Expected array size to be at least " + std::to_string(size) + " items.");
+    }
+}
 void ConfigArray::operator+=(siL_t value){
     m_value.emplace_back(value);
 }
 void ConfigArray::operator+=(ConfigValue&& value){
     m_value.emplace_back(std::move(value));
+}
+void ConfigArray::pop_back(){
+    m_value.pop_back();
+}
+void ConfigArray::join(ConfigArray&& array){
+    m_value.insert(
+        m_value.end(),
+        std::make_move_iterator(array.begin()),
+        std::make_move_iterator(array.end())
+    );
 }
 bool operator==(const ConfigArray& a, const ConfigArray& b){
     if (a.size() != b.size()){
@@ -46,6 +61,9 @@ bool operator==(const ConfigArray& a, const ConfigArray& b){
     return true;
 }
 bool ConfigArray::print_as_one_line() const{
+    if (m_print_as_one_line){
+        return true;
+    }
     upL_t length = 0;
     for (const auto& item : m_value){
         switch (item.type()){

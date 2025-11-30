@@ -12,6 +12,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 //  Dependencies
 #include <time.h>
+#include <climits>
 #include <Windows.h>
 #include "PublicLibs/ConsoleIO/Label.h"
 #include "Time_Windows.h"
@@ -39,6 +40,12 @@ YM_NO_INLINE WallClock WallClock::now(){
     WallClock out;
     out.m_ticks = x.QuadPart;
     return out;
+}
+WallClock WallClock::min(){
+    return WallClock(std::numeric_limits<long long>::min());
+}
+WallClock WallClock::max(){
+    return WallClock(std::numeric_limits<long long>::max());
 }
 YM_NO_INLINE double WallClock::operator-(const WallClock& x) const{
     LARGE_INTEGER freqency;

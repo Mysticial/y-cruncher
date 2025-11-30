@@ -136,6 +136,9 @@
     <Filter Include="Source Files\PublicLibs\BasicLibs\Containers">
       <UniqueIdentifier>{852352a0-8938-4ec0-a7b1-575f8254bf33}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\PublicLibs\ConsoleIO\OutputStreams">
+      <UniqueIdentifier>{8409511d-8494-4ea2-a7ff-12f9a4d8d831}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Source\DigitViewer2\makefile">
@@ -410,7 +413,25 @@
     <ClCompile Include="..\..\Source\PublicLibs\BasicLibs\Concurrency\ExceptionHolder.cpp">
       <Filter>Source Files\PublicLibs\BasicLibs\Concurrency</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Source\PublicLibs\BasicLibs\Concurrency\BasicParallelizer.cpp">
+    <ClCompile Include="..\..\Source\PublicLibs\ConsoleIO\OutputStream.cpp">
+      <Filter>Source Files\PublicLibs\ConsoleIO</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\PublicLibs\BasicLibs\Concurrency\Parallelizer.cpp">
+      <Filter>Source Files\PublicLibs\BasicLibs\Concurrency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\PublicLibs\ConsoleIO\OutputStreams\ConsoleLogger_BasicFile.cpp">
+      <Filter>Source Files\PublicLibs\ConsoleIO\OutputStreams</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\PublicLibs\ConsoleIO\OutputStreams\ConsoleSink_LinuxVTerm.cpp">
+      <Filter>Source Files\PublicLibs\ConsoleIO\OutputStreams</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\PublicLibs\ConsoleIO\OutputStreams\ConsoleSink_WindowsAPI.cpp">
+      <Filter>Source Files\PublicLibs\ConsoleIO\OutputStreams</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\PublicLibs\ConsoleIO\OutputStreams\ConsoleSink_WindowsVTerm.cpp">
+      <Filter>Source Files\PublicLibs\ConsoleIO\OutputStreams</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\PublicLibs\BasicLibs\Concurrency\NullParallelizer.cpp">
       <Filter>Source Files\PublicLibs\BasicLibs\Concurrency</Filter>
     </ClCompile>
   </ItemGroup>
@@ -781,9 +802,6 @@
     <ClInclude Include="..\..\Source\PublicLibs\ArchSpecificLibs\LoadStoreTypes.h">
       <Filter>Source Files\PublicLibs\ArchSpecificLibs</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\PublicLibs\BasicLibs\Concurrency\BasicParallelizer.h">
-      <Filter>Source Files\PublicLibs\BasicLibs\Concurrency</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Source\PublicLibs\BasicLibs\Concurrency\BlockSplitting.h">
       <Filter>Source Files\PublicLibs\BasicLibs\Concurrency</Filter>
     </ClInclude>
@@ -793,16 +811,10 @@
     <ClInclude Include="..\..\Source\PublicLibs\BasicLibs\Concurrency\MemoryFence.h">
       <Filter>Source Files\PublicLibs\BasicLibs\Concurrency</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\PublicLibs\BasicLibs\Concurrency\SpinLock.h">
-      <Filter>Source Files\PublicLibs\BasicLibs\Concurrency</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Source\PublicLibs\BasicLibs\Concurrency\SpinPause.h">
       <Filter>Source Files\PublicLibs\BasicLibs\Concurrency</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\PublicLibs\BasicLibs\Concurrency\AsyncThrottler.h">
-      <Filter>Source Files\PublicLibs\BasicLibs\Concurrency</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\PublicLibs\BasicLibs\Concurrency\BasicAction.h">
       <Filter>Source Files\PublicLibs\BasicLibs\Concurrency</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\PublicLibs\BasicLibs\Containers\InsertOrderMap.h">
@@ -819,6 +831,30 @@
     </ClInclude>
     <ClInclude Include="..\..\Source\DigitViewer2\RawToCompressed\Kernels\i64ToRaw_x64_AVX512-VBMI.ipp">
       <Filter>Source Files\DigitViewer2\RawToCompressed\Kernels</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\ConsoleIO\OutputStream.h">
+      <Filter>Source Files\PublicLibs\ConsoleIO</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\BasicLibs\Concurrency\ParallelAction.h">
+      <Filter>Source Files\PublicLibs\BasicLibs\Concurrency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\BasicLibs\Concurrency\Parallelizer.h">
+      <Filter>Source Files\PublicLibs\BasicLibs\Concurrency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\ConsoleIO\OutputStreams\ConsoleLogger_BasicFile.h">
+      <Filter>Source Files\PublicLibs\ConsoleIO\OutputStreams</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\ConsoleIO\OutputStreams\ConsoleSink_LinuxVTerm.h">
+      <Filter>Source Files\PublicLibs\ConsoleIO\OutputStreams</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\ConsoleIO\OutputStreams\ConsoleSink_WindowsAPI.h">
+      <Filter>Source Files\PublicLibs\ConsoleIO\OutputStreams</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\ConsoleIO\OutputStreams\ConsoleSink_WindowsVTerm.h">
+      <Filter>Source Files\PublicLibs\ConsoleIO\OutputStreams</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PublicLibs\BasicLibs\Concurrency\NullParallelizer.h">
+      <Filter>Source Files\PublicLibs\BasicLibs\Concurrency</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

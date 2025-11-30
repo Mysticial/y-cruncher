@@ -47,7 +47,7 @@ public:
         const char* input,
         uiL_t offset, upL_t digits,
         const AlignedBufferC<BUFFER_ALIGNMENT>& buffer,
-        BasicParallelizer& parallelizer, upL_t tds
+        ParallelContext& parallel_context, upL_t tds
     ) override;
 
 

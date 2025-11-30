@@ -87,7 +87,7 @@ void BasicTextWriter::store_digits(
     const char* input,
     uiL_t offset, upL_t digits,
     const AlignedBufferC<BUFFER_ALIGNMENT>& buffer,
-    BasicParallelizer& parallelizer, upL_t tds
+    ParallelContext& parallel_context, upL_t tds
 ){
     if (!m_file){
         throw InvalidParametersException("BasicTextWriter::store_digits()", "File is closed.");
@@ -151,7 +151,7 @@ void BasicTextWriter::store_digits(
             P + shift_f,
             input,
             processed,
-            parallelizer, tds
+            parallel_context, tds
         );
         if (bad){
             throw InvalidParametersException("BasicTextWriter::store_digits()", "Invalid Digit");

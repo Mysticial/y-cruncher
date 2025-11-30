@@ -12,12 +12,21 @@
 #include "PublicLibs/SystemLibs/Environment/Environment.h"
 
 //  Pull in just the necessary stuff from PublicLibs.
+#include "PublicLibs/Exceptions/Exception.cpp"
+#include "PublicLibs/Exceptions/StringException.cpp"
+#include "PublicLibs/Exceptions/InvalidParametersException.cpp"
+#include "PublicLibs/ConsoleIO/OutputStream.cpp"
 #include "PublicLibs/ConsoleIO/BasicIO.cpp"
 #include "PublicLibs/ConsoleIO/Margin.cpp"
 #include "PublicLibs/ConsoleIO/Label.cpp"
+#include "PublicLibs/ConsoleIO/OutputStreams/ConsoleSink_WindowsAPI.cpp"
+#include "PublicLibs/ConsoleIO/OutputStreams/ConsoleSink_WindowsVTerm.cpp"
+#include "PublicLibs/ConsoleIO/OutputStreams/ConsoleSink_LinuxVTerm.cpp"
 #include "PublicLibs/BasicLibs/StringTools/ToString.cpp"
 #include "PublicLibs/BasicLibs/StringTools/Unicode.cpp"
 #include "PublicLibs/BasicLibs/StringTools/ymb_STR.cpp"
+#include "PublicLibs/BasicLibs/LargePrimitives/Int128.cpp"
+#include "PublicLibs/BasicLibs/LargePrimitives/Int128_IO.cpp"
 #include "PublicLibs/SystemLibs/Time/Time.cpp"
 #include "PublicLibs/SystemLibs/Environment/Environment.cpp"
 #include "PublicLibs/SystemLibs/ProcessorCapability/cpu_x86.cpp"
@@ -48,10 +57,19 @@ void handle_pause(CommandLine::Parameters& cmds){
     pause_on_warning = pause_on_exit > -1;
     Console::pause_on_error = pause_on_exit > -2;
 }
-void handle_colors(CommandLine::Parameters& cmds){
-    auto& value = cmds.current_value();
+void handle_console(CommandLine::Parameters& cmds){
+    const std::string& value = cmds.current_value();
     cmds.advance();
-    Console::enable_colors = StringTools::parse_sL_text(value) > 0;
+    Console::set_console_backend(value);
+}
+void handle_colors(CommandLine::Parameters& cmds){
+    const std::string& value = cmds.current_value();
+    cmds.advance();
+    if (value[0] == '-' || std::isdigit(value[0])){
+        Console::set_colors_enabled(StringTools::parse_sL_text(value) > 0);
+        return;
+    }
+    throw InvalidParametersException("handle_colors()", "Invalid Value: " + value);
 }
 void handle_height(CommandLine::Parameters& cmds){
     auto& value = cmds.current_value();
@@ -65,6 +83,7 @@ void handles_skip_warnings(CommandLine::Parameters& cmds){
 }
 CommandLine::ActionMap GLOBAL_COMMANDS{
     {"pause", handle_pause},
+    {"console", handle_console},
     {"colors", handle_colors},
     {"height", handle_height},
     {"skip-warnings", handles_skip_warnings},
@@ -86,7 +105,7 @@ int main(int argc, char *argv[]){
     CommandLine::Parameters cmds(argc, argv);
     Environment::initialize_environment(argc, argv);
 
-    if (!Environment::RunFromConsole()){
+    if (!Environment::is_running_from_console()){
         Console::set_console_window_size();
     }
     process_startup_commands(cmds);
@@ -108,7 +127,7 @@ int main(int argc, char *argv[]){
         dispatch_Intel(features);
     }
 
-    if (Environment::get_cmd_parameters().size() <= 1 && !Environment::RunFromConsole()){
+    if (Environment::get_cmd_parameters().size() <= 1 && !Environment::is_running_from_console()){
         Console::pause();
     }
     Console::set_color_default();

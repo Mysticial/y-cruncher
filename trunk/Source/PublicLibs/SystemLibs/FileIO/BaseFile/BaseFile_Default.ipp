@@ -41,7 +41,8 @@ bool BaseFile::create(std::string path, ufL_t bytes){
     }
 
     if (bytes != 0){
-        //  TODO
+        //  TODO: There may not be a way to do this without accidentally zeroing
+        //  the entire file or creating a sparse file.
     }
 
     m_path = std::move(path);

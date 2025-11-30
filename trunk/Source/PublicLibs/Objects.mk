@@ -9,6 +9,11 @@ CURRENT :=
 
 
 CURRENT += ConsoleIO/ColorStrings.cpp
+CURRENT += ConsoleIO/OutputStream.cpp
+CURRENT += ConsoleIO/OutputStreams/ConsoleSink_WindowsAPI.cpp
+CURRENT += ConsoleIO/OutputStreams/ConsoleSink_WindowsVTerm.cpp
+CURRENT += ConsoleIO/OutputStreams/ConsoleSink_LinuxVTerm.cpp
+CURRENT += ConsoleIO/OutputStreams/ConsoleLogger_BasicFile.cpp
 CURRENT += ConsoleIO/BasicIO.cpp
 CURRENT += ConsoleIO/Margin.cpp
 CURRENT += ConsoleIO/Label.cpp

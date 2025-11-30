@@ -115,7 +115,7 @@ upL_t BasicTextReader::recommend_buffer_size(uiL_t digits, upL_t limit) const{
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-class BasicTextReader::Action_process : public BasicAction{
+class BasicTextReader::Action_process : public ParallelAction{
     const BasicTextReader& m_object;
     DigitStats* m_stats;
     char* m_output;
@@ -137,7 +137,7 @@ public:
         , m_unit_L(unit_L)
     {}
 
-    virtual void run(upL_t index) override{
+    virtual void run(ParallelContext& parallel_context, upL_t index) override{
         upL_t si = m_unit_L * index;
         upL_t ei = si + m_unit_L;
         if (si >= m_digits){
@@ -215,7 +215,7 @@ void BasicTextReader::process(DigitStats* stats, char* output, const char* txt_d
 }
 void BasicTextReader::process(
     DigitStats* stats, char* output, const char* txt_digits, upL_t digits,
-    BasicParallelizer& parallelizer, upL_t tds
+    ParallelContext& parallel_context, upL_t tds
 ) const{
     //  Optimization: If "buffer" is misaligned, do enough to align it.
     upL_t align = Alignment::ptr_to_aligned<DEFAULT_ALIGNMENT>(output);
@@ -250,7 +250,7 @@ void BasicTextReader::process(
         stats != nullptr ? &vstats[0] : nullptr,
         output, txt_digits, digits, unit_L
     );
-    parallelizer.run_in_parallel(action, 0, tds);
+    parallel_context.run_in_parallel_range(action, 0, tds);
 
     if (stats != nullptr){
         stats[0].clear_hash();
@@ -267,7 +267,7 @@ void BasicTextReader::load_stats(
     DigitStats& stats,
     uiL_t offset, uiL_t digits,
     const AlignedBufferC<BUFFER_ALIGNMENT>& buffer,
-    BasicParallelizer& parallelizer, upL_t tds
+    ParallelContext& parallel_context, upL_t tds
 ){
     //  Ends past the end.
     uiL_t end = offset + digits;
@@ -328,7 +328,7 @@ void BasicTextReader::load_stats(
             P + shift_f,
             P + shift_f,
             processed,
-            parallelizer, tds
+            parallel_context, tds
         );
 
         logical_access_offset_s += processed;
@@ -341,7 +341,7 @@ void BasicTextReader::load_digits(
     DigitStats* stats,
     uiL_t offset, upL_t digits,
     const AlignedBufferC<BUFFER_ALIGNMENT>& buffer,
-    BasicParallelizer& parallelizer, upL_t tds
+    ParallelContext& parallel_context, upL_t tds
 ){
     //  Ends past the end.
     uiL_t end = offset + digits;
@@ -402,7 +402,7 @@ void BasicTextReader::load_digits(
             output,
             P + shift_f,
             processed,
-            parallelizer, tds
+            parallel_context, tds
         );
 
         output += processed;

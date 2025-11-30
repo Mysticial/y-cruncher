@@ -105,7 +105,7 @@ public:
     template <upL_t NEW_ALIGNMENT>
     AlignedBufferC<NEW_ALIGNMENT> align() const{
         static_assert((NEW_ALIGNMENT & (NEW_ALIGNMENT - 1)) == 0, "Alignment must be a power-of-two.");
-        if (NEW_ALIGNMENT < ALIGNMENT){
+        if constexpr (NEW_ALIGNMENT < ALIGNMENT){
             return AlignedBufferC<NEW_ALIGNMENT>(m_ptr, m_len);
         }
         const upL_t NEW_MASK = NEW_ALIGNMENT - 1;
@@ -137,18 +137,18 @@ public:
 
     template <typename SubType, typename SizeType>
     LinearWordBuffer<SubType> spawn_words(SizeType words){
+        static_assert(alignof(SubType) <= ALIGNMENT, "SubType has greater alignment than buffer type.");
         upL_t length = (upL_t)words;
         upL_t bytes = length * sizeof(SubType);
-        bytes = (bytes + MASK) & ~MASK;
         check_BufferTooSmall("AlignedBufferC::spawn_words()", m_len, bytes);
-//        if (bytes & MASK){
-//            throw_InvalidParametersException("AlignedBufferC::spawn_words()", "Size is misaligned.");
-//        }
+        bytes = (bytes + MASK) & ~MASK;
+        bytes = bytes > m_len ? m_len : bytes;
         SubType* ptr = (SubType*)m_ptr;
         m_ptr = (char*)m_ptr + bytes;
         m_len -= bytes;
         return LinearWordBuffer<SubType>(ptr, length);
     }
+
     template <typename SubType, typename SizeType>
     SubType* spawn_objects(SizeType objects){
         upL_t bytes = (upL_t)objects * sizeof(SubType);
@@ -158,6 +158,12 @@ public:
         m_ptr = (char*)m_ptr + bytes;
         m_len -= bytes;
         return ptr;
+    }
+
+    template <typename SubType>
+    LinearWordBuffer<SubType> to_words() const{
+        AlignedBufferC copy = *this;
+        return copy.spawn_words<SubType>(m_len / sizeof(SubType));
     }
 
 

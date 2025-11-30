@@ -12,6 +12,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 //  Dependencies
 #include <time.h>
+#include <climits>
 #include <unistd.h>
 #include <sys/times.h>
 #include "PublicLibs/ConsoleIO/Label.h"
@@ -37,8 +38,20 @@ YM_NO_INLINE WallClock WallClock::now(){
     }
     return out;
 }
+WallClock WallClock::min(){
+    WallClock ret;
+    ret.m_time.tv_sec = std::numeric_limits<time_t>::min();
+    ret.m_time.tv_usec = 0;
+    return ret;
+}
+WallClock WallClock::max(){
+    WallClock ret;
+    ret.m_time.tv_sec = std::numeric_limits<time_t>::max();
+    ret.m_time.tv_usec = 999999;
+    return ret;
+}
 double WallClock::operator-(const WallClock& x) const{
-    u64_t isec = (u64_t)m_time.tv_sec - (u64_t)x.m_time.tv_sec;
+    s64_t isec = (s64_t)m_time.tv_sec - (s64_t)x.m_time.tv_sec;
     s32_t usec = m_time.tv_usec - x.m_time.tv_usec;
     if (usec < 0){
         usec += 1000000;

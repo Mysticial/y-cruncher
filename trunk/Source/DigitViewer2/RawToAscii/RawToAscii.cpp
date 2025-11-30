@@ -37,7 +37,7 @@ namespace RawToAscii{
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-class Action_Convert : public BasicAction{
+class Action_Convert : public ParallelAction{
     ConvertFunction m_fp_convert;
     char* m_output;
     const char* m_input;
@@ -57,7 +57,7 @@ public:
         , m_bad(bad), m_unit_L(unit_L)
     {}
 
-    virtual void run(upL_t index) override{
+    virtual void run(ParallelContext& parallel_context, upL_t index) override{
         upL_t si = m_unit_L * index;
         upL_t ei = si + m_unit_L;
         if (si >= m_digits){
@@ -73,7 +73,7 @@ public:
 bool parallel_convert(
     ConvertFunction convert,
     char* output, const char* input, upL_t digits,
-    BasicParallelizer& parallelizer, upL_t tds
+    ParallelContext& parallel_context, upL_t tds
 ){
     //  Optimization: If "output" is misaligned, do enough to align it.
     upL_t align = Alignment::ptr_to_aligned<DEFAULT_ALIGNMENT>(output);
@@ -98,7 +98,7 @@ bool parallel_convert(
     memset(bad, 0, tds * sizeof(bool));
 
     Action_Convert action(convert, output, input, digits, bad, unit_L);
-    parallelizer.run_in_parallel(action, 0, tds);
+    parallel_context.run_in_parallel_range(action, 0, tds);
 
     bool ret = false;
     for (upL_t c = 0; c < tds; c++){

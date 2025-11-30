@@ -276,12 +276,12 @@ public:
 
     void run(
         const AlignedBufferC<BUFFER_ALIGNMENT>& buffer,
-        BasicParallelizer& parallelizer, upL_t tds
+        ParallelContext& parallel_context, upL_t tds
     ){
         if (m_output == nullptr){
-            m_file.load_stats(*m_stats, m_offset, m_digits, buffer, parallelizer, tds);
+            m_file.load_stats(*m_stats, m_offset, m_digits, buffer, parallel_context, tds);
         }else{
-            m_file.load_digits(m_output, m_stats.get(), m_offset, (upL_t)m_digits, buffer, parallelizer, tds);
+            m_file.load_digits(m_output, m_stats.get(), m_offset, (upL_t)m_digits, buffer, parallel_context, tds);
         }
         if (m_stats){
             m_stats->scale_up_hash(m_scale_hash);
@@ -363,7 +363,7 @@ void BasicYcdSetReader::load_stats(
     DigitStats& stats,
     uiL_t offset, uiL_t digits,
     const AlignedBufferC<BUFFER_ALIGNMENT>& buffer,
-    BasicParallelizer& parallelizer, upL_t tds
+    ParallelContext& parallel_context, upL_t tds
 ){
     if (digits == 0){
         return;
@@ -376,10 +376,10 @@ void BasicYcdSetReader::load_stats(
 
     std::vector<Command> commands = make_commands(nullptr, true, offset, digits);
 
-    //  TODO: Parallelize this for files that are on different physical storage devices.
+    //  TODO-DV: Parallelize this for files that are on different physical storage devices.
     for (Command& command : commands){
 //        command.print();
-        command.run(buffer, parallelizer, tds);
+        command.run(buffer, parallel_context, tds);
     }
 
     //  Aggregate stats
@@ -393,7 +393,7 @@ void BasicYcdSetReader::load_digits(
     DigitStats* stats,
     uiL_t offset, upL_t digits,
     const AlignedBufferC<BUFFER_ALIGNMENT>& buffer,
-    BasicParallelizer& parallelizer, upL_t tds
+    ParallelContext& parallel_context, upL_t tds
 ){
     if (digits == 0){
         return;
@@ -406,10 +406,10 @@ void BasicYcdSetReader::load_digits(
 
     std::vector<Command> commands = make_commands(output, stats != nullptr, offset, digits);
 
-    //  TODO: Parallelize this for files that are on different physical storage devices.
+    //  TODO-DV: Parallelize this for files that are on different physical storage devices.
     for (Command& command : commands){
 //        command.print();
-        command.run(buffer, parallelizer, tds);
+        command.run(buffer, parallel_context, tds);
     }
 
     //  Combine the hashes.

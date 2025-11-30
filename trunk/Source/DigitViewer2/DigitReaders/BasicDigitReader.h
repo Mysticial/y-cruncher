@@ -17,7 +17,7 @@
 #include "PublicLibs/BasicLibs/LinearHeapBuffer.h"
 #include "PublicLibs/BasicLibs/ConfigTree/ConfigArray.h"
 #include "PublicLibs/BasicLibs/ConfigTree/ConfigObject.h"
-#include "PublicLibs/BasicLibs/Concurrency/BasicParallelizer.h"
+#include "PublicLibs/BasicLibs/Concurrency/Parallelizer.h"
 #include "DigitViewer2/Globals.h"
 #include "DigitViewer2/DigitCount/DigitCount.h"
 #include "DigitViewer2/DigitHash/DigitHash.h"
@@ -155,7 +155,7 @@ public:
         DigitStats& stats,
         uiL_t offset, uiL_t digits,                     //  Range of digits to load and process.
         const AlignedBufferC<BUFFER_ALIGNMENT>& buffer, //  Scratch buffer.
-        BasicParallelizer& parallelizer, upL_t tds      //  Parallelism
+        ParallelContext& parallel_context, upL_t tds    //  Parallelism
     ) = 0;
 
     //  Load the digits [offset, offset + digits) and optionally computes stats.
@@ -168,7 +168,7 @@ public:
         DigitStats* stats,                              //  If null, no stats are computed.
         uiL_t offset, upL_t digits,                     //  Range of digits to load and process.
         const AlignedBufferC<BUFFER_ALIGNMENT>& buffer, //  Scratch buffer.
-        BasicParallelizer& parallelizer, upL_t tds      //  Parallelism
+        ParallelContext& parallel_context, upL_t tds    //  Parallelism
     ) = 0;
 
 

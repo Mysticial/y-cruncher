@@ -48,7 +48,7 @@ void SystemException::print() const{
     if (!m_function.empty()){
         Console::println_labelm("In Function:", m_function);
     }
-    Console::println_labelm("Error Code: ", m_code);
+    Console::println_labelm_int("Error Code: ", m_code);
     Console::println();
     Console::println(m_message);
     Console::println("\n");

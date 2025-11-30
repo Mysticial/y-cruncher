@@ -33,10 +33,10 @@ void print_af(const wtype* A, upL_t L, char color){
 
     L--;
     for (upL_t c = 0; c < L; c++){
-        print(A[c]);
+        print_int(A[c]);
         print(",");
     }
-    print(A[L]);
+    print_int(A[L]);
     print("}");
 }
 template <> YM_NO_INLINE void print_af(const double* A, upL_t L, char color){

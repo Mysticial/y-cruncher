@@ -52,7 +52,7 @@ bool BaseFile::create(std::string path, ufL_t bytes){
     m_filehandle = CreateFileW(
         StringTools::utf8_to_wstr(path).c_str(),
         GENERIC_READ | GENERIC_WRITE,
-        0,
+        FILE_SHARE_READ,
         NULL,
         OPEN_ALWAYS,
         0,  //  FILE_FLAG_WRITE_THROUGH,

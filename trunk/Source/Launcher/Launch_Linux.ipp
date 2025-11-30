@@ -49,7 +49,7 @@ void launch(const char* name){
 
     int ret = system(build_command(path).c_str());
     Console::set_color_default();
-    if (!Environment::RunFromConsole()){
+    if (!Environment::is_running_from_console()){
         Console::pause();
     }
     exit(ret);

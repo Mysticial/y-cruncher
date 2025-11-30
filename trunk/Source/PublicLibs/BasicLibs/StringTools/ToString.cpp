@@ -14,6 +14,8 @@
 #include <iomanip>
 #include "PublicLibs/CompilerSettings.h"
 #include "PublicLibs/ConsoleIO/Label.h"
+#include "PublicLibs/BasicLibs/LargePrimitives/Int128_Basic.h"
+#include "PublicLibs/BasicLibs/LargePrimitives/Int128_IO.h"
 #include "ConvertInteger.h"
 #include "ToString.h"
 namespace ymp{
@@ -22,18 +24,63 @@ namespace StringTools{
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-std::string tostr(uiL_t x, NumberFormat format){
+YM_NO_INLINE std::string tostr(u32_t x, NumberFormat format){
     return tostr_ui(x, format);
 }
-std::string tostr(siL_t x, NumberFormat format){
+YM_NO_INLINE std::string tostr(s32_t x, NumberFormat format){
     return tostr_si(x, format);
 }
-YM_NO_INLINE std::string tostrln(uiL_t x, NumberFormat format){
+YM_NO_INLINE std::string tostr(u64_t x, NumberFormat format){
+    return tostr_ui(x, format);
+}
+YM_NO_INLINE std::string tostr(s64_t x, NumberFormat format){
+    return tostr_si(x, format);
+}
+YM_NO_INLINE std::string tostr(const u128_t& x, NumberFormat format){
+    return tostr_ui(x, format);
+}
+YM_NO_INLINE std::string tostr(const s128_t& x, NumberFormat format){
+    return tostr_si(x, format);
+}
+////////////////////////////////////////////////////////////////////////////////
+YM_NO_INLINE std::string tostrln(u32_t x, NumberFormat format){
     return tostr(x, format) += "\r\n";
 }
-YM_NO_INLINE std::string tostrln(siL_t x, NumberFormat format){
+YM_NO_INLINE std::string tostrln(s32_t x, NumberFormat format){
     return tostr(x, format) += "\r\n";
 }
+YM_NO_INLINE std::string tostrln(u64_t x, NumberFormat format){
+    return tostr(x, format) += "\r\n";
+}
+YM_NO_INLINE std::string tostrln(s64_t x, NumberFormat format){
+    return tostr(x, format) += "\r\n";
+}
+YM_NO_INLINE std::string tostrln(const u128_t& x, NumberFormat format){
+    return tostr(x, format) += "\r\n";
+}
+YM_NO_INLINE std::string tostrln(const s128_t& x, NumberFormat format){
+    return tostr(x, format) += "\r\n";
+}
+////////////////////////////////////////////////////////////////////////////////
+template <> YM_NO_INLINE u32_t fromstr<u32_t>(const char*& str){
+    return parse_ui<u32_t>(str);
+}
+template <> YM_NO_INLINE s32_t fromstr<s32_t>(const char*& str){
+    return parse_si<s32_t>(str);
+}
+template <> YM_NO_INLINE u64_t fromstr<u64_t>(const char*& str){
+    return parse_ui<u64_t>(str);
+}
+template <> YM_NO_INLINE s64_t fromstr<s64_t>(const char*& str){
+    return parse_si<s64_t>(str);
+}
+template <> YM_NO_INLINE u128_t fromstr<u128_t>(const char*& str){
+    return parse_ui<u128_t>(str);
+}
+template <> YM_NO_INLINE s128_t fromstr<s128_t>(const char*& str){
+    return parse_si<s128_t>(str);
+}
+////////////////////////////////////////////////////////////////////////////////
 YM_NO_INLINE uiL_t fromstr_uiL(const char*& str){
     uiL_t out = 0;
     do{
@@ -55,6 +102,7 @@ YM_NO_INLINE siL_t fromstr_siL(const char*& str){
         return fromstr_uiL(str);
     }
 }
+#if 0
 YM_NO_INLINE uiL_t fromstr_uiL_commas(const char*& str){
     uiL_t out = 0;
     do{
@@ -79,6 +127,7 @@ YM_NO_INLINE siL_t fromstr_siL_commas(const char*& str){
         return fromstr_uiL_commas(str);
     }
 }
+#endif
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -121,6 +170,22 @@ YM_NO_INLINE std::string tostr(const void* ptr){
     }
 
     return ret;
+}
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+//  Formatting
+std::string left_pad_to_width(upL_t margin, std::string&& str){
+    if (str.size() < margin){
+        str = std::string(margin - str.size(), ' ') + str;
+    }
+    return str;
+}
+void right_pad_to_width(upL_t margin, std::string& str){
+    if (str.size() < margin){
+        str += std::string(margin - str.size(), ' ');
+    }
 }
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////

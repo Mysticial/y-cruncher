@@ -14,6 +14,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 //  Dependencies
+#include "PublicLibs/BasicLibs/StringTools/ToString.h"
 #include "BasicIO.h"
 namespace ymp{
 namespace Console{
@@ -22,34 +23,64 @@ namespace Console{
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 //  String Margins
-YM_NO_INLINE    upL_t print_marginl         (upL_t margin, std::string x, char color = ' ');
-YM_NO_INLINE    upL_t println_marginl       (upL_t margin, std::string x, char color = ' ');
-YM_NO_INLINE    upL_t print_marginr         (upL_t margin, const std::string& x, char color = ' ');
-YM_NO_INLINE    upL_t println_marginr       (upL_t margin, const std::string& x, char color = ' ');
+YM_NO_INLINE    std::string print_marginL         (upL_t margin, std::string x, char color = ' ');
+YM_NO_INLINE    std::string println_marginL       (upL_t margin, std::string x, char color = ' ');
+YM_NO_INLINE    std::string print_marginR         (upL_t margin, const std::string& x, char color = ' ');
+YM_NO_INLINE    std::string println_marginR       (upL_t margin, const std::string& x, char color = ' ');
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 //  Integer Margins
-YM_NO_INLINE    upL_t print_marginl         (upL_t margin, siL_t x, char color = ' ');
-YM_NO_INLINE    upL_t println_marginl       (upL_t margin, siL_t x, char color = ' ');
-YM_NO_INLINE    upL_t print_marginr         (upL_t margin, siL_t x, char color = ' ');
-YM_NO_INLINE    upL_t println_marginr       (upL_t margin, siL_t x, char color = ' ');
-YM_NO_INLINE    upL_t print_marginl_commas  (upL_t margin, siL_t x, char color = ' ');
-YM_NO_INLINE    upL_t println_marginl_commas(upL_t margin, siL_t x, char color = ' ');
-YM_NO_INLINE    upL_t print_marginr_commas  (upL_t margin, siL_t x, char color = ' ');
-YM_NO_INLINE    upL_t println_marginr_commas(upL_t margin, siL_t x, char color = ' ');
-YM_NO_INLINE    upL_t print_marginl_quotes  (upL_t margin, siL_t x, char color = ' ');
-YM_NO_INLINE    upL_t print_marginr_quotes  (upL_t margin, siL_t x, char color = ' ');
+template <typename IntegerType>
+std::string print_marginL_int(upL_t margin, const IntegerType& x, char color = ' '){
+    return print_marginL(margin, StringTools::tostr(x, StringTools::NORMAL), color);
+}
+template <typename IntegerType>
+std::string println_marginL_int(upL_t margin, const IntegerType& x, char color = ' '){
+    return println_marginL(margin, StringTools::tostr(x, StringTools::NORMAL), color);
+}
+template <typename IntegerType>
+std::string print_marginR_int(upL_t margin, const IntegerType& x, char color = ' '){
+    return print_marginR(margin, StringTools::tostr(x, StringTools::NORMAL), color);
+}
+template <typename IntegerType>
+std::string println_marginR_int(upL_t margin, const IntegerType& x, char color = ' '){
+    return println_marginR(margin, StringTools::tostr(x, StringTools::NORMAL), color);
+}
+template <typename IntegerType>
+std::string print_marginL_commas(upL_t margin, const IntegerType& x, char color = ' '){
+    return print_marginL(margin, StringTools::tostr(x, StringTools::COMMAS), color);
+}
+template <typename IntegerType>
+std::string println_marginL_commas(upL_t margin, const IntegerType& x, char color = ' '){
+    return println_marginL(margin, StringTools::tostr(x, StringTools::COMMAS), color);
+}
+template <typename IntegerType>
+std::string print_marginR_commas(upL_t margin, const IntegerType& x, char color = ' '){
+    return print_marginR(margin, StringTools::tostr(x, StringTools::COMMAS), color);
+}
+template <typename IntegerType>
+std::string println_marginR_commas(upL_t margin, const IntegerType& x, char color = ' '){
+    return println_marginR(margin, StringTools::tostr(x, StringTools::COMMAS), color);
+}
+template <typename IntegerType>
+std::string print_marginL_quotes(upL_t margin, const IntegerType& x, char color = ' '){
+    return print_marginL(margin, StringTools::tostr(x, StringTools::QUOTES), color);
+}
+template <typename IntegerType>
+std::string print_marginR_quotes(upL_t margin, const IntegerType& x, char color = ' '){
+    return print_marginR(margin, StringTools::tostr(x, StringTools::QUOTES), color);
+}
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 //  Float Margins
-YM_NO_INLINE    upL_t print_marginl_float   (upL_t margin, double x, int precision = DEFAULT_PRECISION, char color = ' ');
-YM_NO_INLINE    upL_t println_marginl_float (upL_t margin, double x, int precision = DEFAULT_PRECISION, char color = ' ');
-YM_NO_INLINE    upL_t print_marginr_fixed   (upL_t margin, double x, int precision = DEFAULT_PRECISION, char color = ' ');
-YM_NO_INLINE    upL_t println_marginr_fixed (upL_t margin, double x, int precision = DEFAULT_PRECISION, char color = ' ');
+YM_NO_INLINE    std::string print_marginL_float   (upL_t margin, double x, int precision = DEFAULT_PRECISION, char color = ' ');
+YM_NO_INLINE    std::string println_marginL_float (upL_t margin, double x, int precision = DEFAULT_PRECISION, char color = ' ');
+YM_NO_INLINE    std::string print_marginR_fixed   (upL_t margin, double x, int precision = DEFAULT_PRECISION, char color = ' ');
+YM_NO_INLINE    std::string println_marginR_fixed (upL_t margin, double x, int precision = DEFAULT_PRECISION, char color = ' ');
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////

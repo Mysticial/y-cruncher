@@ -23,14 +23,40 @@ namespace Time{
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 class WallClock{
-    struct timeval m_time;
-
 public:
+    WallClock() = default;
+
     static WallClock now();
+    static WallClock min();
+    static WallClock max();
+
     double operator-(const WallClock& x) const;
+
+    friend bool operator==(const WallClock& x, const WallClock& y){
+        return (x - y) == 0;
+    }
+    friend bool operator!=(const WallClock& x, const WallClock& y){
+        return (x - y) != 0;
+    }
+    friend bool operator<(const WallClock& x, const WallClock& y){
+        return (x - y) < 0;
+    }
+    friend bool operator>(const WallClock& x, const WallClock& y){
+        return (x - y) > 0;
+    }
+    friend bool operator<=(const WallClock& x, const WallClock& y){
+        return (x - y) <= 0;
+    }
+    friend bool operator>=(const WallClock& x, const WallClock& y){
+        return (x - y) >= 0;
+    }
+
     double seconds_elapsed() const{
         return now() - *this;
     }
+
+private:
+    struct timeval m_time;
 };
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////

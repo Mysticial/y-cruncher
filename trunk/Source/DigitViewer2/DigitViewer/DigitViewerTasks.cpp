@@ -19,6 +19,7 @@
 #include "PublicLibs/Exceptions/InvalidParametersException.h"
 #include "PublicLibs/BasicLibs/StringTools/ToString.h"
 #include "PublicLibs/BasicLibs/Memory/SmartBuffer.h"
+#include "PublicLibs/BasicLibs/Concurrency/NullParallelizer.h"
 #include "PublicLibs/SystemLibs/Concurrency/Parallelizers.h"
 #include "PublicLibs/SystemLibs/Environment/Environment.h"
 #ifdef YMP_STANDALONE
@@ -75,7 +76,7 @@ void view_range(BasicDigitReader& reader){
         &str[0], nullptr,
         start, digits,
         AlignedBufferC<BUFFER_ALIGNMENT>(buffer, bytes),
-        parallelizer_none, 1
+        NULL_PARALLEL_CONTEXT, 1
     );
 
     switch (reader.radix()){
@@ -146,13 +147,13 @@ public:
             throw InvalidParametersException("top_hash()", "Invalid radix.");
         }
 
-        Console::print_marginl(20, "Current Offset");
+        Console::print_marginL(20, "Current Offset");
         if (m_start == 0){
-            Console::print_marginl(23, "Hash(start - current)");
+            Console::print_marginL(23, "Hash(start - current)");
         }
         std::string label = "Hash(" + std::to_string(m_start + 1) + " - current)  ";
         m_width = std::max<upL_t>(21, label.size());
-        Console::print_marginl(m_width, label);
+        Console::print_marginL(m_width, label);
         Console::print("Digit Counts (" + std::to_string(m_start + 1) + " - current)");
         Console::println("");
     }
@@ -162,12 +163,12 @@ public:
     }
 
     void print_progress(){
-        Console::print_marginl_commas(20, m_offset);
+        Console::print_marginL_commas(20, m_offset);
         if (m_start == 0){
             hash_t hash = m_top_hash * (hash_t(m_radix) ^ (m_offset - m_start)) + m_stats.hash();
-            Console::print_marginl(23, hash.value());
+            Console::print_marginL_int(23, hash.value());
         }
-        Console::print_marginl(m_width, m_stats.hash().value());
+        Console::print_marginL_int(m_width, m_stats.hash().value());
         Console::println(m_stats.counts().to_string());
     }
 
@@ -185,15 +186,17 @@ private:
 };
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-BasicParallelizer& get_parallelizer(){
+ParallelContext& get_parallel_context(){
 #ifdef YMP_STANDALONE
     //  If we're compiling inside y-cruncher, we can use the (better) internal
     //  parallel frameworks. Not that it will make much of a difference anyway
     //  since the parallelism here is very simple.
-    static std::unique_ptr<BasicParallelizer> parallelizer = ParallelFrameworks::get_default()->make();
-    return *parallelizer;
+    static ParallelContext parallel_context;
+    static std::unique_ptr<Parallelizer> parallelizer = ParallelFrameworks::get_default()->make(parallel_context, 0);
+    return parallel_context;
 #else
-    return parallelizer_default;
+    static ParallelContext parallel_context{&parallelizer_default};
+    return parallel_context;
 #endif
 }
 void compute_stats(BasicDigitReader& reader){
@@ -216,7 +219,7 @@ void compute_stats(BasicDigitReader& reader){
 
     //  Use all cores.
     upL_t tds = Environment::get_logical_processors();
-    BasicParallelizer& parallelizer = get_parallelizer();
+    ParallelContext& parallel_context = get_parallel_context();
 
     //  Don't use more than 1/4 of the remaining available memory.
     upL_t mem_limit = Environment::get_free_physical_memory() / 4;
@@ -247,7 +250,7 @@ void compute_stats(BasicDigitReader& reader){
             tracker.stats(),
             offset, block,
             AlignedBufferC<BUFFER_ALIGNMENT>(buffer, bytes),
-            parallelizer, tds
+            parallel_context, tds
         );
 
         offset += block;
@@ -266,7 +269,7 @@ void process_write(
 
     //  Use all cores.
     upL_t tds = Environment::get_logical_processors();
-    BasicParallelizer& parallelizer = get_parallelizer();
+    ParallelContext& parallel_context = get_parallel_context();
 
     //  Don't use more than 1/4 of the remaining available memory.
     upL_t mem_limit = Environment::get_free_physical_memory() / 4;
@@ -305,13 +308,13 @@ void process_write(
                 raw, &tracker.stats(),
                 read_offset, block,
                 frame0,
-                parallelizer, tds
+                parallel_context, tds
             );
             writer.store_digits(
                 raw,
                 write_offset, block,
                 frame0,
-                parallelizer, tds
+                parallel_context, tds
             );
 
             read_offset += block;

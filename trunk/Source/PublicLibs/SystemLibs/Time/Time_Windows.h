@@ -22,14 +22,42 @@ namespace Time{
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 class WallClock{
-    long long m_ticks;
-
 public:
+    WallClock() = default;
+
     static WallClock now();
+    static WallClock min();
+    static WallClock max();
+
     double operator-(const WallClock& x) const;
+
+    friend bool operator==(const WallClock& x, const WallClock& y){
+        return x.m_ticks == y.m_ticks;
+    }
+    friend bool operator!=(const WallClock& x, const WallClock& y){
+        return x.m_ticks == y.m_ticks;
+    }
+    friend bool operator<(const WallClock& x, const WallClock& y){
+        return x.m_ticks < y.m_ticks;
+    }
+    friend bool operator>(const WallClock& x, const WallClock& y){
+        return x.m_ticks > y.m_ticks;
+    }
+    friend bool operator<=(const WallClock& x, const WallClock& y){
+        return x.m_ticks <= y.m_ticks;
+    }
+    friend bool operator>=(const WallClock& x, const WallClock& y){
+        return x.m_ticks >= y.m_ticks;
+    }
+
     double seconds_elapsed() const{
         return now() - *this;
     }
+
+private:
+    WallClock(long long x) : m_ticks(x) {}
+
+    long long m_ticks;
 };
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////

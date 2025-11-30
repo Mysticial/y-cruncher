@@ -40,7 +40,7 @@ namespace RawToCompressed{
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-class Action_RawToI64 : public BasicAction{
+class Action_RawToI64 : public ParallelAction{
     RawToI64Function m_convert;
     upL_t m_digits_per_word;
 
@@ -62,7 +62,7 @@ public:
         , m_bad(bad), m_unit_L(unit_L)
     {}
 
-    virtual void run(upL_t index) override{
+    virtual void run(ParallelContext& parallel_context, upL_t index) override{
         upL_t si = m_unit_L * index;
         upL_t ei = si + m_unit_L;
         if (si >= m_words){
@@ -82,7 +82,7 @@ public:
 bool raw_to_i64(
     RawToI64Function convert, upL_t digits_per_word,
     u64_t* T, const char* raw, upL_t words,
-    BasicParallelizer& parallelizer, upL_t tds
+    ParallelContext& parallel_context, upL_t tds
 ){
     //  Optimization: If "output" is misaligned, do enough to align it.
     upL_t align = Alignment::ptr_to_aligned<DEFAULT_ALIGNMENT>(T);
@@ -109,7 +109,7 @@ bool raw_to_i64(
     memset(bad, 0, tds * sizeof(bool));
 
     Action_RawToI64 action(convert, digits_per_word, T, raw, words, bad, unit_L);
-    parallelizer.run_in_parallel(action, 0, tds);
+    parallel_context.run_in_parallel_range(action, 0, tds);
 
     bool ret = false;
     for (upL_t c = 0; c < tds; c++){

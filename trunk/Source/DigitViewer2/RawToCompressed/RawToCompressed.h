@@ -15,7 +15,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 //  Dependencies
 #include "PublicLibs/Types.h"
-#include "PublicLibs/BasicLibs/Concurrency/BasicParallelizer.h"
+#include "PublicLibs/BasicLibs/Concurrency/Parallelizer.h"
 namespace DigitViewer2{
 namespace RawToCompressed{
     using namespace ymp;
@@ -38,12 +38,12 @@ using RawToI64Function = bool (*)(u64_t* T, const char* raw, upL_t words);
 void i64_to_raw(
     I64ToRawFunction convert, upL_t digits_per_word,
     char* raw, const u64_t* T, upL_t words,
-    BasicParallelizer& parallelizer, upL_t tds
+    ParallelContext& parallel_context, upL_t tds
 );
 bool raw_to_i64(
     RawToI64Function convert, upL_t digits_per_word,
     u64_t* T, const char* raw, upL_t words,
-    BasicParallelizer& parallelizer, upL_t tds
+    ParallelContext& parallel_context, upL_t tds
 );
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////

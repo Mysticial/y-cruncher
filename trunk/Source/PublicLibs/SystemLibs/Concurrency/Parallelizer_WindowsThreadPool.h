@@ -20,7 +20,8 @@
 #include "PublicLibs/Exceptions/Exception.h"
 #include "PublicLibs/Exceptions/SystemException.h"
 #include "PublicLibs/BasicLibs/Concurrency/ExceptionHolder.h"
-#include "PublicLibs/BasicLibs/Concurrency/BasicParallelizer.h"
+#include "PublicLibs/BasicLibs/Concurrency/Parallelizer.h"
+#include "PublicLibs/BasicLibs/Concurrency/ParallelRangeEndPoints.h"
 namespace ymp{
 namespace BasicFrameworks{
 ////////////////////////////////////////////////////////////////////////////////
@@ -29,8 +30,9 @@ namespace BasicFrameworks{
 ////////////////////////////////////////////////////////////////////////////////
 class WinPoolWork : public ExceptionHolder{
 public:
-    WinPoolWork(BasicAction& action, upL_t index)
-        : m_action(action)
+    WinPoolWork(ParallelContext& parallel_context, ParallelAction& action, upL_t index)
+        : m_parallel_context(parallel_context)
+        , m_action(action)
         , m_index(index)
         , m_work(CreateThreadpoolWork(callback, this, nullptr))
     {
@@ -61,41 +63,50 @@ public:
     }
 
 private:
-    BasicAction& m_action;
+    ParallelContext m_parallel_context;
+    ParallelAction& m_action;
     upL_t m_index;
     TP_WORK* m_work;
 
     static void NTAPI callback(PTP_CALLBACK_INSTANCE instance, void* context, PTP_WORK){
         WinPoolWork* work = (WinPoolWork*)context;
         try{
-            work->m_action.run(work->m_index);
+            work->m_action.run(work->m_parallel_context, work->m_index);
         }catch (...){
             work->store_current_exception();
         }
     }
 };
-class WindowsThreadPool : public BasicParallelizer{
+class WindowsThreadPool : public Parallelizer{
 public:
-    virtual void run_in_parallel(BasicAction& a0, BasicAction& a1) override{
-        WinPoolWork work(a0, 0);
+    virtual void run_in_parallel_2(
+        ParallelContext& parallel_context, upL_t tds,
+        ParallelAction& a0, ParallelAction& a1
+    ) override{
+        WinPoolWork work(parallel_context, a0, 0);
         work.run();
-        a1.run();
+        a1.run(parallel_context);
         work.wait_and_rethrow_exceptions();
     }
-    virtual void run_in_parallel(BasicAction& action, upL_t si, upL_t ei) override{
-        if (si >= ei){
+    virtual void run_in_parallel_range(
+        ParallelContext& parallel_context, upL_t tds,
+        ParallelAction& action, upL_t si, upL_t ei
+    ) override{
+        if (ParallelizerTools::run_in_parallel_range_degenerate(parallel_context, tds, action, si, ei)){
             return;
         }
+
+        //  TODO: Tolerate (ei - si) much greater than (tds).
 
         std::deque<WinPoolWork> tasks;
 //        tasks.reserve(ei - si - 1);
 
         //  Run everything.
         for (upL_t c = si + 1; c < ei; c++){
-            tasks.emplace_back(action, c);
+            tasks.emplace_back(parallel_context, action, c);
             tasks.back().run();
         }
-        action.run(si);
+        action.run(parallel_context, si);
 
         for (WinPoolWork& work : tasks){
             work.wait_and_rethrow_exceptions();

@@ -64,14 +64,14 @@ public:
         DigitStats& stats,
         uiL_t offset, uiL_t digits,
         const AlignedBufferC<BUFFER_ALIGNMENT>& buffer,
-        BasicParallelizer& parallelizer, upL_t tds
+        ParallelContext& parallel_context, upL_t tds
     ) override;
     virtual void load_digits(
         char* output,
         DigitStats* stats,
         uiL_t offset, upL_t digits,
         const AlignedBufferC<BUFFER_ALIGNMENT>& buffer,
-        BasicParallelizer& parallelizer, upL_t tds
+        ParallelContext& parallel_context, upL_t tds
     ) override;
 
 
@@ -96,7 +96,7 @@ private:
         char* raw_digits,
         DigitStats* stats,
         const u64_t* B, upL_t BL,
-        BasicParallelizer& parallelizer, upL_t tds
+        ParallelContext& parallel_context, upL_t tds
     ) const;
 
     const u64_t* read_words(ufL_t word_offset, upL_t words, void* P, upL_t Pbytes);
@@ -106,14 +106,14 @@ private:
         DigitStats& stats,
         uiL_t offset, upL_t digits,
         void* P, upL_t Pbytes,
-        BasicParallelizer& parallelizer, upL_t tds
+        ParallelContext& parallel_context, upL_t tds
     );
     void load_digits_B(
         char* output,
         DigitStats* stats,
         uiL_t offset, upL_t digits,
         void* P, upL_t Pbytes,
-        BasicParallelizer& parallelizer, upL_t tds
+        ParallelContext& parallel_context, upL_t tds
     );
 
     upL_t start_access(

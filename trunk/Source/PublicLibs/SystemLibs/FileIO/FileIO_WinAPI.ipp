@@ -39,7 +39,7 @@ int GetLastErrorCode(){
 void PrintLastError(){
     DWORD errorcode = GetLastError();
     Console::println("", 'R');
-    Console::println_labelc("Windows Error Code", errorcode);
+    Console::println_labelc_int("Windows Error Code", (upL_t)errorcode);
     Console::print("    ");
     switch (errorcode){
         case ERROR_ACCESS_DENIED:
@@ -86,8 +86,8 @@ void RenameFile(const std::wstring& oldname, const std::wstring& newname){
         errno_t err;
         _get_errno(&err);
         Console::warning("Unable to rename file.", true);
-        Console::println_labelc("Error Code", err);
-        Console::println(newname);
+        Console::println_labelc_int("Error Code", err);
+        Console::println(StringTools::wstr_to_utf8(newname));
         Console::println();
         Console::println("Re-attempting...");
         Console::set_color('w');

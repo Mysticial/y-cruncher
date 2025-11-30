@@ -59,7 +59,7 @@ public:
         const char* input,
         uiL_t offset, upL_t digits,
         const AlignedBufferC<BUFFER_ALIGNMENT>& buffer,
-        BasicParallelizer& parallelizer, upL_t tds
+        ParallelContext& parallel_context, upL_t tds
     ) override;
 
 
@@ -76,7 +76,7 @@ private:
         const char* input,
         ufL_t offset, upL_t digits,
         void* P, upL_t Pbytes,
-        BasicParallelizer& parallelizer, upL_t tds
+        ParallelContext& parallel_context, upL_t tds
     );
 
     upL_t start_access(

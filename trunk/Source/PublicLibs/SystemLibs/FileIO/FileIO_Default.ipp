@@ -45,7 +45,7 @@ int GetLastErrorCode(){
     return errno;
 }
 void PrintLastError(){
-    Console::println_labelc("errno", errno);
+    Console::println_labelc_int("errno", errno);
 }
 ////////////////////////////////////////////////////////////////////////////////
 bool MakeDirectory(const std::string& path){

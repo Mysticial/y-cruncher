@@ -27,7 +27,11 @@ YMP_EXCEPTION_DEFINITIONS(BufferTooSmallException)
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-YM_NO_INLINE BufferTooSmallException::BufferTooSmallException(const char* function, siL_t buffer_size, uiL_t required_size)
+YM_NO_INLINE BufferTooSmallException::BufferTooSmallException(
+    const char* function,
+    s128_t buffer_size,
+    u128_t required_size
+)
     : m_function(function)
     , m_buffer_size(buffer_size)
     , m_required_size(required_size)
@@ -65,7 +69,7 @@ void BufferTooSmallException::serialize(std::string& stream) const{
 ////////////////////////////////////////////////////////////////////////////////
 [[noreturn]] YM_NO_INLINE
 void throw_BufferTooSmallException(const char* function, siL_t buffer_size, uiL_t required_size){
-#ifdef YMP_BUILD_DEVELOPER
+#if (defined YMP_BUILD_DEVELOPER) && 0
     BufferTooSmallException e(function, buffer_size, required_size);
     e.print();
     throw e;

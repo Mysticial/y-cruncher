@@ -17,6 +17,7 @@
 #include <string>
 #include "PublicLibs/CompilerSettings.h"
 #include "PublicLibs/Types.h"
+#include "PublicLibs/BasicLibs/LargePrimitives/Int128.h"
 #include "Exception.h"
 namespace ymp{
 ////////////////////////////////////////////////////////////////////////////////
@@ -27,7 +28,11 @@ class BufferTooSmallException : public Exception{
     YMP_EXCEPTION_DECLARATIONS()
 
 public:
-    YM_NO_INLINE BufferTooSmallException(const char* function, siL_t buffer_size, uiL_t required_size);
+    YM_NO_INLINE BufferTooSmallException(
+        const char* function,
+        s128_t buffer_size,
+        u128_t required_size
+    );
 
     virtual void print() const override;
 
@@ -38,8 +43,8 @@ public:
 
 private:
     std::string m_function;
-    siL_t m_buffer_size;
-    uiL_t m_required_size;
+    s128_t m_buffer_size;
+    u128_t m_required_size;
 };
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////

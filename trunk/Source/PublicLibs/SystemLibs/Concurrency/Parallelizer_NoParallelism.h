@@ -14,22 +14,28 @@
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 //  Dependencies
-#include "PublicLibs/BasicLibs/Concurrency/BasicParallelizer.h"
+#include "PublicLibs/BasicLibs/Concurrency/Parallelizer.h"
 namespace ymp{
 namespace BasicFrameworks{
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-class NoParallelism : public BasicParallelizer{
+class NoParallelism : public Parallelizer{
 public:
-    virtual void run_in_parallel(BasicAction& a0, BasicAction& a1) override{
-        a0.run();
-        a1.run();
+    virtual void run_in_parallel_2(
+        ParallelContext& parallel_context, upL_t tds,
+        ParallelAction& a0, ParallelAction& a1
+    ) override{
+        a0.run(parallel_context);
+        a1.run(parallel_context);
     }
-    virtual void run_in_parallel(BasicAction& action, upL_t si, upL_t ei) override{
+    virtual void run_in_parallel_range(
+        ParallelContext& parallel_context, upL_t tds,
+        ParallelAction& action, upL_t si, upL_t ei
+    ) override{
         for (; si < ei; si++){
-            action.run(si);
+            action.run(parallel_context, si);
         }
     }
 };

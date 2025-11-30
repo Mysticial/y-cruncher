@@ -179,11 +179,11 @@ std::string tostr_ui_bytes(IntegerType bytes){
     }
 }
 template <typename IntegerType>
-std::string tostr_si_bytes(IntegerType bytes){
+std::string tostr_si_bytes(const IntegerType& bytes){
     if (bytes < 0){
         return std::string("-") + tostr_ui_bytes((IntegerType)-bytes);
     }else{
-        return tostr_ui_bytes((IntegerType)bytes);
+        return tostr_ui_bytes(bytes);
     }
 }
 ////////////////////////////////////////////////////////////////////////////////
@@ -191,7 +191,7 @@ std::string tostr_si_bytes(IntegerType bytes){
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 template <typename IntegerType> YM_NO_INLINE
-std::string tostr_ui(IntegerType x, NumberFormat format){
+std::string tostr_ui(const IntegerType& x, NumberFormat format){
     switch (format){
     case COMMAS:
         return tostr_ui_commas(x, ',');
@@ -213,7 +213,7 @@ std::string tostr_ui(IntegerType x, NumberFormat format){
     }
 }
 template <typename IntegerType> YM_NO_INLINE
-std::string tostr_si(IntegerType x, NumberFormat format){
+std::string tostr_si(const IntegerType& x, NumberFormat format){
     switch (format){
     case COMMAS:
         return tostr_si_commas(x, ',');

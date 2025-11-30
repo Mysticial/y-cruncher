@@ -17,6 +17,7 @@
 #include <string>
 #include "PublicLibs/CompilerSettings.h"
 #include "PublicLibs/Types.h"
+#include "PublicLibs/BasicLibs/LargePrimitives/Int128.h"
 #include "NumberFormat.h"
 namespace ymp{
 namespace StringTools{
@@ -25,29 +26,44 @@ namespace StringTools{
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 //  Integer
-YM_NO_INLINE    std::string tostr       (uiL_t x, NumberFormat format = NORMAL);
-YM_NO_INLINE    std::string tostr       (siL_t x, NumberFormat format = NORMAL);
-static          std::string tostr       (u32_t x, NumberFormat format = NORMAL){ return tostr((uiL_t)x, format); }
-static          std::string tostr       (s32_t x, NumberFormat format = NORMAL){ return tostr((siL_t)x, format); }
-YM_NO_INLINE    std::string tostrln     (uiL_t x, NumberFormat format = NORMAL);
-YM_NO_INLINE    std::string tostrln     (siL_t x, NumberFormat format = NORMAL);
-static          std::string tostrln     (u32_t x, NumberFormat format = NORMAL){ return tostrln((uiL_t)x, format); }
-static          std::string tostrln     (s32_t x, NumberFormat format = NORMAL){ return tostrln((siL_t)x, format); }
-YM_NO_INLINE    uiL_t fromstr_uiL       (const char*& str);
-YM_NO_INLINE    siL_t fromstr_siL       (const char*& str);
-YM_NO_INLINE    uiL_t fromstr_uiL_commas(const char*& str);
-YM_NO_INLINE    siL_t fromstr_siL_commas(const char*& str);
+std::string tostr       (u32_t x, NumberFormat format = NORMAL);
+std::string tostr       (s32_t x, NumberFormat format = NORMAL);
+std::string tostr       (u64_t x, NumberFormat format = NORMAL);
+std::string tostr       (s64_t x, NumberFormat format = NORMAL);
+std::string tostr       (const u128_t& x, NumberFormat format = NORMAL);
+std::string tostr       (const s128_t& x, NumberFormat format = NORMAL);
+////////////////////////////////////////////////////////////////////////////////
+std::string tostrln     (u32_t x, NumberFormat format = NORMAL);
+std::string tostrln     (s32_t x, NumberFormat format = NORMAL);
+std::string tostrln     (u64_t x, NumberFormat format = NORMAL);
+std::string tostrln     (s64_t x, NumberFormat format = NORMAL);
+std::string tostrln     (const u128_t& x, NumberFormat format = NORMAL);
+std::string tostrln     (const s128_t& x, NumberFormat format = NORMAL);
+////////////////////////////////////////////////////////////////////////////////
+template <typename IntegerType>
+IntegerType fromstr     (const char*& str);
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 //  Float
-YM_NO_INLINE    std::string tostr_float     (double x, int precision = 6);
-YM_NO_INLINE    std::string tostrln_float   (double x, int precision = 6);
-YM_NO_INLINE    std::string tostr_fixed     (double x, int precision = 3);
-YM_NO_INLINE    std::string tostrln_fixed   (double x, int precision = 3);
+std::string tostr_float     (double x, int precision = 6);
+std::string tostrln_float   (double x, int precision = 6);
+std::string tostr_fixed     (double x, int precision = 3);
+std::string tostrln_fixed   (double x, int precision = 3);
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 //  Pointer
-YM_NO_INLINE    std::string tostr       (const void* ptr);
+std::string tostr       (const void* ptr);
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+//  Formatting
+std::string left_pad_to_width(upL_t margin, std::string&& str);
+void right_pad_to_width(upL_t margin, std::string& str);
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////

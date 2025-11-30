@@ -28,12 +28,14 @@ namespace ymp{
 ////////////////////////////////////////////////////////////////////////////////
 //  Fixed Sizes
 #ifdef ymp_use_stdint
+using u8_t = uint8_t;
 using u16_t = uint16_t;
 using u32_t = uint32_t;
 using s32_t = int32_t;
 using u64_t = uint64_t;
 using s64_t = int64_t;
 #else
+using u8_t = unsigned char;
 using u16_t = unsigned short;
 using u32_t = unsigned int;
 using s32_t = int;

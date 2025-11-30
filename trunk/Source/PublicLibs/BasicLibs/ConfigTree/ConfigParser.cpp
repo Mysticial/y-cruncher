@@ -173,7 +173,8 @@ std::string parse_indentifier(const char*& str, upL_t& line){
                 token += ch;
                 str++;
             }else{
-                throw_error(line, std::string("Invalid character in identifier: ") + ch);
+//                throw_error(line, std::string("Invalid character in identifier: ") + ch);
+                return token;
             }
         }
     }

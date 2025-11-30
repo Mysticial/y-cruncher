@@ -15,7 +15,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 //  Dependencies
 #include <memory>
-#include "PublicLibs/BasicLibs/Concurrency/BasicParallelizer.h"
+#include "PublicLibs/BasicLibs/Concurrency/Parallelizer.h"
 #include "DigitViewer2/Globals.h"
 #include "DigitViewer2/DigitReaders/BasicDigitReader.h"
 namespace DigitViewer2{
@@ -45,7 +45,7 @@ public:
         const char* input,
         uiL_t offset, upL_t digits,                     //  Range of digits to store.
         const AlignedBufferC<BUFFER_ALIGNMENT>& buffer, //  Scratch buffer.
-        BasicParallelizer& parallelizer, upL_t tds      //  Parallelism
+        ParallelContext& parallel_context, upL_t tds    //  Parallelism
     ) = 0;
 
 protected:

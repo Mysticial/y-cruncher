@@ -40,13 +40,13 @@ BasicFrameworks::WindowsThreadPool  framework_winpool;
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 //  Global Instantiations
-BasicParallelizer& parallelizer_none        = framework_none;
-BasicParallelizer& parallelizer_cppasync    = framework_cppasync;
+Parallelizer& parallelizer_none        = framework_none;
+Parallelizer& parallelizer_cppasync    = framework_cppasync;
 #ifdef _WIN32
-BasicParallelizer& parallelizer_winpool     = framework_winpool;
+Parallelizer& parallelizer_winpool     = framework_winpool;
 #endif
 //#ifdef YMP_ENABLE_CILK
-//BasicParallelizer& parallelizer_cilk        = framework_cilk;
+//Parallelizer& parallelizer_cilk        = framework_cilk;
 //#endif
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -55,11 +55,11 @@ BasicParallelizer& parallelizer_winpool     = framework_winpool;
 //  Default Framework
 #if 0
 //#elif defined YMP_ENABLE_CILK
-//BasicParallelizer& parallelizer_default     = framework_cilk;
+//Parallelizer& parallelizer_default     = framework_cilk;
 #elif defined _WIN32
-BasicParallelizer& parallelizer_default     = framework_winpool;
+Parallelizer& parallelizer_default     = framework_winpool;
 #else
-BasicParallelizer& parallelizer_default     = framework_cppasync;
+Parallelizer& parallelizer_default     = framework_cppasync;
 #endif
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////

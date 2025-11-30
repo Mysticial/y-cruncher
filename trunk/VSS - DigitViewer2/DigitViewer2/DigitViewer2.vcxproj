@@ -685,8 +685,9 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='00-x86|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\..\Source\DigitViewer2\WordToRaw\WordToRaw.cpp" />
-    <ClCompile Include="..\..\Source\PublicLibs\BasicLibs\Concurrency\BasicParallelizer.cpp" />
     <ClCompile Include="..\..\Source\PublicLibs\BasicLibs\Concurrency\ExceptionHolder.cpp" />
+    <ClCompile Include="..\..\Source\PublicLibs\BasicLibs\Concurrency\NullParallelizer.cpp" />
+    <ClCompile Include="..\..\Source\PublicLibs\BasicLibs\Concurrency\Parallelizer.cpp" />
     <ClCompile Include="..\..\Source\PublicLibs\BasicLibs\Memory\AlignedMalloc.cpp" />
     <ClCompile Include="..\..\Source\PublicLibs\BasicLibs\SMC_PublicBasicLibs.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
@@ -714,6 +715,11 @@
     <ClCompile Include="..\..\Source\PublicLibs\ConsoleIO\BasicIO.cpp" />
     <ClCompile Include="..\..\Source\PublicLibs\ConsoleIO\Label.cpp" />
     <ClCompile Include="..\..\Source\PublicLibs\ConsoleIO\Margin.cpp" />
+    <ClCompile Include="..\..\Source\PublicLibs\ConsoleIO\OutputStream.cpp" />
+    <ClCompile Include="..\..\Source\PublicLibs\ConsoleIO\OutputStreams\ConsoleLogger_BasicFile.cpp" />
+    <ClCompile Include="..\..\Source\PublicLibs\ConsoleIO\OutputStreams\ConsoleSink_LinuxVTerm.cpp" />
+    <ClCompile Include="..\..\Source\PublicLibs\ConsoleIO\OutputStreams\ConsoleSink_WindowsAPI.cpp" />
+    <ClCompile Include="..\..\Source\PublicLibs\ConsoleIO\OutputStreams\ConsoleSink_WindowsVTerm.cpp" />
     <ClCompile Include="..\..\Source\PublicLibs\Exceptions\AlgorithmFailedException.cpp" />
     <ClCompile Include="..\..\Source\PublicLibs\Exceptions\ArithmeticException.cpp" />
     <ClCompile Include="..\..\Source\PublicLibs\Exceptions\BufferTooSmallException.cpp" />
@@ -860,12 +866,12 @@
     <ClInclude Include="..\..\Source\PublicLibs\BasicLibs\Alignment\DefaultAlignment.h" />
     <ClInclude Include="..\..\Source\PublicLibs\BasicLibs\CommandLine.h" />
     <ClInclude Include="..\..\Source\PublicLibs\BasicLibs\Concurrency\AsyncThrottler.h" />
-    <ClInclude Include="..\..\Source\PublicLibs\BasicLibs\Concurrency\BasicAction.h" />
-    <ClInclude Include="..\..\Source\PublicLibs\BasicLibs\Concurrency\BasicParallelizer.h" />
     <ClInclude Include="..\..\Source\PublicLibs\BasicLibs\Concurrency\BlockSplitting.h" />
     <ClInclude Include="..\..\Source\PublicLibs\BasicLibs\Concurrency\ExceptionHolder.h" />
     <ClInclude Include="..\..\Source\PublicLibs\BasicLibs\Concurrency\MemoryFence.h" />
-    <ClInclude Include="..\..\Source\PublicLibs\BasicLibs\Concurrency\SpinLock.h" />
+    <ClInclude Include="..\..\Source\PublicLibs\BasicLibs\Concurrency\NullParallelizer.h" />
+    <ClInclude Include="..\..\Source\PublicLibs\BasicLibs\Concurrency\ParallelAction.h" />
+    <ClInclude Include="..\..\Source\PublicLibs\BasicLibs\Concurrency\Parallelizer.h" />
     <ClInclude Include="..\..\Source\PublicLibs\BasicLibs\Concurrency\SpinPause.h" />
     <ClInclude Include="..\..\Source\PublicLibs\BasicLibs\Containers\InsertOrderMap.h" />
     <ClInclude Include="..\..\Source\PublicLibs\BasicLibs\Memory\AlignedMalloc.h" />
@@ -888,6 +894,11 @@
     <ClInclude Include="..\..\Source\PublicLibs\ConsoleIO\BasicIO.h" />
     <ClInclude Include="..\..\Source\PublicLibs\ConsoleIO\Label.h" />
     <ClInclude Include="..\..\Source\PublicLibs\ConsoleIO\Margin.h" />
+    <ClInclude Include="..\..\Source\PublicLibs\ConsoleIO\OutputStream.h" />
+    <ClInclude Include="..\..\Source\PublicLibs\ConsoleIO\OutputStreams\ConsoleLogger_BasicFile.h" />
+    <ClInclude Include="..\..\Source\PublicLibs\ConsoleIO\OutputStreams\ConsoleSink_LinuxVTerm.h" />
+    <ClInclude Include="..\..\Source\PublicLibs\ConsoleIO\OutputStreams\ConsoleSink_WindowsAPI.h" />
+    <ClInclude Include="..\..\Source\PublicLibs\ConsoleIO\OutputStreams\ConsoleSink_WindowsVTerm.h" />
     <ClInclude Include="..\..\Source\PublicLibs\Exceptions\AlgorithmFailedException.h" />
     <ClInclude Include="..\..\Source\PublicLibs\Exceptions\ArithmeticException.h" />
     <ClInclude Include="..\..\Source\PublicLibs\Exceptions\BufferTooSmallException.h" />

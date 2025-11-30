@@ -196,7 +196,7 @@ void BasicYcdFileReader::print() const{
     Console::println();
 
     Console::println_labelm("file_version:", m_file_version);
-    Console::println_labelm("radix:", m_radix);
+    Console::println_labelm_int("radix:", m_radix);
     Console::println_labelm("first_digits:", m_first_digits);
     Console::println_labelm_commas("stream_end:", m_stream_end);
     Console::println_labelm_commas("digits_per_file:", m_digits_per_file);
@@ -255,7 +255,7 @@ void BasicYcdFileReader::process_blocks(
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-class BasicYcdFileReader::Action_process : public BasicAction{
+class BasicYcdFileReader::Action_process : public ParallelAction{
     const BasicYcdFileReader& m_object;
     char* m_raw_digits;
     DigitStats* m_stats;
@@ -279,7 +279,7 @@ public:
         , m_unit_L(unit_L)
     {}
 
-    virtual void run(upL_t index) override{
+    virtual void run(ParallelContext& parallel_context, upL_t index) override{
         upL_t si = m_unit_L * index;
         upL_t ei = si + m_unit_L;
         if (si >= m_BL){
@@ -308,7 +308,7 @@ void BasicYcdFileReader::process_blocks(
     char* raw_digits,
     DigitStats* stats,
     const u64_t* B, upL_t BL,
-    BasicParallelizer& parallelizer, upL_t tds
+    ParallelContext& parallel_context, upL_t tds
 ) const{
     const upL_t THRESHOLD = 1000;
 
@@ -346,7 +346,7 @@ void BasicYcdFileReader::process_blocks(
         B, BL,
         unit_L
     );
-    parallelizer.run_in_parallel(action, 0, tds);
+    parallel_context.run_in_parallel_range(action, 0, tds);
 
     if (stats != nullptr){
         stats[0].clear_hash();
@@ -400,7 +400,7 @@ void BasicYcdFileReader::load_stats_B(
     DigitStats& stats,
     uiL_t offset, upL_t digits,
     void* P, upL_t Pbytes,
-    BasicParallelizer& parallelizer, upL_t tds
+    ParallelContext& parallel_context, upL_t tds
 ){
     ufL_t end = (ufL_t)offset + digits;
     ufL_t word_s = (ufL_t)offset / m_digits_per_word;
@@ -447,7 +447,7 @@ void BasicYcdFileReader::load_stats_B(
     upL_t blocks = (upL_t)(word_e - word_s);
     if (blocks > 0){
 //        cout << "Steady" << endl;
-        process_blocks(nullptr, &stats, ptr, blocks, parallelizer, tds);
+        process_blocks(nullptr, &stats, ptr, blocks, parallel_context, tds);
 
         upL_t current_digits = blocks * m_digits_per_word;
         ptr += blocks;
@@ -469,7 +469,7 @@ void BasicYcdFileReader::load_digits_B(
     DigitStats* stats,
     uiL_t offset, upL_t digits,
     void* P, upL_t Pbytes,
-    BasicParallelizer& parallelizer, upL_t tds
+    ParallelContext& parallel_context, upL_t tds
 ){
     ufL_t end = (ufL_t)offset + digits;
     ufL_t word_s = (ufL_t)offset / m_digits_per_word;
@@ -521,7 +521,7 @@ void BasicYcdFileReader::load_digits_B(
     upL_t blocks = (upL_t)(word_e - word_s);
     if (blocks > 0){
 //        cout << "Steady" << endl;
-        process_blocks(output, stats, ptr, blocks, parallelizer, tds);
+        process_blocks(output, stats, ptr, blocks, parallel_context, tds);
 
         upL_t current_digits = blocks * m_digits_per_word;
         ptr += blocks;
@@ -593,7 +593,7 @@ void BasicYcdFileReader::load_stats(
     DigitStats& stats,
     uiL_t offset, uiL_t digits,
     const AlignedBufferC<BUFFER_ALIGNMENT>& buffer,
-    BasicParallelizer& parallelizer, upL_t tds
+    ParallelContext& parallel_context, upL_t tds
 ){
     if (digits == 0){
         return;
@@ -606,7 +606,7 @@ void BasicYcdFileReader::load_stats(
     while (digits > 0){
         upL_t current_digits = (upL_t)std::min(digits, (uiL_t)max_digits);
 
-        load_stats_B(stats, offset, current_digits, P, Pbytes, parallelizer, tds);
+        load_stats_B(stats, offset, current_digits, P, Pbytes, parallel_context, tds);
 
         offset += current_digits;
         digits -= current_digits;
@@ -617,7 +617,7 @@ void BasicYcdFileReader::load_digits(
     DigitStats* stats,
     uiL_t offset, upL_t digits,
     const AlignedBufferC<BUFFER_ALIGNMENT>& buffer,
-    BasicParallelizer& parallelizer, upL_t tds
+    ParallelContext& parallel_context, upL_t tds
 ){
     if (digits == 0){
         return;
@@ -630,7 +630,7 @@ void BasicYcdFileReader::load_digits(
     while (digits > 0){
         upL_t current_digits = std::min(digits, max_digits);
 
-        load_digits_B(output, stats, offset, current_digits, P, Pbytes, parallelizer, tds);
+        load_digits_B(output, stats, offset, current_digits, P, Pbytes, parallel_context, tds);
 
         output += current_digits;
         offset += current_digits;

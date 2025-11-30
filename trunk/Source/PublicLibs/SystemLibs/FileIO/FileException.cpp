@@ -69,7 +69,7 @@ void FileException::print() const{
         Console::println_labelm("In Function:", m_function);
     }
     if (m_code != 0){
-        Console::println_labelm("Error Code: ", m_code);
+        Console::println_labelm_int("Error Code: ", m_code);
     }
     Console::println_labelm(8, "Path: ", m_path);
     Console::println();

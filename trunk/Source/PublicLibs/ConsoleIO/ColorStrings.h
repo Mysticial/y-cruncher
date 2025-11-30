@@ -25,6 +25,9 @@ struct ColorString{
     ColorString()
         : color(' ')
     {}
+    ColorString(char c)
+        : color(c)
+    {}
     ColorString(const char* t)
         : color(' ')
         , text(t)

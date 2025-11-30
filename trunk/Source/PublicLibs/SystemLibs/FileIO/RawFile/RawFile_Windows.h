@@ -33,7 +33,7 @@ enum Mode{
 ////////////////////////////////////////////////////////////////////////////////
 class RawFile : public AlignedAccessFile{
     static const upL_t MAX_INFLIGHT = 32;
-    static const upL_t MAX_IO_BYTES = (upL_t)1 << 30;
+    static const upL_t MAX_IO_BYTES = (upL_t)1 << 28;
     static const upL_t CHECK_MEM_THRESHOLD = (upL_t)64 << 20;
 
 public:

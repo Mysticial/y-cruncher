@@ -37,12 +37,22 @@ public:
     SparseRegion() = default;
     SparseRegion(const Region<Type>& region);
 
+    bool empty() const{ return m_ranges.empty(); }
+
     bool operator==(const Region<Type>& region) const;
 
     void operator|=(const Region<Type>& region);
 //    void operator|=(const SparseRegion& region);
 
     void print() const;
+
+public:
+    auto cbegin() const{ return m_ranges.cbegin(); }
+    auto begin () const{ return m_ranges.cbegin(); }
+    auto begin ()      { return m_ranges.begin(); }
+    auto cend  () const{ return m_ranges.cend(); }
+    auto end   () const{ return m_ranges.cend(); }
+    auto end   ()      { return m_ranges.end(); }
 
 private:
     std::map<Type, Type> m_ranges;

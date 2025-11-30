@@ -10,6 +10,8 @@
 #include "StringTools/Unicode.cpp"
 #include "StringTools/ymb_STR.cpp"
 
+#include "LargePrimitives/Int128.cpp"
+#include "LargePrimitives/Int128_IO.cpp"
 #include "ConfigTree/ConfigValue.cpp"
 #include "ConfigTree/ConfigArray.cpp"
 #include "ConfigTree/ConfigObject.cpp"
@@ -17,6 +19,7 @@
 #include "ConfigTree/ConfigStream.cpp"
 
 #include "Concurrency/ExceptionHolder.cpp"
-#include "Concurrency/BasicParallelizer.cpp"
+#include "Concurrency/Parallelizer.cpp"
+#include "Concurrency/NullParallelizer.cpp"
 #include "Memory/AlignedMalloc.cpp"
 #include "Serialization/Serialization.cpp"

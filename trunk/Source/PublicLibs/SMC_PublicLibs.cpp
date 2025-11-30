@@ -7,6 +7,11 @@
  */
 
 #include "ConsoleIO/ColorStrings.cpp"
+#include "ConsoleIO/OutputStream.cpp"
+#include "ConsoleIO/OutputStreams/ConsoleSink_WindowsAPI.cpp"
+#include "ConsoleIO/OutputStreams/ConsoleSink_WindowsVTerm.cpp"
+#include "ConsoleIO/OutputStreams/ConsoleSink_LinuxVTerm.cpp"
+#include "ConsoleIO/OutputStreams/ConsoleLogger_BasicFile.cpp"
 #include "ConsoleIO/BasicIO.cpp"
 #include "ConsoleIO/Margin.cpp"
 #include "ConsoleIO/Label.cpp"

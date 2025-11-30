@@ -75,21 +75,21 @@ void StopWatch::print() const{
     }
 
     Console::print("CPU Utilization:        ", 'w');
-    Console::print_marginr_fixed(MARGIN_USER, user_utilization, DIGITS, 'Y');
+    Console::print_marginR_fixed(MARGIN_USER, user_utilization, DIGITS, 'Y');
     Console::print(" %");
     if (kernel_utilization >= 0){
         Console::print("  +  ", 'w');
-        Console::print_marginr_fixed(MARGIN_KERNEL, kernel_utilization, DIGITS, 'P');
+        Console::print_marginR_fixed(MARGIN_KERNEL, kernel_utilization, DIGITS, 'P');
         Console::print(" % kernel overhead");
     }
     Console::println();
 
     Console::print("Multi-core Efficiency:  ", 'w');
-    Console::print_marginr_fixed(MARGIN_USER, user_utilization * cpu_ratio, DIGITS, 'Y');
+    Console::print_marginR_fixed(MARGIN_USER, user_utilization * cpu_ratio, DIGITS, 'Y');
     Console::print(" %");
     if (kernel_utilization >= 0){
         Console::print("  +  ", 'w');
-        Console::print_marginr_fixed(MARGIN_KERNEL, kernel_utilization * cpu_ratio, DIGITS, 'P');
+        Console::print_marginR_fixed(MARGIN_KERNEL, kernel_utilization * cpu_ratio, DIGITS, 'P');
         Console::print(" % kernel overhead");
     }
     Console::println();

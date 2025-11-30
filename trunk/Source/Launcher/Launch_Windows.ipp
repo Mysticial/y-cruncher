@@ -66,7 +66,7 @@ void launch(const char* name){
         &si,
         &pi
     )){
-        Console::println_labelc("Unable to start y-cruncher", GetLastError());
+        Console::println_labelc_int("Unable to start y-cruncher", (u32_t)GetLastError());
         Console::pause();
         exit(1);
     }
@@ -75,7 +75,7 @@ void launch(const char* name){
     if (ret != 0){
         Console::println("\n");
     }
-    if (Environment::get_cmd_parameters().size() <= 1 && !Environment::RunFromConsole()){
+    if (Environment::get_cmd_parameters().size() <= 1 && !Environment::is_running_from_console()){
         Console::pause();
     }
     exit(ret);

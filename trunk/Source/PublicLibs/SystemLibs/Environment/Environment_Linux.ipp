@@ -106,7 +106,7 @@ const std::string& get_process_path(){
 const std::string& get_process_directory(){
     return process_directory;
 }
-bool RunFromConsole(){
+bool is_running_from_console(){
     return true;
 }
 ////////////////////////////////////////////////////////////////////////////////

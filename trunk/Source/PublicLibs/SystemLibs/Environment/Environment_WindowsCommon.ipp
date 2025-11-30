@@ -42,6 +42,8 @@ bool init_run_from_console(){
         return true;    //  Assume true on failure.
     }
 
+//    cout << "x = " << csbi.dwCursorPosition.X << ", y = " << csbi.dwCursorPosition.Y << endl;
+
     // If cursor position is (0,0) then we were launched in a separate console.
     return csbi.dwCursorPosition.X || csbi.dwCursorPosition.Y;
 }
@@ -114,7 +116,7 @@ const std::string& get_process_path(){
 const std::string& get_process_directory(){
     return process_directory;
 }
-bool RunFromConsole(){
+bool is_running_from_console(){
     return run_from_console;
 }
 ////////////////////////////////////////////////////////////////////////////////

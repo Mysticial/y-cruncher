@@ -17,7 +17,10 @@
 #include <string>
 #include "PublicLibs/CompilerSettings.h"
 #include "PublicLibs/Types.h"
+#include "PublicLibs/BasicLibs/StringTools/ToString.h"
+#include "PublicLibs/BasicLibs/LargePrimitives/Int128.h"
 #include "ColorStrings.h"
+#include "OutputStream.h"
 namespace ymp{
 namespace Console{
 ////////////////////////////////////////////////////////////////////////////////
@@ -29,35 +32,36 @@ const int DEFAULT_PRECISION = 6;
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-void compile_options();
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
+//  Global Logger
+extern ConsoleLogger& global_logger;
+bool            get_colors_enabled      ();
+void            set_colors_enabled      (bool enabled);
+StatusPrintMode get_status_line_mode    ();
+void            set_status_line_mode    (StatusPrintMode mode);
+void            set_console_backend     (const std::string& name);
+void            add_console_logger      (ConsoleLogger& logger);    //  Must live until it is removed.
+void            remove_console_logger   (ConsoleLogger& logger);
 ////////////////////////////////////////////////////////////////////////////////
 //  Core
-uiL_t sequence_number();
-YM_NO_INLINE    upL_t   print   (const std::string& str, char color = ' ');
-YM_NO_INLINE    upL_t   print   (const std::wstring& str, char color = ' ');
+void            pause       (char color = ' ');
+std::string     scan_utf8   (char color = 'T');
 ////////////////////////////////////////////////////////////////////////////////
-YM_NO_INLINE    std::string     scan_utf8   (char color = 'T');
-YM_NO_INLINE    std::wstring    scan_wstr   (char color = 'T');
-YM_NO_INLINE    void            pause       (char color = ' ');
-////////////////////////////////////////////////////////////////////////////////
-YM_NO_INLINE    void    set_color               (char color);
-YM_NO_INLINE    void    set_color_default       ();
-YM_NO_INLINE    bool    set_console_window_size (int width = 80, int height = 25);
-extern bool enable_colors;
+//  Colors
+void    set_color               (char color);
+void    set_color_default       ();
+bool    set_console_window_size (int width = 80, int height = 25);
 ////////////////////////////////////////////////////////////////////////////////
 //  Basic Derived
-YM_NO_INLINE    upL_t   println     ();
-YM_NO_INLINE    upL_t   println     (std::string str, char color = ' ');
-YM_NO_INLINE    upL_t   println     (std::wstring str, char color = ' ');
-YM_NO_INLINE    void    clear_line  (int characters = 79);
-YM_NO_INLINE    void    warning     (std::string str, bool sticky = false);
+void        flush       ();
+std::string print       (std::string str, char color = ' ');
+std::string println     ();
+std::string println     (std::string str, char color = ' ');
+void        clear_line  (int characters = 79);
+void        warning     (std::string str, bool sticky = false);
 ////////////////////////////////////////////////////////////////////////////////
-extern bool pause_on_error; //  Temporary hack. TODO: Get rid of this entirely.
-[[noreturn]] YM_NO_INLINE void quit_program (int code);
-[[noreturn]] YM_NO_INLINE void critical_error(const char* function, std::string message);
+extern bool pause_on_error;
+[[noreturn]] void quit_program(int code);
+[[noreturn]] void critical_error(const char* function, std::string message);
 ////////////////////////////////////////////////////////////////////////////////
 class ConsoleLockScope{
 public:
@@ -69,45 +73,58 @@ public:
 };
 ////////////////////////////////////////////////////////////////////////////////
 //  Chains
-YM_NO_INLINE    upL_t   println         (const ColoredLine& str);
+std::string println         (const ColoredLine& str);
 ////////////////////////////////////////////////////////////////////////////////
 //  Integer
-YM_NO_INLINE    upL_t   print           (uiL_t x, char color = ' ');
-YM_NO_INLINE    upL_t   print           (siL_t x, char color = ' ');
-static          upL_t   print           (u32_t x, char color = ' '){ return print((uiL_t)x, color); }
-static          upL_t   print           (s32_t x, char color = ' '){ return print((siL_t)x, color); }
+template <typename IntegerType>
+std::string print_int(const IntegerType& x, char color = ' '){
+    return print(StringTools::tostr(x, StringTools::NORMAL), color);
+}
+template <typename IntegerType>
+std::string println_int(const IntegerType& x, char color = ' '){
+    return println(StringTools::tostr(x, StringTools::NORMAL), color);
+}
+template <typename IntegerType>
+std::string print_commas(const IntegerType& x, char color = ' '){
+    return print(StringTools::tostr(x, StringTools::COMMAS), color);
+}
+template <typename IntegerType>
+std::string println_commas(const IntegerType& x, char color = ' '){
+    return println(StringTools::tostr(x, StringTools::COMMAS), color);
+}
+template <typename IntegerType>
+std::string print_bytes(const IntegerType& x, char color = ' '){
+    return print(StringTools::tostr(x, StringTools::BYTES), color);
+}
+template <typename IntegerType>
+std::string println_bytes(const IntegerType& x, char color = ' '){
+    return println(StringTools::tostr(x, StringTools::BYTES), color);
+}
+template <typename IntegerType>
+std::string print_ebytes(const IntegerType& x, char color = ' '){
+    return print(StringTools::tostr(x, StringTools::BYTES_EXPANDED), color);
+}
+template <typename IntegerType>
+std::string println_ebytes(const IntegerType& x, char color = ' '){
+    return println(StringTools::tostr(x, StringTools::BYTES_EXPANDED), color);
+}
 ////////////////////////////////////////////////////////////////////////////////
-YM_NO_INLINE    upL_t   println         (uiL_t x, char color = ' ');
-YM_NO_INLINE    upL_t   println         (siL_t x, char color = ' ');
-static          upL_t   println         (u32_t x, char color = ' '){ return println((uiL_t)x, color); }
-static          upL_t   println         (s32_t x, char color = ' '){ return println((siL_t)x, color); }
-////////////////////////////////////////////////////////////////////////////////
-YM_NO_INLINE    upL_t   print_commas    (uiL_t x, char color = ' ');
-YM_NO_INLINE    upL_t   print_commas    (siL_t x, char color = ' ');
-static          upL_t   print_commas    (u32_t x, char color = ' '){ return print_commas((uiL_t)x, color); }
-static          upL_t   print_commas    (s32_t x, char color = ' '){ return print_commas((siL_t)x, color); }
-YM_NO_INLINE    upL_t   println_commas  (uiL_t x, char color = ' ');
-YM_NO_INLINE    upL_t   println_commas  (siL_t x, char color = ' ');
-static          upL_t   println_commas  (u32_t x, char color = ' '){ return println_commas((uiL_t)x, color); }
-static          upL_t   println_commas  (s32_t x, char color = ' '){ return println_commas((siL_t)x, color); }
-////////////////////////////////////////////////////////////////////////////////
-YM_NO_INLINE    upL_t   print_bytes     (uiL_t x, char color = ' ');
-YM_NO_INLINE    upL_t   println_bytes   (uiL_t x, char color = ' ');
-YM_NO_INLINE    upL_t   print_ebytes    (uiL_t x, char color = ' ');
-YM_NO_INLINE    upL_t   println_ebytes  (uiL_t x, char color = ' ');
-YM_NO_INLINE    siL_t   scan_siL        (char color = 'T');
-YM_NO_INLINE    siL_t   scan_siL_suffix (char color = 'T');
-YM_NO_INLINE    uiL_t   scan_bytes      (char color = 'T');
+template <typename IntegerType>
+IntegerType scan_int        (char color = 'T');
+template <typename IntegerType>
+IntegerType scan_int_suffix (char color = 'T');
+template <typename IntegerType>
+IntegerType scan_bytes      (char color = 'T');
 ////////////////////////////////////////////////////////////////////////////////
 //  Floating Point
-YM_NO_INLINE    upL_t   print_float     (double x, int precision = DEFAULT_PRECISION, char color = ' ');
-YM_NO_INLINE    upL_t   println_float   (double x, int precision = DEFAULT_PRECISION, char color = ' ');
-YM_NO_INLINE    upL_t   print_fixed     (double x, int precision = 3, char color = ' ');
-YM_NO_INLINE    upL_t   println_fixed   (double x, int precision = 3, char color = ' ');
+std::string print_float     (double x, int precision = DEFAULT_PRECISION, char color = ' ');
+std::string println_float   (double x, int precision = DEFAULT_PRECISION, char color = ' ');
+std::string print_fixed     (double x, int precision = 3, char color = ' ');
+std::string println_fixed   (double x, int precision = 3, char color = ' ');
 ////////////////////////////////////////////////////////////////////////////////
 //  Unit Tests
-YM_NO_INLINE    void    print_test      (bool x);
-YM_NO_INLINE    void    println_test    (bool x);
+void    print_test      (bool x);
+void    println_test    (bool x);
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////

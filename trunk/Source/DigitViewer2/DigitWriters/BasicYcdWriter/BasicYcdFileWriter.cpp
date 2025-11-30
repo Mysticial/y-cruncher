@@ -160,7 +160,7 @@ void BasicYcdFileWriter::print() const{
     Console::println();
 
 //    Console::println_labelm("file_version:", m_file_version);
-    Console::println_labelm("radix:", m_radix);
+    Console::println_labelm_int("radix:", m_radix);
 //    Console::println_labelm("first_digits:", m_first_digits);
     Console::println_labelm_commas("stream_end:", m_stream_end);
     Console::println_labelm_commas("digits_per_file:", m_digits_per_file);
@@ -207,7 +207,7 @@ u64_t* BasicYcdFileWriter::get_range(
     write_bytes = file_bytes;
 
     //  Don't skip the edge blocks even if it aligns properly.
-    //  The edge blocks are still needed if the digit offset is mialigned
+    //  The edge blocks are still needed if the digit offset is misaligned
     //  with respect to the word.
 
     //  Read start block.
@@ -226,8 +226,10 @@ u64_t* BasicYcdFileWriter::get_range(
     //  Read end block.
     if (file_bytes > FILE_ALIGNMENT){
 //    if (file_access_offset_e < file_aligned_offset_e && file_bytes > FILE_ALIGNMENT){
+        //  This doesn't always need to read 2 sectors. But figuring out when
+        //  it's enough to read only one sector is tricky.
         m_file.load(
-            (char*)P + file_bytes - FILE_ALIGNMENT * 2, //  TODO: Don't always need to read 2 sectors.
+            (char*)P + file_bytes - FILE_ALIGNMENT * 2,
             file_aligned_offset_e - FILE_ALIGNMENT * 2,
             FILE_ALIGNMENT,
             false
@@ -240,7 +242,7 @@ void BasicYcdFileWriter::store_digits_B(
     const char* input,
     ufL_t offset, upL_t digits,
     void* P, upL_t Pbytes,
-    BasicParallelizer& parallelizer, upL_t tds
+    ParallelContext& parallel_context, upL_t tds
 ){
     ufL_t end = offset + digits;
     ufL_t word_s = offset / m_digits_per_word;
@@ -313,7 +315,7 @@ void BasicYcdFileWriter::store_digits_B(
         bool bad = RawToCompressed::raw_to_i64(
             m_fp_convert_forward, m_digits_per_word,
             ptr, input, blocks,
-            parallelizer, tds
+            parallel_context, tds
         );
         if (bad){
             throw InvalidParametersException("BasicYcdFileWriter::store_digits_B()", "Invalid Digit");
@@ -396,7 +398,7 @@ void BasicYcdFileWriter::store_digits(
     const char* input,
     uiL_t offset, upL_t digits,
     const AlignedBufferC<BUFFER_ALIGNMENT>& buffer,
-    BasicParallelizer& parallelizer, upL_t tds
+    ParallelContext& parallel_context, upL_t tds
 ){
     if (digits == 0){
         return;
@@ -414,7 +416,7 @@ void BasicYcdFileWriter::store_digits(
         upL_t current_digits = std::min(digits, max_digits);
 
 //        cout << "offset = " << offset << ", current_digits = " << current_digits << endl;
-        store_digits_B(input, (ufL_t)offset, current_digits, P, Pbytes, parallelizer, tds);
+        store_digits_B(input, (ufL_t)offset, current_digits, P, Pbytes, parallel_context, tds);
 
         input += current_digits;
         offset += current_digits;

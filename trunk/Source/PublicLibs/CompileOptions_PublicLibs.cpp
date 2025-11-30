@@ -27,7 +27,7 @@ void CompileOptions_PublicLibs(){
     Console::println("External Library\n");
     Console::set_color('w');
 
-    Console::compile_options();
+//    Console::compile_options();
 #ifdef YMP_STANDALONE
     Time::CompileOptions();
 #endif

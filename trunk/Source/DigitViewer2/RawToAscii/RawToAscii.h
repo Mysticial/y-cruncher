@@ -15,7 +15,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 //  Dependencies
 #include "PublicLibs/Types.h"
-#include "PublicLibs/BasicLibs/Concurrency/BasicParallelizer.h"
+#include "PublicLibs/BasicLibs/Concurrency/Parallelizer.h"
 namespace DigitViewer2{
 namespace RawToAscii{
     using namespace ymp;
@@ -37,7 +37,7 @@ using ConvertFunction = bool (*)(char* dec, const char* raw, upL_t digits);
 bool parallel_convert(
     ConvertFunction convert,
     char* output, const char* input, upL_t digits,
-    BasicParallelizer& parallelizer, upL_t tds
+    ParallelContext& parallel_context, upL_t tds
 );
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////

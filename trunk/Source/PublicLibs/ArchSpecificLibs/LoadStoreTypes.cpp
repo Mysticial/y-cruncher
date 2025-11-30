@@ -109,7 +109,7 @@ const char* to_string(LoadPrefetch type){
     }
 }
 LoadPrefetch parse_LoadPrefetch(const std::string& str){
-    if (str == "normal"){
+    if (str == "none"){
         return LoadPrefetch::NONE;
     }
 #ifdef YMP_Arch_2001_x86_SSE2

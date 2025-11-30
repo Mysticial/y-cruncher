@@ -24,7 +24,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 //  Dependencies
-#include "PublicLibs/BasicLibs/Concurrency/BasicAction.h"
+#include "PublicLibs/BasicLibs/Concurrency/ParallelAction.h"
 namespace ymp{
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -32,24 +32,25 @@ namespace ymp{
 ////////////////////////////////////////////////////////////////////////////////
 //  Wrap them on the client side.
 struct dll_BasicAction{
-    using fp = void (*)(BasicAction* action, upL_t index);
+    using fp = void (*)(ParallelContext* parallel_context, ParallelAction* action, upL_t index);
     void operator=(const dll_BasicAction&) = delete;
 
-    dll_BasicAction(BasicAction& action)
+    dll_BasicAction(ParallelAction& action)
         : m_fp_run(internal_run)
         , m_action(&action)
     {}
 
-    void run(upL_t index){
-        m_fp_run(m_action, index);
+    void run(ParallelContext& parallel_context, upL_t index){
+        m_fp_run(m_parallel_context, m_action, index);
     }
 
 private:
     fp m_fp_run;
-    BasicAction* m_action;
+    ParallelContext* m_parallel_context;
+    ParallelAction* m_action;
 
-    static void internal_run(BasicAction* action, upL_t index){
-        action->run(index);
+    static void internal_run(ParallelContext* parallel_context, ParallelAction* action, upL_t index){
+        action->run(*parallel_context, index);
     }
 };
 ////////////////////////////////////////////////////////////////////////////////
@@ -57,7 +58,7 @@ private:
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 //  Unwrap them on the DLL side.
-class dll_BasicActionWrapper : public BasicAction{
+class dll_BasicActionWrapper : public ParallelAction{
     dll_BasicAction& m_action;
 
 public:
@@ -65,8 +66,8 @@ public:
         : m_action(action)
     {}
 
-    virtual void run(upL_t index) override{
-        m_action.run(index);
+    virtual void run(ParallelContext& parallel_context, upL_t index) override{
+        m_action.run(parallel_context, index);
     }
 };
 ////////////////////////////////////////////////////////////////////////////////

@@ -24,10 +24,16 @@ namespace ymp{
 #endif
 #if (defined _MSC_VER) && (_MSC_VER < 1928)
 #error "MSVC++ 16.9 or later is required."
+//  https://developercommunity.visualstudio.com/content/problem/676343/nested-template-class-definition-errors-with-funct-1.html
 //  https://developercommunity.visualstudio.com/content/problem/549433/mixing-integer-and-floating-point-sse-intrinsics-l.html
 //  https://developercommunity.visualstudio.com/content/problem/767759/sse-intrinsics-get-miscompiled-leading-to-incorrec.html
 //  https://developercommunity.visualstudio.com/content/problem/746347/incorrect-multiply-by-1-sse-optimization.html
 #endif 
+#if __INTEL_LLVM_COMPILER == 20250000
+#error "ICX 2025.0.0 is buggy."
+//  https://community.intel.com/t5/Intel-oneAPI-DPC-C-Compiler/AVX512-intrinsics-get-miscompiled/
+//  https://community.intel.com/t5/Intel-oneAPI-DPC-C-Compiler/Floating-Point-gets-miscompiled/
+#endif
 #if (defined __INTEL_COMPILER_BUILD_DATE) && (__INTEL_COMPILER_BUILD_DATE < 20201208)
 #error "ICC 19.2 or later is required.""
 //  https://software.intel.com/en-us/forums/intel-c-compiler/topic/815553
