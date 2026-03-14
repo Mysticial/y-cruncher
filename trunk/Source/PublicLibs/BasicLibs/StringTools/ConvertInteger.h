@@ -61,7 +61,9 @@ std::string tostr_ui_commas(const IntegerType& x, char separator = ','){
 template <typename IntegerType>
 std::string tostr_si_commas(const IntegerType& x, char separator = ','){
     if (x < 0){
-        return std::string("-") + tostr_ui_commas<IntegerType>(-x, separator);
+        std::string out = "-";
+        out += tostr_ui_commas<IntegerType>(-x, separator);
+        return out;
     }else{
         return tostr_ui_commas<IntegerType>(x, separator);
     }

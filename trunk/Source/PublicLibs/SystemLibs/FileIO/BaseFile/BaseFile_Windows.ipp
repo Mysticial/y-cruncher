@@ -89,6 +89,8 @@ void BaseFile::rename(std::string path){
         throw FileException("BaseFile::rename()", std::move(path), "File isn't open.");
     }
 
+    //  Exception messages use BaseFile::rename() as the function name
+    //  since this code is part of BaseFile, not RawFile.
     std::string old_path = m_path;
     std::wstring old_wpath = StringTools::utf8_to_wstr(old_path);
     std::wstring new_wpath = StringTools::utf8_to_wstr(path);
@@ -104,7 +106,7 @@ void BaseFile::rename(std::string path){
         //  Failed because of something other than file already exists.
         if (err != EEXIST){
             throw FileException(
-                err, "RawFile::rename()",
+                err, "BaseFile::rename()",
                 std::move(old_path),
                 "Unable to rename file."
             );
@@ -113,7 +115,7 @@ void BaseFile::rename(std::string path){
         //  File already exists. Remove the existing one.
         if (_wremove(new_wpath.c_str())){
             throw FileException(
-                err, "RawFile::rename()",
+                err, "BaseFile::rename()",
                 std::move(old_path),
                 "Unable to rename file because the existing one can't be deleted."
             );
@@ -124,7 +126,7 @@ void BaseFile::rename(std::string path){
             //  Failed again
             _get_errno(&err);
             throw FileException(
-                err, "RawFile::rename()",
+                err, "BaseFile::rename()",
                 std::move(old_path),
                 "Unable to rename file."
             );
@@ -133,7 +135,7 @@ void BaseFile::rename(std::string path){
 
     if (!open(path)){
         throw FileException(
-            "RawFile::rename()",
+            "BaseFile::rename()",
             std::move(path),
             "Unable to reopen file."
         );
