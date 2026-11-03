@@ -21,7 +21,7 @@
 #include <cpuid.h>
 #endif
 
-#include <unistd.h>
+#include <stdlib.h>
 #include "PublicLibs/BasicLibs/StringTools/Unicode.h"
 #include "PublicLibs/ConsoleIO/BasicIO.h"
 //#include "PublicLibs/SystemLibs/Time/Time.h"
@@ -40,29 +40,22 @@ std::string process_directory;
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 void initialize_process_path(){
-    //  This is really stupid. There's no way to get the size of the path.
-
-    upL_t buffer_size = 1024;
     process_path.clear();
-    ssize_t bytes;
-    do{
-        buffer_size *= 2;
-        process_path.resize(buffer_size);
-        bytes = readlink("/proc/self/exe", &process_path[0], buffer_size);
-        if (bytes == -1){
-            Console::warning("Failed to retrieve path.");
-            Console::quit_program(1);
-        }
-    }while ((upL_t)bytes == buffer_size);
-    process_path = process_path.c_str();
+    char *exe = realpath("/proc/self/exe", NULL);
+    if (exe) {
+        process_path = exe;
+        free(exe);
+    }else{
+        Console::warning("Failed to retrieve path.");
+        Console::quit_program(1);
+    }
 }
 void initialize_process_directory(){
     process_directory = process_path;
 
     //  Strip off filename.
     while (!process_directory.empty()){
-        char ch = process_directory.back();
-        if (ch == '/' || ch == '\\'){
+        if (process_directory.back() == '/'){
             break;
         }
         process_directory.pop_back();
